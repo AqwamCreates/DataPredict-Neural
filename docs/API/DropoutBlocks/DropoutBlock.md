@@ -1,4 +1,4 @@
-# [API Reference](../../API.md) - [DropoutBlock](../DropoutBlock.md) - DropoutBlock
+# [API Reference](../../API.md) - [DropoutBlock](../DropoutBlock.md) - Dropout
 
 ## Constructors
 
@@ -8,7 +8,7 @@ Creates a new dropout block object.
 
 ```lua
 
-DropoutBlock.new({dropoutRate: number}): DropoutBlockObject
+Dropout.new({dropoutRate: number}): DropoutBlockObject
 
 ```
 
