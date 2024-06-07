@@ -68,9 +68,9 @@ Would you like to hire me for machine, deep and reinforcement learning integrati
 
 ### Repository
 
-[DataPredict Library](https://github.com/AqwamCreates/DataPredict)
+[DataPredict Neural Library](https://github.com/AqwamCreates/DataPredict-Neural)
 
-[MatrixL (Matrix Library)](https://github.com/AqwamCreates/MatrixL)
+[TensorL3D Library](https://github.com/AqwamCreates/TensorL3D)
 
 ## Version History
 
