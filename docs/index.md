@@ -60,7 +60,7 @@ Would you like to hire me for machine, deep and reinforcement learning integrati
 
 ### API Reference
 
-[API Reference](API.md) -- Not completed.
+[API Reference](API.md)
 
 ## Links
 
