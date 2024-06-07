@@ -1,4 +1,4 @@
-# [API Reference](../../API.md) - [DropoutBlock](../DropoutBlock.md) - BaseDropoutBlock
+# [API Reference](../../API.md) - [DropoutBlocks](../DropoutBlocks.md) - BaseDropoutBlock
 
 ## Constructors
 
