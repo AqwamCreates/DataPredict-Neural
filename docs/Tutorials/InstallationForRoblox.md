@@ -7,7 +7,7 @@ To start, we must first link our deep learning library with our tensor library. 
 | Version                                        | Beta Version                                                                                                                                                    |
 |------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | Deep Learning Library (DataPredict Neural)     | [Aqwam's Deep Learning Library](https://github.com/AqwamCreates/DataPredict-Neural/blob/main/module_scripts/AqwamDeepLearningLibrary.rbxm)                      |
-| 3D Tensor Library (TensorL3D)                  | [Aqwam's 3D Tensor Library](https://github.com/AqwamCreates/TensorL3D/blob/main/module_scripts/Aqwam3DTensorLibrary.lua)                                        |
+| 3D Tensor Library (TensorL3D)                  | [Aqwam's 3D Tensor Library](https://github.com/AqwamCreates/TensorL3D/blob/main/src/RobloxVersion/Aqwam3DTensorLibrary.lua)                                     |
 
 To download the files from GitHub, you must click on the download button highlighted in the red box.
 
