@@ -1,0 +1,77 @@
+# Welcome to Aqwam's DataPredict Neural Library!
+
+By using or possesing any copies of this library or its assets (including the icons), you agree to our [Terms and Conditions](TermsAndConditions.md). In short:
+
+* Attribution is required when using this library. 
+
+* A separate agreement is needed for commercial use (both internally and externally). This is applicable to companies (or individuals if none) with a revenue of at least $500 in a lifetime, or a player base of at least total of 100 players in a game from all servers, or those engaged in business-to-business activities. 
+
+* If you or your company is applicable to the above statement and do not want a separate agreement, then you are required to follow the "Commercial Use Conditions" in Terms And Conditions.
+
+* Plus some more stuff...
+
+| Version | Current Version Number |
+|---------|------------------------|
+| Beta    | 0.0.0                  |
+
+DataPredict Neural is an advanced deep learning library for Roblox and Pure Lua.
+
+This project is created to address the lack of deep learning features and inflexibility of the API design from the [DataPredict](aqwamcreates.github.com/DataPredict) library.
+
+If there are any suggestions or issues for this library, don't be afraid to reach out to me at my [LinkedIn](https://www.linkedin.com/in/aqwam-harish-aiman/) or in this [DevForum](https://devforum.roblox.com/t/beta-mdll-machine-and-deep-learning-library-includes-optimizers-retrainable-models-and-more/2196446?u=myoriginsworkshop) thread.
+
+In addition, if you are interested in Roblox tutorials and future projects by me, then you can subscribe to me in [YouTube](https://www.youtube.com/channel/UCUrwoxv5dufEmbGsxyEUPZw).
+
+Would you like to hire me for machine, deep and reinforcement learning integration? You can hire me through [Fiverr](https://www.fiverr.com/aqwamcreates/integrate-machine-and-reinforcement-learning-to-roblox-0beb).
+
+## Features
+
+* Take advantage of calculations combining both automatic differentiation and manual differentiation, simplifying complex calculations while maintaining high performance.
+
+* Craft complex models effortlessly using dynamic computational graphs, giving you the ability to create any models you want and modify them at runtime.
+
+* Take advantage of model and data parallelism capabilities for extremely fast training, prediction and experimentation.
+
+* Build singular models that are interconnected between servers and clients through distributed training.
+
+* Build models that handles multi-dimensional inputs and outputs to solve any demands of your projects.
+
+* Dive into a user-friendly API designed for you to learn in a couple of minutes.
+
+* Built for production-grade and research-grade applications.
+
+* Cross compatible with DataPredict library.
+
+## Tutorials
+
+### Installation
+
+[Installation For Roblox](Tutorials/InstallationForRoblox.md)
+
+### The Basics
+
+[Creating Our First Neural Network](Tutorials/CreatingOurFirstNeuralNetwork.md)
+
+[Understanding Function Blocks, Dynamic Computational Graphs And Automatic-Manual Differentiation](Tutorials/UnderstandingFunctionBlocksDynamicComputationalGraphsAndAutomaticManualDifferentiation.md)
+
+[Saving And Loading Model Weights](Tutorials/SavingAndLoadingModelWeights.md)
+
+## The API
+
+### API Reference
+
+[API Reference](API.md) -- Not completed.
+
+## Links
+
+[Download Links](DownloadLinks.md)
+
+### Repository
+
+[DataPredict Library](https://github.com/AqwamCreates/DataPredict)
+
+[MatrixL (Matrix Library)](https://github.com/AqwamCreates/MatrixL)
+
+## Version History
+
+[Beta](VersionHistory/BetaVersionHistory.md)
