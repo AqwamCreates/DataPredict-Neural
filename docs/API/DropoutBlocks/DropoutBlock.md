@@ -1,4 +1,4 @@
-# [API Reference](../../API.md) - [DropoutBlock](../DropoutBlock.md) - Dropout
+# [API Reference](../../API.md) - [DropoutBlocks](../DropoutBlocks.md) - Dropout
 
 ## Constructors
 
@@ -6,7 +6,7 @@
 
 Creates a new dropout block object.
 
-```lua
+```
 
 Dropout.new({dropoutRate: number}): DropoutBlockObject
 
@@ -22,4 +22,4 @@ DropoutBlock: The generated dropout block object.
 
 ## Inherited From:
 
-* [BaseDropoutRate](../BaseDropoutRate.md)
+* [BaseDropoutBlock](../BaseDropoutBlock.md)
