@@ -17,7 +17,7 @@ Then drag the files into Roblox Studio from a file explorer of your choice.
 
 Once you put those two libraries into your game, make sure you link the Machine Learning Library with the Matrix Library. This can be done via setting the “AqwamMatrixLibraryLinker” value (under the Machine Learning library) to the Matrix Library.
 
-![Screenshot 2023-12-11 011824](https://github.com/AqwamCreates/DataPredict/assets/67371914/f8dee5ef-edb0-455f-bf4a-5160ccbc35ef)
+![Screenshot 2024-06-08 071322](https://github.com/AqwamCreates/DataPredict-Neural/assets/67371914/c4ccb9b9-4c02-4708-bffd-5959e73d99f0)
 
 Next, we will use require() function to our deep learning library:
 
