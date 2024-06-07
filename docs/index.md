@@ -10,6 +10,8 @@ By using or possesing any copies of this library or its assets (including the ic
 
 * Plus some more stuff...
 
+![DataPredictNeuralIconSmall](icons/DataPredictNeuralIconSmall.png)
+
 | Version | Current Version Number |
 |---------|------------------------|
 | Beta    | 0.0.0                  |
