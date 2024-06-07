@@ -10,7 +10,7 @@ By using or possesing any copies of this library or its assets (including the ic
 
 * Plus some more stuff...
 
-![DataPredictNeuralIconSmall](/icons/DataPredictNeuralIconSmall.png)
+![DataPredictNeuralIconSmall](https://github.com/AqwamCreates/DataPredict-Neural/assets/67371914/cf4e61af-a7b6-4ba6-98cf-656a245e9960)
 
 | Version | Current Version Number |
 |---------|------------------------|
