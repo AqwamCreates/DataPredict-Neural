@@ -4,10 +4,10 @@ In this library, we can customize many of our models, optimizers and others to f
 
 To start, we must first link our deep learning library with our tensor library. However, you must use "Aqwam's Tensor Library" as every calculations made by our models are based on that tensor library.
 
-| Version                                        | Beta Version                                                                                                                                             |
-|------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Deep Learning Library (DataPredict Neural)     | [Aqwam's Deep Learning Library](https://github.com/AqwamCreates/DataPredict/blob/main/module_scripts/AqwamDeepLearningLibrary.rbxm)                      |
-| 3D Tensor Library (TensorL3D)                  | [Aqwam's 3D Tensor Library](https://github.com/AqwamCreates/TensorL3D/blob/main/module_scripts/AqwamMatrixLibrary.rbxm)                                  |
+| Version                                        | Beta Version                                                                                                                                                    |
+|------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Deep Learning Library (DataPredict Neural)     | [Aqwam's Deep Learning Library](https://github.com/AqwamCreates/DataPredict-Neural/blob/main/module_scripts/AqwamDeepLearningLibrary.rbxm)                      |
+| 3D Tensor Library (TensorL3D)                  | [Aqwam's 3D Tensor Library](https://github.com/AqwamCreates/TensorL3D/blob/main/module_scripts/Aqwam3DTensorLibrary.rbxm)                                       |
 
 To download the files from GitHub, you must click on the download button highlighted in the red box.
 
