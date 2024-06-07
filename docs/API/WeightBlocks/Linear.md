@@ -1,4 +1,4 @@
-# [API Reference](../../API.md) - WeightBlocks(../WeightBlocks.md) - Linear
+# [API Reference](../../API.md) - [WeightBlocks](../WeightBlocks.md) - Linear
 
 ## Constructors
 

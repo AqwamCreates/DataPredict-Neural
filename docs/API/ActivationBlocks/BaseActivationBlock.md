@@ -1,4 +1,4 @@
-# [API Reference](../../API.md) - ActivationBlocks(../ActivationBlocks.md) - BaseActivationBlock
+# [API Reference](../../API.md) - [ActivationBlocks](../ActivationBlocks.md) - BaseActivationBlock
 
 ## Constructors
 

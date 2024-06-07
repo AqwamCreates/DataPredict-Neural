@@ -1,4 +1,4 @@
-# [API Reference](../../API.md) - ActivationBlocks(../ActivationBlocks.md) - SigmoidLinearUnit (SiLU)
+# [API Reference](../../API.md) - [ActivationBlocks](../ActivationBlocks.md) - SigmoidLinearUnit (SiLU)
 
 ## Constructors
 

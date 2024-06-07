@@ -1,4 +1,4 @@
-# [API Reference](../../API.md) - ActivationBlocks(../ActivationBlocks.md) - RectifiedLinearUnit (ReLU)
+# [API Reference](../../API.md) - [ActivationBlocks](../ActivationBlocks.md) - RectifiedLinearUnit (ReLU)
 
 ## Constructors
 

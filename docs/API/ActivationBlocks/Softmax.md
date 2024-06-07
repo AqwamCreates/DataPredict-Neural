@@ -1,4 +1,4 @@
-# [API Reference](../../API.md) - ActivationBlocks(../ActivationBlocks.md) - Softmax
+# [API Reference](../../API.md) - [ActivationBlocks](../ActivationBlocks.md) - Softmax
 
 ## Constructors
 

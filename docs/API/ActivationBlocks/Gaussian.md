@@ -1,4 +1,4 @@
-# [API Reference](../../API.md) - ActivationBlocks(../ActivationBlocks.md) - Gausian
+# [API Reference](../../API.md) - [ActivationBlocks](../ActivationBlocks.md) - Gausian
 
 ## Constructors
 

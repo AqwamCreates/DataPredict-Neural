@@ -1,4 +1,4 @@
-# [API Reference](../../API.md) - ActivationBlocks(../ActivationBlocks.md) - Mish
+# [API Reference](../../API.md) - [ActivationBlocks](../ActivationBlocks.md) - Mish
 
 ## Constructors
 

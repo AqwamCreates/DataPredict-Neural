@@ -1,4 +1,4 @@
-# [API Reference](../../API.md) - Cores(../Cores.md) - BaseInstance
+# [API Reference](../../API.md) - [Cores](../Cores.md) - BaseInstance
 
 ## Constructors
 

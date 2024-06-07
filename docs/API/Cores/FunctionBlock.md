@@ -1,4 +1,4 @@
-# [API Reference](../../API.md) - Cores(../Cores.md) - FunctionBlock
+# [API Reference](../../API.md) - [Cores](../Cores.md) - FunctionBlock
 
 ## Constructors
 

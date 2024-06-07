@@ -1,4 +1,4 @@
-# [API Reference](../../API.md) - ActivationBlocks(../ActivationBlocks.md) - BinaryStep
+# [API Reference](../../API.md) - [ActivationBlocks](../ActivationBlocks.md) - BinaryStep
 
 ## Constructors
 

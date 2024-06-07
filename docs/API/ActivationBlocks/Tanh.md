@@ -1,4 +1,4 @@
-# [API Reference](../../API.md) - ActivationBlocks(../ActivationBlocks.md) - Tanh
+# [API Reference](../../API.md) - [ActivationBlocks](../ActivationBlocks.md) - Tanh
 
 ## Constructors
 

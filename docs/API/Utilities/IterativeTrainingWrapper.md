@@ -1,4 +1,4 @@
-# [API Reference](../../API.md) - Utilities(../Utilities.md) - IterativeTrainingWrapper
+# [API Reference](../../API.md) - [Utilities](../Utilities.md) - IterativeTrainingWrapper
 
 ## Constructors
 

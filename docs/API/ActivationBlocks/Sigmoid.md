@@ -1,4 +1,4 @@
-# [API Reference](../../API.md) - ActivationBlocks(../ActivationBlocks.md) - Sigmoid
+# [API Reference](../../API.md) - [ActivationBlocks](../ActivationBlocks.md) - Sigmoid
 
 ## Constructors
 

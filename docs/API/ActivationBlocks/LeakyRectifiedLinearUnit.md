@@ -1,4 +1,4 @@
-# [API Reference](../../API.md) - ActivationBlocks(../ActivationBlocks.md) - LeakyRectifiedLinearUnit (LeakyReLU)
+# [API Reference](../../API.md) - [ActivationBlocks](../ActivationBlocks.md) - LeakyRectifiedLinearUnit (LeakyReLU)
 
 ## Constructors
 

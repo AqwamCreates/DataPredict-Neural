@@ -1,4 +1,4 @@
-# [API Reference](../../API.md) - ActivationBlocks(../ActivationBlocks.md) - Transpose
+# [API Reference](../../API.md) - [ShapeTransformationBlock](../ShapeTransformationBlock.md) - Transpose
 
 ## Constructors
 

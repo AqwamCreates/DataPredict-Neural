@@ -1,4 +1,4 @@
-# [API Reference](../../API.md) - ActivationBlocks(../ActivationBlocks.md) - ExponentialLinearUnit (ELU)
+# [API Reference](../../API.md) - [ActivationBlocks](../ActivationBlocks.md) - ExponentialLinearUnit (ELU)
 
 ## Constructors
 

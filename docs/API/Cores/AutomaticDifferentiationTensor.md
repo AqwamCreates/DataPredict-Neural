@@ -1,4 +1,4 @@
-# [API Reference](../../API.md) - Cores(../Cores.md) - AutomaticDifferentiationTensor
+# [API Reference](../../API.md) - [Cores](../Cores.md) - AutomaticDifferentiationTensor
 
 ## Constructors
 
