@@ -152,7 +152,7 @@ local firstDerivativeTensor2 = NextFunctionBlock2:differentiate(tensorToBeDiffer
 
 local firstDerivativeTensor3 = NextFunctionBlock3:differentiate(tensorToBeDifferentiated3)
 
-local combinedFirstDerivativeTensor = firstDerivativeTensor1 + firstDerivativeTensor2 + firstDerivativeTensor3
+local combinedFirstDerivativeTensor = AqwamTensorLibrary:add(firstDerivativeTensor1, firstDerivativeTensor2, firstDerivativeTensor3)
 
 local mainFirstDerivativeTensor = MainFunctionBlock:differentiate(combinedFirstDerivativeTensor)
 
