@@ -60,13 +60,13 @@ FunctionBlock:transform(inputTensor: tensor): tensor
 
 ```
 
-FunctionBlock:differentiate(tensorToBeDifferentiated: tensor, transformedTensor: tensor, inputTensor: tensor): tensor
+FunctionBlock:differentiate(initialFirstDerivativeTensor: tensor, transformedTensor: tensor, inputTensor: tensor): tensor
 
 ```
 
 #### Parameters:
 
-* tensorToBeDifferentiated: The tensor to multiply with the first derivative tensor calculated by the function block. If not given, it will use a tensor containing values of 1.
+* initialFirstDerivativeTensor: The tensor to multiply with the first derivative tensor calculated by the function block. If not given, it will use a tensor containing values of 1.
 
 * transformedTensor: The tensor that is transformed by the function block. If not given, it will used stored transformed tensor or calculate a new transformed tensor.
 
