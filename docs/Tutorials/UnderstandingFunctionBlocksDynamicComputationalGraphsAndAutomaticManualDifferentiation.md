@@ -6,9 +6,9 @@ Functional blocks are the very core of this library. They enable us to do automa
 
 These two functions are the most important parts of the function blocks:
 
-	* transform()
+* transform()
 
-	* differentiate()
+* differentiate()
 	
 Later, we will explore how these functions work. But first, we need to create the function block before we get started. The code is shown below:
 
