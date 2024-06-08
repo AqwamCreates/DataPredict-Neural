@@ -164,9 +164,9 @@ for i = 1, 100000 do
 	
 	local costValue = CostFunction:calculateCostValue(generatedLabelTensor, labelTensor)
 	
-	local weightLossArray = SequentialNeuralNetwork:calculateWeightLossTensorArray(lossTensor) -- Calculate the weight loss tensors for our weights. This table can be sent to another neural network of the same architecture if you want to do distributed training.
+	local weightLossTensorArray = SequentialNeuralNetwork:calculateWeightLossTensorArray(lossTensor) -- Calculate the weight loss tensors for our weights. This table can be sent to another neural network of the same architecture if you want to do distributed training.
 	
-	SequentialNeuralNetwork:gradientDescent(weightLossArray) -- Pass the weight loss array to the gradientDescent() function to update the weights.
+	SequentialNeuralNetwork:gradientDescent(weightLossTensorArray) -- Pass the weight loss array to the gradientDescent() function to update the weights.
 	
 	print(costValue)
 	
