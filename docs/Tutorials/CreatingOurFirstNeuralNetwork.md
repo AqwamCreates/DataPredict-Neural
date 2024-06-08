@@ -128,11 +128,11 @@ SequentialNeuralNetwork:setMultipleFunctionBlocks( -- Input tensor starts with t
 	
 )
 
---{{
+--[[
 
 Since we now have verified that the generated label tensor has the same shape as the label tensor, we can now perform the training.
 
---}}
+--]]
 
 for i = 1, 100000 do
 	
