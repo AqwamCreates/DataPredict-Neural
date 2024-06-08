@@ -16,17 +16,17 @@ Here are the list of section for you to warm up before reading through them.
 
 Function blocks are the building blocks for neural networks. These blocks handles the following tasks:
 
-* Transforming inputs to certain outputs
+* Transforming inputs to certain outputs.
 	
-* Calculating first-order derivatives for a given value
+* Calculating first-order derivatives for a given value.
 	
-* Storing the inputs, transformed inputs and first-order derivative values
+* Storing the inputs, transformed inputs and first-order derivative values.
 	
 Function blocks are typically inherited by:
 
-* Activation blocks: Converts values into another
+* Activation blocks: Converts values into another.
 	
-* Weight blocks: Holds the weights for our neural network
+* Weight blocks: Holds the weights for our neural network.
 	
 * Transformation blocks: Change the shape of our tensors without modifying the values.
 
