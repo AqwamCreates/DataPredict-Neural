@@ -72,7 +72,7 @@ local costValue = CostFunction:calculateCostValue(generatedLabelTensor, labelTen
 
 With the fundamental knowledge in place, we can now create our first neural network.
 
-# Building The Model
+#$ Building The Model
 
 Below, we will show you a block of code and describe what each line of code are doing through the comments.
 
