@@ -36,7 +36,7 @@ The differentiate() function uses a given value to find the first-order derivati
 
 ```lua
 
-local firstDerivativeTensor = FunctionBlock:differentiate(tensorToBeDifferentiated)
+local firstDerivativeTensor = FunctionBlock:differentiate(initialFirstDerivativeTensor)
 
 ```
 
@@ -46,11 +46,11 @@ Additionally, you can put your own "transformedInputTensor" and "inputTensor" to
 
 ```lua
 
-local firstDerivativeTensor = FunctionBlock:differentiate(tensorToBeDifferentiated, transformedInputTensor, inputTensor)
+local firstDerivativeTensor = FunctionBlock:differentiate(initialFirstDerivativeTensor, transformedInputTensor, inputTensor)
 
 ```
 
-When "tensorToBeDifferentiated" is not given, it will use a seed. The seed is always a tensor containing values of 1 and always has the same tensor shape to "transformedInputTensor".
+When "initialFirstDerivativeTensor" is not given, it will use a seed. The seed is always a tensor containing values of 1 and always has the same tensor shape to "transformedInputTensor".
 
 Since we have covered the basics of function blocks, we can now look into dynamic computational graphs.
 
@@ -130,11 +130,11 @@ For the differentiate() function, the process is the same, but in reverse.
 
 ```lua
 
-NextFunctionBlock1:differentiate(tensorToBeDifferentiated1) -- Let's differentiate three different tensors.
+NextFunctionBlock1:differentiate(initialFirstDerivativeTensor1) -- Let's differentiate three different tensors.
 
-NextFunctionBlock2:differentiate(tensorToBeDifferentiated2)
+NextFunctionBlock2:differentiate(initialFirstDerivativeTensor2)
 
-NextFunctionBlock3:differentiate(tensorToBeDifferentiated3)
+NextFunctionBlock3:differentiate(initialFirstDerivativeTensor3)
 
 local firstDerivativeTensor = MainFunctionBlock:waitForFirstDerivativeTensor() -- Wait for the first derivative tensor.
 
@@ -146,11 +146,11 @@ Or you can do something like this:
 
 ```lua
 
-local firstDerivativeTensor1 = NextFunctionBlock1:differentiate(tensorToBeDifferentiated1)
+local firstDerivativeTensor1 = NextFunctionBlock1:differentiate(initialFirstDerivativeTensor1)
 
-local firstDerivativeTensor2 = NextFunctionBlock2:differentiate(tensorToBeDifferentiated2)
+local firstDerivativeTensor2 = NextFunctionBlock2:differentiate(initialFirstDerivativeTensor2)
 
-local firstDerivativeTensor3 = NextFunctionBlock3:differentiate(tensorToBeDifferentiated3)
+local firstDerivativeTensor3 = NextFunctionBlock3:differentiate(initialFirstDerivativeTensor3)
 
 local combinedFirstDerivativeTensor = AqwamTensorLibrary:add(firstDerivativeTensor1, firstDerivativeTensor2, firstDerivativeTensor3)
 
