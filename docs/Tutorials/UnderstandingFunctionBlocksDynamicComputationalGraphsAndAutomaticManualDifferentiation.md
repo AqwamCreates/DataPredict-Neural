@@ -28,7 +28,7 @@ local transformedInputTensor = FunctionBlock:transform(inputTensor)
 
 ```
 
-Typically, the activation, weight and transformation blocks saves the input tensor and transformed input tensor for calculating first-order derivatives. But these can be manually changed using setSaveInputTensor() and setSaveTransformedInputTensor() functions.
+Typically, the activation, weight and transformation blocks saves the input tensor and transformed input tensor for calculating first-order derivatives. But these can be manually changed using setSaveInputTensor() and setSaveTransformedTensor() functions.
 
 ### The Differentiate Function
 
