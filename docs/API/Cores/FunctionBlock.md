@@ -54,7 +54,7 @@ FunctionBlock:transform(inputTensor: tensor): tensor
 
 #### Returns:
 
-* transformedInputTensor: The tensor that is transformed by the function block.
+* transformedTensor: The tensor that is transformed by the function block.
 
 ### differentiate()
 
