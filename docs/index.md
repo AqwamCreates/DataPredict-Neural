@@ -38,7 +38,7 @@ Would you like to hire me for machine, deep and reinforcement learning integrati
 
 * Build models that handles multi-dimensional inputs and outputs to solve any demands of your projects.
 
-* Dive into a user-friendly API designed for you to learn in a couple of minutes.
+* Dive into user-friendly API designed for you to learn in a couple of minutes.
 
 * Built for production-grade and research-grade applications.
 
