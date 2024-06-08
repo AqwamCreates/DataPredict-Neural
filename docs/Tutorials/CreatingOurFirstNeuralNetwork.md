@@ -28,7 +28,7 @@ Function blocks are typically inherited by:
 	
 * Weight blocks: Holds the weights for our neural network.
 	
-* Transformation blocks: Change the shape of our tensors without modifying the values.
+* Shape transformation blocks: Change the shape of our tensors without modifying the values.
 
 ## Setting Up The Weights
 
