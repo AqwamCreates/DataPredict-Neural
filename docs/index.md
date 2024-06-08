@@ -16,7 +16,7 @@ By using or possesing any copies of this library or its assets (including the ic
 |---------|------------------------|
 | Beta    | 0.0.0                  |
 
-DataPredict Neural is an advanced deep learning library for Roblox and Pure Lua.
+DataPredict Neural is an advanced deep learning library for Roblox and pure Lua.
 
 This project is created to address the lack of deep learning features and inflexibility of the API design from the [DataPredict](https://aqwamcreates.github.io/DataPredict/) library.
 
