@@ -4,31 +4,31 @@ In this tutorial, we will show you on how to create the most basic neural networ
 
 Here are the list of section for you to warm up before reading through them.
 
-	* Gentle introduction to function blocks
+* Gentle introduction to function blocks
 	
-	* Setting up the weights
+* Setting up the weights
 	
-	* Choosing a cost function
+* Choosing a cost function
 	
-	* Building the model
+* Building the model
 	
 ## Gentle Introduction To Function Blocks
 
 Function blocks are the building blocks for neural networks. These blocks handles the following tasks:
 
-	* Transforming inputs to certain outputs
+* Transforming inputs to certain outputs
 	
-	* Calculating first-order derivatives for a given value
+* Calculating first-order derivatives for a given value
 	
-	* Storing the inputs, transformed inputs and first-order derivative values
+* Storing the inputs, transformed inputs and first-order derivative values
 	
 Function blocks are typically inherited by:
 
-	* Activation blocks: Converts values into another
+* Activation blocks: Converts values into another
 	
-	* Weight blocks: Holds the weights for our neural network
+* Weight blocks: Holds the weights for our neural network
 	
-	* Transformation blocks: Change the shape of our tensors without modifying the values.
+* Transformation blocks: Change the shape of our tensors without modifying the values.
 
 ## Setting Up The Weights
 
