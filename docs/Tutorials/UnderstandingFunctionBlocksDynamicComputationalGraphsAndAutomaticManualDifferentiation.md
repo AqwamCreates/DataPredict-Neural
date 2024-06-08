@@ -44,7 +44,7 @@ Just like the transform() function, the first-order derivative values are typica
 
 Additionally, you can put your own "transformedInputTensor" and "inputTensor" to the function's arguments.
 
-```
+```lua
 
 local firstDerivativeTensor = FunctionBlock:differentiate(tensorToBeDifferentiated, transformedInputTensor, inputTensor)
 
