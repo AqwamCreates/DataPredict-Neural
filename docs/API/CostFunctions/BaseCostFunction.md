@@ -1,6 +1,6 @@
 # [API Reference](../../API.md) - [CostFunctions](../CostFunctions.md) - BaseCostFunction
 
-BaseOptimizer is a base for all optimizers.
+BaseCostFunction is a base for all optimizers.
 
 ## Constructors
 
