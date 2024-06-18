@@ -24,8 +24,6 @@ If there are any suggestions or issues for this library, don't be afraid to reac
 
 In addition, if you are interested in Roblox tutorials and future projects by me, then you can subscribe to me in [YouTube](https://www.youtube.com/channel/UCUrwoxv5dufEmbGsxyEUPZw).
 
-Would you like to hire me for machine, deep and reinforcement learning integration? You can hire me through [Fiverr](https://www.fiverr.com/aqwamcreates/integrate-machine-and-reinforcement-learning-to-roblox-0beb).
-
 ## Features
 
 * Take advantage of calculations combining both automatic differentiation and manual differentiation, simplifying complex calculations while maintaining high performance.
