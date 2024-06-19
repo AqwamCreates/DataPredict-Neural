@@ -116,13 +116,13 @@ Below, we will demonstrate how the tensor shape changes as we add blocks to our 
 
 SequentialNeuralNetwork:setMultipleFunctionBlocks( -- Input tensor starts with the size of {1, 4, 1}.
 	
-	WeightBlocks.Linear.new({dimensionArray = {1, 1, 3}}), -- {1, 4, 1} * {1, 1, 3} -> {1, 4, 3}
+	WeightBlocks.Linear.new({dimensionSizeArray = {1, 1, 3}}), -- {1, 4, 1} * {1, 1, 3} -> {1, 4, 3}
 	
-	WeightBlocks.Linear.new({dimensionArray = {1, 3, 5}}), -- {1, 4, 3} * {1, 3, 5} -> {1, 4, 5}
+	WeightBlocks.Linear.new({dimensionSizeArray = {1, 3, 5}}), -- {1, 4, 3} * {1, 3, 5} -> {1, 4, 5}
 	
 	ActivationBlocks.LeakyReLU.new(),
 	
-	WeightBlocks.Linear.new({dimensionArray = {1, 5, 1}}), -- {1, 4, 5} * {1, 5, 3} -> {1, 4, 3}
+	WeightBlocks.Linear.new({dimensionSizeArray = {1, 5, 1}}), -- {1, 4, 5} * {1, 5, 3} -> {1, 4, 3}
 	
 	ActivationBlocks.LeakyReLU.new()
 	
