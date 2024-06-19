@@ -14,7 +14,7 @@ Bias.new({dimensionArray: {number}, learningRate: number, Optimizer: OptimizerOb
 
 #### Parameters:
 
-* dimensionArray: The dimension for the weights. The length of array represents the number of dimensions. The value at the specified index represents the size at that dimension.
+* dimensionSizeArray: The dimensions for the weights. The length of array represents the number of dimensions. The value at the specified index represents the size at that dimension.
 
 * learningRate: The speed at which the model learns. Recommended that the value is set between (0 to 1).
 
