@@ -128,7 +128,9 @@ NextFunctionBlock2:differentiate(initialFirstDerivativeTensor2)
 
 NextFunctionBlock3:differentiate(initialFirstDerivativeTensor3)
 
-local firstDerivativeTensor = MainFunctionBlock:waitForFirstDerivativeTensor() -- Wait for the first derivative tensor.
+local firstDerivativeTensorArray = MainFunctionBlock:waitForFirstDerivativeTensorArray() -- Wait for the first derivative tensor.
+
+local firstDerivativeTensor = firstDerivativeTensorArray[1]
 
 ```
 

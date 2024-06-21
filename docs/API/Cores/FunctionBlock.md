@@ -252,21 +252,21 @@ FunctionBlock:clearAllPreviousFunctionBlocks()
 
 ```
 
-FunctionBlock:setInputTensor(inputTensor: tensor, doNotDeepCopy: boolean)
+FunctionBlock:setInputTensorArray(inputTensorArray: {tensor}, doNotDeepCopy: boolean)
 
 ```
 
 #### Parameters
 
-* inputTensor: The input tensor to be stored into the function block.
+* inputTensor: An array containing all the input tensors to be stored into the function block.
 
 * doNotDeepCopy: Whether or not to deep copy the input tensor.
 
-### getInputTensor()
+### getInputTensorArray()
 
 ```
 
-FunctionBlock:getInputTensor(doNotDeepCopy: boolean): tensor
+FunctionBlock:getInputTensorArray(doNotDeepCopy: boolean): {tensor}
 
 ```
 
@@ -276,7 +276,7 @@ FunctionBlock:getInputTensor(doNotDeepCopy: boolean): tensor
 
 #### Returns:
 
-* inputTensor: The input tensor that is stored in the function block.
+* inputTensor: An array containing all the input tensors that is stored in the function block.
 
 ### setTransformedTensor()
 
@@ -312,21 +312,21 @@ FunctionBlock:getTransformedTensor(doNotDeepCopy: boolean): tensor
 
 ```
 
-FunctionBlock:setFirstDerivativeTensor(firstDerivativeTensor: tensor, doNotDeepCopy: boolean)
+FunctionBlock:setFirstDerivativeTensorArray(firstDerivativeTensorArray: {tensor}, doNotDeepCopy: boolean)
 
 ```
 
 #### Parameters
 
-* firstDerivativeTensor: The first derivative tensor to be stored into the function block.
+* firstDerivativeTensor: An array containing all the first derivative tensors to be stored into the function block.
 
 * doNotDeepCopy: Whether or not to deep copy the input tensor.
 
-### getFirstDerivativeTensor()
+### getFirstDerivativeTensorArray()
 
 ```
 
-FunctionBlock:getFirstDerivativeTensor(doNotDeepCopy: boolean): tensor
+FunctionBlock:getFirstDerivativeTensorArray(doNotDeepCopy: boolean): {tensor}
 
 ```
 
@@ -336,7 +336,7 @@ FunctionBlock:getFirstDerivativeTensor(doNotDeepCopy: boolean): tensor
 
 #### Returns:
 
-* firstDerivativeTensor: The first derivative tensor that is stored in the function block.
+* firstDerivativeTensorArray: An array containing all the first derivative tensors that is stored in the function block.
 
 ### getNextFunctionBlockArray()
 
@@ -366,25 +366,25 @@ FunctionBlock:getPreviousFunctionBlockArray(): {FunctionBlock}
 
 ```
 
-FunctionBlock:setSaveInputTensor(option: boolean)
+FunctionBlock:setSaveInputTensorArray(option: boolean)
 
 ```
 
 #### Parameters:
 
-* option: Set whether or not the input tensor is saved inside the function block.
+* option: Set whether or not if all the input tensors are saved inside the function block.
 
-### getSaveInputTensor()
+### getSaveInputTensorArray()
 
 ```
 
-FunctionBlock:getSaveInputTensor(): boolean
+FunctionBlock:getSaveInputTensorArray(): boolean
 
 ```
 
 #### Returns:
 
-* option: Returns a boolean value indicating whether or not the input tensor is saved inside the function block.
+* option: Returns a boolean value indicating whether or not if all the input tensors are saved inside the function block.
 
 ### setSaveTransformedTensor()
 
@@ -410,35 +410,35 @@ FunctionBlock:getSaveTransformedTensor(): boolean
 
 * option: Returns a boolean value indicating whether or not the transformed tensor is saved inside the function block.
 
-### setSaveFirstDerivativeTensor()
+### setSaveFirstDerivativeTensorArray()
 
 ```
 
-FunctionBlock:setSaveFirstDerivativeTensor(option: boolean)
+FunctionBlock:setSaveFirstDerivativeTensorArray(option: boolean)
 
 ```
 
 #### Parameters:
 
-* option: Set whether or not the first derivative tensor is saved inside the function block.
+* option: Set whether or not if all the first derivative tensors are saved inside the function block.
 
-### getSaveFirstDerivativeTensor()
+### getSaveFirstDerivativeTensorArray()
 
 ```
 
-FunctionBlock:getSaveFirstDerivativeTensor(): boolean
+FunctionBlock:getSaveFirstDerivativeTensorArray(): boolean
 
 ```
 
 #### Returns:
 
-* option: Returns a boolean value indicating whether or not the transformed tensor is saved inside the function block.
+* option: Returns a boolean value indicating whether or not if all the first derivative tensors are saved inside the function block.
 
-### waitForInputTensor()
+### waitForInputTensorArray()
 
 ```
 
-FunctionBlock:waitForInputTensor(doNotDeepCopy, waitDuration): tensor
+FunctionBlock:waitForInputTensorArray(doNotDeepCopy, waitDuration): {tensor}
 
 ```
 
@@ -450,7 +450,7 @@ FunctionBlock:waitForInputTensor(doNotDeepCopy, waitDuration): tensor
 
 #### Returns:
 
-* inputTensor: The input tensor that is stored in the function block.
+* inputTensor: An array containing all the input tensor that is stored in the function block.
 
 ### waitForTransformedTensor()
 
@@ -470,11 +470,11 @@ FunctionBlock:waitForTransformedTensor(doNotDeepCopy, waitDuration): tensor
 
 * transformedTensor: The transformed tensor that is stored in the function block.
 
-### waitForFirstDerivativeTensor()
+### waitForFirstDerivativeTensorArray()
 
 ```
 
-FunctionBlock:waitForFirstDerivativeTensor(doNotDeepCopy, waitDuration): tensor
+FunctionBlock:waitForFirstDerivativeTensorArray(doNotDeepCopy, waitDuration): {tensor}
 
 ```
 
@@ -486,4 +486,4 @@ FunctionBlock:waitForFirstDerivativeTensor(doNotDeepCopy, waitDuration): tensor
 
 #### Returns:
 
-* firstDerivativeTensor: The first derivative tensor that is stored in the function block.
+* firstDerivativeTensorArray: An array containing all first derivative tensor that is stored in the function block.
