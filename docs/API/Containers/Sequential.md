@@ -137,11 +137,11 @@ Sequential:getWeightTensorArray(doNotDeepCopy: boolean): {tensor}
 
 * weightTensorArray: An array containing all the weight tensors from the weight blocks. The first tensor in the array represents the weight tensor for the first weight block.
 
-### getFunctionBlock()
+### getFunctionBlockByIndex()
 
 ```
 
-Sequential:getFunctionBlock(index)
+Sequential:getFunctionBlockByIndex(index)
 
 ```
 
