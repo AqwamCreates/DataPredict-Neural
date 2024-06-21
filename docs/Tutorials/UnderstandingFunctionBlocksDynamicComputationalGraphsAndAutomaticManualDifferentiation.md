@@ -86,21 +86,13 @@ local NextFunctionBlock2 = FunctionBlock.new()
 
 local NextFunctionBlock3 = FunctionBlock.new()
 
--- Then we chain the three "next" function blocks to the "main" function block.
+-- Then we link to the "main" function block to three "next" function blocks.
 
-MainFunctionBlock:addNextFunctionBlock(NextFunctionBlock1)
+MainFunctionBlock:linkForward(NextFunctionBlock1)
 
-MainFunctionBlock:addNextFunctionBlock(NextFunctionBlock2)
+MainFunctionBlock:linkForward(NextFunctionBlock2)
 
-MainFunctionBlock:addNextFunctionBlock(NextFunctionBlock3)
-
--- Lastly we chain the "next" function blocks back to the "main" function block.
-
-NextFunctionBlock1:addPreviousFunctionBlock(MainFunctionBlock)
-
-NextFunctionBlock2:addPreviousFunctionBlock(MainFunctionBlock)
-
-NextFunctionBlock3:addPreviousFunctionBlock(MainFunctionBlock)
+MainFunctionBlock:linkForward(NextFunctionBlock3)
 
 ```
 
