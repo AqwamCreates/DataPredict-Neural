@@ -148,11 +148,11 @@ FunctionBlock:getFirstDerivativeFunctionRequiresTransformedTensor(option: boolea
 
 * option: Set whether or not the first derivative function requires the transformed input tensor.
 
-### setNextFunctionBlock()
+### setNextFunctionBlockByIndex()
 
 ```
 
-FunctionBlock:setNextFunctionBlock(nextFunctionBlockArrayIndex: number, NextFunctionBlock: FunctionBlockObject)
+FunctionBlock:setNextFunctionBlockByIndex(nextFunctionBlockArrayIndex: number, NextFunctionBlock: FunctionBlockObject)
 
 ```
 
@@ -162,11 +162,11 @@ FunctionBlock:setNextFunctionBlock(nextFunctionBlockArrayIndex: number, NextFunc
 
 * NextFunctionBlock: The next function block that is linked with the current function block.
 
-### getNextFunctionBlock()
+### getNextFunctionBlockByIndex()
 
 ```
 
-FunctionBlock:getNextFunctionBlock(nextFunctionBlockArrayIndex: number): FunctionBlockObject
+FunctionBlock:getNextFunctionBlockByIndex(nextFunctionBlockArrayIndex: number): FunctionBlockObject
 
 ```
 
@@ -178,11 +178,11 @@ FunctionBlock:getNextFunctionBlock(nextFunctionBlockArrayIndex: number): Functio
 
 * NextFunctionBlock: The next function block that is linked with the current function block.
 
-### setPreviousFunctionBlock()
+### setPreviousFunctionBlockByIndex()
 
 ```
 
-FunctionBlock:setPreviousFunctionBlock(previousFunctionBlockArrayIndex: number, PreviousFunctionBlock: FunctionBlockObject)
+FunctionBlock:setPreviousFunctionBlockByIndex(previousFunctionBlockArrayIndex: number, PreviousFunctionBlock: FunctionBlockObject)
 
 ```
 
@@ -192,11 +192,11 @@ FunctionBlock:setPreviousFunctionBlock(previousFunctionBlockArrayIndex: number, 
 
 * PreviousFunctionBlock: The previous function block that is linked with the current function block.
 
-### getPreviousFunctionBlock()
+### getPreviousFunctionBlockByIndex()
 
 ```
 
-FunctionBlock:getPreviousFunctionBlock(previousFunctionBlockArrayIndex: number): FunctionBlockObject
+FunctionBlock:getPreviousFunctionBlockByIndex(previousFunctionBlockArrayIndex: number): FunctionBlockObject
 
 ```
 
@@ -208,11 +208,11 @@ FunctionBlock:getPreviousFunctionBlock(previousFunctionBlockArrayIndex: number):
 
 * PreviousFunctionBlock: The previous function block that is linked with the current function block.
 
-### removeNextFunctionBlock()
+### removeNextFunctionBlockByIndex()
 
 ```
 
-FunctionBlock:removeNextFunctionBlock(nextFunctionBlockArrayIndex: number)
+FunctionBlock:removeNextFunctionBlockByIndex(nextFunctionBlockArrayIndex: number)
 
 ```
 
@@ -220,11 +220,11 @@ FunctionBlock:removeNextFunctionBlock(nextFunctionBlockArrayIndex: number)
 
 * nextFunctionBlockArrayIndex: The index where the next function block is located in the next function block array.
 
-### removePreviousFunctionBlock()
+### removePreviousFunctionBlockByIndex()
 
 ```
 
-FunctionBlock:removePreviousFunctionBlock(previousFunctionBlockArrayIndex: number)
+FunctionBlock:removePreviousFunctionBlockByIndex(previousFunctionBlockArrayIndex: number)
 
 ```
 

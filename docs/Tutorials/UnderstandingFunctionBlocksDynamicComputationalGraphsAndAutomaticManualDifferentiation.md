@@ -140,24 +140,6 @@ local firstDerivativeTensor = MainFunctionBlock:waitForFirstDerivativeTensor() -
 
 ```
 
-You may need to create new block classes that inherits from FunctionBlock if you wish to combine different tensors upon receiving them.
-
-Or you can do something like this:
-
-```lua
-
-local firstDerivativeTensor1 = NextFunctionBlock1:differentiate(initialFirstDerivativeTensor1)
-
-local firstDerivativeTensor2 = NextFunctionBlock2:differentiate(initialFirstDerivativeTensor2)
-
-local firstDerivativeTensor3 = NextFunctionBlock3:differentiate(initialFirstDerivativeTensor3)
-
-local combinedFirstDerivativeTensor = AqwamTensorLibrary:add(firstDerivativeTensor1, firstDerivativeTensor2, firstDerivativeTensor3)
-
-local mainFirstDerivativeTensor = MainFunctionBlock:differentiate(combinedFirstDerivativeTensor)
-
-```
-
 As you can see, computational graphs are very powerful and allows us to build any kind of neural network models that we want.
 
 ## Automatic-Manual Differentiation
