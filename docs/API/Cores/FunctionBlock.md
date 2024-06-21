@@ -212,7 +212,7 @@ FunctionBlock:getPreviousFunctionBlock(previousFunctionBlockArrayIndex: number):
 
 ```
 
-FunctionBlock:removeNextFunctionBlock(nextFunctionBlockArrayIndex: number)
+FunctionBlock:removeNextFunctionBlockFromIndex(nextFunctionBlockArrayIndex: number)
 
 ```
 
@@ -224,7 +224,7 @@ FunctionBlock:removeNextFunctionBlock(nextFunctionBlockArrayIndex: number)
 
 ```
 
-FunctionBlock:removePreviousFunctionBlock(previousFunctionBlockArrayIndex: number)
+FunctionBlock:removePreviousFunctionBlockFromIndex(previousFunctionBlockArrayIndex: number)
 
 ```
 
