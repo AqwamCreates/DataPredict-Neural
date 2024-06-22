@@ -24,7 +24,7 @@ The transform() function converts the input to certain outputs. This can be achi
 
 ```lua
 
-local transformedInputTensor = FunctionBlock:transform(inputTensor)
+local transformedTensor = FunctionBlock:transform(inputTensor)
 
 ```
 
@@ -110,9 +110,9 @@ Below, I will show you how you retrieve the final result after the inputTensor b
 
 MainFunctionBlock:transform(inputTensor) -- First, lets put in an inputTensor.
 
-local transformedInputTensor1 = NextFunctionBlock1:getTransformedTensor() -- This is the first way to get the final result.
+local transformedTensor1 = NextFunctionBlock1:getTransformedTensor() -- This is the first way to get the final result.
 
-local transformedInputTensor2 = NextFunctionBlock2:waitForTransformedTensor() -- You can also wait for it to be available if you expect the calculation time to be long.
+local transformedTensor2 = NextFunctionBlock2:waitForTransformedTensor() -- You can also wait for it to be available if you expect the calculation time to be long.
 
 ```
 
