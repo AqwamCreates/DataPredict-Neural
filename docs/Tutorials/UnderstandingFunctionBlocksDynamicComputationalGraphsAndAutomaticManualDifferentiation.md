@@ -122,11 +122,11 @@ For the differentiate() function, the process is the same, but in reverse.
 
 ```lua
 
-NextFunctionBlock1:differentiate(initialFirstDerivativeTensor1) -- Let's differentiate three different tensors.
+NextFunctionBlock1:differentiate(initialPartialFirstDerivativeTensor1) -- Let's differentiate three different tensors.
 
-NextFunctionBlock2:differentiate(initialFirstDerivativeTensor2)
+NextFunctionBlock2:differentiate(initialPartialFirstDerivativeTensor1)
 
-NextFunctionBlock3:differentiate(initialFirstDerivativeTensor3)
+NextFunctionBlock3:differentiate(initialPartialFirstDerivativeTensor1)
 
 local firstDerivativeTensorArray = MainFunctionBlock:waitForFirstDerivativeTensorArray() -- Wait for the first derivative tensor.
 
