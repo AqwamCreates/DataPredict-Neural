@@ -202,3 +202,11 @@ AutomaticDifferentiationTensor:getPartialFirstDerivativeTensor(doNotDeepCopy): {
 #### Returns:
 
 * firstDerivativeTensorTable: A table containing the first derivative tensors in respect to arguments used in the constructors.
+
+### destroy()
+
+```
+
+AutomaticDifferentiationTensor:destroy()
+
+```
