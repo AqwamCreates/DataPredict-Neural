@@ -6,7 +6,7 @@
 
 ```
 
-AutomaticDifferentiationTensorObject.new(tensor: AqwamTensor, PartialDerivativeFunction: Function, PreviousTensor1: AutomaticDifferentiationTensorObject, PreviousTensor2: AutomaticDifferentiationTensorObject): AutomaticDifferentiationTensorObject
+AutomaticDifferentiationTensorObject.new(tensor: AqwamTensor, PartialDerivativeFunction: Function, PreviousTensorObject1: AutomaticDifferentiationTensorObject, PreviousTensorObject2: AutomaticDifferentiationTensorObject): AutomaticDifferentiationTensorObject
 
 ```
 
@@ -16,9 +16,9 @@ AutomaticDifferentiationTensorObject.new(tensor: AqwamTensor, PartialDerivativeF
 
 * PartialDerivativeFunction (Optional): The partial derivative function to be multiplied with seed. Must supply the seed argument to the function.
 
-* PreviousTensor1 (Optional): The first previous tensor that was used to generate the current tensor.
+* PreviousTensorObject1 (Optional): The first previous tensor object that was used to generate the current tensor.
 
-* PreviousTensor2 (Optional): The second previous tensor that was used to generate the current tensor.
+* PreviousTensorObject2 (Optional): The second previous tensor object that was used to generate the current tensor.
 
 #### Returns
 
