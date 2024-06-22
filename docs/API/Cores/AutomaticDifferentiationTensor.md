@@ -14,7 +14,7 @@ AutomaticDifferentiationTensorObject.new(tensor: AqwamTensor, PartialDerivativeF
 
 * tensor: The tensor to be used by the automatic differentiation tensor object.
 
-* PartialDerivativeFunction (Optional): The partial derivative function to be multiplied with seed. Must supply the seed argument to the function.
+* PartialDerivativeFunction (Optional): The partial derivative function to be multiplied with initialPartialFirstDerivativeTensor. Must supply the initialPartialFirstDerivativeTensor argument to the function.
 
 * PreviousTensorObject1 (Optional): The first previous tensor object that was used to generate the current tensor object.
 
