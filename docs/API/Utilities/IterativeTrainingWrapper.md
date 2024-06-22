@@ -8,7 +8,7 @@ Creates a new iterative training wrapper object. If there are no parameters give
 
 ```
 
-IterativeTrainingWrapper.new({maxNumberOfIterations: number, Model: ModelObject, CostFunction: CostFunctionObject, targetCostValueUpperBound: number, targetCostValueLowerBound: number, numberOfIterationsToCheckIfConverged: number, numberOfIterationsPerCostCalculation: number, isOutputPrinted: boolean}): IterativeTrainingWrapperObject
+IterativeTrainingWrapper.new({maxNumberOfIterations: number, Model: ModelObject, CostFunctionArray: {CostFunctionObject}, targetCostValueUpperBoundArray: {number}, targetCostValueLowerBoundArray: {number}, numberOfIterationsToCheckIfConvergedArray: {number}, numberOfIterationsPerCostCalculation: number, isOutputPrinted: boolean}): IterativeTrainingWrapperObject
 
 ```
 
@@ -18,13 +18,13 @@ Parameters:
 
 * Model: The model to be used by the iterative training wrapper object.
 
-* CostFunction: The cost function to be used by the iterative training wrapper object.
+* CostFunctionArray: An array containing all the cost function to be used by the iterative training wrapper object.
 	
-* targetCostValueUpperBound: The upper bound of target cost.
+* targetCostValueUpperBoundArray: The upper bound of target cost.
 
-* targetCostValueLowerBound: The lower bound of target cost.
+* targetCostValueLowerBoundArray: The lower bound of target cost.
 	
-* numberOfIterationsToCheckIfConverged: The number of iterations for confirming convergence.
+* numberOfIterationsToCheckIfConvergedArray: The number of iterations for confirming convergence.
 	
 * numberOfIterationsPerCostCalculation: The number of iterations for each cost calculation.
 	
@@ -40,7 +40,7 @@ IterativeTrainingWrapperObject: The generated iterative training wrapper object.
 
 ```
 
-IterativeTrainingWrapper:setParameters({maxNumberOfIterations: number, Model: ModelObject, CostFunction: CostFunctionObject, targetCostValueUpperBound: number, targetCostValueLowerBound: number, numberOfIterationsToCheckIfConverged: number, numberOfIterationsPerCostCalculation: number, isOutputPrinted: boolean}): IterativeTrainingWrapperObject
+IterativeTrainingWrapper:setParameters({maxNumberOfIterations: number, Model: ModelObject, CostFunctionArray: {CostFunctionObject}, targetCostValueUpperBoundArray: {number}, targetCostValueLowerBoundArray: {number}, numberOfIterationsToCheckIfConvergedArray: {number}, numberOfIterationsPerCostCalculation: number, isOutputPrinted: boolean}): IterativeTrainingWrapperObject
 
 ```
 
@@ -50,13 +50,13 @@ Parameters:
 
 * Model: The model to be used by the iterative training wrapper object.
 
-* CostFunction: The cost function to be used by the iterative training wrapper object.
+* CostFunctionArray: An array containing all the cost function to be used by the iterative training wrapper object.
 	
-* targetCostValueUpperBound: The upper bound of target cost.
+* targetCostValueUpperBoundArray: The upper bound of target cost.
 
-* targetCostValueLowerBound: The lower bound of target cost.
+* targetCostValueLowerBoundArray: The lower bound of target cost.
 	
-* numberOfIterationsToCheckIfConverged: The number of iterations for confirming convergence.
+* numberOfIterationsToCheckIfConvergedArray: The number of iterations for confirming convergence.
 	
 * numberOfIterationsPerCostCalculation: The number of iterations for each cost calculation.
 	
