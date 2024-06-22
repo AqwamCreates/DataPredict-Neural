@@ -232,7 +232,7 @@ FunctionBlock:removePreviousFunctionBlockByIndex(previousFunctionBlockArrayIndex
 
 * previousFunctionBlockArrayIndex: The index where the previous function block is located in the previous function block array.
 
-### clearAllNextFunctionBlocks()
+### clearNextFunctionBlockArray()
 
 ```
 
@@ -240,7 +240,7 @@ FunctionBlock:clearNextFunctionBlockArray()
 
 ```
 
-### clearAllPreviousFunctionBlocks()
+### clearPreviousFunctionBlockArray()
 
 ```
 
