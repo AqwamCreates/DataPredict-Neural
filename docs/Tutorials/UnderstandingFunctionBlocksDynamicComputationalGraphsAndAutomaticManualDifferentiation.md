@@ -24,7 +24,7 @@ The transform() function converts the input to certain outputs. This can be achi
 
 ```lua
 
-local transformedInputTensor = FunctionBlock:transform(inputTensor)
+local transformedTensor = FunctionBlock:transform(inputTensor)
 
 ```
 
@@ -42,15 +42,15 @@ local firstDerivativeTensor = FunctionBlock:differentiate(initialFirstDerivative
 
 Just like the transform() function, the first-order derivative values are typically stored in function blocks. This can be manually changed using setSaveFirstDerivativeTensor() function.
 
-Additionally, you can put your own "transformedInputTensor" and "inputTensor" to the function's arguments.
+Additionally, you can put your own "transformedTensor" and "inputTensor" to the function's arguments.
 
 ```lua
 
-local firstDerivativeTensor = FunctionBlock:differentiate(initialFirstDerivativeTensor, transformedInputTensor, inputTensor)
+local firstDerivativeTensor = FunctionBlock:differentiate(initialPartialFirstDerivativeTensor, transformedTensor, inputTensorArray)
 
 ```
 
-When "initialFirstDerivativeTensor" is not given, it will use a seed. The seed is always a tensor containing values of 1 and always has the same tensor shape to "transformedInputTensor".
+When "initialPartialFirstDerivativeTensor" is not given, it will use a seed. The seed is always a tensor containing values of 1 and always has the same tensor shape to "transformedTensor".
 
 Since we have covered the basics of function blocks, we can now look into dynamic computational graphs.
 
@@ -110,9 +110,9 @@ Below, I will show you how you retrieve the final result after the inputTensor b
 
 MainFunctionBlock:transform(inputTensor) -- First, lets put in an inputTensor.
 
-local transformedInputTensor1 = NextFunctionBlock1:getTransformedTensor() -- This is the first way to get the final result.
+local transformedTensor1 = NextFunctionBlock1:getTransformedTensor() -- This is the first way to get the final result.
 
-local transformedInputTensor2 = NextFunctionBlock2:waitForTransformedTensor() -- You can also wait for it to be available if you expect the calculation time to be long.
+local transformedTensor2 = NextFunctionBlock2:waitForTransformedTensor() -- You can also wait for it to be available if you expect the calculation time to be long.
 
 ```
 
@@ -122,11 +122,11 @@ For the differentiate() function, the process is the same, but in reverse.
 
 ```lua
 
-NextFunctionBlock1:differentiate(initialFirstDerivativeTensor1) -- Let's differentiate three different tensors.
+NextFunctionBlock1:differentiate(initialPartialFirstDerivativeTensor1) -- Let's differentiate three different tensors.
 
-NextFunctionBlock2:differentiate(initialFirstDerivativeTensor2)
+NextFunctionBlock2:differentiate(initialPartialFirstDerivativeTensor1)
 
-NextFunctionBlock3:differentiate(initialFirstDerivativeTensor3)
+NextFunctionBlock3:differentiate(initialPartialFirstDerivativeTensor1)
 
 local firstDerivativeTensorArray = MainFunctionBlock:waitForFirstDerivativeTensorArray() -- Wait for the first derivative tensor.
 
