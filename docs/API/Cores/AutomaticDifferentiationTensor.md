@@ -211,6 +211,10 @@ AutomaticDifferentiationTensor:getPartialFirstDerivativeTensor(doNotDeepCopy): {
 
 ```
 
-AutomaticDifferentiationTensor:destroy()
+AutomaticDifferentiationTensor:destroy(areChildrenDestroyed: boolean)
 
 ```
+
+### Parameters:
+
+* areChildrenDestroyed: Set whether or not to destroy the children automatic differentiation tensor objects.
