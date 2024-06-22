@@ -258,7 +258,7 @@ FunctionBlock:setInputTensorArray(inputTensorArray: {tensor}, doNotDeepCopy: boo
 
 #### Parameters
 
-* inputTensor: An array containing all the input tensors to be stored into the function block.
+* inputTensorArray: An array containing all the input tensors to be stored into the function block.
 
 * doNotDeepCopy: Whether or not to deep copy the input tensor.
 
@@ -276,7 +276,7 @@ FunctionBlock:getInputTensorArray(doNotDeepCopy: boolean): {tensor}
 
 #### Returns:
 
-* inputTensor: An array containing all the input tensors that is stored in the function block.
+* inputTensorArray: An array containing all the input tensors that is stored in the function block.
 
 ### setTransformedTensor()
 
@@ -318,7 +318,7 @@ FunctionBlock:setFirstDerivativeTensorArray(firstDerivativeTensorArray: {tensor}
 
 #### Parameters
 
-* firstDerivativeTensor: An array containing all the first derivative tensors to be stored into the function block.
+* firstDerivativeTensorArray: An array containing all the first derivative tensors to be stored into the function block.
 
 * doNotDeepCopy: Whether or not to deep copy the input tensor.
 
