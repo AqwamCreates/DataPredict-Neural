@@ -18,13 +18,13 @@ Parameters:
 
 * Model: The model to be used by the iterative training wrapper object.
 
-* CostFunctionArray: An array containing all the cost function to be used by the iterative training wrapper object.
+* CostFunctionArray: An array containing all the cost functions to be used by the iterative training wrapper object.
 	
-* targetCostValueUpperBoundArray: The upper bound of target cost.
+* targetCostValueUpperBoundArray: An array containing all the upper bound of target costs.
 
-* targetCostValueLowerBoundArray: The lower bound of target cost.
+* targetCostValueLowerBoundArray: An array containing all the lower bound of target costs.
 	
-* numberOfIterationsToCheckIfConvergedArray: The number of iterations for confirming convergence.
+* numberOfIterationsToCheckIfConvergedArray: An array containing all the number of iterations for confirming convergence.
 	
 * numberOfIterationsPerCostCalculation: The number of iterations for each cost calculation.
 	
@@ -50,13 +50,13 @@ Parameters:
 
 * Model: The model to be used by the iterative training wrapper object.
 
-* CostFunctionArray: An array containing all the cost function to be used by the iterative training wrapper object.
+* CostFunctionArray: An array containing all the cost functions to be used by the iterative training wrapper object.
 	
-* targetCostValueUpperBoundArray: The upper bound of target cost.
+* targetCostValueUpperBoundArray: An array containing all the upper bound of target costs.
 
-* targetCostValueLowerBoundArray: The lower bound of target cost.
+* targetCostValueLowerBoundArray: An array containing all the lower bound of target costs.
 	
-* numberOfIterationsToCheckIfConvergedArray: The number of iterations for confirming convergence.
+* numberOfIterationsToCheckIfConvergedArray: An array containing all the number of iterations for confirming convergence.
 	
 * numberOfIterationsPerCostCalculation: The number of iterations for each cost calculation.
 	
@@ -66,15 +66,15 @@ Parameters:
 
 ```
 
-IterativeTrainingWrapper:train(featureTensor: tensor, labelTensor: tensor): {number}
+IterativeTrainingWrapper:train(featureTensorArray: tensor, labelTensorArray: tensor): {number}
 
 ```
 
 #### Parameters:
 
-* featureTensor: The tensor containing all the features.
+* featureTensorArray: An array containing all the feature tensors.
 
-* labelTensor: The tensor containing all the labels.
+* labelTensorArray: An array containing all the label tensors.
 
 #### Returns:
 
