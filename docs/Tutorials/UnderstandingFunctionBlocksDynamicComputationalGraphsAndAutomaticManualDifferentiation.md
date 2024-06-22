@@ -42,15 +42,15 @@ local firstDerivativeTensor = FunctionBlock:differentiate(initialFirstDerivative
 
 Just like the transform() function, the first-order derivative values are typically stored in function blocks. This can be manually changed using setSaveFirstDerivativeTensor() function.
 
-Additionally, you can put your own "transformedInputTensor" and "inputTensor" to the function's arguments.
+Additionally, you can put your own "transformedTensor" and "inputTensor" to the function's arguments.
 
 ```lua
 
-local firstDerivativeTensor = FunctionBlock:differentiate(initialPartialFirstDerivativeTensor, transformedInputTensor, inputTensorArray)
+local firstDerivativeTensor = FunctionBlock:differentiate(initialPartialFirstDerivativeTensor, transformedTensor, inputTensorArray)
 
 ```
 
-When "initialPartialFirstDerivativeTensor" is not given, it will use a seed. The seed is always a tensor containing values of 1 and always has the same tensor shape to "transformedInputTensor".
+When "initialPartialFirstDerivativeTensor" is not given, it will use a seed. The seed is always a tensor containing values of 1 and always has the same tensor shape to "transformedTensor".
 
 Since we have covered the basics of function blocks, we can now look into dynamic computational graphs.
 
