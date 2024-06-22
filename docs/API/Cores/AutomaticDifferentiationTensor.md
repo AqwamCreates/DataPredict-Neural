@@ -36,7 +36,7 @@ AutomaticDifferentiationTensorObject:add(AutomaticDifferentiationTensor: Automat
 
 #### Parameters:
 
-* AutomaticDifferentiationTensor: The tensor to be used by the automatic differentiation tensor object.
+* AutomaticDifferentiationTensor: The tensor object to be used by the automatic differentiation tensor object.
 
 #### Returns
 
@@ -52,7 +52,7 @@ AutomaticDifferentiationTensorObject:subtract(AutomaticDifferentiationTensor: Au
 
 #### Parameters:
 
-* AutomaticDifferentiationTensor: The tensor to be used by the automatic differentiation tensor object.
+* AutomaticDifferentiationTensor: The tensor object to be used by the automatic differentiation tensor object.
 
 #### Returns
 
@@ -68,7 +68,7 @@ AutomaticDifferentiationTensorObject:multiply(AutomaticDifferentiationTensor: Au
 
 #### Parameters:
 
-* AutomaticDifferentiationTensor: The tensor to be used by the automatic differentiation tensor object.
+* AutomaticDifferentiationTensor: The tensor object to be used by the automatic differentiation tensor object.
 
 #### Returns
 
@@ -84,7 +84,7 @@ AutomaticDifferentiationTensorObject:divide(AutomaticDifferentiationTensor: Auto
 
 #### Parameters:
 
-* AutomaticDifferentiationTensor: The tensor to be used by the automatic differentiation tensor object.
+* AutomaticDifferentiationTensor: The tensor object to be used by the automatic differentiation tensor object.
 
 #### Returns
 
@@ -100,7 +100,7 @@ AutomaticDifferentiationTensorObject.power(AutomaticDifferentiationTensor: Autom
 
 #### Parameters:
 
-* AutomaticDifferentiationTensor: The exponent tensor to be used by the automatic differentiation tensor object.
+* AutomaticDifferentiationTensor: The exponent tensor object to be used by the automatic differentiation tensor object.
 
 #### Returns
 
@@ -116,7 +116,7 @@ AutomaticDifferentiationTensorObject:log(AutomaticDifferentiationTensor: Automat
 
 #### Parameters:
 
-* AutomaticDifferentiationTensor: The base tensor to be used by the automatic differentiation tensor object.
+* AutomaticDifferentiationTensor: The base tensor object to be used by the automatic differentiation tensor object.
 
 #### Returns
 
