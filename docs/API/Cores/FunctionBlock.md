@@ -236,7 +236,7 @@ FunctionBlock:removePreviousFunctionBlockByIndex(previousFunctionBlockArrayIndex
 
 ```
 
-FunctionBlock:clearAllNextFunctionBlocks()
+FunctionBlock:clearNextFunctionBlockArray()
 
 ```
 
@@ -244,7 +244,7 @@ FunctionBlock:clearAllNextFunctionBlocks()
 
 ```
 
-FunctionBlock:clearAllPreviousFunctionBlocks()
+FunctionBlock:clearPreviousFunctionBlockArray()
 
 ```
 
