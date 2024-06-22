@@ -2,17 +2,37 @@
 
 ## Constructors
 
-### add()
+### new()
 
 ```
 
-AutomaticDifferentiationTensorObject.add(...: tensor): AutomaticDifferentiationTensorObject
+AutomaticDifferentiationTensorObject.new(tensor: AqwamTensor, PartialDerivativeFunction: Function, PreviousTensor1: AutomaticDifferentiationTensorObject, PreviousTensor2: AutomaticDifferentiationTensorObject): AutomaticDifferentiationTensorObject
 
 ```
 
 #### Parameters:
 
 * tensor: The tensor to be used by the automatic differentiation tensor object.
+
+* PartialDerivativeFunction: The partial derivative function to  
+
+#### Returns
+
+* AutomaticDifferentiationTensorObject: The generated automatic differentiation tensor object.
+
+## Functions
+
+### add()
+
+```
+
+AutomaticDifferentiationTensorObject:add(AutomaticDifferentiationTensor: AutomaticDifferentiationTensorObject): AutomaticDifferentiationTensorObject
+
+```
+
+#### Parameters:
+
+* AutomaticDifferentiationTensor: The tensor to be used by the automatic differentiation tensor object.
 
 #### Returns
 
@@ -22,13 +42,13 @@ AutomaticDifferentiationTensorObject.add(...: tensor): AutomaticDifferentiationT
 
 ```
 
-AutomaticDifferentiationTensorObject.subtract(...: tensor): AutomaticDifferentiationTensorObject
+AutomaticDifferentiationTensorObject:subtract(AutomaticDifferentiationTensor: AutomaticDifferentiationTensorObject): AutomaticDifferentiationTensorObject
 
 ```
 
 #### Parameters:
 
-* tensor: The tensor to be used by the automatic differentiation tensor object.
+* AutomaticDifferentiationTensor: The tensor to be used by the automatic differentiation tensor object.
 
 #### Returns
 
@@ -38,13 +58,13 @@ AutomaticDifferentiationTensorObject.subtract(...: tensor): AutomaticDifferentia
 
 ```
 
-AutomaticDifferentiationTensorObject.multiply(...: tensor): AutomaticDifferentiationTensorObject
+AutomaticDifferentiationTensorObject:multiply(AutomaticDifferentiationTensor: AutomaticDifferentiationTensorObject): AutomaticDifferentiationTensorObject
 
 ```
 
 #### Parameters:
 
-* tensor: The tensor to be used by the automatic differentiation tensor object.
+* AutomaticDifferentiationTensor: The tensor to be used by the automatic differentiation tensor object.
 
 #### Returns
 
@@ -54,13 +74,13 @@ AutomaticDifferentiationTensorObject.multiply(...: tensor): AutomaticDifferentia
 
 ```
 
-AutomaticDifferentiationTensorObject.divide(...: tensor): AutomaticDifferentiationTensorObject
+AutomaticDifferentiationTensorObject:divide(AutomaticDifferentiationTensor: AutomaticDifferentiationTensorObject): AutomaticDifferentiationTensorObject
 
 ```
 
 #### Parameters:
 
-* tensor: The tensor to be used by the automatic differentiation tensor object.
+* AutomaticDifferentiationTensor: The tensor to be used by the automatic differentiation tensor object.
 
 #### Returns
 
@@ -70,15 +90,13 @@ AutomaticDifferentiationTensorObject.divide(...: tensor): AutomaticDifferentiati
 
 ```
 
-AutomaticDifferentiationTensorObject.power(baseTensor: tensor, exponentTensor: tensor): AutomaticDifferentiationTensorObject
+AutomaticDifferentiationTensorObject.power(AutomaticDifferentiationTensor: AutomaticDifferentiationTensorObject): AutomaticDifferentiationTensorObject
 
 ```
 
 #### Parameters:
 
-* baseTensor: The base tensor to be used by the automatic differentiation tensor object.
-
-* exponentTensor: The exponent tensor to be used by the automatic differentiation tensor object.
+* AutomaticDifferentiationTensor: The exponent tensor to be used by the automatic differentiation tensor object.
 
 #### Returns
 
@@ -88,15 +106,13 @@ AutomaticDifferentiationTensorObject.power(baseTensor: tensor, exponentTensor: t
 
 ```
 
-AutomaticDifferentiationTensorObject.log(numberTensor: tensor, baseTensor: tensor): AutomaticDifferentiationTensorObject
+AutomaticDifferentiationTensorObject:log(AutomaticDifferentiationTensor: AutomaticDifferentiationTensorObject): AutomaticDifferentiationTensorObject
 
 ```
 
 #### Parameters:
 
-* numberTensor: The number tensor to be used by the automatic differentiation tensor object.
-
-* baseTensor: The base tensor to be used by the automatic differentiation tensor object.
+* AutomaticDifferentiationTensor: The base tensor to be used by the automatic differentiation tensor object.
 
 #### Returns
 
@@ -106,13 +122,9 @@ AutomaticDifferentiationTensorObject.log(numberTensor: tensor, baseTensor: tenso
 
 ```
 
-AutomaticDifferentiationTensorObject.sin(radianTensor: tensor): AutomaticDifferentiationTensorObject
+AutomaticDifferentiationTensorObject:sin(): AutomaticDifferentiationTensorObject
 
 ```
-
-#### Parameters:
-
-* radianTensor: The radian tensor to be used by the automatic differentiation tensor object.
 
 #### Returns
 
@@ -122,13 +134,9 @@ AutomaticDifferentiationTensorObject.sin(radianTensor: tensor): AutomaticDiffere
 
 ```
 
-AutomaticDifferentiationTensorObject.cos(radianTensor: tensor): AutomaticDifferentiationTensorObject
+AutomaticDifferentiationTensorObject:cos(): AutomaticDifferentiationTensorObject
 
 ```
-
-#### Parameters:
-
-* radianTensor: The radian tensor to be used by the automatic differentiation tensor object.
 
 #### Returns
 
@@ -138,13 +146,9 @@ AutomaticDifferentiationTensorObject.cos(radianTensor: tensor): AutomaticDiffere
 
 ```
 
-AutomaticDifferentiationTensorObject.tan(radianTensor: tensor): AutomaticDifferentiationTensorObject
+AutomaticDifferentiationTensorObject:tan(): AutomaticDifferentiationTensorObject
 
 ```
-
-#### Parameters:
-
-* radianTensor: The radian tensor to be used by the automatic differentiation tensor object.
 
 #### Returns
 
@@ -154,19 +158,18 @@ AutomaticDifferentiationTensorObject.tan(radianTensor: tensor): AutomaticDiffere
 
 ```
 
-AutomaticDifferentiationTensorObject.dotProduct(...: tensor): AutomaticDifferentiationTensorObject
+AutomaticDifferentiationTensorObject:dotProduct(AutomaticDifferentiationTensor: AutomaticDifferentiationTensorObject): AutomaticDifferentiationTensorObject
 
 ```
 
 #### Parameters:
 
-* tensor: The tensor to be used by the automatic differentiation tensor object.
+* AutomaticDifferentiationTensor: The tensor to be used by the automatic differentiation tensor object.
 
 #### Returns
 
 * AutomaticDifferentiationTensorObject: The generated automatic differentiation tensor object.
 
-## Functions
 
 ### getTensor()
 
@@ -184,11 +187,11 @@ AutomaticDifferentiationTensor:getTensor(doNotDeepCopy): tensor
 
 * tensor: The tensor generated by the automatic differentiation tensor object.
 
-### getFirstDerivativeTensorTable()
+### getPartialFirstDerivativeTensor()
 
 ```
 
-AutomaticDifferentiationTensor:getFirstDerivativeTensorTable(doNotDeepCopy): {tensor}
+AutomaticDifferentiationTensor:getPartialFirstDerivativeTensor(doNotDeepCopy): {tensor}
 
 ```
 
@@ -199,35 +202,3 @@ AutomaticDifferentiationTensor:getFirstDerivativeTensorTable(doNotDeepCopy): {te
 #### Returns:
 
 * firstDerivativeTensorTable: A table containing the first derivative tensors in respect to arguments used in the constructors.
-
-### tensor()
-
-```
-
-AutomaticDifferentiationTensor:tensor(doNotDeepCopy): tensor
-
-```
-
-#### Parameters:
-
-* doNotDeepCopy: Set whether or not to deep copy the tensor.
-
-#### Returns:
-
-* tensor: The tensor generated by the automatic differentiation tensor object.
-
-### firstDerivativeTensorTable()
-
-```
-
-AutomaticDifferentiationTensor:firstDerivativeTensorTable(doNotDeepCopy): {tensor}
-
-```
-
-#### Parameters:
-
-* doNotDeepCopy: Set whether or not to deep copy the tensor.
-
-#### Returns:
-
-* firstDerivativeTensorTable: A table containing the first derivative tensors in respect to arguments used in the constructor.
