@@ -14,7 +14,11 @@ AutomaticDifferentiationTensorObject.new(tensor: AqwamTensor, PartialDerivativeF
 
 * tensor: The tensor to be used by the automatic differentiation tensor object.
 
-* PartialDerivativeFunction: The partial derivative function to  
+* PartialDerivativeFunction (Optional): The partial derivative function to  
+
+* PreviousTensor1 (Optional): The first previous tensor that was used to generate the current tensor.
+
+* PreviousTensor2 (Optional): The second previous tensor that was used to generate the current tensor.
 
 #### Returns
 
