@@ -46,11 +46,11 @@ Additionally, you can put your own "transformedInputTensor" and "inputTensor" to
 
 ```lua
 
-local firstDerivativeTensor = FunctionBlock:differentiate(initialFirstDerivativeTensor, transformedInputTensor, inputTensor)
+local firstDerivativeTensor = FunctionBlock:differentiate(initialPartialFirstDerivativeTensor, transformedInputTensor, inputTensorArray)
 
 ```
 
-When "initialFirstDerivativeTensor" is not given, it will use a seed. The seed is always a tensor containing values of 1 and always has the same tensor shape to "transformedInputTensor".
+When "initialPartialFirstDerivativeTensor" is not given, it will use a seed. The seed is always a tensor containing values of 1 and always has the same tensor shape to "transformedInputTensor".
 
 Since we have covered the basics of function blocks, we can now look into dynamic computational graphs.
 
