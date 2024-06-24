@@ -192,7 +192,7 @@ BaseWeightBlock:initializeLayer({dimensionSizeArray: {number}, learningRate: num
 
 ```
 
-BaseWeightBlock:waitForTransformedTensorRecursive(CurrentFunctionBlock: FunctionBlock, nextFunctionBlockArrayIndexArray: {number})
+BaseWeightBlock:findFirstActivationOrWeightBlock(CurrentFunctionBlock: FunctionBlock, nextFunctionBlockArrayIndexArray: {number})
 
 ```
 
