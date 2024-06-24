@@ -190,7 +190,7 @@ BaseWeightBlock:initializeLayer({dimensionSizeArray: {number}, learningRate: num
 
 ### waitForTransformedTensorRecursive()
 
-```lua
+```
 
 BaseWeightBlock:waitForTransformedTensorRecursive(CurrentFunctionBlock: FunctionBlock, nextFunctionBlockArrayIndexArray: {number})
 
