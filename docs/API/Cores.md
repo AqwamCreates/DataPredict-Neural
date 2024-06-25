@@ -6,4 +6,4 @@
 
 [AutomaticDifferentiationTensor](Cores/AutomaticDifferentiationTensor.md)
 
-[SymbolicDifferentiationTensor](Cores/SymbolicDifferentiationTensor.md)
+[SymbolicDifferentiationTensor](Cores/SymbolicDifferentiationTensor.md) (Not Recommended)
