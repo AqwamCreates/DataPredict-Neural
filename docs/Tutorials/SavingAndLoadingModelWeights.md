@@ -1,4 +1,4 @@
-# Saving And Loading Model Parameters
+# Saving And Loading Model Weights
 
 DataPredict Neural provides the ability to save and load weights from trained models. The only requirement is that the model must be a part of BaseWeightBlock class.
 
