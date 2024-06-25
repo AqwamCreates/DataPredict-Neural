@@ -24,6 +24,66 @@ AutomaticDifferentiationTensorObject.new(tensor: AqwamTensor, PartialDerivativeF
 
 * AutomaticDifferentiationTensorObject: The generated automatic differentiation tensor object.
 
+### sin()
+
+```
+
+AutomaticDifferentiationTensorObject.sin(tensor): AutomaticDifferentiationTensorObject
+
+```
+
+#### Returns
+
+* AutomaticDifferentiationTensorObject: The generated automatic differentiation tensor object.
+
+### cos()
+
+```
+
+AutomaticDifferentiationTensorObject.cos(tensor): AutomaticDifferentiationTensorObject
+
+```
+
+#### Returns
+
+* AutomaticDifferentiationTensorObject: The generated automatic differentiation tensor object.
+
+### tan()
+
+```
+
+AutomaticDifferentiationTensorObject.tan(tensor): AutomaticDifferentiationTensorObject
+
+```
+
+#### Returns
+
+* AutomaticDifferentiationTensorObject: The generated automatic differentiation tensor object.
+
+### max()
+
+```
+
+AutomaticDifferentiationTensorObject.max(tensor1, tensor2): AutomaticDifferentiationTensorObject
+
+```
+
+#### Returns
+
+* AutomaticDifferentiationTensorObject: The generated automatic differentiation tensor object.
+
+### min()
+
+```
+
+AutomaticDifferentiationTensorObject.min(tensor1, tensor2): AutomaticDifferentiationTensorObject
+
+```
+
+#### Returns
+
+* AutomaticDifferentiationTensorObject: The generated automatic differentiation tensor object.
+
 ## Functions
 
 ### add()
@@ -117,42 +177,6 @@ AutomaticDifferentiationTensorObject:log(AutomaticDifferentiationTensor: Automat
 #### Parameters:
 
 * AutomaticDifferentiationTensor: The base tensor object to be used by the automatic differentiation tensor object.
-
-#### Returns
-
-* AutomaticDifferentiationTensorObject: The generated automatic differentiation tensor object.
-
-### sin()
-
-```
-
-AutomaticDifferentiationTensorObject:sin(): AutomaticDifferentiationTensorObject
-
-```
-
-#### Returns
-
-* AutomaticDifferentiationTensorObject: The generated automatic differentiation tensor object.
-
-### cos()
-
-```
-
-AutomaticDifferentiationTensorObject:cos(): AutomaticDifferentiationTensorObject
-
-```
-
-#### Returns
-
-* AutomaticDifferentiationTensorObject: The generated automatic differentiation tensor object.
-
-### tan()
-
-```
-
-AutomaticDifferentiationTensorObject:tan(): AutomaticDifferentiationTensorObject
-
-```
 
 #### Returns
 
