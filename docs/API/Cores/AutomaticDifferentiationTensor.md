@@ -6,7 +6,7 @@
 
 ```
 
-AutomaticDifferentiationTensorObject.new(tensor: AqwamTensor, PartialDerivativeFunction: Function, PreviousTensorObject1: AutomaticDifferentiationTensorObject, PreviousTensorObject2: AutomaticDifferentiationTensorObject): AutomaticDifferentiationTensorObject
+AutomaticDifferentiationTensorObject.new(tensor: tensor, PartialDerivativeFunction: Function, PreviousTensorObject1: AutomaticDifferentiationTensorObject, PreviousTensorObject2: AutomaticDifferentiationTensorObject): AutomaticDifferentiationTensorObject
 
 ```
 
@@ -19,6 +19,86 @@ AutomaticDifferentiationTensorObject.new(tensor: AqwamTensor, PartialDerivativeF
 * PreviousTensorObject1 (Optional): The first previous tensor object that was used to generate the current tensor object.
 
 * PreviousTensorObject2 (Optional): The second previous tensor object that was used to generate the current tensor object.
+
+#### Returns
+
+* AutomaticDifferentiationTensorObject: The generated automatic differentiation tensor object.
+
+### sin()
+
+```
+
+AutomaticDifferentiationTensorObject.sin(tensor: tensor/AutomaticDifferentiationTensorObject): AutomaticDifferentiationTensorObject
+
+```
+
+#### Parameters:
+
+* tensor: The tensor to be used by the automatic differentiation tensor object.
+
+#### Returns
+
+* AutomaticDifferentiationTensorObject: The generated automatic differentiation tensor object.
+
+### cos()
+
+```
+
+AutomaticDifferentiationTensorObject.cos(tensor: tensor/AutomaticDifferentiationTensorObject): AutomaticDifferentiationTensorObject
+
+```
+
+#### Parameters:
+
+* tensor: The tensor to be used by the automatic differentiation tensor object.
+
+#### Returns
+
+* AutomaticDifferentiationTensorObject: The generated automatic differentiation tensor object.
+
+### tan()
+
+```
+
+AutomaticDifferentiationTensorObject.tan(tensor: tensor/AutomaticDifferentiationTensorObject): AutomaticDifferentiationTensorObject
+
+```
+
+#### Parameters:
+
+* tensor: The tensor to be used by the automatic differentiation tensor object.
+
+#### Returns
+
+* AutomaticDifferentiationTensorObject: The generated automatic differentiation tensor object.
+
+### max()
+
+```
+
+AutomaticDifferentiationTensorObject.max(tensor1: tensor/AutomaticDifferentiationTensorObject, tensor2: tensor/AutomaticDifferentiationTensorObject): AutomaticDifferentiationTensorObject
+
+```
+
+#### Parameters:
+
+* tensor: The tensor to be used by the automatic differentiation tensor object.
+
+#### Returns
+
+* AutomaticDifferentiationTensorObject: The generated automatic differentiation tensor object.
+
+### min()
+
+#### Parameters:
+
+* tensor: The tensor to be used by the automatic differentiation tensor object.
+
+```
+
+AutomaticDifferentiationTensorObject.min(tensor1: tensor/AutomaticDifferentiationTensorObject, tensor2: tensor/AutomaticDifferentiationTensorObject): AutomaticDifferentiationTensorObject
+
+```
 
 #### Returns
 
@@ -117,42 +197,6 @@ AutomaticDifferentiationTensorObject:log(AutomaticDifferentiationTensor: Automat
 #### Parameters:
 
 * AutomaticDifferentiationTensor: The base tensor object to be used by the automatic differentiation tensor object.
-
-#### Returns
-
-* AutomaticDifferentiationTensorObject: The generated automatic differentiation tensor object.
-
-### sin()
-
-```
-
-AutomaticDifferentiationTensorObject:sin(): AutomaticDifferentiationTensorObject
-
-```
-
-#### Returns
-
-* AutomaticDifferentiationTensorObject: The generated automatic differentiation tensor object.
-
-### cos()
-
-```
-
-AutomaticDifferentiationTensorObject:cos(): AutomaticDifferentiationTensorObject
-
-```
-
-#### Returns
-
-* AutomaticDifferentiationTensorObject: The generated automatic differentiation tensor object.
-
-### tan()
-
-```
-
-AutomaticDifferentiationTensorObject:tan(): AutomaticDifferentiationTensorObject
-
-```
 
 #### Returns
 
