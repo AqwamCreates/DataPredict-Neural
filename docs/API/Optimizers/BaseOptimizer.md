@@ -40,16 +40,6 @@ BaseOptimizer:calculate(learningRate: number, costFunctionDerivativeTensor: tens
 
 * costFunctionDerivativeTensor: The modified cost function derivatives that is to be used by a model.
 
-### reset()
-
-Reset optimizer's stored values (excluding the parameters).
-
-```
-
-BaseOptimizer:reset()
-
-```
-
 ### setCalculateFunction()
 
 Sets a calculate function for the base optimizer.
@@ -64,19 +54,43 @@ BaseOptimizer:setCalculateFunction(CalculateFunction)
 
 * The calculate function to be used by the base optimizer when calculate() function is called.
 
-### setResetFunction()
+### getOptimizerInternalParameterArray()
 
-Sets a reset function for the base optimizer.
+Gets the optimizer's internal parameters from the base optimizer.
 
 ```
-
-BaseOptimizer:setResetFunction(ResetFunction)
-
+BaseOptimizer:getOptimizerInternalParameterArray(doNotDeepCopy: boolean): {}
 ```
 
 #### Parameters:
 
-* The reset function to be used by the base optimizer when reset() function is called.
+* doNotDeepCopy: Set whether or not to deep copy the optimizer internal parameters.
+
+#### Returns:
+
+* optimizerInternalParameterArray: The optimizer internal parameters that is stored in base optimizer.
+
+### setOptimizerInternalParameterArray()
+
+Sets the optimizer's internal parameters from the base optimizer.
+
+```
+BaseOptimizer:setOptimizerInternalParameterArray(optimizerInternalParameterArray: {}, doNotDeepCopy: boolean)
+```
+
+#### Parameters:
+
+* optimizerInternalParameterArray: The optimizer internal parameters that is stored to be stored in base optimizer.
+
+* doNotDeepCopy: Set whether or not to deep copy the optimizer internal parameters.
+
+### reset()
+
+Reset optimizer's stored values (excluding the parameters).
+
+```
+BaseOptimizer:reset()
+```
 
 ## Inherited From:
 
