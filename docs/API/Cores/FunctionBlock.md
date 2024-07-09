@@ -308,7 +308,37 @@ FunctionBlock:getTransformedTensor(doNotDeepCopy: boolean): tensor
 
 * transformedTensor: The transformed tensor that is stored in the function block.
 
-### setFirstDerivativeTensor()
+### setPartialFirstDerivativeTensorArray()
+
+```
+
+FunctionBlock:setFirstDerivativeTensorArray(partialFirstDerivativeTensorArray: {tensor}, doNotDeepCopy: boolean)
+
+```
+
+#### Parameters
+
+* partialFirstDerivativeTensorArray: An array containing all the partial first derivative tensors to be stored into the function block.
+
+* doNotDeepCopy: Whether or not to deep copy the input tensor.
+
+### getFirstDerivativeTensorArray()
+
+```
+
+FunctionBlock:getFirstDerivativeTensorArray(doNotDeepCopy: boolean): {tensor}
+
+```
+
+#### Parameters
+
+* doNotDeepCopy: Whether or not to deep copy the partial first derivative tensor.
+
+#### Returns:
+
+* firstDerivativeTensorArray: An array containing all the partial first derivative tensors that is stored in the function block.
+
+### setFirstDerivativeTensorArray()
 
 ```
 
@@ -470,6 +500,24 @@ FunctionBlock:waitForTransformedTensor(doNotDeepCopy, waitDuration): tensor
 
 * transformedTensor: The transformed tensor that is stored in the function block.
 
+### waitForPartialFirstDerivativeTensorArray()
+
+```
+
+FunctionBlock:waitForPartialFirstDerivativeTensorArray(doNotDeepCopy, waitDuration): {tensor}
+
+```
+
+#### Parameters:
+
+* doNotDeepCopy: Whether or not to deep copy the partial first derivative tensor array.
+
+* waitDuration: The duration to wait for the partial first derivative tensor array to be stored into the function block before timeout.
+
+#### Returns:
+
+* firstDerivativeTensorArray: An array containing all first derivative tensor that is stored in the function block.
+
 ### waitForFirstDerivativeTensorArray()
 
 ```
@@ -480,9 +528,9 @@ FunctionBlock:waitForFirstDerivativeTensorArray(doNotDeepCopy, waitDuration): {t
 
 #### Parameters:
 
-* doNotDeepCopy: Whether or not to deep copy the first derivative tensor.
+* doNotDeepCopy: Whether or not to deep copy the first derivative tensor array.
 
-* waitDuration: The duration to wait for the first derivative tensor to be stored into the function block before timeout.
+* waitDuration: The duration to wait for the first derivative tensor array to be stored into the function block before timeout.
 
 #### Returns:
 
