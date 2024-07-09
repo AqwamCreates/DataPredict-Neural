@@ -308,7 +308,37 @@ FunctionBlock:getTransformedTensor(doNotDeepCopy: boolean): tensor
 
 * transformedTensor: The transformed tensor that is stored in the function block.
 
-### setFirstDerivativeTensor()
+### setPartialFirstDerivativeTensorArray()
+
+```
+
+FunctionBlock:setFirstDerivativeTensorArray(partialFirstDerivativeTensorArray: {tensor}, doNotDeepCopy: boolean)
+
+```
+
+#### Parameters
+
+* partialFirstDerivativeTensorArray: An array containing all the partial first derivative tensors to be stored into the function block.
+
+* doNotDeepCopy: Whether or not to deep copy the input tensor.
+
+### getFirstDerivativeTensorArray()
+
+```
+
+FunctionBlock:getFirstDerivativeTensorArray(doNotDeepCopy: boolean): {tensor}
+
+```
+
+#### Parameters
+
+* doNotDeepCopy: Whether or not to deep copy the partial first derivative tensor.
+
+#### Returns:
+
+* firstDerivativeTensorArray: An array containing all the partial first derivative tensors that is stored in the function block.
+
+### setFirstDerivativeTensorArray()
 
 ```
 
