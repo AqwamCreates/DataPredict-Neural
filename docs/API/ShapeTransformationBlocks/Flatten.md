@@ -1,4 +1,4 @@
-# [API Reference](../../API.md) - [ShapeTransformationBlock](../ShapeTransformationBlock.md) - Flatten
+# [API Reference](../../API.md) - [ShapeTransformationBlocks](../ShapeTransformationBlocks.md) - Flatten
 
 ## Constructors
 

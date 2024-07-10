@@ -1,4 +1,4 @@
-# [API Reference](../../API.md) - [ShapeTransformationBlock](../ShapeTransformationBlock.md) - Transpose
+# [API Reference](../../API.md) - [ShapeTransformationBlocks](../ShapeTransformationBlocks.md) - Transpose
 
 ## Constructors
 
