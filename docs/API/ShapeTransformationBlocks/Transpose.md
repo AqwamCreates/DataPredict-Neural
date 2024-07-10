@@ -4,7 +4,7 @@
 
 ### new()
 
-Creates a new activation block object. If there are no parameters given for that particular argument, then that argument will use default value.
+Creates a new shape tranformation block object. If there are no parameters given for that particular argument, then that argument will use default value.
 
 ```
 

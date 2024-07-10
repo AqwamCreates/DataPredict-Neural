@@ -10,6 +10,12 @@
 
 [DropoutBlocks](API/DropoutBlocks.md)
 
+[OperatorBlocks](API/OperatorBlocks.md)
+
+[PoolingBlocks](API/PoolingBlocks.md)
+
+[CompressionBlocks](API/PoolingBlocks.md)
+
 ## Extensions
 
 [CostFunctions](API/CostFunctions.md)

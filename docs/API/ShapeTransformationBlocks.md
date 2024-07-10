@@ -2,4 +2,6 @@
 
 [Transpose](ShapeTransformationBlocks/Transpose.md)
 
+[Flatten](ShapeTransformationBlocks/Flatten.md)
+
 [BaseShapeTransformationBlock](ShapeTransformationBlocks/BaseShapeTransformationBlock.md)
