@@ -1,6 +1,6 @@
 # [API Reference](../API.md) - OperatorBlocks
 
-[Add](OperatorBlocks/add.md)
+[Add](OperatorBlocks/Add.md)
 
 [Subtract](OperatorBlocks/Subtract.md)
 
