@@ -46,7 +46,7 @@ AveragePooling:setParameters({kernelDimensionSizeArray: {integer}, strideDimensi
 
 * outputSizeRoundingMode: The rounding mode that determines how the dimension size of the transformed tensor. Available options are:
 
-	* Floor (Default)
+	* Floor
 
 	* Ceil
 
