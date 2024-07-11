@@ -124,14 +124,6 @@ Graph:clearAllStoredTensorsFromAllFunctionBlocks()
 
 ```
 
-### detachAllFunctionBlocks()
-
-```
-
-Graph:detachAllFunctionBlocks()
-
-```
-
 ### setWeightTensorArray()
 
 ```
@@ -166,23 +158,79 @@ Graph:getWeightTensorArray(doNotDeepCopy: boolean): {tensor}
 
 ```
 
-Graph:getFunctionBlockByIndex(index)
+Graph:getWeightBlockByIndex(index): WeightBlock
 
 ```
 
 #### Parameters:
 
-* index: The index of the function block.
+* index: The index of the weight block.
+
+#### Returns:
+
+* WeightBlock: A weight block from the specified index.
+
+### getWeightBlockArray()
+
+```
+
+Graph:getWeightBlockArray(): {WeightBlock}
+
+```
+
+#### Returns:
+
+* WeightBlockArray: An array containing all the weight blocks. The first function block in the array represents the first weight block.
+
+### getInputBlockByIndex()
+
+```
+
+Graph:getInputBlockByIndex(index): FunctionBlock
+
+```
+
+#### Parameters:
+
+* index: The index of the weight block.
 
 #### Returns:
 
 * FunctionBlock: A function block from the specified index.
 
-### getFunctionBlockArray()
+### getInputBlockArray()
 
 ```
 
-Graph:getFunctionBlockArray()
+Graph:getInputBlockArray(): {FunctionBlock}
+
+```
+
+#### Returns:
+
+* FunctionBlockArray: An array containing all the function blocks. The first function block in the array represents the first function block.
+
+### getOutputBlockByIndex()
+
+```
+
+Graph:getOutputBlockByIndex(index): FunctionBlock
+
+```
+
+#### Parameters:
+
+* index: The index of the weight block.
+
+#### Returns:
+
+* FunctionBlock: A function block from the specified index.
+
+### getOutputBlockArray()
+
+```
+
+Graph:getOutputBlockArray(): {FunctionBlock}
 
 ```
 

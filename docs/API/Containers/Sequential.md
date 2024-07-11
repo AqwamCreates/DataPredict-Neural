@@ -140,7 +140,7 @@ Sequential:getWeightTensorArray(doNotDeepCopy: boolean): {tensor}
 
 ```
 
-Sequential:getFunctionBlockByIndex(index)
+Sequential:getFunctionBlockByIndex(index): FunctionBlock
 
 ```
 
@@ -156,7 +156,7 @@ Sequential:getFunctionBlockByIndex(index)
 
 ```
 
-Sequential:getFunctionBlockArray()
+Sequential:getFunctionBlockArray(): {FunctionBlock}
 
 ```
 
