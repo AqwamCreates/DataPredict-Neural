@@ -14,7 +14,7 @@ Add.new(): OperatorBlockObject
 
 #### Returns:
 
-OperatorBlock: The generated operator block object.
+* OperatorBlock: The generated operator block object.
 
 ## Inherited From:
 

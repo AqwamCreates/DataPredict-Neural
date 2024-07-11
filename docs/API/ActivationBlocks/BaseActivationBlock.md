@@ -14,7 +14,7 @@ BaseActivationBlock.new(): ActivationBlockObject
 
 #### Returns:
 
-ActivationBlock: The generated activation block object.
+* ActivationBlock: The generated activation block object.
 
 ## Inherited From:
 

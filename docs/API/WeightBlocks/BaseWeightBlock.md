@@ -12,7 +12,7 @@ BaseWeightBlock.new(): WeightBlockObject
 
 #### Returns
 
-WeightBlock: The generated weight block object.
+* WeightBlock: The generated weight block object.
 
 ## Functions
 

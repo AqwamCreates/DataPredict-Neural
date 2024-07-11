@@ -18,7 +18,7 @@ Dropout.new({dropoutRate: number}): DropoutBlockObject
 
 #### Returns:
 
-DropoutBlock: The generated dropout block object.
+* DropoutBlock: The generated dropout block object.
 
 ## Inherited From:
 

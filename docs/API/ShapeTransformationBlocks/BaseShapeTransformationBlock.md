@@ -14,7 +14,7 @@ BaseShapeTransformationBlock.new(): ShapeTransformationBlockObject
 
 #### Returns:
 
-ShapeTransformationBlock: The generated shape transformation block object.
+* ShapeTransformationBlock: The generated shape transformation block object.
 
 ## Inherited From:
 

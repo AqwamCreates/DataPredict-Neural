@@ -14,7 +14,7 @@ Flatten.new(): ShapeTransformationBlockObject
 
 #### Returns:
 
-ShapeTransformationBlock: The generated shape tranformation block object.
+* ShapeTransformationBlock: The generated shape tranformation block object.
 
 
 * [BaseShapeTransformationBlock](BaseShapeTransformationBlock.md)

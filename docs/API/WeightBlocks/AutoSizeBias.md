@@ -22,7 +22,7 @@ Bias.new({learningRate: number, Optimizer: OptimizerObject, Regularizer: Regular
 
 #### Returns
 
-WeightBlock: The generated weight block object.
+* WeightBlock: The generated weight block object.
 
 ## Inherited From:
 

@@ -18,7 +18,7 @@ Transpose.new({dimensionIndexArray: {number}}): ShapeTransformationBlockObject
 
 #### Returns:
 
-ShapeTransformationBlock: The generated shape tranformation block object.
+* ShapeTransformationBlock: The generated shape tranformation block object.
 
 ## Functions
 
