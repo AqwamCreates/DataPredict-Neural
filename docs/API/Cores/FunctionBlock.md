@@ -524,7 +524,7 @@ FunctionBlock:waitForInputTensorArray(doNotDeepCopy, waitDuration): {tensor}
 
 * doNotDeepCopy: Whether or not to deep copy the input tensor.
 
-*  waitDuration: The duration to wait for the input tensor to be stored into the function block before timeout.
+* waitDuration: The duration to wait for the input tensor to be stored into the function block before timeout.
 
 #### Returns:
 
@@ -542,7 +542,7 @@ FunctionBlock:waitForTransformedTensor(doNotDeepCopy, waitDuration): tensor
 
 * doNotDeepCopy: Whether or not to deep copy the transformed tensor.
 
-*  waitDuration: The duration to wait for the transformed tensor to be stored into the function block before timeout.
+* waitDuration: The duration to wait for the transformed tensor to be stored into the function block before timeout.
 
 #### Returns:
 
@@ -564,7 +564,7 @@ FunctionBlock:waitForTotalPartialFirstDerivativeTensorArray(doNotDeepCopy, waitD
 
 #### Returns:
 
-* firstDerivativeTensorArray: An array containing all the total of partial first derivative tensor that is stored in the function block.
+* totalPartialFirstDerivativeTensorArray: An array containing all the total of partial first derivative tensor that is stored in the function block.
 
 ### waitForTotalFirstDerivativeTensorArray()
 
@@ -582,4 +582,4 @@ FunctionBlock:waitForTotalFirstDerivativeTensorArray(doNotDeepCopy, waitDuration
 
 #### Returns:
 
-* firstDerivativeTensorArray: An array containing all the total of first derivative tensor that is stored in the function block.
+* totalFirstDerivativeTensorArray: An array containing all the total of first derivative tensor that is stored in the function block.
