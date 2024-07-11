@@ -18,7 +18,7 @@ Transpose.new({dimensionIndexArray: {number}}): ShapeTransformationBlockObject
 
 #### Returns:
 
-* ShapeTransformationBlock: The generated shape tranformation block object.
+* ShapeTransformationBlock: The generated shape transformation block object.
 
 ## Functions
 
@@ -34,6 +34,6 @@ Transpose:setParameters({dimensionIndexArray: {number}})
 
 * dimensionIndexArray: A table containing a pair of dimension indices to swap sizes with. Must contain two values only.
 
-## Inherited From:
+## Inherited From
 
 * [BaseShapeTransformationBlock](BaseShapeTransformationBlock.md)
