@@ -1,4 +1,4 @@
-# [API Reference](../../API.md) - [Containers](../Containers.md) - Graph
+# [API Reference](../../API.md) - [Containers](../Containers.md) - ComputationalGraph
 
 ## Constructors
 
@@ -8,7 +8,7 @@ Creates a new cost function object.
 
 ```
 
-Graph.new(): ContainerObject
+ComputationalGraph.new(): ContainerObject
 
 ```
 
@@ -22,7 +22,7 @@ Graph.new(): ContainerObject
 
 ```
 
-Graph:setMultipleWeightBlocks(...: FunctionBlock)
+ComputationalGraph:setMultipleWeightBlocks(...: FunctionBlock)
 
 ```
 
@@ -34,7 +34,7 @@ Parameters:
 
 ```
 
-Graph:setMultipleInputBlocks(...: FunctionBlock)
+ComputationalGraph:setMultipleInputBlocks(...: FunctionBlock)
 
 ```
 
@@ -46,7 +46,7 @@ Parameters:
 
 ```
 
-Graph:setMultipleOutputBlocks(...: FunctionBlock)
+ComputationalGraph:setMultipleOutputBlocks(...: FunctionBlock)
 
 ```
 
@@ -58,7 +58,7 @@ Parameters:
 
 ```
 
-Graph:forwardPropagate(featureTensorArray: {tensor}): {tensor}
+ComputationalGraph:forwardPropagate(featureTensorArray: {tensor}): {tensor}
 
 ```
 
@@ -75,7 +75,7 @@ Graph:forwardPropagate(featureTensorArray: {tensor}): {tensor}
 
 ```
 
-Graph:calculateWeightLossTensorArray(lossTensorArray: {tensor}): {tensor}
+ComputationalGraph:calculateWeightLossTensorArray(lossTensorArray: {tensor}): {tensor}
 
 ```
 
@@ -92,7 +92,7 @@ Graph:calculateWeightLossTensorArray(lossTensorArray: {tensor}): {tensor}
 
 ```
 
-Graph:gradientDescent(weightLossTensorArray: {tensor}, numberOfData: number)
+ComputationalGraph:gradientDescent(weightLossTensorArray: {tensor}, numberOfData: number)
 
 ```
 
@@ -106,7 +106,7 @@ Graph:gradientDescent(weightLossTensorArray: {tensor}, numberOfData: number)
 
 ```
 
-Graph:backPropagate(lossTensorArray: {tensor}, numberOfData: number)
+ComputationalGraph:backPropagate(lossTensorArray: {tensor}, numberOfData: number)
 
 ```
 
@@ -120,7 +120,7 @@ Graph:backPropagate(lossTensorArray: {tensor}, numberOfData: number)
 
 ```
 
-Graph:clearAllStoredTensorsFromAllFunctionBlocks()
+ComputationalGraph:clearAllStoredTensorsFromAllFunctionBlocks()
 
 ```
 
@@ -128,7 +128,7 @@ Graph:clearAllStoredTensorsFromAllFunctionBlocks()
 
 ```
 
-Graph:setWeightTensorArray(weightTensorArray: {tensor}, doNotDeepCopy: boolean)
+ComputationalGraph:setWeightTensorArray(weightTensorArray: {tensor}, doNotDeepCopy: boolean)
 
 ```
 
@@ -142,7 +142,7 @@ Graph:setWeightTensorArray(weightTensorArray: {tensor}, doNotDeepCopy: boolean)
 
 ```
 
-Graph:getWeightTensorArray(doNotDeepCopy: boolean): {tensor}
+ComputationalGraph:getWeightTensorArray(doNotDeepCopy: boolean): {tensor}
 
 ```
 
@@ -158,7 +158,7 @@ Graph:getWeightTensorArray(doNotDeepCopy: boolean): {tensor}
 
 ```
 
-Graph:getWeightBlockByIndex(index): WeightBlock
+ComputationalGraph:getWeightBlockByIndex(index): WeightBlock
 
 ```
 
@@ -174,7 +174,7 @@ Graph:getWeightBlockByIndex(index): WeightBlock
 
 ```
 
-Graph:getWeightBlockArray(): {WeightBlock}
+ComputationalGraph:getWeightBlockArray(): {WeightBlock}
 
 ```
 
@@ -186,7 +186,7 @@ Graph:getWeightBlockArray(): {WeightBlock}
 
 ```
 
-Graph:getInputBlockByIndex(index): FunctionBlock
+ComputationalGraph:getInputBlockByIndex(index): FunctionBlock
 
 ```
 
@@ -202,7 +202,7 @@ Graph:getInputBlockByIndex(index): FunctionBlock
 
 ```
 
-Graph:getInputBlockArray(): {FunctionBlock}
+ComputationalGraph:getInputBlockArray(): {FunctionBlock}
 
 ```
 
@@ -214,7 +214,7 @@ Graph:getInputBlockArray(): {FunctionBlock}
 
 ```
 
-Graph:getOutputBlockByIndex(index): FunctionBlock
+ComputationalGraph:getOutputBlockByIndex(index): FunctionBlock
 
 ```
 
@@ -230,7 +230,7 @@ Graph:getOutputBlockByIndex(index): FunctionBlock
 
 ```
 
-Graph:getOutputBlockArray(): {FunctionBlock}
+ComputationalGraph:getOutputBlockArray(): {FunctionBlock}
 
 ```
 
