@@ -2,8 +2,8 @@
 
 [AveragePooling](PoolingBlocks/AveragePooling.md)
 
-[MaximumPoolingBlock](PoolingBlocks/MaximumPoolingBlock.md) (MaxPooling)
+[MaximumPooling](PoolingBlocks/MaximumPooling.md) (MaxPooling)
 
-[MinimumPoolingBlock](PoolingBlocks/MinimumPoolingBlock.md) (MinPooling)
+[MinimumPooling](PoolingBlocks/MinimumPooling.md) (MinPooling)
 
 [BasePoolingBlock](PoolingBlocks/BasePoolingBlock.md)
