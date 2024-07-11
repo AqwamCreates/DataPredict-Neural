@@ -524,7 +524,7 @@ FunctionBlock:waitForTransformedTensor(doNotDeepCopy, waitDuration): tensor
 
 * transformedTensor: The transformed tensor that is stored in the function block.
 
-### waitForPartialFirstDerivativeTensorArray()
+### waitForTotalPartialFirstDerivativeTensorArray()
 
 ```
 
@@ -542,7 +542,7 @@ FunctionBlock:waitForTotalPartialFirstDerivativeTensorArray(doNotDeepCopy, waitD
 
 * firstDerivativeTensorArray: An array containing all the total of partial first derivative tensor that is stored in the function block.
 
-### waitForFirstDerivativeTensorArray()
+### waitForTotalFirstDerivativeTensorArray()
 
 ```
 
