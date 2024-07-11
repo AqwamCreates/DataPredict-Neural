@@ -82,7 +82,6 @@ Sequential:gradientDescent(weightLossTensorArray: {tensor}, numberOfData: number
 
 Sequential:backPropagate(lossTensor: tensor, numberOfData: number)
 
-
 ```
 
 #### Parameters:
