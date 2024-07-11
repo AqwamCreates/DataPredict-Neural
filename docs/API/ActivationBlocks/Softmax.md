@@ -32,7 +32,7 @@ Softmax:setParameters({dimensionIndex: number})
 
 #### Parameters:
 
-* dimensionIndex:  The dimension to sum across the tensor.
+* dimensionIndex: The dimension to sum across the tensor.
 
 ## Inherited From:
 
