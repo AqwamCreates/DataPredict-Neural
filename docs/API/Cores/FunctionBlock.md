@@ -392,6 +392,30 @@ FunctionBlock:getPreviousFunctionBlockArray(): {FunctionBlock}
 
 * PreviousFunctionBlockArray: An array containing previous function blocks. The first next function block in the array represents the previous next function block connected with the current function block.
 
+### setWaitForAllInitialPartialFirstDerivativeTensors()
+
+```
+
+FunctionBlock:setWaitForAllInitialPartialFirstDerivativeTensors(option: boolean)
+
+```
+
+#### Parameters:
+
+* option: Set whether or not the current function block must wait for all initial partial first derivative from all function block paths.
+
+### getSaveInputTensorArray()
+
+```
+
+FunctionBlock:getWaitForAllInitialPartialFirstDerivativeTensors(): boolean
+
+```
+
+#### Returns:
+
+* option: Returns a boolean value that determines if the current function block must wait for all initial partial first derivative from all function block paths.
+
 ### setSaveInputTensor()
 
 ```
