@@ -4,11 +4,11 @@
 
 ### new()
 
-Creates a new operator block object.
+Creates a new pooling block object.
 
 ```
 
-PoolingBlock.new(): PoolingBlockObject
+BasePoolingBlock.new(): PoolingBlockObject
 
 ```
 
