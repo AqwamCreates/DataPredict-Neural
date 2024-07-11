@@ -1,4 +1,4 @@
-# [API Reference](../../API.md) - [PoolingBlocks](../PoolingBlocks.md) - MaximumPooling (MaxPooling)
+# [API Reference](../../API.md) - [PoolingBlocks](../PoolingBlocks.md) - AveragePooling
 
 ## Constructors
 
@@ -8,7 +8,7 @@ Creates a new pooling block object. If there are no parameters given for that pa
 
 ```
 
-MaximumPooling.new({kernelDimensionSizeArray: {integer}, strideDimensionSizeArray: {integer}, outputSizeRoundingMode: string}): PoolingBlockObject
+AveragePooling.new({kernelDimensionSizeArray: {integer}, strideDimensionSizeArray: {integer}, outputSizeRoundingMode: string}): PoolingBlockObject
 
 ```
 
@@ -34,7 +34,7 @@ MaximumPooling.new({kernelDimensionSizeArray: {integer}, strideDimensionSizeArra
 
 ```
 
-MaximumPooling:setParameters({kernelDimensionSizeArray: {integer}, strideDimensionSizeArray: {integer}, outputSizeRoundingMode: string})
+AveragePooling:setParameters({kernelDimensionSizeArray: {integer}, strideDimensionSizeArray: {integer}, outputSizeRoundingMode: string})
 
 ```
 
