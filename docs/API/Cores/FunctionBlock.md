@@ -308,17 +308,17 @@ FunctionBlock:getTransformedTensor(doNotDeepCopy: boolean): tensor
 
 * transformedTensor: The transformed tensor that is stored in the function block.
 
-### setPartialFirstDerivativeTensorArray()
+### setTotalPartialFirstDerivativeTensorArray()
 
 ```
 
-FunctionBlock:setFirstDerivativeTensorArray(partialFirstDerivativeTensorArray: {tensor}, doNotDeepCopy: boolean)
+FunctionBlock:setTotalPartialFirstDerivativeTensorArray(partialFirstDerivativeTensorArray: {tensor}, doNotDeepCopy: boolean)
 
 ```
 
 #### Parameters
 
-* partialFirstDerivativeTensorArray: An array containing all the partial first derivative tensors to be stored into the function block.
+* totalPartialFirstDerivativeTensorArray: An array containing all the total of partial first derivative tensors to be stored into the function block.
 
 * doNotDeepCopy: Whether or not to deep copy the input tensor.
 
@@ -326,37 +326,37 @@ FunctionBlock:setFirstDerivativeTensorArray(partialFirstDerivativeTensorArray: {
 
 ```
 
-FunctionBlock:getFirstDerivativeTensorArray(doNotDeepCopy: boolean): {tensor}
+FunctionBlock:getTotalFirstDerivativeTensorArray(doNotDeepCopy: boolean): {tensor}
 
 ```
 
 #### Parameters
 
-* doNotDeepCopy: Whether or not to deep copy the partial first derivative tensor.
+* doNotDeepCopy: Whether or not to deep copy the total of partial first derivative tensor array.
 
 #### Returns:
 
-* firstDerivativeTensorArray: An array containing all the partial first derivative tensors that is stored in the function block.
+* firstDerivativeTensorArray: An array containing all the total of partial first derivative tensors that is stored in the function block.
 
 ### setFirstDerivativeTensorArray()
 
 ```
 
-FunctionBlock:setFirstDerivativeTensorArray(firstDerivativeTensorArray: {tensor}, doNotDeepCopy: boolean)
+FunctionBlock:setTotalFirstDerivativeTensorArray(firstDerivativeTensorArray: {tensor}, doNotDeepCopy: boolean)
 
 ```
 
 #### Parameters
 
-* firstDerivativeTensorArray: An array containing all the first derivative tensors to be stored into the function block.
+* firstDerivativeTensorArray: An array containing all the total of first derivative tensors to be stored into the function block.
 
 * doNotDeepCopy: Whether or not to deep copy the input tensor.
 
-### getFirstDerivativeTensorArray()
+### getTotalFirstDerivativeTensorArray()
 
 ```
 
-FunctionBlock:getFirstDerivativeTensorArray(doNotDeepCopy: boolean): {tensor}
+FunctionBlock:getTotalFirstDerivativeTensorArray(doNotDeepCopy: boolean): {tensor}
 
 ```
 
@@ -366,7 +366,7 @@ FunctionBlock:getFirstDerivativeTensorArray(doNotDeepCopy: boolean): {tensor}
 
 #### Returns:
 
-* firstDerivativeTensorArray: An array containing all the first derivative tensors that is stored in the function block.
+* totalFirstDerivativeTensorArray: An array containing all the total of first derivative tensors that is stored in the function block.
 
 ### getNextFunctionBlockArray()
 
@@ -440,29 +440,53 @@ FunctionBlock:getSaveTransformedTensor(): boolean
 
 * option: Returns a boolean value indicating whether or not the transformed tensor is saved inside the function block.
 
-### setSaveFirstDerivativeTensorArray()
+### setSaveTotalPartialFirstDerivativeTensorArray()
 
 ```
 
-FunctionBlock:setSaveFirstDerivativeTensorArray(option: boolean)
+FunctionBlock:setSaveTotalPartialFirstDerivativeTensorArray(option: boolean)
 
 ```
 
 #### Parameters:
 
-* option: Set whether or not if all the first derivative tensors are saved inside the function block.
+* option: Set whether or not if all the total of partial first derivative tensors are saved inside the function block.
 
-### getSaveFirstDerivativeTensorArray()
+### getSaveTotalPartialFirstDerivativeTensorArray()
 
 ```
 
-FunctionBlock:getSaveFirstDerivativeTensorArray(): boolean
+FunctionBlock:getSaveTotalPartialFirstDerivativeTensorArray(): boolean
 
 ```
 
 #### Returns:
 
-* option: Returns a boolean value indicating whether or not if all the first derivative tensors are saved inside the function block.
+* option: Returns a boolean value indicating whether or not if all the total of partial first derivative tensors are saved inside the function block.
+
+### setSaveTotalFirstDerivativeTensorArray()
+
+```
+
+FunctionBlock:setSaveTotalFirstDerivativeTensorArray(option: boolean)
+
+```
+
+#### Parameters:
+
+* option: Set whether or not if all the total of first derivative tensors are saved inside the function block.
+
+### getSaveTotalFirstDerivativeTensorArray()
+
+```
+
+FunctionBlock:getSaveTotalFirstDerivativeTensorArray(): boolean
+
+```
+
+#### Returns:
+
+* option: Returns a boolean value indicating whether or not if all the total of first derivative tensors are saved inside the function block.
 
 ### waitForInputTensorArray()
 
@@ -504,7 +528,7 @@ FunctionBlock:waitForTransformedTensor(doNotDeepCopy, waitDuration): tensor
 
 ```
 
-FunctionBlock:waitForPartialFirstDerivativeTensorArray(doNotDeepCopy, waitDuration): {tensor}
+FunctionBlock:waitForTotalPartialFirstDerivativeTensorArray(doNotDeepCopy, waitDuration): {tensor}
 
 ```
 
@@ -516,13 +540,13 @@ FunctionBlock:waitForPartialFirstDerivativeTensorArray(doNotDeepCopy, waitDurati
 
 #### Returns:
 
-* firstDerivativeTensorArray: An array containing all first derivative tensor that is stored in the function block.
+* firstDerivativeTensorArray: An array containing all the total of partial first derivative tensor that is stored in the function block.
 
 ### waitForFirstDerivativeTensorArray()
 
 ```
 
-FunctionBlock:waitForFirstDerivativeTensorArray(doNotDeepCopy, waitDuration): {tensor}
+FunctionBlock:waitForTotalFirstDerivativeTensorArray(doNotDeepCopy, waitDuration): {tensor}
 
 ```
 
@@ -534,4 +558,4 @@ FunctionBlock:waitForFirstDerivativeTensorArray(doNotDeepCopy, waitDuration): {t
 
 #### Returns:
 
-* firstDerivativeTensorArray: An array containing all first derivative tensor that is stored in the function block.
+* firstDerivativeTensorArray: An array containing all the total of first derivative tensor that is stored in the function block.
