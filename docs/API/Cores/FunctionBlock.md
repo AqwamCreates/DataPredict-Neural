@@ -304,6 +304,30 @@ FunctionBlock:getPreviousFunctionBlockByIndex(previousFunctionBlockArrayIndex: n
 
 * PreviousFunctionBlock: The previous function block that is linked with the current function block.
 
+### removeNextFunctionBlock()
+
+```
+
+FunctionBlock:removeNextFunctionBlock(NextFunctionBlock: FunctionBlockObject)
+
+```
+
+#### Parameters:
+
+* NextFunctionBlock: The next function block to remove from the next function block array.
+
+### removePreviousFunctionBlock()
+
+```
+
+FunctionBlock:removePreviousFunctionBlock(PreviousFunctionBlock: FunctionBlockObject)
+
+```
+
+#### Parameters:
+
+* PreviousFunctionBlock: The previous function block to remove from the previous function block array.
+
 ### removeNextFunctionBlockByIndex()
 
 ```
