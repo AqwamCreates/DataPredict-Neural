@@ -19,7 +19,9 @@ Returns:
 ### linkForward()
 
 ```
+
 FunctionBlock:linkForward(NextFunctionBlock: FunctionBlockObject)
+
 ```
 
 #### Parameters:
@@ -29,7 +31,9 @@ FunctionBlock:linkForward(NextFunctionBlock: FunctionBlockObject)
 ### multipleLinkForward()
 
 ```
+
 FunctionBlock:multipleLinkForward(...: FunctionBlockObject)
+
 ```
 
 #### Parameters:
@@ -39,7 +43,9 @@ FunctionBlock:multipleLinkForward(...: FunctionBlockObject)
 ### linkBackward()
 
 ```
+
 FunctionBlock:linkBackward(PreviousFunctionBlock: FunctionBlockObject)
+
 ```
 
 #### Parameters:
@@ -49,7 +55,9 @@ FunctionBlock:linkBackward(PreviousFunctionBlock: FunctionBlockObject)
 ### multipleLinkBackward()
 
 ```
+
 FunctionBlock:multipleLinkBackward(...: FunctionBlockObject)
+
 ```
 
 #### Parameters:
@@ -59,7 +67,9 @@ FunctionBlock:multipleLinkBackward(...: FunctionBlockObject)
 ### unlinkForward()
 
 ```
+
 FunctionBlock:unlinkForward(NextFunctionBlock: FunctionBlockObject)
+
 ```
 
 #### Parameters:
@@ -69,7 +79,9 @@ FunctionBlock:unlinkForward(NextFunctionBlock: FunctionBlockObject)
 ### multipleUnlinkForward()
 
 ```
+
 FunctionBlock:multipleUnlinkForward(...: FunctionBlockObject)
+
 ```
 
 #### Parameters:
@@ -79,7 +91,9 @@ FunctionBlock:multipleUnlinkForward(...: FunctionBlockObject)
 ### unlinkBackward()
 
 ```
+
 FunctionBlock:unlinkBackward(PreviousFunctionBlock: FunctionBlockObject)
+
 ```
 
 #### Parameters:
@@ -89,16 +103,14 @@ FunctionBlock:unlinkBackward(PreviousFunctionBlock: FunctionBlockObject)
 ### multipleUnlinkBackward()
 
 ```
+
 FunctionBlock:multipleUnlinkBackward(...: FunctionBlockObject)
+
 ```
 
 #### Parameters:
 
 * PreviousFunctionBlock: A variable number of previous function blocks to be unlinked from the current function block.
-
----
-
-Let me know if you need any more details or additional methods documented!
 
 ### setFunction()
 
@@ -164,7 +176,7 @@ FunctionBlock:differentiate(initialFirstDerivativeTensor: tensor, transformedTen
 
 ```
 
-FunctionBlock:addNextFunctionBlock(NextFunctionBlock: NextFunctionBlockObject)
+FunctionBlock:addNextFunctionBlock(NextFunctionBlock: FunctionBlockObject)
 
 ```
 
@@ -176,7 +188,7 @@ FunctionBlock:addNextFunctionBlock(NextFunctionBlock: NextFunctionBlockObject)
 
 ```
 
-FunctionBlock:addPreviousFunctionBlock(PreviousFunctionBlock: PreviousFunctionBlockObject)
+FunctionBlock:addPreviousFunctionBlock(PreviousFunctionBlock: FunctionBlockObject)
 
 ```
 
@@ -188,7 +200,7 @@ FunctionBlock:addPreviousFunctionBlock(PreviousFunctionBlock: PreviousFunctionBl
 
 ```
 
-FunctionBlock:addMultipleNextFunctionBlocks(...: NextFunctionBlockObject)
+FunctionBlock:addMultipleNextFunctionBlocks(...: FunctionBlockObject)
 
 ```
 
@@ -200,7 +212,7 @@ FunctionBlock:addMultipleNextFunctionBlocks(...: NextFunctionBlockObject)
 
 ```
 
-FunctionBlock:addMultiplePreviousFunctionBlocks(...: PreviousFunctionBlockObject)
+FunctionBlock:addMultiplePreviousFunctionBlocks(...: FunctionBlockObject)
 
 ```
 
