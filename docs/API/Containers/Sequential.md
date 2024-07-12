@@ -22,7 +22,7 @@ Sequential.new(): ContainerObject
 
 ```
 
-Sequential:setMultipleFunctionBlocks(...: FunctionBlock)
+Sequential:setMultipleFunctionBlocks(...: FunctionBlockObject)
 
 ```
 
@@ -140,7 +140,7 @@ Sequential:getWeightTensorArray(doNotDeepCopy: boolean): {tensor}
 
 ```
 
-Sequential:getFunctionBlockByIndex(index): FunctionBlock
+Sequential:getFunctionBlockByIndex(index): FunctionBlockObject
 
 ```
 
@@ -156,7 +156,7 @@ Sequential:getFunctionBlockByIndex(index): FunctionBlock
 
 ```
 
-Sequential:getFunctionBlockArray(): {FunctionBlock}
+Sequential:getFunctionBlockArray(): {FunctionBlockObject}
 
 ```
 

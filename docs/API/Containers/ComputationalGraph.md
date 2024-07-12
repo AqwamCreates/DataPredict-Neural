@@ -22,7 +22,7 @@ ComputationalGraph.new(): ContainerObject
 
 ```
 
-ComputationalGraph:setMultipleWeightBlocks(...: FunctionBlock)
+ComputationalGraph:setMultipleWeightBlocks(...: FunctionBlockObject)
 
 ```
 
@@ -34,7 +34,7 @@ Parameters:
 
 ```
 
-ComputationalGraph:setMultipleInputBlocks(...: FunctionBlock)
+ComputationalGraph:setMultipleInputBlocks(...: FunctionBlockObject)
 
 ```
 
@@ -46,7 +46,7 @@ Parameters:
 
 ```
 
-ComputationalGraph:setMultipleOutputBlocks(...: FunctionBlock)
+ComputationalGraph:setMultipleOutputBlocks(...: FunctionBlockObject)
 
 ```
 
@@ -158,7 +158,7 @@ ComputationalGraph:getWeightTensorArray(doNotDeepCopy: boolean): {tensor}
 
 ```
 
-ComputationalGraph:getWeightBlockByIndex(index): WeightBlock
+ComputationalGraph:getWeightBlockByIndex(index): FunctionBlockObject
 
 ```
 
@@ -174,7 +174,7 @@ ComputationalGraph:getWeightBlockByIndex(index): WeightBlock
 
 ```
 
-ComputationalGraph:getWeightBlockArray(): {WeightBlock}
+ComputationalGraph:getWeightBlockArray(): {FunctionBlockObject}
 
 ```
 
@@ -186,7 +186,7 @@ ComputationalGraph:getWeightBlockArray(): {WeightBlock}
 
 ```
 
-ComputationalGraph:getInputBlockByIndex(index): FunctionBlock
+ComputationalGraph:getInputBlockByIndex(index): FunctionBlockObject
 
 ```
 
@@ -202,7 +202,7 @@ ComputationalGraph:getInputBlockByIndex(index): FunctionBlock
 
 ```
 
-ComputationalGraph:getInputBlockArray(): {FunctionBlock}
+ComputationalGraph:getInputBlockArray(): {FunctionBlockObject}
 
 ```
 
@@ -214,7 +214,7 @@ ComputationalGraph:getInputBlockArray(): {FunctionBlock}
 
 ```
 
-ComputationalGraph:getOutputBlockByIndex(index): FunctionBlock
+ComputationalGraph:getOutputBlockByIndex(index): FunctionBlockObject
 
 ```
 
@@ -230,7 +230,7 @@ ComputationalGraph:getOutputBlockByIndex(index): FunctionBlock
 
 ```
 
-ComputationalGraph:getOutputBlockArray(): {FunctionBlock}
+ComputationalGraph:getOutputBlockArray(): {FunctionBlockObject}
 
 ```
 
