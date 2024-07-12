@@ -35,6 +35,7 @@ TensorToClassConverter:convert(tensorToBeConverted: tensor): tensor
 #### Parameters:
 
 * tensorToBeConverted: The tensor to be converted.
+
 #### Returns:
 
 * classTensor: The tensor containing the class values. The shape of the tensor is the same as "tensorToBeConverted", except that the size at the final dimension is equal to 1.
