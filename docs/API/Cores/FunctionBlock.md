@@ -16,6 +16,90 @@ Returns:
 
 ## Functions
 
+### linkForward()
+
+```
+FunctionBlock:linkForward(NextFunctionBlock: FunctionBlockObject)
+```
+
+#### Parameters:
+
+* NextFunctionBlock: The next function block to be linked with the current function block.
+
+### multipleLinkForward()
+
+```
+FunctionBlock:multipleLinkForward(...: FunctionBlockObject)
+```
+
+#### Parameters:
+
+* NextFunctionBlock: A variable number of next function blocks to be linked with the current function block.
+
+### linkBackward()
+
+```
+FunctionBlock:linkBackward(PreviousFunctionBlock: FunctionBlockObject)
+```
+
+#### Parameters:
+
+* PreviousFunctionBlock: The previous function block to be linked with the current function block.
+
+### multipleLinkBackward()
+
+```
+FunctionBlock:multipleLinkBackward(...: FunctionBlockObject)
+```
+
+#### Parameters:
+
+* PreviousFunctionBlock: A variable number of previous function blocks to be linked with the current function block.
+
+### unlinkForward()
+
+```
+FunctionBlock:unlinkForward(NextFunctionBlock: FunctionBlockObject)
+```
+
+#### Parameters:
+
+* NextFunctionBlock: The next function block to be unlinked from the current function block.
+
+### multipleUnlinkForward()
+
+```
+FunctionBlock:multipleUnlinkForward(...: FunctionBlockObject)
+```
+
+#### Parameters:
+
+* NextFunctionBlock: A variable number of next function blocks to be unlinked from the current function block.
+
+### unlinkBackward()
+
+```
+FunctionBlock:unlinkBackward(PreviousFunctionBlock: FunctionBlockObject)
+```
+
+#### Parameters:
+
+* PreviousFunctionBlock: The previous function block to be unlinked from the current function block.
+
+### multipleUnlinkBackward()
+
+```
+FunctionBlock:multipleUnlinkBackward(...: FunctionBlockObject)
+```
+
+#### Parameters:
+
+* PreviousFunctionBlock: A variable number of previous function blocks to be unlinked from the current function block.
+
+---
+
+Let me know if you need any more details or additional methods documented!
+
 ### setFunction()
 
 ```
