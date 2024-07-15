@@ -6,4 +6,6 @@
 
 [MinimumPooling](PoolingBlocks/MinimumPooling.md) (MinPooling)
 
+[MaximumUnpooling](PoolingBlocks/MaximumUnpooling.md) (MaxUnpooling)
+
 [BasePoolingBlock](PoolingBlocks/BasePoolingBlock.md)
