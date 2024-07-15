@@ -238,6 +238,6 @@ ComputationalGraph:getOutputBlockArray(): {FunctionBlockObject}
 
 * FunctionBlockArray: An array containing all the function blocks. The first function block in the array represents the first function block.
 
-## Inherited From:
+## Inherited From
 
 * [BaseInstance](../Cores/BaseInstance.md)

@@ -16,6 +16,6 @@ BaseDropoutBlock.new(): DropoutBlockObject
 
 * DropoutBlock: The generated dropout block object.
 
-## Inherited From:
+## Inherited From
 
 * [FunctionBlock](../Cores/FunctionBlock.md)

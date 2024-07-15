@@ -16,6 +16,6 @@ MeanSquaredError.new(): CostFunctionObject
 
 * CostFunction: The generated cost function object.
 
-## Inherited From:
+## Inherited From
 
 * [BaseCostFunction](BaseCostFunction.md)

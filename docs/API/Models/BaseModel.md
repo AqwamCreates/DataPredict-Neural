@@ -16,6 +16,6 @@ BaseModel.new(): ModelObject
 
 * BaseModel: The generated model object.
 
-## Inherited From:
+## Inherited From
 
 * [BaseInstance](../Cores/BaseInstance.md)

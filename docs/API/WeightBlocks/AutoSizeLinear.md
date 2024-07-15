@@ -26,6 +26,6 @@ Linear.new({finalDimensionSize: number, learningRate: number, Optimizer: Optimiz
 
 * WeightBlock: The generated weight block object.
 
-## Inherited From:
+## Inherited From
 
 * [BaseWeightBlock](BaseWeightBlock.md)

@@ -36,5 +36,4 @@ Reshape:setParameters({dimensionSizeArray: {integer}})
 
 ## Inherited From
 
-
 * [BaseShapeTransformationBlock](BaseShapeTransformationBlock.md)

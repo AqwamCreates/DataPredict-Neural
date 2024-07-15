@@ -16,6 +16,6 @@ Divide.new(): OperatorBlockObject
 
 * OperatorBlock: The generated operator block object.
 
-## Inherited From:
+## Inherited From
 
 * [BaseOperatorBlock](BaseOperatorBlock.md)

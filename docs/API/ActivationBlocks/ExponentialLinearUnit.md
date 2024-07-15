@@ -34,6 +34,6 @@ ExponentialLinearUnit:setParameters({negativeSlopeFactor: number})
 
 * negativeSlopeFactor: The value to be multiplied with negative input values. 
 
-## Inherited From:
+## Inherited From
 
 * [BaseActivationBlock](BaseActivationBlock.md)

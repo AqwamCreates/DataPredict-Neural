@@ -64,6 +64,6 @@ TensorToClassConverter:getClassesList(): {any}
 
 * classesList:  A list of classes. The index of the class relates to the index of the tensor at last dimension. For example, {3, 1} means that the first index of the last dimension represent the class label "3", and the second index of the last dimension represent the class label "1".
 
-## Inherited From:
+## Inherited From
 
 [BaseInstance](../Cores/BaseInstance.md)

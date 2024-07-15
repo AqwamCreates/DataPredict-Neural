@@ -41,6 +41,6 @@ AdaptiveMomentEstimationMaximum:setParameters({beta1: number, beta2: number, eps
 
 * epsilon: The value to ensure that the numbers are not divided by zero.
 
-## Inherited From:
+## Inherited From
 
 * [BaseOptimizer](BaseOptimizer.md)

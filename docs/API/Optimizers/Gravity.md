@@ -38,6 +38,6 @@ Gravity:setParameters({initialStepSize: number, movingAverage: number})
 
 * movingAverage: The value that controls the smoothing of gradients during training.
 
-## Inherited From:
+## Inherited From
 
 * [BaseOptimizer](BaseOptimizer.md)

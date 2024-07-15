@@ -34,6 +34,6 @@ Softmax:setParameters({dimensionIndex: number})
 
 * dimensionIndex: The dimension to sum across the tensor.
 
-## Inherited From:
+## Inherited From
 
 * [BaseActivationBlock](BaseActivationBlock.md)

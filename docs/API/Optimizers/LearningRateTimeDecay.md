@@ -38,6 +38,6 @@ LearningRateTimeDecay:setParameters({decayRate: number, timeStepToDecay: integer
 
 * timeStepToDecay: The number of time steps to decay the learning rate.
 
-## Inherited From:
+## Inherited From
 
 * [BaseOptimizer](BaseOptimizer.md)

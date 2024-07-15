@@ -16,6 +16,6 @@ SigmoidLinearUnit.new(): ActivationBlockObject
 
 * ActivationBlock: The generated activation block object.
 
-## Inherited From:
+## Inherited From
 
 * [BaseActivationBlock](BaseActivationBlock.md)

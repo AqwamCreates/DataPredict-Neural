@@ -20,6 +20,18 @@ Dropout.new({dropoutRate: number}): DropoutBlockObject
 
 * DropoutBlock: The generated dropout block object.
 
-## Inherited From:
+## Functions
+
+```
+
+Dropout:setParameters({dropoutRate: number})
+
+```
+
+#### Parameters:
+
+* dropoutRate: The rate at which the input values are converted to zero.
+
+## Inherited From
 
 * [BaseDropoutBlock](../BaseDropoutBlock.md)

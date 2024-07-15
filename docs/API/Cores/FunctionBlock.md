@@ -703,3 +703,7 @@ FunctionBlock:waitForTotalFirstDerivativeTensorArray(doNotDeepCopy, waitDuration
 #### Returns:
 
 * totalFirstDerivativeTensorArray: An array containing all the total of first derivative tensor that is stored in the function block.
+
+## Inherited From
+
+* [BaseInstance](BaseInstance.md)

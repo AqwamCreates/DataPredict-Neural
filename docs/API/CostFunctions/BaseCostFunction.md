@@ -84,6 +84,6 @@ Parameters:
 
 * LossFunction: The loss function to be set.
 
-## Inherited From:
+## Inherited From
 
 * [BaseInstance](../Cores/BaseInstance.md)

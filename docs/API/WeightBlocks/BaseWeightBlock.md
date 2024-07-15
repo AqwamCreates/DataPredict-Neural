@@ -202,6 +202,6 @@ BaseWeightBlock:findFirstActivationOrWeightBlock(CurrentFunctionBlock: FunctionB
 
 * nextFunctionBlockArrayIndexArray: The array that determines the path to the next function block. The first index is the starting path.
 
-## Inherited From:
+## Inherited From
 
 * [FunctionBlock](../Cores/FunctionBlock.md)

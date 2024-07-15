@@ -16,6 +16,6 @@ BaseCompressionBlock.new(): CompressionBlockObject
 
 CompressionBlockObject: The generated compression block object.
 
-## Inherited From:
+## Inherited From
 
 * [FunctionBlock](../Cores/FunctionBlock.md)

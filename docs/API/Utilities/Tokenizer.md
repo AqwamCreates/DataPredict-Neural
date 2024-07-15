@@ -102,6 +102,6 @@ Tokenizer:setTokenizedItemArray(tokenizedItemArray: [])
 
 * tokenizedItemArray: An array containing all the items. The position of the items in the array indicates the token number.
 
-## Inherited From:
+## Inherited From
 
 [BaseInstance](../Cores/BaseInstance.md)

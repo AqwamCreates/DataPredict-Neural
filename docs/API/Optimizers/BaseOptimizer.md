@@ -92,6 +92,6 @@ Reset optimizer's stored values (excluding the parameters).
 BaseOptimizer:reset()
 ```
 
-## Inherited From:
+## Inherited From
 
 * [BaseInstance](../Cores/BaseInstance.md)

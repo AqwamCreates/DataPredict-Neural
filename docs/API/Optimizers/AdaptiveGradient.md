@@ -22,6 +22,6 @@ AdaptiveGradient:reset()
 
 ```
 
-## Inherited From:
+## Inherited From
 
 * [BaseOptimizer](BaseOptimizer.md)

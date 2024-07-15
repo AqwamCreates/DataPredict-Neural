@@ -38,6 +38,6 @@ AdaptiveGradientDelta:setParameters({decayRate: number, epsilon: number})
 
 * epsilon: The value to ensure that the numbers are not divided by zero.
 
-## Inherited From:
+## Inherited From
 
 * [BaseOptimizer](BaseOptimizer.md)

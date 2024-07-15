@@ -26,6 +26,6 @@ Bias.new({dimensionArray: {number}, learningRate: number, Optimizer: OptimizerOb
 
 * WeightBlock: The generated weight block object.
 
-## Inherited From:
+## Inherited From
 
 * [BaseWeightBlock](BaseWeightBlock.md)

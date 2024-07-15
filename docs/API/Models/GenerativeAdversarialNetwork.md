@@ -16,6 +16,6 @@ GenerativeAdversarialNetwork.new(): GenerativeAdversarialNetworkObject
 
 * GenerativeAdversarialNetwork: The generated generative adversarial network object.
 
-## Inherited From:
+## Inherited From
 
 * [BaseGenerativeAdversarialNetwork](BaseGenerativeAdversarialNetwork.md)

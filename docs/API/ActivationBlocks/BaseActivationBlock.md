@@ -16,6 +16,6 @@ BaseActivationBlock.new(): ActivationBlockObject
 
 * ActivationBlock: The generated activation block object.
 
-## Inherited From:
+## Inherited From
 
 * [FunctionBlock](../Cores/FunctionBlock.md)

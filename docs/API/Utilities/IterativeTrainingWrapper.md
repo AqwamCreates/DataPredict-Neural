@@ -88,6 +88,6 @@ IterativeTrainingWrapper:train(featureTensor: tensor/{tensor}, labelTensor: tens
 
 * costMatrix: A matrix containing the cost values. The each column represents the cost from each output, while each row represents the number of iterations at which the cost values are generated.
 
-## Inherited From:
+## Inherited From
 
 * [BaseInstance](../Cores/BaseInstance.md)

@@ -33,6 +33,6 @@ Momentum:setParameters({decayRate: number})
 
 * decayRate: The value that controls the rate of decay.
 
-## Inherited From:
+## Inherited From
 
 * [BaseOptimizer](BaseOptimizer.md)
