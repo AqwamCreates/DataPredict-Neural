@@ -50,6 +50,6 @@ AveragePooling:setParameters({kernelDimensionSizeArray: {integer}, strideDimensi
 
 	* Ceil
 
-## Inherited From:
+## Inherited From
 
 * [BasePoolingBlock](BasePoolingBlock.md)

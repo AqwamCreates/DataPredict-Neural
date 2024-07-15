@@ -50,6 +50,10 @@ MaximumUnpooling:setParameters({kernelDimensionSizeArray: {integer}, strideDimen
 
 	* BedOfNails
 
-## Inherited From:
+## Inherited From
 
 * [BasePoolingBlock](BasePoolingBlock.md)
+
+## References
+
+* [Unsampling: Unpooling and Transpose Convolution](https://medium.com/jun94-devpblog/dl-12-unsampling-unpooling-and-transpose-convolution-831dc53687ce)
