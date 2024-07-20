@@ -8,7 +8,7 @@ Creates a new pooling block object. If there are no parameters given for that pa
 
 ```
 
-AveragePooling.new({kernelDimensionSizeArray: {integer}, strideDimensionSizeArray: {integer}, outputSizeRoundingMode: string}): PoolingBlockObject
+AveragePooling3D.new({kernelDimensionSizeArray: {integer}, strideDimensionSizeArray: {integer}, outputSizeRoundingMode: string}): PoolingBlockObject
 
 ```
 
@@ -34,7 +34,7 @@ AveragePooling.new({kernelDimensionSizeArray: {integer}, strideDimensionSizeArra
 
 ```
 
-AveragePooling:setParameters({kernelDimensionSizeArray: {integer}, strideDimensionSizeArray: {integer}, outputSizeRoundingMode: string})
+AveragePooling3D:setParameters({kernelDimensionSizeArray: {integer}, strideDimensionSizeArray: {integer}, outputSizeRoundingMode: string})
 
 ```
 
