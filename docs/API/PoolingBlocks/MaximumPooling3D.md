@@ -1,4 +1,4 @@
-# [API Reference](../../API.md) - [PoolingBlocks](../PoolingBlocks.md) - MaximumPooling (MaxPooling)
+# [API Reference](../../API.md) - [PoolingBlocks](../PoolingBlocks.md) - MaximumPooling3D (MaxPooling3D)
 
 ## Constructors
 
