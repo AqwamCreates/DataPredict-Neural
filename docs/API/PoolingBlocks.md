@@ -1,11 +1,11 @@
 # [API Reference](../API.md) - PoolingBlocks
 
-[AveragePooling](PoolingBlocks/AveragePooling.md)
+[AveragePooling](PoolingBlocks/AveragePooling3D.md)
 
-[MaximumPooling](PoolingBlocks/MaximumPooling.md) (MaxPooling)
+[MaximumPooling3D](PoolingBlocks/MaximumPooling3D.md) (MaxPooling)
 
-[MinimumPooling](PoolingBlocks/MinimumPooling.md) (MinPooling)
+[MinimumPooling3D](PoolingBlocks/MinimumPooling3D.md) (MinPooling)
 
-[MaximumUnpooling](PoolingBlocks/MaximumUnpooling.md) (MaxUnpooling)
+[MaximumUnpooling3D](PoolingBlocks/MaximumUnpooling3D.md) (MaxUnpooling)
 
 [BasePoolingBlock](PoolingBlocks/BasePoolingBlock.md)
