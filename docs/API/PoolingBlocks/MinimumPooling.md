@@ -1,4 +1,4 @@
-# [API Reference](../../API.md) - [PoolingBlocks](../PoolingBlocks.md) - MinimumPooling (MinPooling)
+# [API Reference](../../API.md) - [PoolingBlocks](../PoolingBlocks.md) - MinimumPooling3D (MinPooling3D)
 
 ## Constructors
 
@@ -8,7 +8,7 @@ Creates a new pooling block object. If there are no parameters given for that pa
 
 ```
 
-MinimumPooling.new({kernelDimensionSizeArray: {integer}, strideDimensionSizeArray: {integer}, outputSizeRoundingMode: string}): PoolingBlockObject
+MinimumPooling3D.new({kernelDimensionSizeArray: {integer}, strideDimensionSizeArray: {integer}, outputSizeRoundingMode: string}): PoolingBlockObject
 
 ```
 
@@ -34,7 +34,7 @@ MinimumPooling.new({kernelDimensionSizeArray: {integer}, strideDimensionSizeArra
 
 ```
 
-MinimumPooling:setParameters({kernelDimensionSizeArray: {integer}, strideDimensionSizeArray: {integer}, outputSizeRoundingMode: string})
+MinimumPooling3D:setParameters({kernelDimensionSizeArray: {integer}, strideDimensionSizeArray: {integer}, outputSizeRoundingMode: string})
 
 ```
 
