@@ -1,4 +1,4 @@
-# [API Reference](../../API.md) - [PoolingBlocks](../PoolingBlocks.md) - MaximumUnpooling (MaxUnpooling)
+# [API Reference](../../API.md) - [PoolingBlocks](../PoolingBlocks.md) - MaximumUnpooling3D (MaxUnpooling3D)
 
 ## Constructors
 
@@ -8,7 +8,7 @@ Creates a new pooling block object. If there are no parameters given for that pa
 
 ```
 
-MaximumUnpooling.new({kernelDimensionSizeArray: {integer}, strideDimensionSizeArray: {integer}, unpoolingMethod: string}): PoolingBlockObject
+MaximumUnpooling3D.new({kernelDimensionSizeArray: {integer}, strideDimensionSizeArray: {integer}, unpoolingMethod: string}): PoolingBlockObject
 
 ```
 
@@ -34,7 +34,7 @@ MaximumUnpooling.new({kernelDimensionSizeArray: {integer}, strideDimensionSizeAr
 
 ```
 
-MaximumUnpooling:setParameters({kernelDimensionSizeArray: {integer}, strideDimensionSizeArray: {integer}, unpoolingMethod: string})
+MaximumUnpooling3D:setParameters({kernelDimensionSizeArray: {integer}, strideDimensionSizeArray: {integer}, unpoolingMethod: string})
 
 ```
 
