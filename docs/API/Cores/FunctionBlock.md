@@ -16,6 +16,16 @@ Returns:
 
 ## Functions
 
+### pullAllInputTensors()
+
+Pulls all the tensors from the previous function blocks and pass them to the transform() function. Commonly used when trying to get the output of the current function block after linking to the previous function block once the data has already been passed through the whole model without the current function block in it.
+
+```
+
+FunctionBlock:pullAllInputTensors()
+
+```
+
 ### linkForward()
 
 ```
