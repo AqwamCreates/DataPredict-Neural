@@ -1,6 +1,6 @@
 # [API Reference](../API.md) - PoolingBlocks
 
-[AveragePooling](PoolingBlocks/AveragePooling3D.md)
+[AveragePooling3D](PoolingBlocks/AveragePooling3D.md)
 
 [MaximumPooling3D](PoolingBlocks/MaximumPooling3D.md) (MaxPooling)
 
