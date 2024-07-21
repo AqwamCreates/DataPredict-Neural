@@ -10,13 +10,13 @@ Creates a new tensor to class converter object.
 
 ```
 
-TensorToClassConverter.new(classesList: {any}): TensorToClassConverterObject
+TensorToClassConverter.new(ClassesList: {any}): TensorToClassConverterObject
 
 ```
 
 #### Parameters:
 
-* classesList: A list of classes. The index of the class relates to the index of the tensor at last dimension. For example, {3, 1} means that the first index of the last dimension represent the class label "3", and the second index of the last dimension represent the class label "1".
+* ClassesList: A list of classes. The index of the class relates to the index of the tensor at last dimension. For example, {3, 1} means that the first index of the last dimension represent the class label "3", and the second index of the last dimension represent the class label "1".
 
 #### Returns:
 
