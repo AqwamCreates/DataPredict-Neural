@@ -28,13 +28,13 @@ TensorToClassConverter.new(classesList: {any}): TensorToClassConverterObject
 
 ```
 
-TensorToClassConverter:convert(tensorToBeConverted: tensor): tensor
+TensorToClassConverter:convert(tensor: tensor): tensor
 
 ```
 
 #### Parameters:
 
-* tensorToBeConverted: The tensor to be converted.
+* tensor: The tensor to be converted.
 
 #### Returns:
 
@@ -44,13 +44,13 @@ TensorToClassConverter:convert(tensorToBeConverted: tensor): tensor
 
 ```
 
-TensorToClassConverter:setClassesList(classesList: {any})
+TensorToClassConverter:setClassesList(ClassesList: {any})
 
 ```
 
 #### Parameters:
 
-* classesList: A list of classes. The index of the class relates to the index of the tensor at last dimension. For example, {3, 1} means that the first index of the last dimension represent the class label "3", and the second index of the last dimension represent the class label "1".
+* ClassesList: A list of classes. The index of the class relates to the index of the tensor at last dimension. For example, {3, 1} means that the first index of the last dimension represent the class label "3", and the second index of the last dimension represent the class label "1".
 
 ### getClassesList()
 
@@ -62,7 +62,7 @@ TensorToClassConverter:getClassesList(): {any}
 
 #### Returns:
 
-* classesList:  A list of classes. The index of the class relates to the index of the tensor at last dimension. For example, {3, 1} means that the first index of the last dimension represent the class label "3", and the second index of the last dimension represent the class label "1".
+* ClassesList:  A list of classes. The index of the class relates to the index of the tensor at last dimension. For example, {3, 1} means that the first index of the last dimension represent the class label "3", and the second index of the last dimension represent the class label "1".
 
 ## Inherited From
 
