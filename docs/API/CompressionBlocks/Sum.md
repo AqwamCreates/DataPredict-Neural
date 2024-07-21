@@ -14,7 +14,7 @@ Sum.new({dimension: number}): CompressionBlockObject
 
 Parameters:
 
-* dimensionIndex: The dimension to sum across the tensor.
+* dimension: The dimension to sum across the tensor.
 
 #### Returns:
 
@@ -32,7 +32,7 @@ Sum:setParameters({dimension: number})
 
 #### Parameters:
 
-* dimensionIndex: The dimension to sum across the tensor.
+* dimension: The dimension to sum across the tensor.
 
 ## Inherited From
 
