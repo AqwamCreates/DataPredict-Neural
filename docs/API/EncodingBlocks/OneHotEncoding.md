@@ -8,13 +8,21 @@ Creates a new encoding block object. If there are no parameters given for that p
 
 ```
 
-OneHotEncoding.new({dimensionIndex: number}): EncodingBlockObject
+OneHotEncoding.new({finalDimensionSize: number, oneHotEncodingMode: string, indexDictionary: {}}): EncodingBlockObject
 
 ```
 
 Parameters:
 
-* dimensionIndex: The dimension to sum across the tensor.
+* finalDimensionSize: The final dimension size for the transformed tensor. It is equivalent to the number of labels that are available in the data.
+
+* oneHotEncodingMode: The encoding mode to be used by the one hot encoding block. Available options are:
+
+	* Index (Default)
+
+	* Key
+
+* indexDictionary: The index dictionary to be used to convert keys stored in the tensor to one hot encoding tensor. Must be given if using the "Key" one hot encoding mode.
 
 #### Returns:
 
@@ -26,13 +34,21 @@ Parameters:
 
 ```
 
-OneHotEncoding:setParameters({dimensionIndex: number})
+OneHotEncoding:setParameters({finalDimensionSize: number, oneHotEncodingMode: string, indexDictionary: {}})
 
 ```
 
 #### Parameters:
 
-* dimensionIndex: The dimension to sum across the tensor.
+* finalDimensionSize: The final dimension size for the transformed tensor. It is equivalent to the number of labels that are available in the data.
+
+* oneHotEncodingMode: The encoding mode to be used by the one hot encoding block. Available options are:
+
+	* Index
+
+	* Key
+
+* indexDictionary: The index dictionary to be used to convert keys stored in the tensor to one hot encoding tensor. Must be given if using the "Key" one hot encoding mode.
 
 ## Inherited From
 

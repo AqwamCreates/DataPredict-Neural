@@ -16,6 +16,8 @@
 
 [CompressionBlocks](API/CompressionBlocks.md)
 
+[EncodingBlocks](API/EncodingBlocks.md)
+
 ## Extensions
 
 [CostFunctions](API/CostFunctions.md)
