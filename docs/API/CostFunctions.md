@@ -4,4 +4,10 @@
 
 [MeanAbsoluteError](CostFunctions/MeanAbsoluteError.md) (MAE)
 
+[BinaryCrossEntropy](CostFunctions/BinaryCrossEntropy.md) (BCE)
+
+[CategoricalCrossEntropy](CostFunctions/CategoricalCrossEntropy.md) (CCE)
+
+[FocalLoss](CostFunctions/FocalLoss.md) (CCE)
+
 [BaseCostFunction](CostFunctions/BaseCostFunction.md)
