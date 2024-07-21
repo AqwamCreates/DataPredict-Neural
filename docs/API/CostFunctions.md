@@ -8,6 +8,6 @@
 
 [CategoricalCrossEntropy](CostFunctions/CategoricalCrossEntropy.md) (CCE)
 
-[FocalLoss](CostFunctions/FocalLoss.md) (CCE)
+[FocalLoss](CostFunctions/FocalLoss.md)
 
 [BaseCostFunction](CostFunctions/BaseCostFunction.md)
