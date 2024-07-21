@@ -38,7 +38,7 @@ TensorToClassConverter:convert(tensor: tensor): tensor
 
 #### Returns:
 
-* classTensor: The tensor containing the class values. The shape of the tensor is the same as "tensorToBeConverted", except that the size at the final dimension is equal to 1.
+* classTensor: The tensor containing the class values. The shape of the tensor is the same as "tensor", except that the size at the final dimension is equal to 1.
 
 ### setClassesList()
 
