@@ -1,4 +1,4 @@
-# [API Reference](../../API.md) - [Cores](../Cores.md) - FunctionBlock
+# [API Reference](../../API.md) - [Cores](../Cores.md) - BaseFunctionBlock
 
 ## Constructors
 
@@ -6,13 +6,13 @@
 
 ```
 
-FunctionBlock.new(): FunctionBlockObject
+BaseFunctionBlock.new(): BaseFunctionBlockObject
 
 ```
 
 Returns:
 
-* FunctionBlock: The generated function block object.
+* BaseFunctionBlock: The generated function block object.
 
 ## Functions
 
@@ -22,7 +22,7 @@ Pulls all the tensors from the previous function blocks and pass them to the tra
 
 ```
 
-FunctionBlock:pullAllInputTensors()
+BaseFunctionBlock:pullAllInputTensors()
 
 ```
 
@@ -30,103 +30,103 @@ FunctionBlock:pullAllInputTensors()
 
 ```
 
-FunctionBlock:linkForward(NextFunctionBlock: FunctionBlockObject)
+BaseFunctionBlock:linkForward(NextBaseFunctionBlock: BaseFunctionBlockObject)
 
 ```
 
 #### Parameters:
 
-* NextFunctionBlock: The next function block to be linked with the current function block.
+* NextBaseFunctionBlock: The next function block to be linked with the current function block.
 
 ### multipleLinkForward()
 
 ```
 
-FunctionBlock:multipleLinkForward(...: FunctionBlockObject)
+BaseFunctionBlock:multipleLinkForward(...: BaseFunctionBlockObject)
 
 ```
 
 #### Parameters:
 
-* NextFunctionBlock: A variable number of next function blocks to be linked with the current function block.
+* NextBaseFunctionBlock: A variable number of next function blocks to be linked with the current function block.
 
 ### linkBackward()
 
 ```
 
-FunctionBlock:linkBackward(PreviousFunctionBlock: FunctionBlockObject)
+BaseFunctionBlock:linkBackward(PreviousBaseFunctionBlock: BaseFunctionBlockObject)
 
 ```
 
 #### Parameters:
 
-* PreviousFunctionBlock: The previous function block to be linked with the current function block.
+* PreviousBaseFunctionBlock: The previous function block to be linked with the current function block.
 
 ### multipleLinkBackward()
 
 ```
 
-FunctionBlock:multipleLinkBackward(...: FunctionBlockObject)
+BaseFunctionBlock:multipleLinkBackward(...: BaseFunctionBlockObject)
 
 ```
 
 #### Parameters:
 
-* PreviousFunctionBlock: A variable number of previous function blocks to be linked with the current function block.
+* PreviousBaseFunctionBlock: A variable number of previous function blocks to be linked with the current function block.
 
 ### unlinkForward()
 
 ```
 
-FunctionBlock:unlinkForward(NextFunctionBlock: FunctionBlockObject)
+BaseFunctionBlock:unlinkForward(NextBaseFunctionBlock: BaseFunctionBlockObject)
 
 ```
 
 #### Parameters:
 
-* NextFunctionBlock: The next function block to be unlinked from the current function block.
+* NextBaseFunctionBlock: The next function block to be unlinked from the current function block.
 
 ### multipleUnlinkForward()
 
 ```
 
-FunctionBlock:multipleUnlinkForward(...: FunctionBlockObject)
+BaseFunctionBlock:multipleUnlinkForward(...: BaseFunctionBlockObject)
 
 ```
 
 #### Parameters:
 
-* NextFunctionBlock: A variable number of next function blocks to be unlinked from the current function block.
+* NextBaseFunctionBlock: A variable number of next function blocks to be unlinked from the current function block.
 
 ### unlinkBackward()
 
 ```
 
-FunctionBlock:unlinkBackward(PreviousFunctionBlock: FunctionBlockObject)
+BaseFunctionBlock:unlinkBackward(PreviousBaseFunctionBlock: BaseFunctionBlockObject)
 
 ```
 
 #### Parameters:
 
-* PreviousFunctionBlock: The previous function block to be unlinked from the current function block.
+* PreviousBaseFunctionBlock: The previous function block to be unlinked from the current function block.
 
 ### multipleUnlinkBackward()
 
 ```
 
-FunctionBlock:multipleUnlinkBackward(...: FunctionBlockObject)
+BaseFunctionBlock:multipleUnlinkBackward(...: BaseFunctionBlockObject)
 
 ```
 
 #### Parameters:
 
-* PreviousFunctionBlock: A variable number of previous function blocks to be unlinked from the current function block.
+* PreviousBaseFunctionBlock: A variable number of previous function blocks to be unlinked from the current function block.
 
 ### setFunction()
 
 ```
 
-FunctionBlock:setFunction(Function: Function)
+BaseFunctionBlock:setFunction(Function: Function)
 
 ```
 
@@ -138,7 +138,7 @@ FunctionBlock:setFunction(Function: Function)
 
 ```
 
-FunctionBlock:setFirstDerivativeFunction(FirstDerivativeFunction: Function)
+BaseFunctionBlock:setFirstDerivativeFunction(FirstDerivativeFunction: Function)
 
 ```
 
@@ -150,7 +150,7 @@ FunctionBlock:setFirstDerivativeFunction(FirstDerivativeFunction: Function)
 
 ```
 
-FunctionBlock:transform(inputTensor: tensor): tensor
+BaseFunctionBlock:transform(inputTensor: tensor): tensor
 
 ```
 
@@ -166,7 +166,7 @@ FunctionBlock:transform(inputTensor: tensor): tensor
 
 ```
 
-FunctionBlock:differentiate(initialFirstDerivativeTensor: tensor, transformedTensor: tensor, inputTensor: tensor): tensor
+BaseFunctionBlock:differentiate(initialFirstDerivativeTensor: tensor, transformedTensor: tensor, inputTensor: tensor): tensor
 
 ```
 
@@ -182,59 +182,59 @@ FunctionBlock:differentiate(initialFirstDerivativeTensor: tensor, transformedTen
 
 * firstDerivativeTensor: The tensor that is transformed by the function block using first derivative function.
 
-### addNextFunctionBlock()
+### addNextBaseFunctionBlock()
 
 ```
 
-FunctionBlock:addNextFunctionBlock(NextFunctionBlock: FunctionBlockObject)
-
-```
-
-#### Parameters:
-
-* NextFunctionBlock: The next function block to be linked with the current function block.
-
-### addNextFunctionBlock()
-
-```
-
-FunctionBlock:addPreviousFunctionBlock(PreviousFunctionBlock: FunctionBlockObject)
+BaseFunctionBlock:addNextBaseFunctionBlock(NextBaseFunctionBlock: BaseFunctionBlockObject)
 
 ```
 
 #### Parameters:
 
-* PreviousFunctionBlock: The previous function block to be linked with the current function block.
+* NextBaseFunctionBlock: The next function block to be linked with the current function block.
 
-### addMultipleNextFunctionBlocks()
-
-```
-
-FunctionBlock:addMultipleNextFunctionBlocks(...: FunctionBlockObject)
+### addNextBaseFunctionBlock()
 
 ```
 
-#### Parameters:
-
-* NextFunctionBlock: The next function block to be linked with the current function block.
-
-### addMultiplePreviousFunctionBlocks()
-
-```
-
-FunctionBlock:addMultiplePreviousFunctionBlocks(...: FunctionBlockObject)
+BaseFunctionBlock:addPreviousBaseFunctionBlock(PreviousBaseFunctionBlock: BaseFunctionBlockObject)
 
 ```
 
 #### Parameters:
 
-* PreviousFunctionBlock: The previous function block to be linked with the current function block.
+* PreviousBaseFunctionBlock: The previous function block to be linked with the current function block.
+
+### addMultipleNextBaseFunctionBlocks()
+
+```
+
+BaseFunctionBlock:addMultipleNextBaseFunctionBlocks(...: BaseFunctionBlockObject)
+
+```
+
+#### Parameters:
+
+* NextBaseFunctionBlock: The next function block to be linked with the current function block.
+
+### addMultiplePreviousBaseFunctionBlocks()
+
+```
+
+BaseFunctionBlock:addMultiplePreviousBaseFunctionBlocks(...: BaseFunctionBlockObject)
+
+```
+
+#### Parameters:
+
+* PreviousBaseFunctionBlock: The previous function block to be linked with the current function block.
 
 ### setFirstDerivativeFunctionRequiresTransformedTensor()
 
 ```
 
-FunctionBlock:setFirstDerivativeFunctionRequiresTransformedTensor(option)
+BaseFunctionBlock:setFirstDerivativeFunctionRequiresTransformedTensor(option)
 
 ```
 
@@ -246,7 +246,7 @@ FunctionBlock:setFirstDerivativeFunctionRequiresTransformedTensor(option)
 
 ```
 
-FunctionBlock:getFirstDerivativeFunctionRequiresTransformedTensor(option: boolean)
+BaseFunctionBlock:getFirstDerivativeFunctionRequiresTransformedTensor(option: boolean)
 
 ```
 
@@ -254,127 +254,127 @@ FunctionBlock:getFirstDerivativeFunctionRequiresTransformedTensor(option: boolea
 
 * option: Set whether or not the first derivative function requires the transformed input tensor.
 
-### setNextFunctionBlockByIndex()
+### setNextBaseFunctionBlockByIndex()
 
 ```
 
-FunctionBlock:setNextFunctionBlockByIndex(nextFunctionBlockArrayIndex: number, NextFunctionBlock: FunctionBlockObject)
-
-```
-
-#### Parameters:
-
-* nextFunctionBlockArrayIndex: The index where the next function block will be placed in the next function block array.
-
-* NextFunctionBlock: The next function block that is linked with the current function block.
-
-### getNextFunctionBlockByIndex()
-
-```
-
-FunctionBlock:getNextFunctionBlockByIndex(nextFunctionBlockArrayIndex: number): FunctionBlockObject
+BaseFunctionBlock:setNextBaseFunctionBlockByIndex(nextBaseFunctionBlockArrayIndex: number, NextBaseFunctionBlock: BaseFunctionBlockObject)
 
 ```
 
 #### Parameters:
 
-* nextFunctionBlockArrayIndex: The index where the next function block is located in the next function block array.
+* nextBaseFunctionBlockArrayIndex: The index where the next function block will be placed in the next function block array.
+
+* NextBaseFunctionBlock: The next function block that is linked with the current function block.
+
+### getNextBaseFunctionBlockByIndex()
+
+```
+
+BaseFunctionBlock:getNextBaseFunctionBlockByIndex(nextBaseFunctionBlockArrayIndex: number): BaseFunctionBlockObject
+
+```
+
+#### Parameters:
+
+* nextBaseFunctionBlockArrayIndex: The index where the next function block is located in the next function block array.
 
 #### Returns:
 
-* NextFunctionBlock: The next function block that is linked with the current function block.
+* NextBaseFunctionBlock: The next function block that is linked with the current function block.
 
-### setPreviousFunctionBlockByIndex()
-
-```
-
-FunctionBlock:setPreviousFunctionBlockByIndex(previousFunctionBlockArrayIndex: number, PreviousFunctionBlock: FunctionBlockObject)
+### setPreviousBaseFunctionBlockByIndex()
 
 ```
 
-#### Parameters:
-
-* previousFunctionBlockArrayIndex: The index where the previous function block will be placed in the previous function block array.
-
-* PreviousFunctionBlock: The previous function block that is linked with the current function block.
-
-### getPreviousFunctionBlockByIndex()
-
-```
-
-FunctionBlock:getPreviousFunctionBlockByIndex(previousFunctionBlockArrayIndex: number): FunctionBlockObject
+BaseFunctionBlock:setPreviousBaseFunctionBlockByIndex(previousBaseFunctionBlockArrayIndex: number, PreviousBaseFunctionBlock: BaseFunctionBlockObject)
 
 ```
 
 #### Parameters:
 
-* previousFunctionBlockArrayIndex: The index where the previous function block is located in the previous function block array.
+* previousBaseFunctionBlockArrayIndex: The index where the previous function block will be placed in the previous function block array.
+
+* PreviousBaseFunctionBlock: The previous function block that is linked with the current function block.
+
+### getPreviousBaseFunctionBlockByIndex()
+
+```
+
+BaseFunctionBlock:getPreviousBaseFunctionBlockByIndex(previousBaseFunctionBlockArrayIndex: number): BaseFunctionBlockObject
+
+```
+
+#### Parameters:
+
+* previousBaseFunctionBlockArrayIndex: The index where the previous function block is located in the previous function block array.
 
 #### Returns:
 
-* PreviousFunctionBlock: The previous function block that is linked with the current function block.
+* PreviousBaseFunctionBlock: The previous function block that is linked with the current function block.
 
-### removeNextFunctionBlock()
-
-```
-
-FunctionBlock:removeNextFunctionBlock(NextFunctionBlock: FunctionBlockObject)
+### removeNextBaseFunctionBlock()
 
 ```
 
-#### Parameters:
-
-* NextFunctionBlock: The next function block to remove from the next function block array.
-
-### removePreviousFunctionBlock()
-
-```
-
-FunctionBlock:removePreviousFunctionBlock(PreviousFunctionBlock: FunctionBlockObject)
+BaseFunctionBlock:removeNextBaseFunctionBlock(NextBaseFunctionBlock: BaseFunctionBlockObject)
 
 ```
 
 #### Parameters:
 
-* PreviousFunctionBlock: The previous function block to remove from the previous function block array.
+* NextBaseFunctionBlock: The next function block to remove from the next function block array.
 
-### removeNextFunctionBlockByIndex()
-
-```
-
-FunctionBlock:removeNextFunctionBlockByIndex(nextFunctionBlockArrayIndex: number)
+### removePreviousBaseFunctionBlock()
 
 ```
 
-#### Parameters:
-
-* nextFunctionBlockArrayIndex: The index where the next function block is located in the next function block array.
-
-### removePreviousFunctionBlockByIndex()
-
-```
-
-FunctionBlock:removePreviousFunctionBlockByIndex(previousFunctionBlockArrayIndex: number)
+BaseFunctionBlock:removePreviousBaseFunctionBlock(PreviousBaseFunctionBlock: BaseFunctionBlockObject)
 
 ```
 
 #### Parameters:
 
-* previousFunctionBlockArrayIndex: The index where the previous function block is located in the previous function block array.
+* PreviousBaseFunctionBlock: The previous function block to remove from the previous function block array.
 
-### clearNextFunctionBlockArray()
-
-```
-
-FunctionBlock:clearNextFunctionBlockArray()
+### removeNextBaseFunctionBlockByIndex()
 
 ```
 
-### clearPreviousFunctionBlockArray()
+BaseFunctionBlock:removeNextBaseFunctionBlockByIndex(nextBaseFunctionBlockArrayIndex: number)
 
 ```
 
-FunctionBlock:clearPreviousFunctionBlockArray()
+#### Parameters:
+
+* nextBaseFunctionBlockArrayIndex: The index where the next function block is located in the next function block array.
+
+### removePreviousBaseFunctionBlockByIndex()
+
+```
+
+BaseFunctionBlock:removePreviousBaseFunctionBlockByIndex(previousBaseFunctionBlockArrayIndex: number)
+
+```
+
+#### Parameters:
+
+* previousBaseFunctionBlockArrayIndex: The index where the previous function block is located in the previous function block array.
+
+### clearNextBaseFunctionBlockArray()
+
+```
+
+BaseFunctionBlock:clearNextBaseFunctionBlockArray()
+
+```
+
+### clearPreviousBaseFunctionBlockArray()
+
+```
+
+BaseFunctionBlock:clearPreviousBaseFunctionBlockArray()
 
 ```
 
@@ -382,7 +382,7 @@ FunctionBlock:clearPreviousFunctionBlockArray()
 
 ```
 
-FunctionBlock:setInputTensorArray(inputTensorArray: {tensor}, doNotDeepCopy: boolean)
+BaseFunctionBlock:setInputTensorArray(inputTensorArray: {tensor}, doNotDeepCopy: boolean)
 
 ```
 
@@ -396,7 +396,7 @@ FunctionBlock:setInputTensorArray(inputTensorArray: {tensor}, doNotDeepCopy: boo
 
 ```
 
-FunctionBlock:getInputTensorArray(doNotDeepCopy: boolean): {tensor}
+BaseFunctionBlock:getInputTensorArray(doNotDeepCopy: boolean): {tensor}
 
 ```
 
@@ -412,7 +412,7 @@ FunctionBlock:getInputTensorArray(doNotDeepCopy: boolean): {tensor}
 
 ```
 
-FunctionBlock:setTransformedTensor(transformedTensor: tensor, doNotDeepCopy: boolean)
+BaseFunctionBlock:setTransformedTensor(transformedTensor: tensor, doNotDeepCopy: boolean)
 
 ```
 
@@ -426,7 +426,7 @@ FunctionBlock:setTransformedTensor(transformedTensor: tensor, doNotDeepCopy: boo
 
 ```
 
-FunctionBlock:getTransformedTensor(doNotDeepCopy: boolean): tensor
+BaseFunctionBlock:getTransformedTensor(doNotDeepCopy: boolean): tensor
 
 ```
 
@@ -442,7 +442,7 @@ FunctionBlock:getTransformedTensor(doNotDeepCopy: boolean): tensor
 
 ```
 
-FunctionBlock:setTotalPartialFirstDerivativeTensorArray(partialFirstDerivativeTensorArray: {tensor}, doNotDeepCopy: boolean)
+BaseFunctionBlock:setTotalPartialFirstDerivativeTensorArray(partialFirstDerivativeTensorArray: {tensor}, doNotDeepCopy: boolean)
 
 ```
 
@@ -456,7 +456,7 @@ FunctionBlock:setTotalPartialFirstDerivativeTensorArray(partialFirstDerivativeTe
 
 ```
 
-FunctionBlock:getTotalFirstDerivativeTensorArray(doNotDeepCopy: boolean): {tensor}
+BaseFunctionBlock:getTotalFirstDerivativeTensorArray(doNotDeepCopy: boolean): {tensor}
 
 ```
 
@@ -472,7 +472,7 @@ FunctionBlock:getTotalFirstDerivativeTensorArray(doNotDeepCopy: boolean): {tenso
 
 ```
 
-FunctionBlock:setTotalFirstDerivativeTensorArray(firstDerivativeTensorArray: {tensor}, doNotDeepCopy: boolean)
+BaseFunctionBlock:setTotalFirstDerivativeTensorArray(firstDerivativeTensorArray: {tensor}, doNotDeepCopy: boolean)
 
 ```
 
@@ -486,7 +486,7 @@ FunctionBlock:setTotalFirstDerivativeTensorArray(firstDerivativeTensorArray: {te
 
 ```
 
-FunctionBlock:getTotalFirstDerivativeTensorArray(doNotDeepCopy: boolean): {tensor}
+BaseFunctionBlock:getTotalFirstDerivativeTensorArray(doNotDeepCopy: boolean): {tensor}
 
 ```
 
@@ -498,35 +498,35 @@ FunctionBlock:getTotalFirstDerivativeTensorArray(doNotDeepCopy: boolean): {tenso
 
 * totalFirstDerivativeTensorArray: An array containing all the total of first derivative tensors that is stored in the function block.
 
-### getNextFunctionBlockArray()
+### getNextBaseFunctionBlockArray()
 
 ```
 
-FunctionBlock:getNextFunctionBlockArray(): {FunctionBlock}
-
-```
-
-#### Returns:
-
-* NextFunctionBlockArray: An array containing next function blocks. The first next function block in the array represents the first next function block connected with the current function block.
-
-### getPreviousFunctionBlockArray()
-
-```
-
-FunctionBlock:getPreviousFunctionBlockArray(): {FunctionBlock}
+BaseFunctionBlock:getNextBaseFunctionBlockArray(): {BaseFunctionBlock}
 
 ```
 
 #### Returns:
 
-* PreviousFunctionBlockArray: An array containing previous function blocks. The first next function block in the array represents the previous next function block connected with the current function block.
+* NextBaseFunctionBlockArray: An array containing next function blocks. The first next function block in the array represents the first next function block connected with the current function block.
+
+### getPreviousBaseFunctionBlockArray()
+
+```
+
+BaseFunctionBlock:getPreviousBaseFunctionBlockArray(): {BaseFunctionBlock}
+
+```
+
+#### Returns:
+
+* PreviousBaseFunctionBlockArray: An array containing previous function blocks. The first next function block in the array represents the previous next function block connected with the current function block.
 
 ### setWaitForAllInitialPartialFirstDerivativeTensors()
 
 ```
 
-FunctionBlock:setWaitForAllInitialPartialFirstDerivativeTensors(option: boolean)
+BaseFunctionBlock:setWaitForAllInitialPartialFirstDerivativeTensors(option: boolean)
 
 ```
 
@@ -538,7 +538,7 @@ FunctionBlock:setWaitForAllInitialPartialFirstDerivativeTensors(option: boolean)
 
 ```
 
-FunctionBlock:getWaitForAllInitialPartialFirstDerivativeTensors(): boolean
+BaseFunctionBlock:getWaitForAllInitialPartialFirstDerivativeTensors(): boolean
 
 ```
 
@@ -550,7 +550,7 @@ FunctionBlock:getWaitForAllInitialPartialFirstDerivativeTensors(): boolean
 
 ```
 
-FunctionBlock:setSaveInputTensorArray(option: boolean)
+BaseFunctionBlock:setSaveInputTensorArray(option: boolean)
 
 ```
 
@@ -562,7 +562,7 @@ FunctionBlock:setSaveInputTensorArray(option: boolean)
 
 ```
 
-FunctionBlock:getSaveInputTensorArray(): boolean
+BaseFunctionBlock:getSaveInputTensorArray(): boolean
 
 ```
 
@@ -574,7 +574,7 @@ FunctionBlock:getSaveInputTensorArray(): boolean
 
 ```
 
-FunctionBlock:setSaveTransformedTensor(option: boolean)
+BaseFunctionBlock:setSaveTransformedTensor(option: boolean)
 
 ```
 
@@ -586,7 +586,7 @@ FunctionBlock:setSaveTransformedTensor(option: boolean)
 
 ```
 
-FunctionBlock:getSaveTransformedTensor(): boolean
+BaseFunctionBlock:getSaveTransformedTensor(): boolean
 
 ```
 
@@ -598,7 +598,7 @@ FunctionBlock:getSaveTransformedTensor(): boolean
 
 ```
 
-FunctionBlock:setSaveTotalPartialFirstDerivativeTensorArray(option: boolean)
+BaseFunctionBlock:setSaveTotalPartialFirstDerivativeTensorArray(option: boolean)
 
 ```
 
@@ -610,7 +610,7 @@ FunctionBlock:setSaveTotalPartialFirstDerivativeTensorArray(option: boolean)
 
 ```
 
-FunctionBlock:getSaveTotalPartialFirstDerivativeTensorArray(): boolean
+BaseFunctionBlock:getSaveTotalPartialFirstDerivativeTensorArray(): boolean
 
 ```
 
@@ -622,7 +622,7 @@ FunctionBlock:getSaveTotalPartialFirstDerivativeTensorArray(): boolean
 
 ```
 
-FunctionBlock:setSaveTotalFirstDerivativeTensorArray(option: boolean)
+BaseFunctionBlock:setSaveTotalFirstDerivativeTensorArray(option: boolean)
 
 ```
 
@@ -634,7 +634,7 @@ FunctionBlock:setSaveTotalFirstDerivativeTensorArray(option: boolean)
 
 ```
 
-FunctionBlock:getSaveTotalFirstDerivativeTensorArray(): boolean
+BaseFunctionBlock:getSaveTotalFirstDerivativeTensorArray(): boolean
 
 ```
 
@@ -646,7 +646,7 @@ FunctionBlock:getSaveTotalFirstDerivativeTensorArray(): boolean
 
 ```
 
-FunctionBlock:waitForInputTensorArray(doNotDeepCopy, waitDuration): {tensor}
+BaseFunctionBlock:waitForInputTensorArray(doNotDeepCopy, waitDuration): {tensor}
 
 ```
 
@@ -664,7 +664,7 @@ FunctionBlock:waitForInputTensorArray(doNotDeepCopy, waitDuration): {tensor}
 
 ```
 
-FunctionBlock:waitForTransformedTensor(doNotDeepCopy, waitDuration): tensor
+BaseFunctionBlock:waitForTransformedTensor(doNotDeepCopy, waitDuration): tensor
 
 ```
 
@@ -682,7 +682,7 @@ FunctionBlock:waitForTransformedTensor(doNotDeepCopy, waitDuration): tensor
 
 ```
 
-FunctionBlock:waitForTotalPartialFirstDerivativeTensorArray(doNotDeepCopy, waitDuration): {tensor}
+BaseFunctionBlock:waitForTotalPartialFirstDerivativeTensorArray(doNotDeepCopy, waitDuration): {tensor}
 
 ```
 
@@ -700,7 +700,7 @@ FunctionBlock:waitForTotalPartialFirstDerivativeTensorArray(doNotDeepCopy, waitD
 
 ```
 
-FunctionBlock:waitForTotalFirstDerivativeTensorArray(doNotDeepCopy, waitDuration): {tensor}
+BaseFunctionBlock:waitForTotalFirstDerivativeTensorArray(doNotDeepCopy, waitDuration): {tensor}
 
 ```
 

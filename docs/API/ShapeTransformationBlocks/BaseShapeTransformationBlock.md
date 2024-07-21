@@ -18,4 +18,4 @@ BaseShapeTransformationBlock.new(): ShapeTransformationBlockObject
 
 ## Inherited From:
 
-* [FunctionBlock](../Cores/FunctionBlock.md)
+* [BaseFunctionBlock](../Cores/BaseFunctionBlock.md)

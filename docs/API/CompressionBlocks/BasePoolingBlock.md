@@ -18,4 +18,4 @@ CompressionBlockObject: The generated compression block object.
 
 ## Inherited From
 
-* [FunctionBlock](../Cores/FunctionBlock.md)
+* [BaseFunctionBlock](../Cores/BaseFunctionBlock.md)

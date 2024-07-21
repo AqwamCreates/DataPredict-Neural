@@ -204,4 +204,4 @@ BaseWeightBlock:findFirstActivationOrWeightBlock(CurrentFunctionBlock: FunctionB
 
 ## Inherited From
 
-* [FunctionBlock](../Cores/FunctionBlock.md)
+* [BaseFunctionBlock](../Cores/BaseFunctionBlock.md)

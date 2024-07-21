@@ -18,4 +18,4 @@ OperatorBlock.new(): OperatorBlockObject
 
 ## Inherited From
 
-* [FunctionBlock](../Cores/FunctionBlock.md)
+* [BaseFunctionBlock](../Cores/BaseFunctionBlock.md)
