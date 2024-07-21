@@ -18,7 +18,7 @@ Parameters:
 
 #### Returns:
 
-* ActivationBlock: The generated compression block object.
+* CompressionBlock: The generated compression block object.
 
 ## Functions
 

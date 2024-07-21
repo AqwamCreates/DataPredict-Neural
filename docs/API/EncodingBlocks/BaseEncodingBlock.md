@@ -14,7 +14,7 @@ BaseEncodingBlock.new(): EncodingBlockObject
 
 #### Returns:
 
-EncodingBlockObject: The generated encoding block object.
+EncodingBlock: The generated encoding block object.
 
 ## Inherited From
 
