@@ -8,7 +8,7 @@ Creates a new compression block object. If there are no parameters given for tha
 
 ```
 
-Sum.new({dimensionIndex: number}): CompressionBlockObject
+Sum.new({dimension: number}): CompressionBlockObject
 
 ```
 
@@ -26,7 +26,7 @@ Parameters:
 
 ```
 
-Sum:setParameters({dimensionIndex: number})
+Sum:setParameters({dimension: number})
 
 ```
 
