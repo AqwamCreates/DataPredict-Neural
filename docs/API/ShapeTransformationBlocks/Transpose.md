@@ -8,13 +8,13 @@ Creates a new shape tranformation block object. If there are no parameters given
 
 ```
 
-Transpose.new({dimensionIndexArray: {number}}): ShapeTransformationBlockObject
+Transpose.new({dimensionArray: {number}}): ShapeTransformationBlockObject
 
 ```
 
 #### Parameters:
 
-* dimensionIndexArray: A table containing a pair of dimension indices to swap sizes with. Must contain two values only.
+* dimensionArray: A table containing a pair of dimensions to swap sizes with. Must contain two values only.
 
 #### Returns:
 
@@ -26,13 +26,13 @@ Transpose.new({dimensionIndexArray: {number}}): ShapeTransformationBlockObject
 
 ```
 
-Transpose:setParameters({dimensionIndexArray: {number}})
+Transpose:setParameters({dimensionArray: {number}})
 
 ```
 
 #### Parameters:
 
-* dimensionIndexArray: A table containing a pair of dimension indices to swap sizes with. Must contain two values only.
+* dimensionArray: A table containing a pair of dimensions to swap sizes with. Must contain two values only.
 
 ## Inherited From
 
