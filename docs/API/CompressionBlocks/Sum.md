@@ -8,13 +8,13 @@ Creates a new compression block object. If there are no parameters given for tha
 
 ```
 
-Sum.new({dimensionIndex: number}): CompressionBlockObject
+Sum.new({dimension: number}): CompressionBlockObject
 
 ```
 
 Parameters:
 
-* dimensionIndex: The dimension to sum across the tensor.
+* dimension: The dimension to sum across the tensor.
 
 #### Returns:
 
@@ -26,13 +26,13 @@ Parameters:
 
 ```
 
-Sum:setParameters({dimensionIndex: number})
+Sum:setParameters({dimension: number})
 
 ```
 
 #### Parameters:
 
-* dimensionIndex: The dimension to sum across the tensor.
+* dimension: The dimension to sum across the tensor.
 
 ## Inherited From
 

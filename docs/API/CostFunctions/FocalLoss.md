@@ -39,3 +39,7 @@ FocalLoss:setParameters({alpha: number, gamma: number})
 ## Inherited From
 
 * [BaseCostFunction](BaseCostFunction.md)
+
+## References
+
+* [Focal loss implementation for LightGBM](https://maxhalford.github.io/blog/lightgbm-focal-loss/#:~:text=The%20following%20plot%20shows%20the,is%20convex%20in%20every%20case.)
