@@ -10,6 +10,12 @@
 
 [Sum](OperatorBlocks/Sum.md)
 
+[Mean](OperatorBlocks/Mean.md)
+
+[StandardDeviation](OperatorBlocks/StandardDeviation.md)
+
+[ZScoreNormalize](OperatorBlocks/StandardDeviation.md)
+
 [DotProduct](OperatorBlocks/DotProduct.md)
 
 [Concatenate](OperatorBlocks/Concatenate.md)

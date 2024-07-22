@@ -1,4 +1,4 @@
-# [API Reference](../../API.md) - [OperatorBlocks](../OperatorBlocks.md) - Sum
+# [API Reference](../../API.md) - [OperatorBlocks](../OperatorBlocks.md) - StandardDeviation
 
 ## Constructors
 
@@ -8,13 +8,13 @@ Creates a new operator block object. If there are no parameters given for that p
 
 ```
 
-Sum.new({dimension: number}): OperatorBlockObject
+StandardDeviation.new({dimension: number}): OperatorBlockObject
 
 ```
 
 Parameters:
 
-* dimension: The dimension to sum across the tensor.
+* dimension: The dimension to StandardDeviation across the tensor.
 
 #### Returns:
 
@@ -26,13 +26,13 @@ Parameters:
 
 ```
 
-Sum:setParameters({dimension: number})
+StandardDeviation:setParameters({dimension: number})
 
 ```
 
 #### Parameters:
 
-* dimension: The dimension to sum across the tensor.
+* dimension: The dimension to StandardDeviation across the tensor.
 
 ## Inherited From
 
