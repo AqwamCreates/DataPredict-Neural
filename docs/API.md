@@ -14,8 +14,6 @@
 
 [PoolingBlocks](API/PoolingBlocks.md)
 
-[CompressionBlocks](API/CompressionBlocks.md)
-
 [EncodingBlocks](API/EncodingBlocks.md)
 
 ## Extensions
