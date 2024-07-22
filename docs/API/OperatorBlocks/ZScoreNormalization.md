@@ -1,4 +1,4 @@
-# [API Reference](../../API.md) - [OperatorBlocks](../OperatorBlocks.md) - ZScoreNormalize
+# [API Reference](../../API.md) - [OperatorBlocks](../OperatorBlocks.md) - ZScoreNormalization
 
 ## Constructors
 
@@ -8,7 +8,7 @@ Creates a new operator block object. If there are no parameters given for that p
 
 ```
 
-ZScoreNormalize.new({dimension: number}): OperatorBlockObject
+ZScoreNormalization.new({dimension: number}): OperatorBlockObject
 
 ```
 
@@ -26,7 +26,7 @@ Parameters:
 
 ```
 
-ZScoreNormalize:setParameters({dimension: number})
+ZScoreNormalization:setParameters({dimension: number})
 
 ```
 

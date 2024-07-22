@@ -14,7 +14,7 @@
 
 [StandardDeviation](OperatorBlocks/StandardDeviation.md)
 
-[ZScoreNormalize](OperatorBlocks/StandardDeviation.md)
+[ZScoreNormalization](OperatorBlocks/ZScoreNormalization.md)
 
 [DotProduct](OperatorBlocks/DotProduct.md)
 
