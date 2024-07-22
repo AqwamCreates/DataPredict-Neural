@@ -1,4 +1,4 @@
-# [API Reference](../../API.md) - [CompressionBlocks](../CompressionBlocks.md) - Sum
+# [API Reference](../../API.md) - [OperatorBlocks](../OperatorBlocks.md) - Sum
 
 ## Constructors
 
@@ -36,4 +36,4 @@ Sum:setParameters({dimension: number})
 
 ## Inherited From
 
-* [BaseCompressionBlock](BaseCompressionBlock.md)
+* [BaseOperatorBlock](BaseOperatorBlock.md)

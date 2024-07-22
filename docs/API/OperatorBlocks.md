@@ -8,6 +8,8 @@
 
 [Divide](OperatorBlocks/Divide.md)
 
+[Sum](OperatorBlocks/Sum.md)
+
 [DotProduct](OperatorBlocks/DotProduct.md)
 
 [Concatenate](OperatorBlocks/Concatenate.md)
