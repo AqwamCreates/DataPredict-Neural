@@ -8,11 +8,13 @@
 
 [ActivationBlocks](API/ActivationBlocks.md)
 
+[ConvolutionBlocks](API/ConvolutionBlocks.md)
+
+[PoolingBlocks](API/PoolingBlocks.md)
+
 [DropoutBlocks](API/DropoutBlocks.md)
 
 [OperatorBlocks](API/OperatorBlocks.md)
-
-[PoolingBlocks](API/PoolingBlocks.md)
 
 [EncodingBlocks](API/EncodingBlocks.md)
 
