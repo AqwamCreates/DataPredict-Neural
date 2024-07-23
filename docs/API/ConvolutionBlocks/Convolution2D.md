@@ -1,4 +1,4 @@
-# [API Reference](../../API.md) - [ConvolutionBlock](../ConvolutionBlock.md) - Convolution2D
+# [API Reference](../../API.md) - [ConvolutionBlocks](../ConvolutionBlocks.md) - Convolution2D
 
 ## Constructors
 
@@ -28,7 +28,7 @@ Convolution2D.new({numberOfKernels: number, kernelDimensionSizeArray: {number}, 
 
 #### Returns:
 
-* BaseConvolutionBlock: The generated convolution block object.
+* ConvolutionBlock: The generated convolution block object.
 
 ## Inherited From
 
