@@ -1,6 +1,6 @@
 # [API Reference](../API.md) - ConvolutionBlocks
 
-[Convolution1D](ConvolutionBlocks/Bias.md)
+[Convolution1D](ConvolutionBlocks/Convolution1D.md)
 
 [Convolution2D](ConvolutionBlocks/Convolution2D.md)
 

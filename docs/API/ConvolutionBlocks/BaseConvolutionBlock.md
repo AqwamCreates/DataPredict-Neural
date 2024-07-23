@@ -8,7 +8,7 @@ Creates a new convolution block object.
 
 ```
 
-BaseDropoutBBaseConvolutionBlocklock.new(): ConvolutionBlockObject
+BaseConvolutionBlock.new(): ConvolutionBlockObject
 
 ```
 
