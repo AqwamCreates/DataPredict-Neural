@@ -8,7 +8,7 @@ Creates a new convolution block object.
 
 ```
 
-Convolution2D.new({numberOfKernels: number, kernelDimensionSizeArray: {number}, strideDimensionSizeArray: {number}, outputSizeRoundingMode: {number}}): ConvolutionBlockObject
+Convolution2D.new({numberOfKernels: number, kernelDimensionSizeArray: {number}, strideDimensionSizeArray: {number}, outputSizeRoundingMode: {number}, learningRate: number, Optimizer: OptimizerObject, Regularizer: RegularizerObject}): ConvolutionBlockObject
 
 ```
 
@@ -25,6 +25,12 @@ Convolution2D.new({numberOfKernels: number, kernelDimensionSizeArray: {number}, 
 	* Floor (Default)
 
 	* Ceil
+
+* learningRate: The speed at which the model learns. Recommended that the value is set between (0 to 1).
+
+* Optimizer: The optimizer to be used.
+
+* Regularizer: The regularizer to be used.
 
 #### Returns:
 
