@@ -14,7 +14,7 @@ Convolution1D.new({numberOfKernels: number, kernelDimensionSize: number, strideD
 
 #### Parameters:
 
-* numberOfKernels: The number of kernels to be used to extract the features from input tensor.
+* numberOfKernels: The number of kernels to be used to extract the features from the input tensor.
 
 * kernelDimensionSize: The dimension size for the kernel.
 
