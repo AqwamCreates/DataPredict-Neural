@@ -38,4 +38,4 @@ Convolution2D.new({numberOfKernels: number, kernelDimensionSizeArray: {number}, 
 
 ## Inherited From
 
-* [BaseConvolutionBlock](../BaseConvolutionBlock.md)
+* [BaseConvolutionBlock](BaseConvolutionBlock.md)
