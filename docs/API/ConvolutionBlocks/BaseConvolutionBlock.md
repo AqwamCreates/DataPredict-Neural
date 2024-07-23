@@ -1,4 +1,4 @@
-# [API Reference](../../API.md) - [ConvolutionBlock](../ConvolutionBlock.md) - BaseConvolutionBlock
+# [API Reference](../../API.md) - [ConvolutionBlocks](../ConvolutionBlocks.md) - BaseConvolutionBlock
 
 ## Constructors
 
@@ -14,7 +14,7 @@ BaseConvolutionBlock.new(): ConvolutionBlockObject
 
 #### Returns:
 
-* BaseConvolutionBlock: The generated convolution block object.
+* ConvolutionBlock: The generated convolution block object.
 
 ## Inherited From
 
