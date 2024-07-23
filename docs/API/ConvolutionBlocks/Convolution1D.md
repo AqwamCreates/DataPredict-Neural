@@ -1,4 +1,4 @@
-# [API Reference](../../API.md) - [ConvolutionBlock](../ConvolutionBlock.md) - Convolution1D
+# [API Reference](../../API.md) - [ConvolutionBlocks](../ConvolutionBlocks.md) - Convolution1D
 
 ## Constructors
 
@@ -8,13 +8,13 @@ Creates a new convolution block object.
 
 ```
 
-Convolution1D.new({numberOfKernels: number, kernelDimensionSize: number, strideDimensionSize: number, outputSizeRoundingMode: number}): ConvolutionBlockObject
+Convolution1D.new({numberOfKernels: number, kernelDimensionSize: number, strideDimensionSize: number, outputSizeRoundingMode: number, learningRate: number, Optimizer: OptimizerObject, Regularizer: RegularizerObject}): ConvolutionBlockObject
 
 ```
 
 #### Parameters:
 
-* numberOfKernels: The number of kernels to be used to extract the features from input tensor.
+* numberOfKernels: The number of kernels to be used to extract the features from the input tensor.
 
 * kernelDimensionSize: The dimension size for the kernel.
 
@@ -26,9 +26,15 @@ Convolution1D.new({numberOfKernels: number, kernelDimensionSize: number, strideD
 
 	* Ceil
 
+* learningRate: The speed at which the model learns. Recommended that the value is set between (0 to 1).
+
+* Optimizer: The optimizer to be used.
+
+* Regularizer: The regularizer to be used.
+
 #### Returns:
 
-* BaseConvolutionBlock: The generated convolution block object.
+* ConvolutionBlock: The generated convolution block object.
 
 ## Inherited From
 
