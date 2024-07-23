@@ -14,7 +14,7 @@ Convolution2D.new({numberOfKernels: number, kernelDimensionSizeArray: {number}, 
 
 #### Parameters:
 
-* numberOfKernels: The number of kernels to be used to extract the features from input tensor.
+* numberOfKernels: The number of kernels to be used to extract the features from the input tensor.
 
 * kernelDimensionSizeArray: The dimension size for the kernel. The index of the array represents the dimension and the value represents the size for that particular dimension. 
 
