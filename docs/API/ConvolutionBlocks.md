@@ -6,4 +6,4 @@
 
 [Convolution3D](ConvolutionBlocks/Convolution3D.md)
 
-[BaseConvolutionBlocks](ConvolutionBlocks/BaseConvolutionBlocks.md)
+[BaseConvolutionBlock](ConvolutionBlocks/BaseConvolutionBlock.md)
