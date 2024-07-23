@@ -1,4 +1,4 @@
-# [API Reference](../../API.md) - [ConvolutionBlock](../ConvolutionBlock.md) - Convolution1D
+# [API Reference](../../API.md) - [ConvolutionBlocks](../ConvolutionBlocks.md) - Convolution1D
 
 ## Constructors
 
