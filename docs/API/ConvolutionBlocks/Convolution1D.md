@@ -28,7 +28,7 @@ Convolution1D.new({numberOfKernels: number, kernelDimensionSize: number, strideD
 
 #### Returns:
 
-* BaseConvolutionBlock: The generated convolution block object.
+* ConvolutionBlock: The generated convolution block object.
 
 ## Inherited From
 
