@@ -8,13 +8,13 @@ Creates a new convolution block object.
 
 ```
 
-Convolution3D.new({numberOfChannels: number, numberOfKernels: number, kernelDimensionSizeArray: {number}, strideDimensionSizeArray: {number}, outputSizeRoundingMode: {number}, learningRate: number, Optimizer: OptimizerObject, Regularizer: RegularizerObject}): ConvolutionBlockObject
+Convolution3D.new({channelSize: number, numberOfKernels: number, kernelDimensionSizeArray: {number}, strideDimensionSizeArray: {number}, outputSizeRoundingMode: {number}, learningRate: number, Optimizer: OptimizerObject, Regularizer: RegularizerObject}): ConvolutionBlockObject
 
 ```
 
 #### Parameters:
 
-* numberOfChannels: The number of input channels.
+* channelSize: The channel size of the input tensor.
 
 * numberOfKernels: The number of kernels to be used to extract the features from the input tensor.
 
