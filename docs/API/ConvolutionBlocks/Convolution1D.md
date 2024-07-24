@@ -38,4 +38,4 @@ Convolution1D.new({numberOfKernels: number, kernelDimensionSize: number, strideD
 
 ## Inherited From
 
-* [BaseConvolutionBlock](../BaseConvolutionBlock.md)
+* [BaseConvolutionBlock](BaseConvolutionBlock.md)

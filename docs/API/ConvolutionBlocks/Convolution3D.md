@@ -16,7 +16,7 @@ Convolution3D.new({numberOfKernels: number, kernelDimensionSizeArray: {number}, 
 
 * numberOfKernels: The number of kernels to be used to extract the features from the input tensor.
 
-* kernelDimensionSizeArray: The dimension size for the kernel. The index of the array represents the dimension and the value represents the size for that particular dimension. 
+* kernelDimensionSizeArray: The dimension size for the kernel. The index of the array represents the dimension and the value represents the size for that particular dimension.
 
 * strideDimensionSizeArray: The dimension size for the stride. The index of the array represents the dimension and the value represents the size for that particular dimension. Note that the stride moves along one axis completely before incrementing to the next axis.
 
@@ -38,4 +38,4 @@ Convolution3D.new({numberOfKernels: number, kernelDimensionSizeArray: {number}, 
 
 ## Inherited From
 
-* [BaseConvolutionBlock](../BaseConvolutionBlock.md)
+* [BaseConvolutionBlock](BaseConvolutionBlock.md)
