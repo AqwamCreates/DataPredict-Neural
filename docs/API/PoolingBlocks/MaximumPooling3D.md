@@ -8,7 +8,7 @@ Creates a new pooling block object. If there are no parameters given for that pa
 
 ```
 
-MaximumPooling3D.new({kernelDimensionSizeArray: {integer}, strideDimensionSizeArray: {integer}, outputSizeRoundingMode: string}): PoolingBlockObject
+MaximumPooling3D.new({kernelDimensionSizeArray: {integer}, strideDimensionSizeArray: {integer}}): PoolingBlockObject
 
 ```
 
@@ -17,12 +17,6 @@ MaximumPooling3D.new({kernelDimensionSizeArray: {integer}, strideDimensionSizeAr
 * kernelDimensionSizeArray: The dimension size for the kernel. The index of the array represents the dimension and the value represents the size for that particular dimension. 
 
 * strideDimensionSizeArray: The dimension size for the stride. The index of the array represents the dimension and the value represents the size for that particular dimension. Note that the stride moves along one axis completely before incrementing to the next axis.
-
-* outputSizeRoundingMode: The rounding mode that determines how the dimension size of the transformed tensor. Available options are:
-
-	* Floor (Default)
-
-	* Ceil
 
 #### Returns:
 
