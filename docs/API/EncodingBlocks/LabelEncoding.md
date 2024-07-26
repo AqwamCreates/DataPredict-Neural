@@ -36,4 +36,4 @@ LabelEncoding:setParameters({valueDictionary: {}})
 
 ## Inherited From
 
-* [BaseCompressionBlock](BaseCompressionBlock.md)
+* [BaseEncodingBlock](BaseEncodingBlock.md)

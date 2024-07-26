@@ -4,4 +4,6 @@
 
 [LabelEncoding](EncodingBlocks/LabelEncoding.md)
 
+[PositionalEncoding](EncodingBlocks/PositionalEncoding.md)
+
 [EncodingBlocks](EncodingBlocks/BaseEncodingBlock.md)

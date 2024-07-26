@@ -1,4 +1,4 @@
-# [API Reference](../../API.md) - [EncodingBlocks](../EncodingBlocks.md) - OneHotEncoding
+# [API Reference](../../API.md) - [EncodingBlocks](../EncodingBlocks.md) - PositionalEncoding
 
 ## Constructors
 
@@ -16,13 +16,7 @@ Parameters:
 
 * finalDimensionSize: The final dimension size for the transformed tensor. It is equivalent to the number of labels that are available in the data.
 
-* oneHotEncodingMode: The encoding mode to be used by the one hot encoding block. Available options are:
-
-	* Index (Default)
-
-	* Key
-
-* indexDictionary: The index dictionary to be used to convert keys stored in the tensor to one hot encoding tensor. Must be given if using the "Key" one hot encoding mode.
+* nValue: A user defined value for tuning.
 
 #### Returns:
 
@@ -42,13 +36,7 @@ OneHotEncoding:setParameters({finalDimensionSize: number, oneHotEncodingMode: st
 
 * finalDimensionSize: The final dimension size for the transformed tensor. It is equivalent to the number of labels that are available in the data.
 
-* oneHotEncodingMode: The encoding mode to be used by the one hot encoding block. Available options are:
-
-	* Index
-
-	* Key
-
-* indexDictionary: The index dictionary to be used to convert keys stored in the tensor to one hot encoding tensor. Must be given if using the "Key" one hot encoding mode.
+* nValue: A user defined value for tuning.
 
 ## Inherited From
 
