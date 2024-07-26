@@ -42,6 +42,10 @@ In addition, if you are interested in Roblox tutorials and future projects by me
 
 * Cross compatible with DataPredict library.
 
+## Current Limitations
+
+* Weight function blocks and convolution function blocks will not calculate the gradient values correctly when shape transformation blocks are placed between them. So it is recommended to place shape transformation blocks right after the activation blocks.
+
 ## Tutorials
 
 ### Installation
