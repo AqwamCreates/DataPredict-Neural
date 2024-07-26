@@ -6,7 +6,7 @@
 
 ```
 
-BaseWeightBlock.new({learningRate: number, Optimizer: OptimizerObject, Regularizer: RegularizerObject, nextFunctionBlockArrayIndexArray: {number}, nextFunctionBlockWaitDuration: number}): WeightBlockObject
+BaseWeightBlock.new({learningRate: number, Optimizer: OptimizerObject, Regularizer: RegularizerObject, nextFunctionBlockArrayIndexArray: {number}, nextFunctionBlockWaitDuration: number, initializationMode: string}): WeightBlockObject
 
 ```
 
@@ -17,6 +17,32 @@ BaseWeightBlock.new({learningRate: number, Optimizer: OptimizerObject, Regulariz
 * Optimizer: The optimizer to be used.
 
 * Regularizer: The regularizer to be used.
+
+* initializationMode: The mode for the weights to be initialized. Available options are:
+
+	* Zero
+
+	* Random
+
+	* RandomNormal
+
+	* RandomUniformPositive
+
+	* RandomUniformNegative
+
+	* RandomUniformNegativeAndPositive
+
+	* HeUniform
+
+	* HeNormal
+
+	* XavierUniform
+
+	* XavierNormal
+
+	* LeCunUniform
+
+	* LeCunNormal
 
 * nextFunctionBlockArrayIndexArray: The array that determines the path to the next function block. The first index is the starting path.
 

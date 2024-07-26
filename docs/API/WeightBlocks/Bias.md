@@ -8,7 +8,7 @@ Creates a new weight block object. If there are no parameters given for that par
 
 ```
 
-Bias.new({dimensionArray: {number}, learningRate: number, Optimizer: OptimizerObject, Regularizer: RegularizerObject}): WeightBlockObject
+Bias.new({dimensionArray: {number}, learningRate: number, Optimizer: OptimizerObject, Regularizer: RegularizerObject, initializationMode: string}): WeightBlockObject
 
 ```
 
@@ -21,6 +21,32 @@ Bias.new({dimensionArray: {number}, learningRate: number, Optimizer: OptimizerOb
 * Optimizer: The optimizer to be used.
 
 * Regularizer: The regularizer to be used.
+
+* initializationMode: The mode for the weights to be initialized. Available options are:
+
+	* Zero
+
+	* Random
+
+	* RandomNormal
+
+	* RandomUniformPositive
+
+	* RandomUniformNegative
+
+	* RandomUniformNegativeAndPositive
+
+	* HeUniform
+
+	* HeNormal
+
+	* XavierUniform
+
+	* XavierNormal
+
+	* LeCunUniform
+
+	* LeCunNormal
 
 #### Returns
 
