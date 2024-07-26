@@ -4,8 +4,8 @@
 
 [Bias](WeightBlocks/Bias.md)
 
-[AutoSizeLinear](WeightBlocks/AutoSizeLinear.md) (ASLinear)
+[AutomaticLinear](WeightBlocks/AutomaticLinear.md) (AutoLinear)
 
-[AutoSizeBias](WeightBlocks/AutoSizeBias.md) (ASBias)
+[AutomaticBias](WeightBlocks/AutomaticBias.md) (AutoBias)
 
 [BaseWeightBlock](WeightBlocks/BaseWeightBlock.md)

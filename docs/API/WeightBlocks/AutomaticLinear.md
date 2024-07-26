@@ -1,4 +1,4 @@
-# [API Reference](../../API.md) - [WeightBlocks](../WeightBlocks.md) - AutoSizeBias (ASBias)
+# [API Reference](../../API.md) - [WeightBlocks](../WeightBlocks.md) - AutomaticLinear (AutoLinear)
 
 ## Constructors
 
@@ -8,13 +8,13 @@ Creates a new weight block object. If there are no parameters given for that par
 
 ```
 
-Bias.new({numberOfDimensions: number, learningRate: number, Optimizer: OptimizerObject, Regularizer: RegularizerObject}): WeightBlockObject
+AutomaticLinear.new({finalDimensionSize: number, learningRate: number, Optimizer: OptimizerObject, Regularizer: RegularizerObject}): WeightBlockObject
 
 ```
 
 #### Parameters:
 
-* numberOfDimensions: The number of dimensions in which the bias values will be applied to. The bias values will be applied on the last dimension first.
+* finalDimensionSize: The dimension for final dimension of the weight tensor. 
 
 * learningRate: The speed at which the model learns. Recommended that the value is set between (0 to 1).
 
@@ -22,7 +22,7 @@ Bias.new({numberOfDimensions: number, learningRate: number, Optimizer: Optimizer
 
 * Regularizer: The regularizer to be used.
 
-#### Returns
+#### Returns:
 
 * WeightBlock: The generated weight block object.
 
