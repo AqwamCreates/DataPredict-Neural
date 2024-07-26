@@ -41,3 +41,7 @@ OneHotEncoding:setParameters({finalDimensionSize: number, oneHotEncodingMode: st
 ## Inherited From
 
 * [BaseEncodingBlock](BaseEncodingBlock.md)
+
+## References
+
+[A Gentle Introduction to Positional Encoding in Transformer Models, Part 1](https://machinelearningmastery.com/a-gentle-introduction-to-positional-encoding-in-transformer-models-part-1/)
