@@ -14,9 +14,9 @@ ZeroPadding.new({headPaddingDimensionSizeArray: {number}, tailPaddingDimensionSi
 
 Parameters:
 
-* headPaddingDimensionSizeArray:
+* headPaddingDimensionSizeArray: The dimension size array for padding to be placed in front of the input tensor. Make note that when adding the padding sizes to the array, the padding starts from the final dimension.
 
-* tailPaddingDimensionSizeArray:
+* tailPaddingDimensionSizeArray: The dimension size array for padding to be placed at the back of the input tensor. Make note that when adding the padding sizes to the array, the padding starts from the final dimension.
 
 #### Returns:
 
@@ -24,4 +24,4 @@ PaddingBlockObject: The generated padding block object.
 
 ## Inherited From
 
-* [BaseCompressionBlock](BaseCompressionBlock.md)
+* [BasePaddingBlock](BasePaddingBlock.md)
