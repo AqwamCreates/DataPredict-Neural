@@ -6,9 +6,21 @@
 
 ```
 
-BaseWeightBlock.new(): WeightBlockObject
+BaseWeightBlock.new({learningRate: number, Optimizer: OptimizerObject, Regularizer: RegularizerObject, nextFunctionBlockArrayIndexArray: {number}, nextFunctionBlockWaitDuration: number}): WeightBlockObject
 
 ```
+
+#### Parameters:
+
+* learningRate: The speed at which the model learns. Recommended that the value is set between (0 to 1).
+
+* Optimizer: The optimizer to be used.
+
+* Regularizer: The regularizer to be used.
+
+* nextFunctionBlockArrayIndexArray: The array that determines the path to the next function block. The first index is the starting path.
+
+* nextFunctionBlockWaitDuration: The duration to wait for a tensor from next function blocks before timeout.
 
 #### Returns
 
@@ -165,28 +177,6 @@ BaseWeightBlock:getRegularizer(): RegularizerObject
 #### Returns:
 
 * Regularizer: The regularizer to be used.
-
-### initializeLayer()
-
-```
-
-BaseWeightBlock:initializeLayer({dimensionSizeArray: {number}, learningRate: number, Optimizer: OptimizerObject, Regularizer: RegularizerObject, nextFunctionBlockArrayIndexArray: {number}, nextFunctionBlockWaitDuration: number})
-
-```
-
-#### Parameters:
-
-* dimensionSizeArray: The dimensions for the weights. The length of array represents the number of dimensions. The value at the specified index represents the size at that dimension.
-
-* learningRate: The speed at which the model learns. Recommended that the value is set between (0 to 1).
-
-* Optimizer: The optimizer to be used.
-
-* Regularizer: The regularizer to be used.
-
-* nextFunctionBlockArrayIndexArray: The array that determines the path to the next function block. The first index is the starting path.
-
-* nextFunctionBlockWaitDuration: The duration to wait for a tensor from next function blocks before timeout.
 
 ### waitForTransformedTensorRecursive()
 
