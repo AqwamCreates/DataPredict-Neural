@@ -8,7 +8,7 @@ Creates a new encoding block object. If there are no parameters given for that p
 
 ```
 
-LabelEncoding.new({valueDictionary: {}}): EncodingBlockObject
+LabelEncoding.new({valueDictionary: {any}}): EncodingBlockObject
 
 ```
 
