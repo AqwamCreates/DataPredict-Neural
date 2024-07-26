@@ -18,19 +18,19 @@ ComputationalGraph.new(): ContainerObject
 
 ## Functions
 
-### setMultipleWeightBlocks()
+### setMultipleTrainableBlocks()
 
 ```
 
-ComputationalGraph:setMultipleWeightBlocks(...: FunctionBlockObject)
+ComputationalGraph:setMultipleTrainableBlocks(...: FunctionBlockObject)
 
 ```
 
 Parameters:
 
-* WeightBlock: The weight blocks to be added to the graph container. Order matters.
+* TrainableBlock: The weight blocks to be added to the graph container. Order matters.
 
-### setMultipleWeightBlocks()
+### setMultipleTrainableBlocks()
 
 ```
 
@@ -158,7 +158,7 @@ ComputationalGraph:getWeightTensorArray(doNotDeepCopy: boolean): {tensor}
 
 ```
 
-ComputationalGraph:getWeightBlockByIndex(index): FunctionBlockObject
+ComputationalGraph:getTrainableBlockByIndex(index): FunctionBlockObject
 
 ```
 
@@ -168,19 +168,19 @@ ComputationalGraph:getWeightBlockByIndex(index): FunctionBlockObject
 
 #### Returns:
 
-* WeightBlock: A weight block from the specified index.
+* TrainableBlock: A weight block from the specified index.
 
-### getWeightBlockArray()
+### getTrainableBlockArray()
 
 ```
 
-ComputationalGraph:getWeightBlockArray(): {FunctionBlockObject}
+ComputationalGraph:getTrainableBlockArray(): {FunctionBlockObject}
 
 ```
 
 #### Returns:
 
-* WeightBlockArray: An array containing all the weight blocks. The first function block in the array represents the first weight block.
+* TrainableBlockArray: An array containing all the weight blocks. The first function block in the array represents the first weight block.
 
 ### getInputBlockByIndex()
 
