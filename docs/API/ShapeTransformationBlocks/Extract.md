@@ -1,4 +1,4 @@
-# [API Reference](../../API.md) - [Reshape](../ShapeTransformationBlocks.md) - Extract
+# [API Reference](../../API.md) - [ShapeTransformationBlocks](../ShapeTransformationBlocks.md) - Extract
 
 ## Constructors
 
