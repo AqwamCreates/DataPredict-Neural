@@ -20,4 +20,6 @@
 
 [Concatenate](OperatorBlocks/Concatenate.md)
 
+[Extract](OperatorBlocks/Extract.md)
+
 [BaseOperatorBlock](OperatorBlocks/BaseOperatorBlock.md)

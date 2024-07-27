@@ -6,6 +6,4 @@
 
 [Reshape](ShapeTransformationBlocks/Reshape.md)
 
-[Extract](ShapeTransformationBlocks/Extract.md)
-
 [BaseShapeTransformationBlock](ShapeTransformationBlocks/BaseShapeTransformationBlock.md)

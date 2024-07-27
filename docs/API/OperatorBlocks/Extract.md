@@ -40,4 +40,4 @@ Reshape:setParameters({originDimensionIndexArray: {integer}, targetDimensionInde
 
 ## Inherited From
 
-* [BaseShapeTransformationBlock](BaseShapeTransformationBlock.md)
+* [BaseOperatorBlock](BaseOperatorBlock.md)
