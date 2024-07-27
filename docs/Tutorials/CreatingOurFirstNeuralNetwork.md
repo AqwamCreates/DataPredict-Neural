@@ -54,8 +54,6 @@ local Linear = WeightBlocks.Linear.new({
 
 As you can see, the length of dimension array is equal to total number of dimensions, and the values inside it represent the sizes of each dimension.
 
-Currently, the library can only handle 3 dimensional tensors only. But this might change in the future.
-
 ## Choosing A Cost Function
 
 The cost function tells us the performance of the model making predictions compared to the label values. When the predictions are close to the label values, the cost is low. Otherwise, the cost is high. By minimizing this cost, the network gets better at capturing the patterns in our data and making more accurate predictions.
