@@ -58,7 +58,7 @@ BaseWeightBlock.new({learningRate: number, Optimizer: OptimizerObject, Regulariz
 
 ```
 
-Sequential:gradientDescent(weightLossTensorArray: {tensor}, numberOfData: number)
+BaseWeightBlock:gradientDescent(weightLossTensor: tensor, numberOfData: number)
 
 ```
 
