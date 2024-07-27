@@ -80,7 +80,7 @@ Below, we will show you a block of code and describe what each line of code are 
 
 local DataPredictNeural = require(DataPredictNeural)
 
-local TensorL3D = require(TensorL3D)
+local TensorL = require(TensorL)
 
 local SequentialNeuralNetwork = DataPredictNeural.Containers.Sequential.new() -- For this tutorial, we want to create a basic neural network. So, we will use a "Sequential" container that holds all of our blocks and also to automatically set up necessary connections between the blocks.
 
@@ -92,9 +92,9 @@ local TransformationBlocks = DataPredictNeural.TransformationBlocks
 
 local CostFunction = DataPredictNeural.CostFunctions.MeanSquaredError.new()
 
-local inputTensor = TensorL3D:createRandomUniformTensor({1, 4, 1}) -- Generating our input tensor here. Pay attention to the dimensions.
+local inputTensor = TensorL:createRandomUniformTensor({1, 4, 1}) -- Generating our input tensor here. Pay attention to the dimensions.
 
-local labelTensor = TensorL3D:createRandomNormalTensor({1, 4, 3}) -- Generating our label tensor here. Pay attention to the dimensions here as well.
+local labelTensor = TensorL:createRandomNormalTensor({1, 4, 3}) -- Generating our label tensor here. Pay attention to the dimensions here as well.
 
 --[[
 
