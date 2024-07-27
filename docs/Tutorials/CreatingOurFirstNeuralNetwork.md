@@ -30,6 +30,8 @@ Function blocks are typically inherited by:
 	
 * Shape transformation blocks: Change the shape of our tensors without modifying the values.
 
+* Any many others!
+
 ## Setting Up The Weights
 
 In order for our neural network to learn, we need to store the weight values for our neural network. These are typically stored in the weight blocks. In order to create them, we first need to set the dimension sizes of the weights. 
