@@ -57,7 +57,7 @@ This is where dynamic computational graphs comes in.
 
 ### Function Block Chaining
 
-In order to create complex models, our function blocks are equipped with two powerful functions: addNextFunctionBlock() and addPreviousFunctionBlock(). These functions allows the function blocks to communicate with the blocks that are in front and behind them.
+In order to create complex models, our function blocks are equipped with two powerful functions: linkForward() and linkBackward(). These functions allows the function blocks to communicate with the blocks that are in front and behind them.
 
 You can add as many function blocks you want. A single function block can have multiple "next" function blocks or multiple "previous" function blocks.
 
