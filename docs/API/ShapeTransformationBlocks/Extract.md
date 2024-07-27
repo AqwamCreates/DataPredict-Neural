@@ -14,9 +14,9 @@ Reshape.new({originDimensionIndexArray: {integer}, targetDimensionIndexArray: {i
 
 #### Parameters:
 
-* originDimensionIndexArray: The origin points to extract the tensor from.
+* originDimensionIndexArray: The origin points to extract the tensor from. It must have the same number of dimensions as the input tensor.
 
-* targetDimensionIndexArray: The target points to extract the tensor from.
+* targetDimensionIndexArray: The target points to extract the tensor from. It must have the same number of dimensions as the input tensor.
 
 #### Returns:
 
@@ -34,9 +34,9 @@ Reshape:setParameters({originDimensionIndexArray: {integer}, targetDimensionInde
 
 #### Parameters:
 
-* originDimensionIndexArray: The origin points to extract the tensor from.
+* originDimensionIndexArray: The origin points to extract the tensor from. It must have the same number of dimensions as the input tensor.
 
-* targetDimensionIndexArray: The target points to extract the tensor from.
+* targetDimensionIndexArray: The target points to extract the tensor from. It must have the same number of dimensions as the input tensor.
 
 ## Inherited From
 
