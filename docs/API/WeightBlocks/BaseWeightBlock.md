@@ -54,6 +54,20 @@ BaseWeightBlock.new({learningRate: number, Optimizer: OptimizerObject, Regulariz
 
 ## Functions
 
+### gradientDescent()
+
+```
+
+Sequential:gradientDescent(weightLossTensorArray: {tensor}, numberOfData: number)
+
+```
+
+#### Parameters:
+
+* weightLossTensor: A tensor containing the weight loss values. This will be used to update the weights.
+
+* numberOfData: The value to divide with the weight loss tensors.
+
 ### setWeightTensor()
 
 ```
