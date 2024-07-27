@@ -44,7 +44,7 @@ local WeightBlocks = DataPredictNeural.WeightBlocks
 
 local Linear = WeightBlocks.Linear.new({
 
-	dimensionArray = {1, 90, 4},
+	dimensionSizeArray = {1, 90, 4},
 	
 	learningRate = 0.01
 
