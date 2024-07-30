@@ -1,0 +1,5 @@
+# Beta Version 0.4.1
+
+## Fixes
+
+* The calculations for the first derivative of the convolution function block is now fixed. Now the exploding gradients should occur less often.
