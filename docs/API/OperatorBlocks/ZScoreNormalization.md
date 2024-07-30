@@ -14,7 +14,7 @@ ZScoreNormalization.new({dimension: number}): OperatorBlockObject
 
 Parameters:
 
-* dimension: The dimension to ZScoreNormalize across the tensor.
+* dimension: The dimension to z score normalize along the tensor.
 
 #### Returns:
 
@@ -32,7 +32,7 @@ ZScoreNormalization:setParameters({dimension: number})
 
 #### Parameters:
 
-* dimension: The dimension to ZScoreNormalize across the tensor.
+* dimension: The dimension to z score normalize along the tensor.
 
 ## Inherited From
 
