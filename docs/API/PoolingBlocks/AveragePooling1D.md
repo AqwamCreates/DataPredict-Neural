@@ -38,12 +38,6 @@ AveragePooling1D:setParameters({kernelDimensionSize: integer, strideDimensionSiz
 
 * strideDimensionSize: The dimension size for the stride. The index of the array represents the dimension and the value represents the size for that particular dimension. 
 
-* outputSizeRoundingMode: The rounding mode that determines how the dimension size of the transformed tensor. Available options are:
-
-	* Floor
-
-	* Ceil
-
 ## Inherited From
 
 * [BasePoolingBlock](BasePoolingBlock.md)
