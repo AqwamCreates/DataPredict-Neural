@@ -28,28 +28,6 @@ MaximumUnpooling2D.new({kernelDimensionSizeArray: {integer}, strideDimensionSize
 
 * PoolingBlock: The generated pooling block object.
 
-## Functions
-
-### setParameters()
-
-```
-
-MaximumUnpooling2D:setParameters({kernelDimensionSizeArray: {integer}, strideDimensionSizeArray: {integer}, unpoolingMethod: string})
-
-```
-
-#### Parameters:
-
-* kernelDimensionSizeArray: The dimension size for the kernel. The index of the array represents the dimension and the value represents the size for that particular dimension. 
-
-* strideDimensionSizeArray: The dimension size for the stride. The index of the array represents the dimension and the value represents the size for that particular dimension. Note that the stride moves along one axis completely before incrementing to the next axis.
-
-* unpoolingMethod: The unpooling method that determines how the transformed tensor is generated. Available options are:
-
-	* NearestNeighbour
-
-	* BedOfNails
-
 ## Inherited From
 
 * [BasePoolingBlock](BasePoolingBlock.md)
