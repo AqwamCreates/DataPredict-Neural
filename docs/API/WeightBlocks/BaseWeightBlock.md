@@ -44,6 +44,8 @@ BaseWeightBlock.new({learningRate: number, Optimizer: OptimizerObject, Regulariz
 
 	* LeCunNormal
 
+	* None
+
 * nextFunctionBlockArrayIndexArray: The array that determines the path to the next function block. The first index is the starting path.
 
 * nextFunctionBlockWaitDuration: The duration to wait for a tensor from next function blocks before timeout.

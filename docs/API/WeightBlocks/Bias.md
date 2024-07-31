@@ -48,6 +48,8 @@ Bias.new({dimensionArray: {number}, learningRate: number, Optimizer: OptimizerOb
 
 	* LeCunNormal
 
+	* None
+
 #### Returns
 
 * WeightBlock: The generated weight block object.

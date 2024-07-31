@@ -47,6 +47,8 @@ AutomaticBias.new({numberOfDimensions: number, learningRate: number, Optimizer: 
 	* LeCunUniform
 
 	* LeCunNormal
+	
+	* None
 
 #### Returns
 

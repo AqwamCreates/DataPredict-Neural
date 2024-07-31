@@ -48,6 +48,8 @@ AutomaticLinear.new({finalDimensionSize: number, learningRate: number, Optimizer
 
 	* LeCunNormal
 
+	* None
+
 #### Returns:
 
 * WeightBlock: The generated weight block object.

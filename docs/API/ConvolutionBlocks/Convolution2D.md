@@ -8,7 +8,7 @@ Creates a new convolution block object.
 
 ```
 
-Convolution2D.new({channelSize: number, numberOfKernels: number, kernelDimensionSizeArray: {number}, strideDimensionSizeArray: {number} learningRate: number, Optimizer: OptimizerObject, Regularizer: RegularizerObject}): ConvolutionBlockObject
+Convolution2D.new({channelSize: number, numberOfKernels: number, kernelDimensionSizeArray: {number}, strideDimensionSizeArray: {number} learningRate: number, Optimizer: OptimizerObject, Regularizer: RegularizerObject, initializationMode: string}): ConvolutionBlockObject
 
 ```
 
@@ -27,6 +27,34 @@ Convolution2D.new({channelSize: number, numberOfKernels: number, kernelDimension
 * Optimizer: The optimizer to be used.
 
 * Regularizer: The regularizer to be used.
+
+* initializationMode: The mode for the weights to be initialized. Available options are:
+
+	* Zero
+
+	* Random
+
+	* RandomNormal
+
+	* RandomUniformPositive
+
+	* RandomUniformNegative
+
+	* RandomUniformNegativeAndPositive
+
+	* HeUniform
+
+	* HeNormal
+
+	* XavierUniform
+
+	* XavierNormal
+
+	* LeCunUniform
+
+	* LeCunNormal
+	
+	* None
 
 #### Returns:
 

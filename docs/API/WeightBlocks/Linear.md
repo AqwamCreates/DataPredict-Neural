@@ -48,6 +48,8 @@ Linear.new({dimensionArray: {number}, learningRate: number, Optimizer: Optimizer
 
 	* LeCunNormal
 
+	* None
+
 #### Returns:
 
 * WeightBlock: The generated weight block object.
