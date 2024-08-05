@@ -52,7 +52,7 @@ In addition, if you are interested in Roblox tutorials and future projects by me
 
 [Installation For Roblox](Tutorials/InstallationForRoblox.md)
 
-### The Basics - Model
+### The Model Basics
 
 [Creating Our First Neural Network](Tutorials/CreatingOurFirstNeuralNetwork.md)
 
@@ -60,7 +60,7 @@ In addition, if you are interested in Roblox tutorials and future projects by me
 
 [Saving And Loading Model Weights](Tutorials/SavingAndLoadingModelWeights.md)
 
-### The Basics - Tensor
+### The Tensor Basics
 
 ## The API
 
