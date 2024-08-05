@@ -52,13 +52,15 @@ In addition, if you are interested in Roblox tutorials and future projects by me
 
 [Installation For Roblox](Tutorials/InstallationForRoblox.md)
 
-### The Basics
+### The Basics - Model
 
 [Creating Our First Neural Network](Tutorials/CreatingOurFirstNeuralNetwork.md)
 
 [Understanding Function Blocks, Dynamic Computational Graphs And Automatic-Manual Differentiation](Tutorials/UnderstandingFunctionBlocksDynamicComputationalGraphsAndAutomaticManualDifferentiation.md)
 
 [Saving And Loading Model Weights](Tutorials/SavingAndLoadingModelWeights.md)
+
+### The Basics - Tensor
 
 ## The API
 
