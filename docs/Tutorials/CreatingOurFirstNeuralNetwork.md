@@ -92,23 +92,23 @@ local TransformationBlocks = DataPredictNeural.TransformationBlocks
 
 local CostFunction = DataPredictNeural.CostFunctions.MeanSquaredError.new()
 
-local inputTensor = TensorL:createRandomUniformTensor({1, 4, 1}) -- Generating our input tensor here. Pay attention to the dimensions.
+local inputTensor = TensorL:createRandomUniformTensor({4, 1}) -- Generating our input tensor here. Pay attention to the dimensions.
 
-local labelTensor = TensorL:createRandomNormalTensor({1, 4, 3}) -- Generating our label tensor here. Pay attention to the dimensions here as well.
+local labelTensor = TensorL:createRandomNormalTensor({4, 3}) -- Generating our label tensor here. Pay attention to the dimensions here as well.
 
 --[[
 
 In order for us to be able to calculate the loss tensor, we need to make sure the generated label tensor dimensions matches with the original one.
 
-When initializing the weights, ensure that the 3rd dimension of the input tensor matches the 2nd dimension of the weight tensor. In addition, ensure that both have the same sizes for the first dimension.
+When initializing the weights, ensure that the 2nd dimension of the input tensor matches the 1st dimension of the weight tensor.
 
 When doing the dot product between the input tensor and weight tensor, it will give a new tensor shape.
 
-	* Input tensor: {a, b, c}
+	* Input tensor: {a, b}
 	
-	* Weight tensor: {a, c, d}
+	* Weight tensor: {b, c}
 	
-	* Output tensor: {a, b, d}
+	* Output tensor: {ac}
 
 Below, we will demonstrate how the tensor shape changes as we add blocks to our "Sequential" container.
 
@@ -116,13 +116,13 @@ Below, we will demonstrate how the tensor shape changes as we add blocks to our 
 
 SequentialNeuralNetwork:setMultipleFunctionBlocks( -- Input tensor starts with the size of {1, 4, 1}.
 	
-	WeightBlocks.Linear.new({dimensionSizeArray = {1, 1, 3}}), -- {1, 4, 1} * {1, 1, 3} -> {1, 4, 3}
+	WeightBlocks.Linear.new({dimensionSizeArray = {1, 3}}), -- {4, 1} * {1, 3} -> {4, 3}
 	
-	WeightBlocks.Linear.new({dimensionSizeArray = {1, 3, 5}}), -- {1, 4, 3} * {1, 3, 5} -> {1, 4, 5}
+	WeightBlocks.Linear.new({dimensionSizeArray = {3, 5}}), -- {4, 3} * {3, 5} -> {4, 5}
 	
 	ActivationBlocks.LeakyReLU.new(),
 	
-	WeightBlocks.Linear.new({dimensionSizeArray = {1, 5, 1}}), -- {1, 4, 5} * {1, 5, 3} -> {1, 4, 3}
+	WeightBlocks.Linear.new({dimensionSizeArray = {5, 1}}), -- {4, 5} * {5, 3} -> {4, 3}
 	
 	ActivationBlocks.LeakyReLU.new()
 	
