@@ -24,7 +24,7 @@ Now remember the general tensor conventions that was from the previous tutorial,
 | 2         | Number of channels                        |
 | N + 2     | Number of width, height, length and so on |
 
-The N + 2 dimensions can also referred as the spatial dimensions.
+The N + 2 dimensions can be also referred as the spatial dimensions.
 
 ## The Kernels
 
