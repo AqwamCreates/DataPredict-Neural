@@ -22,7 +22,7 @@ Different function blocks that requires "dimensionSizeArray" requires different 
 	
 * Dimension 2 = Number of channels
 	
-* Dimension N + 2 = Number of width, height, length and so on.
+* Dimension N + 2 = Number of width, height, length and so on
 
 If you wish to add number of time steps, then they needed to be after the number of channels. If the number of channels does not exist, then they needed to be after the number of data. In general:
 
@@ -32,7 +32,7 @@ If you wish to add number of time steps, then they needed to be after the number
 	
 * Dimension 3 = Number of time steps
 	
-* Dimension N + 3 = Number of width, height, length and so on.
+* Dimension N + 3 = Number of width, height, length and so on
 
 If you only want to use 2D tensors, then the rules will be slightly different. In general:
 
