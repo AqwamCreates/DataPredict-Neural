@@ -50,4 +50,4 @@ local dimensionSizeArray2 = {900, 10} -- There is 900 data, where each of them h
 
 ```
 
-Now you have managed to read all the general tensor conventions when using them with DataPredict Neural library.
+Now you have managed to read all the general tensor conventions for the DataPredict Neural library.
