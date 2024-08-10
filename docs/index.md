@@ -50,19 +50,19 @@ In addition, if you are interested in Roblox tutorials and future projects by me
 
 ### Installation
 
-[Installation For Roblox](Tutorials/InstallationForRoblox.md)
+* [Installation For Roblox](Tutorials/InstallationForRoblox.md)
 
 ### The Model Basics
 
-[Creating Our First Neural Network](Tutorials/CreatingOurFirstNeuralNetwork.md)
+* [Creating Our First Neural Network](Tutorials/CreatingOurFirstNeuralNetwork.md)
 
-[Understanding Function Blocks, Dynamic Computational Graphs And Automatic-Manual Differentiation](Tutorials/UnderstandingFunctionBlocksDynamicComputationalGraphsAndAutomaticManualDifferentiation.md)
+* [Understanding Function Blocks, Dynamic Computational Graphs And Automatic-Manual Differentiation](Tutorials/UnderstandingFunctionBlocksDynamicComputationalGraphsAndAutomaticManualDifferentiation.md)
 
 [Saving And Loading Model Weights](Tutorials/SavingAndLoadingModelWeights.md)
 
 ### The Tensor Basics
 
-[General Tensor Conventions](Tutorials/GeneralTensorConventions.md)
+* [General Tensor Conventions](Tutorials/GeneralTensorConventions.md)
 
 ## The API
 
