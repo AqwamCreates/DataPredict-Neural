@@ -30,7 +30,7 @@ Function blocks are typically inherited by:
 	
 * Shape transformation blocks: Change the shape of our tensors without modifying the values.
 
-* Any many others!
+* And many others!
 
 ## Setting Up The Weights
 
