@@ -62,6 +62,8 @@ In addition, if you are interested in Roblox tutorials and future projects by me
 
 ### The Tensor Basics
 
+[General Tensor Conventions](GeneralTensorConventions.md)
+
 ## The API
 
 ### API Reference
