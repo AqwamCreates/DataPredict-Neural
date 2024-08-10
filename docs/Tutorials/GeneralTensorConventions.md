@@ -46,7 +46,7 @@ That's pretty much it! I'll show you an example on how these tensors are interpr
 
 local dimensionSizeArray1 = {20, 3, 4} -- There is 20 data, where each of them have three channels and a length of 4.
 
-local dimensionSizeArray2 = {900, 1} -- There is 900 data, where each of them only have one feature.
+local dimensionSizeArray2 = {900, 10} -- There is 900 data, where each of them have 10 features.
 
 ```
 
