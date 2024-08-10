@@ -30,6 +30,8 @@ The N + 2 dimensions can be also referred as the spatial dimensions.
 
 Since we have established that the spatial dimensions are located at N + 2 dimension, we can now understand how kernels are applied.
 
+### The Dimension Size Array
+
 You may already have seen that the convolutional blocks and pooling blocks contains the 1D, 2D and 3D. Those N-D dimensions refers to the spatial dimensions. Hence, the input tensor's dimension size array must contain those spatial dimensions. For example:
 
 * 1D for data + 1D for channel + 1D for spatial = 3D tensor
@@ -39,6 +41,10 @@ You may already have seen that the convolutional blocks and pooling blocks conta
 * 1D for data + 1D for channel + 3D for spatial = 5D tensor
 
 Now, you will understand why the convolution blocks and pooling blocks generates and error when you supply them an input tensor that has incorrect number of dimensions.
+
+### The Number Of Kernels
+
+The convolution block has "numberOfKernels" as one of its parameters. This determines the number of channels that will be produced for the output tensor, regardless of the number of channels from the input tensor. So, if we have 3 kernels, then it will produce an output tensor that has 3 channels. Pretty simple, right?
 
 ## The Stride
 
