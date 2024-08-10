@@ -18,27 +18,27 @@ local dimensionSizeArray2 = {7, 6, 9, 5} -- Dimension 1 has the size of 7, dimen
 
 Different function blocks that requires "dimensionSizeArray" requires different number of dimensions. In general:
 
-	* Dimension 1 = Number of data
+* Dimension 1 = Number of data
 	
-	* Dimension 2 = Number of channels
+* Dimension 2 = Number of channels
 	
-	* Dimension N + 2 = Number of width, height, length and so on.
+* Dimension N + 2 = Number of width, height, length and so on.
 
 If you wish to add number of time steps, then they needed to be after the number of channels. If the number of channels does not exist, then they needed to be after the number of data. In general:
 
-	* Dimension 1 = Number of data
+* Dimension 1 = Number of data
 	
-	* Dimension 2 = Number of channels
+* Dimension 2 = Number of channels
 	
-	* Dimension 3 = Number of time steps
+* Dimension 3 = Number of time steps
 	
-	* Dimension N + 3 = Number of width, height, length and so on.
+* Dimension N + 3 = Number of width, height, length and so on.
 
 If you only want to use 2D tensors, then the rules will be slightly different. In general:
 
-	* Dimension 1 = Number of data
+* Dimension 1 = Number of data
 	
-	* Dimension 2 = Number of features
+* Dimension 2 = Number of features
 	
 That's pretty much it! I'll show you an example on how these tensors are interpreted below for the first and third rules.
 
