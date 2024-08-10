@@ -80,7 +80,7 @@ In addition, if you are interested in Roblox tutorials and future projects by me
 
 [TensorL Library](https://github.com/AqwamCreates/TensorL)
 
-[TensorL3D Library](https://github.com/AqwamCreates/TensorL3D)
+[TensorL-3D Library](https://github.com/AqwamCreates/TensorL3D)
 
 ## Version History
 
