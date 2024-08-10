@@ -108,7 +108,7 @@ When doing the dot product between the input tensor and weight tensor, it will g
 	
 	* Weight tensor: {b, c}
 	
-	* Output tensor: {ac}
+	* Output tensor: {a, c}
 
 Below, we will demonstrate how the tensor shape changes as we add blocks to our "Sequential" container.
 
