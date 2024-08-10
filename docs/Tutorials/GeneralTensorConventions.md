@@ -42,7 +42,7 @@ If you only want to use 2D tensors, then the rules will be slightly different. I
 	
 That's pretty much it! I'll show you an example on how these tensors are interpreted below for the first and third rules.
 
-```
+```lua
 
 local dimensionSizeArray1 = {20, 3, 4} -- There is 20 data, where each of them have three channels and a length of 4.
 
