@@ -8,7 +8,7 @@ Here are the list of spatial blocks that are available in this library:
 
 * Pooling blocks
 
-In this tutorial, I will further explain what does the "spatial" mean and how these spatial function blocks affects the dimension size array of an input tensor.
+In this tutorial, I will further explain what does the "spatial" mean and how these spatial function blocks affects the dimension size array of any input tensors and output tensors.
 
 ## The Spatial Dimension
 
