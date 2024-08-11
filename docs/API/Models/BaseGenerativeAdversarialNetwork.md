@@ -78,7 +78,7 @@ BaseGenerativeAdversarialNetwork:calculateGeneratorLossTensor(evaluatedGenerated
 
 ```
 
-BaseGenerativeAdversarialNetwork:backPropagateDiscriminator(discriminatorLossTensor: tensor, numberOfData: number)
+BaseGenerativeAdversarialNetwork:backwardPropagateDiscriminator(discriminatorLossTensor: tensor, numberOfData: number)
 
 ```
 
@@ -92,7 +92,7 @@ BaseGenerativeAdversarialNetwork:backPropagateDiscriminator(discriminatorLossTen
 
 ```
 
-BaseGenerativeAdversarialNetwork:backPropagateGenerator(generatorLossTensor: tensor, numberOfData: number)
+BaseGenerativeAdversarialNetwork:backwardPropagateGenerator(generatorLossTensor: tensor, numberOfData: number)
 
 ```
 

@@ -102,11 +102,11 @@ ComputationalGraph:gradientDescent(weightLossTensorArray: {tensor}, numberOfData
 
 * numberOfData: The value to divide with the weight loss tensors.
 
-### backPropagate()
+### backwardPropagate()
 
 ```
 
-ComputationalGraph:backPropagate(lossTensorArray: {tensor}, numberOfData: number)
+ComputationalGraph:backwardPropagate(lossTensorArray: {tensor})
 
 ```
 

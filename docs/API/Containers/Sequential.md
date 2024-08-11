@@ -76,11 +76,11 @@ Sequential:gradientDescent(weightLossTensorArray: {tensor}, numberOfData: number
 
 * numberOfData: The value to divide with the weight loss tensors.
 
-### backPropagate()
+### backwardPropagate()
 
 ```
 
-Sequential:backPropagate(lossTensor: tensor, numberOfData: number)
+Sequential:backwardPropagate(lossTensor: tensor)
 
 ```
 
