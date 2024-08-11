@@ -44,7 +44,7 @@ Now, you will understand why the convolution blocks and pooling blocks generates
 
 ### The Number Of Kernels
 
-The convolution block has "numberOfKernels" as one of its parameters. This determines the number of channels that will be produced for the output tensor, regardless of the number of channels from the input tensor. So, if we have 3 kernels, then it will produce an output tensor that has 3 channels. Pretty simple, right?
+The convolution blocks have "numberOfKernels" as one of its parameters. This determines the number of channels that will be produced for the transformed tensor, regardless of the number of channels from the input tensor. So, if we have 3 kernels, then it will produce an output tensor that has 3 channels. Pretty simple, right?
 
 ## The Stride
 
