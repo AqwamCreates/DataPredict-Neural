@@ -30,7 +30,7 @@ The N + 2 dimensions can be also referred as the spatial dimensions.
 
 Since we have established that the spatial dimensions are located at N + 2 dimension, we can now understand how kernels are applied.
 
-### The Kernel Dimension Size Array
+### The Number Of Dimensions
 
 You may already have seen that the convolutional blocks and pooling blocks contains the 1D, 2D and 3D. Those N-D dimensions refers to the spatial dimensions. Hence, the input tensor's dimension size array must contain those spatial dimensions. For example:
 
