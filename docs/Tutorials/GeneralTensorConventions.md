@@ -16,7 +16,7 @@ local dimensionSizeArray2 = {7, 6, 9, 5} -- Dimension 1 has the size of 7, dimen
 
 ## The Dimension Size Arrays Have Meanings!
 
-Different function blocks that requires "dimensionSizeArray" requires different number of dimensions for the input tensors. In general:
+For the input tensors, each dimensions have specific meanings. In general:
 
 | Dimension | Meaning                                   |
 |-----------|-------------------------------------------|
