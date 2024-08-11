@@ -142,7 +142,7 @@ for i = 1, 100000 do
 	
 	local costValue = CostFunction:calculateCostValue(generatedLabelTensor, labelTensor)
 	
-	SequentialNeuralNetwork:backPropagate(lossTensor) -- Pass the loss tensor to backpropagate() function to update the weights.
+	SequentialNeuralNetwork:backwardPropagate(lossTensor) -- Pass the loss tensor to backpropagate() function to update the weights.
 	
 	print(costValue)
 	
