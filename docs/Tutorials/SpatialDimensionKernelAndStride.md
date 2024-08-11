@@ -10,7 +10,7 @@ Here are the list of spatial blocks that are available in this library:
 
 In this tutorial, I will further explain what does the "spatial" mean and how these spatial function blocks affects the dimension size array of an input tensor.
 
-## The Spatial Dimensions
+## The Spatial Dimension
 
 "Spatial" refers to anything related to space or the arrangement of objects in space. It can refer to aspects like time, length, height and width.
 
@@ -26,7 +26,7 @@ Now remember the general tensor conventions that was from the previous tutorial,
 
 The N + 2 dimensions can be also referred as the spatial dimensions.
 
-## The Kernels
+## The Kernel
 
 Since we have established that the spatial dimensions are located at N + 2 dimension, we can now understand how kernels are applied.
 
@@ -63,6 +63,14 @@ Basically this means that the kernel moves the size of:
 *  Nine for dimension 2
 
 *  Four for dimension 3
+
+In general the output size for a given dimension can be calculated as:
+
+```lua
+
+local outputSize = ((inputSize - kernelSize) / strideSize) + 1
+
+```
 
 That is all for this tutorial. I do hope you understand what the spatial dimensions are and why the spatial blocks requires specific number of dimensions for our input tensor. 
 
