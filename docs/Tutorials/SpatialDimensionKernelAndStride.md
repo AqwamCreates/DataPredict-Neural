@@ -16,7 +16,7 @@ In this tutorial, I will further explain what does the "spatial" mean and how th
 
 When people say 1D max pooling, it just generally means that the max pooling is applied along the length or time. For 2D max pooling, it means that the max pooling is applied along the length and height, or time and length.
 
-Now remember the general tensor conventions that was from the previous tutorial, where each of the dimensions holds specific values:
+Now remember the general tensor conventions that was from the previous tutorial, where each of the dimensions holds specific values for the input tensor:
 
 | Dimension | Meaning                                   |
 |-----------|-------------------------------------------|
