@@ -64,7 +64,7 @@ Basically this means that the kernel moves the size of:
 
 *  Four for dimension 3
 
-In general the output size for a given dimension can be calculated as:
+Once we have all these knowledge, we can now calculate the output size for a given dimension. In general the output size can be calculated as:
 
 ```lua
 
