@@ -64,7 +64,7 @@ In addition, if you are interested in Roblox tutorials and future projects by me
 
 [General Tensor Conventions](Tutorials/GeneralTensorConventions.md)
 
-[Spatial Dimension Kernel And Stride](Tutorials/SpatialDimensionKernelAndStride.md)
+[Spatial Dimension, Kernel And Stride](Tutorials/SpatialDimensionKernelAndStride.md)
 
 ## The API
 
