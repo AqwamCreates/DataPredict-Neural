@@ -2,7 +2,7 @@
 
 From the previous [tutorial](GeneralTensorConventions.md), we can see that the dimension size array holds a number of important information. However, these are not enough to fully understand on how to use them when spatial blocks are involved. 
 
-Here are the list of spatial blocks that are available in this library:
+Here are the list of spatial function blocks that are available in this library:
 
 * Convolution blocks
 
