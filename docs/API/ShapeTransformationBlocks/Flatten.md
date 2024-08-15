@@ -8,15 +8,13 @@ Creates a new shape transformation block object.
 
 ```
 
-Flatten.new({startDimension: number, endDimension: number}): ShapeTransformationBlockObject
+Flatten.new({dimensionArray: {number}}): ShapeTransformationBlockObject
 
 ```
 
 #### Parameters:
 
-* startDimension: The starting dimension to flatten into a single tensor.
-
-* endDimension: The ending dimension to flatten into a single tensor.
+* dimensionArray: An array containing 2 values to flatten the tensor. The first value contains the starting dimension number and the second value contains the ending dimension number.
 
 #### Returns:
 
