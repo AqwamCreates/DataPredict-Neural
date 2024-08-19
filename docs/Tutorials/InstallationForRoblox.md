@@ -4,10 +4,11 @@ In this library, we can customize many of our models, optimizers and others to f
 
 To start, we must first link our deep learning library with our tensor library. However, you must use "Aqwam's Tensor Library" as every calculations made by our models are based on that tensor library.
 
-| Version                                        | Beta Version                                                                                                                                                    |
-|------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Deep Learning Library (DataPredict Neural)     | [Aqwam's Deep Learning Library](https://github.com/AqwamCreates/DataPredict-Neural/blob/main/module_scripts/AqwamDeepLearningLibrary.rbxm)                      |
-| Tensor Library (TensorL)                       | [Aqwam's Tensor Library](https://github.com/AqwamCreates/TensorL/blob/main/TensorL_Table.lua)                                                                   |
+| Version                                            | Beta Version                                                                                                                                                    |
+|----------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Deep Learning Library (DataPredict Neural)         | [Aqwam's Deep Learning Library](https://github.com/AqwamCreates/DataPredict-Neural/blob/main/module_scripts/AqwamDeepLearningLibrary.rbxm)                      |
+| Tensor Library (TensorL)                           | [Aqwam's Tensor Library](https://github.com/AqwamCreates/TensorL/blob/main/TensorL_Table.lua)                                                                   |
+| Tensor Library - Efficient (TensorL Efficient)     | [Aqwam's Tensor Library](https://github.com/AqwamCreates/TensorL/blob/main/TensorL_Table.lua)                                                                   |
 
 To download the files from GitHub, you must click on the download button highlighted in the red box.
 
