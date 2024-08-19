@@ -8,7 +8,7 @@ To start, we must first link our deep learning library with our tensor library. 
 |----------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | Deep Learning Library (DataPredict Neural)         | [Aqwam's Deep Learning Library](https://github.com/AqwamCreates/DataPredict-Neural/blob/main/module_scripts/AqwamDeepLearningLibrary.rbxm)                      |
 | Tensor Library (TensorL)                           | [Aqwam's Tensor Library](https://github.com/AqwamCreates/TensorL/blob/main/TensorL_Table.lua)                                                                   |
-| Tensor Library - Efficient (TensorL Efficient)     | [Aqwam's Tensor Library](https://github.com/AqwamCreates/TensorL/blob/main/TensorL_Table.lua)                                                                   |
+| Tensor Library - Efficient (TensorL Efficient)     | [Aqwam's Tensor Library (Efficient)](https://github.com/AqwamCreates/TensorL/blob/main/TensorL_Table_Efficient.lua)                                             |
 
 To download the files from GitHub, you must click on the download button highlighted in the red box.
 
