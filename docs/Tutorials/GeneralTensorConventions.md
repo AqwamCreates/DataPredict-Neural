@@ -8,7 +8,7 @@ You may have noticed that some of the function blocks requires you to input "dim
 
 ```lua
 
-local dimensionSizeArray1 = {10, 3} -- Dimension 1 has the size of 10, dimension 2 has the size of 5.
+local dimensionSizeArray1 = {10, 3} -- Dimension 1 has the size of 10, dimension 2 has the size of 3.
 
 local dimensionSizeArray2 = {7, 6, 9, 5} -- Dimension 1 has the size of 7, dimension 2 has the size of 6, dimension 3 has the size of 9 and dimension 4 has the size of 5.
 
