@@ -6,11 +6,11 @@ To start, we must first link our deep learning library with our tensor library. 
 
 Currently, there are two variants of DataPredict Neural Library and the download links to use that variant is listed below.
 
-## DataPredict Neural - Tensor with Object Flat Storage (Recommended)
+## DataPredict Neural - Tensor Object with Flat Storage (Recommended)
 
 -- To be added soon.
 
-## DataPredict Neural - Tensor with Table Nested Storage
+## DataPredict Neural - Tensor Table with Nested Storage
 
 ### Note: 
 
