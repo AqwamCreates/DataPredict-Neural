@@ -4,7 +4,7 @@ In this library, we can customize many of our models, optimizers and others to f
 
 To start, we must first link our deep learning library with our tensor library. However, you must use "Aqwam's Tensor Library" as every calculations made by our models are based on that tensor library.
 
-Currently, there are two variants of DataPredict Neural Library and the download links to use that variant is listed below.
+Currently, there are two variants of DataPredict Neural Library and the download links to use that specific variant are listed below.
 
 ## DataPredict Neural - Tensor Object with Flat Storage (Recommended)
 
