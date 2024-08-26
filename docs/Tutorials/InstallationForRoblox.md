@@ -16,7 +16,7 @@ Currently, there are two variants of DataPredict Neural Library and the download
 
 * This variant is no longer being maintained and is kept here for archive purposes.
 
-* It is slower that the first variant due to recursive function calls, but much more intuitive. The tensors are also directly compatible with DataPredict library.
+* It is slower than the first variant due to recursive function calls, but much more intuitive. The tensors are also directly compatible with DataPredict library.
 
 ### Download Links:
 
