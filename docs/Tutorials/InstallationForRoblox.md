@@ -8,11 +8,13 @@ Currently, there are two variants of DataPredict Neural Library and the download
 
 ## DataPredict Neural - Tensor Object with Flat Storage (Recommended)
 
+* The tensors's data are stored in a single array, which makes the calculation speed extremely fast.
+
+### Download Links:
+
 -- To be added soon.
 
 ## DataPredict Neural - Tensor Table with Nested Storage
-
-### Note: 
 
 * This variant is no longer being maintained and is kept here for archive purposes.
 
