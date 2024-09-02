@@ -12,7 +12,6 @@ To start, we must first link our deep learning library with our tensor library. 
 | Tensor Library (TensorL Nested)                                         | [Aqwam's Tensor Library](https://github.com/AqwamCreates/TensorL/blob/main/TensorL_Table_Nested.lua)                                                       |
 | Tensor Library - Efficient (TensorL Nested Efficient)                   | [Aqwam's Tensor Library (Efficient)](https://github.com/AqwamCreates/TensorL/blob/main/TensorL_Table_Nested_Efficient.lua)                                 |
 | Tensor Library - Efficient IPairs (TensorL Nested Efficient IPairs)     | [Aqwam's Tensor Library (Efficient IPairs)](https://github.com/AqwamCreates/TensorL/blob/main/TensorL_Table_Nested_Efficient_IPairs.lua)                   |
-| Tensor Library - Efficient Next (TensorL Nested Efficient Next)         | [Aqwam's Tensor Library (Efficient Next)](https://github.com/AqwamCreates/TensorL/blob/main/TensorL_Table_Nested_Efficient_Next.lua)                       |
 
 ## Installing The Files Into Roblox Studio
 
