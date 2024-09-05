@@ -1,6 +1,6 @@
 # Welcome to Aqwam's DataPredict Neural Library!
 
-By using or possesing any copies of this library or its assets (including the icons), you agree to our [Terms and Conditions](TermsAndConditions.md). In short:
+By using or possessing any copies of this library or its assets (including the icons), you agree to our [Terms and Conditions](TermsAndConditions.md). In short:
 
 * Attribution is required when using this library. 
 
