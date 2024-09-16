@@ -95,7 +95,7 @@ And it gets even better.
 
 ### The Transform And Differentiate Function Chaining
 
-When you call transform() at the "main" block, the transformedInputTensor will be passed to "next" function blocks.
+When you call transform() at the "main" block, the inputTensor will be passed to "next" function blocks.
 
 Below, I will show you how you retrieve the final result after the inputTensor being passed to multiple function blocks. Again, the code is not meant to be run and was written for simplicity.
 
