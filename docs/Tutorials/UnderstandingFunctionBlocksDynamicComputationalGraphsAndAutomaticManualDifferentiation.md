@@ -135,6 +135,6 @@ The function blocks uses reverse-mode automatic differentiation where it collect
 
 Also, you may have noticed that we sometimes need to figure out some of the first derivative functions. This is because the function blocks does not provide full automatic differentiation and instead combines both automatic and manual differentiation.
 
-The reason for this design was due to the fact full automatic differentiation is computationally expensive. So, a hybrid approach was chosen so that the calculations are more performant while making sure the programmers don't have to deal with the majority of the math calculations.
+The reason for this design was due to the fact that the full automatic differentiation is computationally expensive. So, a hybrid approach was chosen so that the calculations are more performant while making sure the programmers don't have to deal with the majority of the math calculations.
 
 And since you're here, you now have learnt the majority of the knowledge that this deep learning library has to offer. Congratulations!
