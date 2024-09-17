@@ -54,6 +54,30 @@ BaseOptimizer:setCalculateFunction(CalculateFunction)
 
 * The calculate function to be used by the base optimizer when calculate() function is called.
 
+### setLearningRateValueScheduler()
+
+Sets a value scheduler for the learning rate.
+
+```
+BaseOptimizer:setLearningRateScheduler(LearningRateValueScheduler: ValueSchedulerObject)
+```
+
+#### Parameters:
+
+# LearningRateValueScheduler: The value scheduler object to be used by the learning rate.
+
+### getLearningRateValueScheduler()
+
+Gets the value scheduler for the learning rate.
+
+```
+BaseOptimizer:getLearningRateScheduler(): ValueSchedulerObject
+```
+
+#### Returns:
+
+# LearningRateValueScheduler: The value scheduler object that was used by the learning rate.
+
 ### getOptimizerInternalParameterArray()
 
 Gets the optimizer's internal parameters from the base optimizer.
