@@ -88,8 +88,6 @@ local WeightBlocks = DataPredictNeural.WeightBlocks
 
 local ActivationBlocks = DataPredictNeural.ActivationBlocks
 
-local TransformationBlocks = DataPredictNeural.TransformationBlocks
-
 local CostFunction = DataPredictNeural.CostFunctions.MeanSquaredError.new()
 
 local inputTensor = TensorL:createRandomUniformTensor({4, 1}) -- Generating our input tensor here. Pay attention to the dimensions.
