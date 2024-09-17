@@ -1,4 +1,4 @@
-# [API Reference](../../API.md) - [Cores](../Models.md) - BaseGenerativeAdversarialNetwork
+# [API Reference](../../API.md) - [Cores](../Models.md) - GenerativeAdversarialNetworkBaseModel
 
 ## Constructors
 
@@ -6,7 +6,7 @@
 
 ```
 
-BaseGenerativeAdversarialNetwork.new(): BaseGenerativeAdversarialNetworkObject
+GenerativeAdversarialNetworkBaseModel.new(): GenerativeAdversarialNetworkBaseModelObjet
 
 ```
 
@@ -20,7 +20,7 @@ Returns:
 
 ```
 
-BaseGenerativeAdversarialNetwork:setDiscriminatorLossFunction(DiscriminatorLossFunction: Function)
+GenerativeAdversarialNetworkBaseModel:setDiscriminatorLossFunction(DiscriminatorLossFunction: Function)
 
 ```
 
@@ -32,7 +32,7 @@ BaseGenerativeAdversarialNetwork:setDiscriminatorLossFunction(DiscriminatorLossF
 
 ```
 
-BaseGenerativeAdversarialNetwork:setGeneratorLossFunction(GeneratorLossFunction: Function)
+GenerativeAdversarialNetworkBaseModel:setGeneratorLossFunction(GeneratorLossFunction: Function)
 
 ```
 
@@ -44,7 +44,7 @@ BaseGenerativeAdversarialNetwork:setGeneratorLossFunction(GeneratorLossFunction:
 
 ```
 
-BaseGenerativeAdversarialNetwork:calculateDiscriminatorLossTensor(evaluatedRealTensor: tensor, evaluatedGeneratedTensor: tensor): tensor
+GenerativeAdversarialNetworkBaseModel:calculateDiscriminatorLossTensor(evaluatedRealTensor: tensor, evaluatedGeneratedTensor: tensor): tensor
 
 ```
 
@@ -62,7 +62,7 @@ BaseGenerativeAdversarialNetwork:calculateDiscriminatorLossTensor(evaluatedRealT
 
 ```
 
-BaseGenerativeAdversarialNetwork:calculateGeneratorLossTensor(evaluatedGeneratedTensor: tensor): tensor
+GenerativeAdversarialNetworkBaseModel:calculateGeneratorLossTensor(evaluatedGeneratedTensor: tensor): tensor
 
 ```
 
@@ -78,7 +78,7 @@ BaseGenerativeAdversarialNetwork:calculateGeneratorLossTensor(evaluatedGenerated
 
 ```
 
-BaseGenerativeAdversarialNetwork:backwardPropagateDiscriminator(discriminatorLossTensor: tensor, numberOfData: number)
+GenerativeAdversarialNetworkBaseModel:backwardPropagateDiscriminator(discriminatorLossTensor: tensor, numberOfData: number)
 
 ```
 
@@ -92,7 +92,7 @@ BaseGenerativeAdversarialNetwork:backwardPropagateDiscriminator(discriminatorLos
 
 ```
 
-BaseGenerativeAdversarialNetwork:backwardPropagateGenerator(generatorLossTensor: tensor, numberOfData: number)
+GenerativeAdversarialNetworkBaseModel:backwardPropagateGenerator(generatorLossTensor: tensor, numberOfData: number)
 
 ```
 
@@ -106,7 +106,7 @@ BaseGenerativeAdversarialNetwork:backwardPropagateGenerator(generatorLossTensor:
 
 ```
 
-BaseGenerativeAdversarialNetwork:evaluate(featureTensor: tensor): tensor
+GenerativeAdversarialNetworkBaseModel:evaluate(featureTensor: tensor): tensor
 
 ```
 
@@ -122,7 +122,7 @@ BaseGenerativeAdversarialNetwork:evaluate(featureTensor: tensor): tensor
 
 ```
 
-BaseGenerativeAdversarialNetwork:generate(noiseFeatureTensor: tensor): tensor
+GenerativeAdversarialNetworkBaseModel:generate(noiseFeatureTensor: tensor): tensor
 
 ```
 
@@ -138,55 +138,55 @@ BaseGenerativeAdversarialNetwork:generate(noiseFeatureTensor: tensor): tensor
 
 ```
 
-BaseGenerativeAdversarialNetwork:setDiscriminator(Discriminator: ContainerObject)
+GenerativeAdversarialNetworkBaseModel:setDiscriminatorModel(DiscriminatorModel: ContainerObject)
 
 ```
 
 #### Parameters:
 
-* Discriminator: The discriminator model to be set in the generative adversarial network.
+* DiscriminatorModel: The discriminator model to be set in the generative adversarial network.
 
 ### setGenerator()
 
 ```
 
-BaseGenerativeAdversarialNetwork:setGenerator(Generator: ContainerObject)
+GenerativeAdversarialNetworkBaseModel:setGenerator(GeneratorModel: ContainerObject)
 
 ```
 
 #### Parameters:
 
-* Generator: The generator model to be set in the generative adversarial network.
+* GeneratorModel: The generator model to be set in the generative adversarial network.
 
-### getDiscriminator()
+### getDiscriminatorModel()
 
 ```
 
-BaseGenerativeAdversarialNetwork:getDiscriminator(): ContainerObject
+GenerativeAdversarialNetworkBaseModel:getDiscriminator(): ContainerObject
 
 ```
 
 #### Returns:
 
-* Discriminator: The discriminator model currently set in the generative adversarial network.
+* DiscriminatorModel: The discriminator model currently set in the generative adversarial network.
 
 ### getGenerator()
 
 ```
 
-BaseGenerativeAdversarialNetwork:getGenerator(): ContainerObject
+GenerativeAdversarialNetworkBaseModel:getGenerator(): ContainerObject
 
 ```
 
 #### Returns:
 
-* Generator: The generator model currently set in the generative adversarial network.
+* GeneratorModel: The generator model currently set in the generative adversarial network.
 
 ### setDiscriminatorSeedFeatureTensor()
 
 ```
 
-BaseGenerativeAdversarialNetwork:setDiscriminatorSeedFeatureTensor(discriminatorSeedFeatureTensor: tensor, doNotDeepCopy: boolean)
+GenerativeAdversarialNetworkBaseModel:setDiscriminatorSeedFeatureTensor(discriminatorSeedFeatureTensor: tensor, doNotDeepCopy: boolean)
 
 ```
 
@@ -200,7 +200,7 @@ BaseGenerativeAdversarialNetwork:setDiscriminatorSeedFeatureTensor(discriminator
 
 ```
 
-BaseGenerativeAdversarialNetwork:setGeneratorSeedFeatureTensor(generatorSeedFeatureTensor: tensor, doNotDeepCopy: boolean)
+GenerativeAdversarialNetworkBaseModel:setGeneratorSeedFeatureTensor(generatorSeedFeatureTensor: tensor, doNotDeepCopy: boolean)
 
 ```
 
@@ -214,7 +214,7 @@ BaseGenerativeAdversarialNetwork:setGeneratorSeedFeatureTensor(generatorSeedFeat
 
 ```
 
-BaseGenerativeAdversarialNetwork:getDiscriminatorSeedFeatureTensor(doNotDeepCopy: boolean): tensor
+GenerativeAdversarialNetworkBaseModel:getDiscriminatorSeedFeatureTensor(doNotDeepCopy: boolean): tensor
 
 ```
 
@@ -230,7 +230,7 @@ BaseGenerativeAdversarialNetwork:getDiscriminatorSeedFeatureTensor(doNotDeepCopy
 
 ```
 
-BaseGenerativeAdversarialNetwork:getGeneratorSeedFeatureTensor(doNotDeepCopy: boolean): tensor
+GenerativeAdversarialNetworkBaseModel:getGeneratorSeedFeatureTensor(doNotDeepCopy: boolean): tensor
 
 ```
 

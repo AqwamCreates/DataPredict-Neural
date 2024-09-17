@@ -18,4 +18,4 @@ GenerativeAdversarialNetwork.new(): GenerativeAdversarialNetworkObject
 
 ## Inherited From
 
-* [BaseGenerativeAdversarialNetwork](BaseGenerativeAdversarialNetwork.md)
+* [GenerativeAdversarialNetworkBaseModel](GenerativeAdversarialNetworkBaseModel.md)

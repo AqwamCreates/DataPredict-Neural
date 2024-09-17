@@ -18,4 +18,4 @@ WassersteinGenerativeAdversarialNetwork.new(): WassersteinGenerativeAdversarialN
 
 ## Inherited From
 
-* [BaseGenerativeAdversarialNetwork](BaseGenerativeAdversarialNetwork.md)
+* [GenerativeAdversarialNetworkBaseModel](GenerativeAdversarialNetworkBaseModel.md)
