@@ -112,7 +112,7 @@ Below, we will demonstrate how the tensor shape changes as we add blocks to our 
 
 --]]
 
-SequentialNeuralNetwork:setMultipleFunctionBlocks( -- Input tensor starts with the size of {1, 4, 1}.
+SequentialNeuralNetwork:setMultipleFunctionBlocks( -- Input tensor starts with the size of {4, 1}.
 	
 	WeightBlocks.Linear.new({dimensionSizeArray = {1, 3}}), -- {4, 1} * {1, 3} -> {4, 3}
 	
