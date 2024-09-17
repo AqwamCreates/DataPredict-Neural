@@ -24,7 +24,7 @@ BaseCostFunction.new(): CostFunctionObject
 
 ```
 
-BaseCostFunction:calculateCostValue(generatedLabelTensor: tensor, labelTensor: tensor, numberOfData: number)
+BaseCostFunction:calculateCostValue(generatedLabelTensor: tensor, labelTensor: tensor)
 
 ```
 
@@ -44,7 +44,7 @@ Returns:
 
 ```
 
-BaseCostFunction:calculateLossTensor(generatedLabelTensor: tensor, labelTensor: tensor, numberOfData: number)
+BaseCostFunction:calculateLossTensor(generatedLabelTensor: tensor, labelTensor: tensor)
 
 ```
 

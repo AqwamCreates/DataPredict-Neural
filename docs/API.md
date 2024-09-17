@@ -14,6 +14,8 @@
 
 [DropoutBlocks](API/DropoutBlocks.md)
 
+[AttentionBlocks](API/AttentionBlocks.md)
+
 [OperatorBlocks](API/OperatorBlocks.md)
 
 [EncodingBlocks](API/EncodingBlocks.md)
