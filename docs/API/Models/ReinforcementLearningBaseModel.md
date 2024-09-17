@@ -9,7 +9,7 @@ ReinforcementLearningBaseModel is a base class for reinforcement learning neural
 Creates a new base model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-ReinforcementLearningBaseModel.new(discountFactor: number): ModelObject
+ReinforcementLearningBaseModel.new({discountFactor: number}): ModelObject
 ```
 
 #### Parameters:
@@ -27,7 +27,7 @@ ReinforcementLearningBaseModel.new(discountFactor: number): ModelObject
 Set model's parameters. When any of the arguments are nil, previous argument values for that argument will be used.
 
 ```
-ReinforcementLearningBaseModel:setParameters(discountFactor: number)
+ReinforcementLearningBaseModel:setParameters({discountFactor: number})
 ```
 
 ### setModel()
