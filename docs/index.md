@@ -87,7 +87,7 @@ In addition, if you are interested in Roblox tutorials and future projects by me
 
 ## Version History
 
-[All](VersionHistory/AllVersionHistory.md)
+[All](VersionHistory/AllVersionsHistory.md)
 
 [Release](VersionHistory/ReleaseVersionHistory.md)
 
