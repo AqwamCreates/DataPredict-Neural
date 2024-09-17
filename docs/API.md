@@ -26,6 +26,8 @@
 
 [Optimizers](API/Optimizers.md)
 
+[ValueSchedulers](API/ValueSchedulers.md)
+
 [Regularizers](API/Regularizers.md)
 
 [Containers](API/Containers.md)
