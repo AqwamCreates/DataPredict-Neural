@@ -6,4 +6,6 @@
 
 [Reshape](ShapeTransformationBlocks/Reshape.md)
 
+[Permute](ShapeTransformationBlocks/Permute.md)
+
 [BaseShapeTransformationBlock](ShapeTransformationBlocks/BaseShapeTransformationBlock.md)
