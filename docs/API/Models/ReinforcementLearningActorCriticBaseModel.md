@@ -9,7 +9,7 @@ ReinforcementLearningActorCriticBaseModel is a base class for reinforcement lear
 Creates a new base model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-ReinforcementLearningActorCriticBaseModel.new(discountFactor: number): ModelObject
+ReinforcementLearningActorCriticBaseModel.new({discountFactor: number}): ModelObject
 ```
 
 #### Parameters:
@@ -27,7 +27,7 @@ ReinforcementLearningActorCriticBaseModel.new(discountFactor: number): ModelObje
 Set model's parameters. When any of the arguments are nil, previous argument values for that argument will be used.
 
 ```
-ReinforcementLearningActorCriticBaseModel:setParameters(discountFactor: number)
+ReinforcementLearningActorCriticBaseModel:setParameters({discountFactor: number})
 ```
 
 #### Parameters:
