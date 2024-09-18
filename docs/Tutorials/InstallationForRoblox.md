@@ -4,14 +4,14 @@ In this library, we can customize many of our models, optimizers and others to f
 
 To start, we must first link our deep learning library with our tensor library. However, you must use "Aqwam's Tensor Library" as every calculations made by our models are based on that tensor library.
 
-### Download Links:
+### Download Links: 
 
-| Version                                                                 | Beta Version                                                                                                                                               |
-|-------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Deep Learning Library (DataPredict Neural)                              | [Aqwam's Deep Learning Library](https://github.com/AqwamCreates/DataPredict-Neural/blob/main/module_scripts/AqwamDeepLearningLibrary.rbxm)                 |
-| Tensor Library (TensorL Nested)                                         | [Aqwam's Tensor Library](https://github.com/AqwamCreates/TensorL/blob/main/TensorL_Table_Nested.lua)                                                       |
-| Tensor Library - Efficient (TensorL Nested Efficient)                   | [Aqwam's Tensor Library (Efficient)](https://github.com/AqwamCreates/TensorL/blob/main/TensorL_Table_Nested_Efficient.lua)                                 |
-| Tensor Library - Efficient IPairs (TensorL Nested Efficient IPairs)     | [Aqwam's Tensor Library (Efficient IPairs)](https://github.com/AqwamCreates/TensorL/blob/main/TensorL_Table_Nested_Efficient_IPairs.lua)                   |
+| Version                                                                 | Beta Version                                                                                                       | Release Version                                                                                                                            |
+|-------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------|
+| Deep Learning Library (DataPredict Neural)                              | [0.7.0](https://github.com/AqwamCreates/DataPredict-Neural/blob/main/module_scripts/AqwamDeepLearningLibrary.rbxm) | [1.1](https://github.com/AqwamCreates/DataPredict-Neural/blob/main/module_scripts/DataPredict%20Neural%20-%20Release%20Version%201.1.rbxm) |
+| Tensor Library (TensorL Nested)                                         | [0.8.0](https://github.com/AqwamCreates/TensorL/blob/main/TensorL_Table_Nested.lua)                                |                                                                                                                                            |
+| Tensor Library - Efficient (TensorL Nested Efficient)                   | [0.8.0](https://github.com/AqwamCreates/TensorL/blob/main/TensorL_Table_Nested_Efficient.lua)                      |                                                                                                                                            |
+| Tensor Library - Efficient IPairs (TensorL Nested Efficient IPairs)     | [0.8.0](https://github.com/AqwamCreates/TensorL/blob/main/TensorL_Table_Nested_Efficient_IPairs.lua)               |
 
 Note: Tensor Library - Efficient IPairs has the most consistent high performance for all tensor operations. So choose the last one if you prefer speed over code readability.
 
