@@ -4,7 +4,7 @@
 
 ### new()
 
-Creates a new activation block object.
+Creates a new shape transformation block object.
 
 ```
 

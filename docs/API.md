@@ -12,6 +12,8 @@
 
 [PoolingBlocks](API/PoolingBlocks.md)
 
+[ExpansionBlocks](API/ExpansionBlocks.md)
+
 [DropoutBlocks](API/DropoutBlocks.md)
 
 [AttentionBlocks](API/AttentionBlocks.md)
