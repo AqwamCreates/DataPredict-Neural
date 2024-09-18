@@ -1,5 +1,9 @@
 # Beta Version
 
+## Version 0.7
+
+[0.7.0](Beta/0-7-0.md) -- 19/9/2024
+
 ## Version 0.6
 
 [0.6.0](Beta/0-6-0.md) -- 18/9/2024
