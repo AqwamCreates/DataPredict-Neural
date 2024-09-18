@@ -20,6 +20,20 @@ Flatten.new({dimensionArray: {number}}): ShapeTransformationBlockObject
 
 * ShapeTransformationBlock: The generated shape transformation block object.
 
+## Functions
+
+### setParameters()
+
+```
+
+Flatten:setParameters({dimensionArray: {number}})
+
+```
+
+#### Parameters:
+
+* dimensionArray: An array containing 2 values to flatten the tensor. The first value contains the starting dimension number and the second value contains the ending dimension number.
+
 ## Inherited From
 
 * [BaseShapeTransformationBlock](BaseShapeTransformationBlock.md)
