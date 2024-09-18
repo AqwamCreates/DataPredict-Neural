@@ -1,4 +1,4 @@
-# [API Reference](../../API.md) - ExpansionBlocks(../ExpansionBlocks.md) - BaseExpansionBlock
+# [API Reference](../../API.md) - [ExpansionBlocks](../ExpansionBlocks.md) - BaseExpansionBlock
 
 ## Constructors
 
