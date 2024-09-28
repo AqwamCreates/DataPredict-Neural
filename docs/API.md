@@ -22,6 +22,8 @@
 
 [EncodingBlocks](API/EncodingBlocks.md)
 
+[HolderBlocks](API/HolderBlocks.md)
+
 ## Extensions
 
 [CostFunctions](API/CostFunctions.md)
