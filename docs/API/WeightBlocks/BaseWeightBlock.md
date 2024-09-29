@@ -98,7 +98,7 @@ BaseWeightBlock:getWeightTensor(doNotDeepCopy): tensor
 
 #### Returns
 
-* tensor: Tensor to be returned.
+* weightTensor: Tensor to be returned.
 
 ### setNextFunctionBlockArrayIndexArray()
 
