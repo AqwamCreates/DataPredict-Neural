@@ -1,4 +1,4 @@
-# [API Reference](../../API.md) - [WeightBlocks](../WeightBlocks.md) - Bias
+# [API Reference](../../API.md) - [HolderBlocks](../HolderBlocks.md) - VariableHolder
 
 ## Constructors
 
