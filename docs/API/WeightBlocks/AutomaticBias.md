@@ -8,7 +8,7 @@ Creates a new weight block object. If there are no parameters given for that par
 
 ```
 
-AutomaticBias.new({numberOfDimensions: number, doNotShareBiasDimensionArray: number: {}, learningRate: number, Optimizer: OptimizerObject, Regularizer: RegularizerObject, initializationMode: string}): WeightBlockObject
+AutomaticBias.new({numberOfDimensions: number, doNotShareBiasDimensionArray: {number}, learningRate: number, Optimizer: OptimizerObject, Regularizer: RegularizerObject, initializationMode: string}): WeightBlockObject
 
 ```
 
