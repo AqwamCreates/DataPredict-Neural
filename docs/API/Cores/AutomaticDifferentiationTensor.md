@@ -6,7 +6,7 @@
 
 ```
 
-AutomaticDifferentiationTensorObject.new(tensor: tensor, PartialDerivativeFunction: Function, PreviousTensorObject1: AutomaticDifferentiationTensorObject, PreviousTensorObject2: AutomaticDifferentiationTensorObject): AutomaticDifferentiationTensorObject
+AutomaticDifferentiationTensor.new(tensor: tensor, PartialDerivativeFunction: Function, PreviousTensorObject1: AutomaticDifferentiationTensorObject, PreviousTensorObject2: AutomaticDifferentiationTensorObject): AutomaticDifferentiationTensorObject
 
 ```
 
@@ -28,7 +28,7 @@ AutomaticDifferentiationTensorObject.new(tensor: tensor, PartialDerivativeFuncti
 
 ```
 
-AutomaticDifferentiationTensorObject.sin(tensor: tensor/AutomaticDifferentiationTensorObject): AutomaticDifferentiationTensorObject
+AutomaticDifferentiationTensor.sin(tensor: tensor/AutomaticDifferentiationTensorObject): AutomaticDifferentiationTensorObject
 
 ```
 
@@ -44,7 +44,7 @@ AutomaticDifferentiationTensorObject.sin(tensor: tensor/AutomaticDifferentiation
 
 ```
 
-AutomaticDifferentiationTensorObject.cos(tensor: tensor/AutomaticDifferentiationTensorObject): AutomaticDifferentiationTensorObject
+AutomaticDifferentiationTensor.cos(tensor: tensor/AutomaticDifferentiationTensorObject): AutomaticDifferentiationTensorObject
 
 ```
 
@@ -60,7 +60,7 @@ AutomaticDifferentiationTensorObject.cos(tensor: tensor/AutomaticDifferentiation
 
 ```
 
-AutomaticDifferentiationTensorObject.tan(tensor: tensor/AutomaticDifferentiationTensorObject): AutomaticDifferentiationTensorObject
+AutomaticDifferentiationTensor.tan(tensor: tensor/AutomaticDifferentiationTensorObject): AutomaticDifferentiationTensorObject
 
 ```
 
@@ -72,11 +72,19 @@ AutomaticDifferentiationTensorObject.tan(tensor: tensor/AutomaticDifferentiation
 
 * AutomaticDifferentiationTensorObject: The generated automatic differentiation tensor object.
 
+### clamp()
+
+```
+
+AutomaticDifferentiationTensor.clamp(tensor: tensor/AutomaticDifferentiationTensorObject, upperBoundTensor: number/tensor/AutomaticDifferentiationTensorObject upperBoundTensor: number/tensor/AutomaticDifferentiationTensorObject): AutomaticDifferentiationTensorObject
+
+```
+
 ### max()
 
 ```
 
-AutomaticDifferentiationTensorObject.max(tensor1: tensor/AutomaticDifferentiationTensorObject, tensor2: tensor/AutomaticDifferentiationTensorObject): AutomaticDifferentiationTensorObject
+AutomaticDifferentiationTensor.maximum(tensor1: number/tensor/AutomaticDifferentiationTensorObject, tensor2: number/tensor/AutomaticDifferentiationTensorObject): AutomaticDifferentiationTensorObject
 
 ```
 
@@ -96,7 +104,7 @@ AutomaticDifferentiationTensorObject.max(tensor1: tensor/AutomaticDifferentiatio
 
 ```
 
-AutomaticDifferentiationTensorObject.min(tensor1: tensor/AutomaticDifferentiationTensorObject, tensor2: tensor/AutomaticDifferentiationTensorObject): AutomaticDifferentiationTensorObject
+AutomaticDifferentiationTensor.minimum(tensor1: number/tensor/AutomaticDifferentiationTensorObject, tensor2: number/tensor/AutomaticDifferentiationTensorObject): AutomaticDifferentiationTensorObject
 
 ```
 
@@ -110,7 +118,7 @@ AutomaticDifferentiationTensorObject.min(tensor1: tensor/AutomaticDifferentiatio
 
 ```
 
-AutomaticDifferentiationTensorObject:add(AutomaticDifferentiationTensor: AutomaticDifferentiationTensorObject): AutomaticDifferentiationTensorObject
+AutomaticDifferentiationTensor:add(AutomaticDifferentiationTensor: number/tensor/AutomaticDifferentiationTensorObject): AutomaticDifferentiationTensorObject
 
 ```
 
@@ -126,7 +134,7 @@ AutomaticDifferentiationTensorObject:add(AutomaticDifferentiationTensor: Automat
 
 ```
 
-AutomaticDifferentiationTensorObject:subtract(AutomaticDifferentiationTensor: AutomaticDifferentiationTensorObject): AutomaticDifferentiationTensorObject
+AutomaticDifferentiationTensor:subtract(AutomaticDifferentiationTensor: number/tensor/AutomaticDifferentiationTensorObject): AutomaticDifferentiationTensorObject
 
 ```
 
@@ -142,7 +150,7 @@ AutomaticDifferentiationTensorObject:subtract(AutomaticDifferentiationTensor: Au
 
 ```
 
-AutomaticDifferentiationTensorObject:multiply(AutomaticDifferentiationTensor: AutomaticDifferentiationTensorObject): AutomaticDifferentiationTensorObject
+AutomaticDifferentiationTensor:multiply(AutomaticDifferentiationTensor: number/tensor/AutomaticDifferentiationTensorObject): AutomaticDifferentiationTensorObject
 
 ```
 
@@ -158,7 +166,7 @@ AutomaticDifferentiationTensorObject:multiply(AutomaticDifferentiationTensor: Au
 
 ```
 
-AutomaticDifferentiationTensorObject:divide(AutomaticDifferentiationTensor: AutomaticDifferentiationTensorObject): AutomaticDifferentiationTensorObject
+AutomaticDifferentiationTensor:divide(AutomaticDifferentiationTensor: number/tensor/AutomaticDifferentiationTensorObject): AutomaticDifferentiationTensorObject
 
 ```
 
@@ -174,7 +182,7 @@ AutomaticDifferentiationTensorObject:divide(AutomaticDifferentiationTensor: Auto
 
 ```
 
-AutomaticDifferentiationTensorObject.power(AutomaticDifferentiationTensor: AutomaticDifferentiationTensorObject): AutomaticDifferentiationTensorObject
+AutomaticDifferentiationTensor:power(AutomaticDifferentiationTensor: number/tensor/AutomaticDifferentiationTensorObject): AutomaticDifferentiationTensorObject
 
 ```
 
@@ -190,7 +198,7 @@ AutomaticDifferentiationTensorObject.power(AutomaticDifferentiationTensor: Autom
 
 ```
 
-AutomaticDifferentiationTensorObject:log(AutomaticDifferentiationTensor: AutomaticDifferentiationTensorObject): AutomaticDifferentiationTensorObject
+AutomaticDifferentiationTensor:logarithm(AutomaticDifferentiationTensor: number/tensor/AutomaticDifferentiationTensorObject): AutomaticDifferentiationTensorObject
 
 ```
 
@@ -206,7 +214,7 @@ AutomaticDifferentiationTensorObject:log(AutomaticDifferentiationTensor: Automat
 
 ```
 
-AutomaticDifferentiationTensorObject:dotProduct(AutomaticDifferentiationTensor: AutomaticDifferentiationTensorObject): AutomaticDifferentiationTensorObject
+AutomaticDifferentiationTensor:dotProduct(AutomaticDifferentiationTensor: tensor/AutomaticDifferentiationTensorObject): AutomaticDifferentiationTensorObject
 
 ```
 
