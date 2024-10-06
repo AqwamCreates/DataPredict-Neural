@@ -1,5 +1,9 @@
 # Beta Version
 
+## Version 0.9
+
+[0.9.0](Beta/0-8-0.md) -- 29/9/2024
+
 ## Version 0.8
 
 [0.8.0](Beta/0-8-0.md) -- 29/9/2024

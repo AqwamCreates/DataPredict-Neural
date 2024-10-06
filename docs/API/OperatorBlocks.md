@@ -22,4 +22,10 @@
 
 [Extract](OperatorBlocks/Extract.md)
 
+[Clamp](OperatorBlocks/Clamp.md)
+
+[Maximum](OperatorBlocks/Maximum.md)
+
+[Minimum](OperatorBlocks/Minimum.md)
+
 [BaseOperatorBlock](OperatorBlocks/BaseOperatorBlock.md)
