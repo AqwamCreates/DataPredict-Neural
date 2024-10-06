@@ -150,9 +150,7 @@ function AHAAutomaticDifferentiatonTensor.cos(tensor)
 
 		if (not checkIfIsAutomaticDifferentiationTensor(tensor)) then return end
 
-		local sin = math.sin
-
-		local partialDerivativeFunctionToApply = function (radian) return -sin(radian) end
+		local partialDerivativeFunctionToApply = function (radian) return -math.sin(radian) end
 
 		local partialDerivativeTensor = AqwamTensorLibrary:applyFunction(partialDerivativeFunctionToApply, tensor)
 
@@ -905,10 +903,10 @@ function AHAAutomaticDifferentiatonTensor:dotProduct(other) -- Refer to this art
 		local otherTensor = other:getTensor()
 
 		local otherNumberOfDimensions = #AqwamTensorLibrary:getDimensionSizeArray(otherTensor)
-		local selfNumberOfDimensions = AqwamTensorLibrary:getDimensionSizeArray(self)
+		local selfNumberOfDimensions = #AqwamTensorLibrary:getDimensionSizeArray(self)
 
 		local transposedOther = AqwamTensorLibrary:transpose(otherTensor, {otherNumberOfDimensions - 1, otherNumberOfDimensions})
-		local transposedSelf = AqwamTensorLibrary:transpose(self, {otherNumberOfDimensions - 1, otherNumberOfDimensions})
+		local transposedSelf = AqwamTensorLibrary:transpose(self, {selfNumberOfDimensions - 1, selfNumberOfDimensions})
 
 		if checkIfIsAutomaticDifferentiationTensor(self) then self:differentiate(AqwamTensorLibrary:dotProduct(derivativeTensor, transposedOther)) end
 		if checkIfIsAutomaticDifferentiationTensor(other) then other:differentiate(AqwamTensorLibrary:dotProduct(transposedSelf, derivativeTensor)) end
