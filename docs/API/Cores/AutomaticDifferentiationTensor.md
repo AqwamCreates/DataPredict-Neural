@@ -194,7 +194,7 @@ AutomaticDifferentiationTensor:power(AutomaticDifferentiationTensor: number/tens
 
 * AutomaticDifferentiationTensorObject: The generated automatic differentiation tensor object.
 
-### log()
+### logarithm()
 
 ```
 
@@ -205,6 +205,22 @@ AutomaticDifferentiationTensor:logarithm(AutomaticDifferentiationTensor: number/
 #### Parameters:
 
 * AutomaticDifferentiationTensor: The base tensor object to be used by the automatic differentiation tensor object.
+
+#### Returns
+
+* AutomaticDifferentiationTensorObject: The generated automatic differentiation tensor object.
+
+### sum()
+
+```
+
+AutomaticDifferentiationTensor:sum(dimension: number): AutomaticDifferentiationTensorObject
+
+```
+
+#### Parameters:
+
+* dimension: The dimension to sum across the tensor.
 
 #### Returns
 
