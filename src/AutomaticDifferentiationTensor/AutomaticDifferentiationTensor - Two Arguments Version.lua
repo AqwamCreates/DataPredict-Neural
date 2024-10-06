@@ -104,6 +104,24 @@ local function collapseTensor(tensor, targetDimensionSizeArray)
 
 end
 
+local function createOriginalDimensionArray(targetDimensionArray)
+
+	local originalDimensionArray = {}
+
+	local originalDimension = 1
+
+	for i, targetDimension in ipairs(targetDimensionArray) do
+
+		originalDimensionArray[targetDimension] = originalDimension
+
+		originalDimension = originalDimension + 1
+
+	end
+
+	return originalDimensionArray
+
+end
+
 --------------------------------------------------------------------------------------
 
 function AHAAutomaticDifferentiatonTensor.new(tensor, PartialDerivativeFunction, previousTensorObject1, previousTensorObject2)
