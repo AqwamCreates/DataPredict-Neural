@@ -1007,6 +1007,30 @@ end
 
 --------------------------------------------------------------------------------------
 
+function AHAAutomaticDifferentiatonTensor:flatten(dimensionArray)
+	
+	local dimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(self)
+
+	local result = AqwamTensorLibrary:flatten(self, dimensionArray)
+
+	local PartialDerivativeFunction = function(derivativeTensor)
+
+		local functionToApply = function(value, lowerBoundValue, upperBoundValue) if ((value >= lowerBoundValue) and (value <= upperBoundValue)) then return value else return 0 end end
+
+		if checkIfIsAutomaticDifferentiationTensor(self) then return end
+
+		derivativeTensor = AqwamTensorLibrary:reshape(derivativeTensor, dimensionSizeArray)
+
+		self:differentiate(derivativeTensor)
+
+	end
+
+	return AHAAutomaticDifferentiatonTensor.new(result, PartialDerivativeFunction, {self})
+
+end
+
+--------------------------------------------------------------------------------------
+
 function AHAAutomaticDifferentiatonTensor:isAutomaticDifferentiationTensor()
 
 	return true
