@@ -957,7 +957,7 @@ end
 
 function AHAAutomaticDifferentiatonTensor:transpose(dimensionIndexArray)
 
-	local tensor = AqwamTensorLibrary:transpose(self, dimensionIndexArray)
+	local result = AqwamTensorLibrary:transpose(self, dimensionIndexArray)
 
 	local PartialDerivativeFunction = function(derivativeTensor)
 
@@ -965,17 +965,17 @@ function AHAAutomaticDifferentiatonTensor:transpose(dimensionIndexArray)
 
 	end
 
-	return self.new(tensor, PartialDerivativeFunction, self)
+	return self.new(result, PartialDerivativeFunction, self)
 
 end
+
+--------------------------------------------------------------------------------------
 
 function AHAAutomaticDifferentiatonTensor:isAutomaticDifferentiationTensor()
 
 	return true
 
 end
-
---------------------------------------------------------------------------------------
 
 function AHAAutomaticDifferentiatonTensor:differentiate(derivativeTensor)
 
