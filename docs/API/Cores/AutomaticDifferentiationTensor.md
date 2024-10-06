@@ -80,7 +80,7 @@ AutomaticDifferentiationTensor.clamp(tensor: tensor/AutomaticDifferentiationTens
 
 ```
 
-### max()
+### maximum()
 
 ```
 
@@ -96,7 +96,7 @@ AutomaticDifferentiationTensor.maximum(tensor1: number/tensor/AutomaticDifferent
 
 * AutomaticDifferentiationTensorObject: The generated automatic differentiation tensor object.
 
-### min()
+### minimum()
 
 #### Parameters:
 
