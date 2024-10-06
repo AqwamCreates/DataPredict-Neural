@@ -104,6 +104,24 @@ local function collapseTensor(tensor, targetDimensionSizeArray)
 
 end
 
+local function createOriginalDimensionArray(targetDimensionArray)
+
+	local originalDimensionArray = {}
+
+	local originalDimension = 1
+
+	for i, targetDimension in ipairs(targetDimensionArray) do
+
+		originalDimensionArray[targetDimension] = originalDimension
+
+		originalDimension = originalDimension + 1
+
+	end
+
+	return originalDimensionArray
+
+end
+
 --------------------------------------------------------------------------------------
 
 function AHAAutomaticDifferentiatonTensor.new(tensor, PartialDerivativeFunction, tensorArray)
@@ -1170,6 +1188,26 @@ function AHAAutomaticDifferentiatonTensor:reshape(dimensionSizeArray)
 		if (not checkIfIsAutomaticDifferentiationTensor(self)) then return end
 
 		derivativeTensor = AqwamTensorLibrary:reshape(derivativeTensor, originalDimensionSizeArray)
+
+		self:differentiate(derivativeTensor)
+
+	end
+
+	return AHAAutomaticDifferentiatonTensor.new(result, PartialDerivativeFunction, {self})
+
+end
+
+function AHAAutomaticDifferentiatonTensor:permute(dimensionArray)
+	
+	local originalDimensionArray = createOriginalDimensionArray(dimensionArray)
+
+	local result = AqwamTensorLibrary:permute(self, dimensionArray)
+
+	local PartialDerivativeFunction = function(derivativeTensor)
+
+		if (not checkIfIsAutomaticDifferentiationTensor(self)) then return end
+
+		derivativeTensor = AqwamTensorLibrary:permute(derivativeTensor, originalDimensionArray)
 
 		self:differentiate(derivativeTensor)
 
