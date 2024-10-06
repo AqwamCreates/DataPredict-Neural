@@ -991,6 +991,8 @@ function AHAAutomaticDifferentiatonTensor:dotProduct(other) -- Refer to this art
 
 end
 
+--------------------------------------------------------------------------------------
+
 function AHAAutomaticDifferentiatonTensor:transpose(dimensionIndexArray)
 
 	local result = AqwamTensorLibrary:transpose(self, dimensionIndexArray)
@@ -1001,14 +1003,12 @@ function AHAAutomaticDifferentiatonTensor:transpose(dimensionIndexArray)
 
 	end
 
-	return self.new(result, PartialDerivativeFunction, self)
+	return self.new(result, PartialDerivativeFunction, {self})
 
 end
 
---------------------------------------------------------------------------------------
-
 function AHAAutomaticDifferentiatonTensor:flatten(dimensionArray)
-	
+
 	local dimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(self)
 
 	local result = AqwamTensorLibrary:flatten(self, dimensionArray)
