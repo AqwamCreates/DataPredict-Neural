@@ -987,20 +987,6 @@ function AHAAutomaticDifferentiatonTensor:dotProduct(other) -- Refer to this art
 
 end
 
-function AHAAutomaticDifferentiatonTensor:transpose(dimensionIndexArray)
-
-	local result = AqwamTensorLibrary:transpose(self, dimensionIndexArray)
-
-	local PartialDerivativeFunction = function(derivativeTensor)
-
-		if checkIfIsAutomaticDifferentiationTensor(self) then self:differentiate(AqwamTensorLibrary:transpose(derivativeTensor, dimensionIndexArray)) end
-
-	end
-
-	return self.new(result, PartialDerivativeFunction, {self})
-
-end
-
 function AHAAutomaticDifferentiatonTensor:extract(originDimensionIndexArray, targetDimensionIndexArray)
 	
 	local originalTensorDimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(self)
@@ -1134,6 +1120,44 @@ function AHAAutomaticDifferentiatonTensor.concatenate(...)
 	end
 
 	return AHAAutomaticDifferentiatonTensor.new(result, PartialDerivativeFunction, tensorArray)
+
+end
+
+--------------------------------------------------------------------------------------
+
+function AHAAutomaticDifferentiatonTensor:transpose(dimensionIndexArray)
+
+	local result = AqwamTensorLibrary:transpose(self, dimensionIndexArray)
+
+	local PartialDerivativeFunction = function(derivativeTensor)
+
+		if checkIfIsAutomaticDifferentiationTensor(self) then self:differentiate(AqwamTensorLibrary:transpose(derivativeTensor, dimensionIndexArray)) end
+
+	end
+
+	return self.new(result, PartialDerivativeFunction, {self})
+
+end
+
+function AHAAutomaticDifferentiatonTensor:flatten(dimensionArray)
+
+	local dimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(self)
+
+	local result = AqwamTensorLibrary:flatten(self, dimensionArray)
+
+	local PartialDerivativeFunction = function(derivativeTensor)
+
+		local functionToApply = function(value, lowerBoundValue, upperBoundValue) if ((value >= lowerBoundValue) and (value <= upperBoundValue)) then return value else return 0 end end
+
+		if checkIfIsAutomaticDifferentiationTensor(self) then return end
+
+		derivativeTensor = AqwamTensorLibrary:reshape(derivativeTensor, dimensionSizeArray)
+
+		self:differentiate(derivativeTensor)
+
+	end
+
+	return AHAAutomaticDifferentiatonTensor.new(result, PartialDerivativeFunction, {self})
 
 end
 
