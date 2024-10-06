@@ -84,23 +84,23 @@ local function checkIfIsAutomaticDifferentiationTensor(tensor)
 
 end
 
-local function collapseTensor(derivativeTensor, targetDerivativeTensorDimensionSizeArray)
+local function collapseTensor(tensor, targetDimensionSizeArray)
 
-	local numberOfDimensionsOfTensor = #targetDerivativeTensorDimensionSizeArray
+	local numberOfDimensionsOfTensor = #targetDimensionSizeArray
 
-	local numberOfDimensionsOfDerivativeTensor = #AqwamTensorLibrary:getDimensionSizeArray(derivativeTensor)
+	local numberOfDimensionsOfDerivativeTensor = #AqwamTensorLibrary:getDimensionSizeArray(tensor)
 
 	local numberOfDimensionsToSum = numberOfDimensionsOfDerivativeTensor - numberOfDimensionsOfTensor
 
-	for i = 1, numberOfDimensionsToSum, 1 do derivativeTensor = AqwamTensorLibrary:sum(derivativeTensor, 1)[1] end -- Remove the first dimension as it is redundant and does not carry any values. If it is not removed, this tensor might broadcast its dimension size elsewhere like during the gradient descent.
+	for i = 1, numberOfDimensionsToSum, 1 do tensor = AqwamTensorLibrary:sum(tensor, 1)[1] end
 
-	for i, size in ipairs(targetDerivativeTensorDimensionSizeArray) do
+	for i, size in ipairs(targetDimensionSizeArray) do
 
-		if (size == 1) then derivativeTensor = AqwamTensorLibrary:sum(derivativeTensor, i) end
+		if (size == 1) then tensor = AqwamTensorLibrary:sum(tensor, i) end
 
 	end
 
-	return derivativeTensor
+	return tensor
 
 end
 
