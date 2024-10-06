@@ -230,15 +230,13 @@ function AHAAutomaticDifferentiatonTensor.clamp(tensor, lowerBoundTensor, upperB
 
 	local PartialDerivativeFunction = function(derivativeTensor)
 
+		if (not checkIfIsAutomaticDifferentiationTensor(tensor)) then return end
+			
 		local functionToApply = function(value, lowerBoundValue, upperBoundValue) if ((value >= lowerBoundValue) and (value <= upperBoundValue)) then return value else return 0 end end
 
-		if checkIfIsAutomaticDifferentiationTensor(tensor) then
+		local partialDerivativeTensor = AqwamTensorLibrary:applyFunction(functionToApply, derivativeTensor, lowerBoundTensor, upperBoundTensor)
 
-			local partialDerivativeTensor = AqwamTensorLibrary:applyFunction(functionToApply, derivativeTensor, lowerBoundTensor, upperBoundTensor)
-
-			tensor:differentiate(partialDerivativeTensor)
-
-		end
+		tensor:differentiate(partialDerivativeTensor)
 
 	end
 
