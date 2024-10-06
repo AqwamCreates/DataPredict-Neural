@@ -122,6 +122,42 @@ function AHAAutomaticDifferentiatonTensor.new(tensor, PartialDerivativeFunction,
 
 end
 
+function AHAAutomaticDifferentiatonTensor.radian(tensor)
+	
+	local result = AqwamTensorLibrary:applyFunction(math.rad, tensor)
+
+	local PartialDerivativeFunction = function(derivativeTensor)
+
+		if (not checkIfIsAutomaticDifferentiationTensor(tensor)) then return end
+		
+		local radiansPerDegree = math.pi / 180
+
+		tensor:differentiate(AqwamTensorLibrary:multiply(radiansPerDegree, derivativeTensor))
+
+	end
+
+	return AHAAutomaticDifferentiatonTensor.new(result, PartialDerivativeFunction, {tensor})
+	
+end
+
+function AHAAutomaticDifferentiatonTensor.degree(tensor)
+	
+	local result = AqwamTensorLibrary:applyFunction(math.deg, tensor)
+
+	local PartialDerivativeFunction = function(derivativeTensor)
+
+		if (not checkIfIsAutomaticDifferentiationTensor(tensor)) then return end
+
+		local degreesPerRadian = 180 / math.pi
+
+		tensor:differentiate(AqwamTensorLibrary:multiply(degreesPerRadian, derivativeTensor))
+
+	end
+
+	return AHAAutomaticDifferentiatonTensor.new(result, PartialDerivativeFunction, {tensor})
+	
+end
+
 function AHAAutomaticDifferentiatonTensor.sin(tensor)
 
 	local result = AqwamTensorLibrary:applyFunction(math.sin, tensor)
