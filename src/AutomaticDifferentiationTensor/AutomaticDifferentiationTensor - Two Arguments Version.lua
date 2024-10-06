@@ -1015,9 +1015,7 @@ function AHAAutomaticDifferentiatonTensor:flatten(dimensionArray)
 
 	local PartialDerivativeFunction = function(derivativeTensor)
 
-		local functionToApply = function(value, lowerBoundValue, upperBoundValue) if ((value >= lowerBoundValue) and (value <= upperBoundValue)) then return value else return 0 end end
-
-		if checkIfIsAutomaticDifferentiationTensor(self) then return end
+		if (not checkIfIsAutomaticDifferentiationTensor(self)) then return end
 
 		derivativeTensor = AqwamTensorLibrary:reshape(derivativeTensor, dimensionSizeArray)
 
