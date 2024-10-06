@@ -1065,6 +1065,26 @@ function AHAAutomaticDifferentiatonTensor:reshape(dimensionSizeArray)
 
 end
 
+function AHAAutomaticDifferentiatonTensor:permute(dimensionArray)
+	
+	local originalDimensionArray = createOriginalDimensionArray(dimensionArray)
+
+	local result = AqwamTensorLibrary:permute(self, dimensionArray)
+
+	local PartialDerivativeFunction = function(derivativeTensor)
+
+		if (not checkIfIsAutomaticDifferentiationTensor(self)) then return end
+
+		derivativeTensor = AqwamTensorLibrary:permute(derivativeTensor, originalDimensionArray)
+
+		self:differentiate(derivativeTensor)
+
+	end
+
+	return AHAAutomaticDifferentiatonTensor.new(result, PartialDerivativeFunction, {self})
+
+end
+
 --------------------------------------------------------------------------------------
 
 function AHAAutomaticDifferentiatonTensor:isAutomaticDifferentiationTensor()
