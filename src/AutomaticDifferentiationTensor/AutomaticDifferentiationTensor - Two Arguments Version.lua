@@ -219,6 +219,8 @@ function AHAAutomaticDifferentiatonTensor.tan(tensor)
 end
 
 function AHAAutomaticDifferentiatonTensor.clamp(tensor, lowerBoundTensor, upperBoundTensor)
+	
+	local dimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(tensor)
 
 	lowerBoundTensor = lowerBoundTensor or -math.huge
 
@@ -236,9 +238,9 @@ function AHAAutomaticDifferentiatonTensor.clamp(tensor, lowerBoundTensor, upperB
 			
 		local functionToApply = function(value, lowerBoundValue, upperBoundValue) if ((value >= lowerBoundValue) and (value <= upperBoundValue)) then return value else return 0 end end
 
-		local partialDerivativeTensor = AqwamTensorLibrary:applyFunction(functionToApply, derivativeTensor, lowerBoundTensor, upperBoundTensor)
+		local collapsedDerivativeTensor = collapseTensor(derivativeTensor, dimensionSizeArray)
 
-		tensor:differentiate(partialDerivativeTensor)
+		tensor:differentiate(collapsedDerivativeTensor)
 
 	end
 
