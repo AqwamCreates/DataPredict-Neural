@@ -772,6 +772,36 @@ function AHAAutomaticDifferentiatonTensor:divide(other)
 
 end
 
+function AHAAutomaticDifferentiatonTensor:sum(dimension)
+
+	local dimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(self)
+
+	local result = AqwamTensorLibrary:sum(self, dimension)
+
+	local PartialDerivativeFunction = function(derivativeTensor)
+
+		if checkIfIsAutomaticDifferentiationTensor(self) then 
+			
+			if (dimension) then
+				
+				derivativeTensor = AqwamTensorLibrary:expandDimensionSizes(derivativeTensor, dimensionSizeArray)
+
+			else
+				
+				derivativeTensor = AqwamTensorLibrary:expandNumberOfDimensions(derivativeTensor, dimensionSizeArray)
+				
+			end
+			
+			self:differentiate(derivativeTensor) 
+			
+		end
+
+	end
+
+	return self.new(result, PartialDerivativeFunction, {self})
+
+end
+
 function AHAAutomaticDifferentiatonTensor:unaryMinus()
 
 	local result = AqwamTensorLibrary:unaryMinus(self)
