@@ -8,7 +8,7 @@ Creates a new encoding block object. If there are no parameters given for that p
 
 ```
 
-OneHotEncoding.new({finalDimensionSize: number, nValue: number}): EncodingBlockObject
+PositionalEncoding.new({finalDimensionSize: number, nValue: number}): EncodingBlockObject
 
 ```
 
@@ -28,7 +28,7 @@ Parameters:
 
 ```
 
-OneHotEncoding:setParameters({finalDimensionSize: number, nValue: number})
+PositionalEncoding:setParameters({finalDimensionSize: number, nValue: number})
 
 ```
 
