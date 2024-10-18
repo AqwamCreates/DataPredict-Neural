@@ -38,6 +38,8 @@
 
 ## Extras
 
+[Models](API/Models.md)
+
 [Utilities](API/Utilities.md)
 
 ## Cores
