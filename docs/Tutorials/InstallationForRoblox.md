@@ -15,6 +15,8 @@ To start, we must first link our deep learning library with our tensor library. 
 
 Note: Tensor Library - Efficient IPairs has the most consistent high performance for all tensor operations. So choose the last one if you prefer speed over code readability.
 
+You can read the Terms And Conditions for the TensorL Library [here](https://github.com/AqwamCreates/TensorL/blob/main/docs/TermsAndConditions.md).
+
 ## Installing The Files Into Roblox Studio
 
 To download the files from GitHub, you must click on the download button highlighted in the red box.
