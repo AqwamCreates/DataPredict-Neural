@@ -46,10 +46,6 @@ BaseWeightBlock.new({learningRate: number, Optimizer: OptimizerObject, Regulariz
 
 	* None
 
-* nextFunctionBlockArrayIndexArray: The array that determines the path to the next function block. The first index is the starting path.
-
-* nextFunctionBlockWaitDuration: The duration to wait for a tensor from next function blocks before timeout.
-
 #### Returns
 
 * WeightBlock: The generated weight block object.
@@ -99,54 +95,6 @@ BaseWeightBlock:getWeightTensor(doNotDeepCopy): tensor
 #### Returns
 
 * weightTensor: Tensor to be returned.
-
-### setNextFunctionBlockArrayIndexArray()
-
-```
-
-BaseWeightBlock:setNextFunctionBlockArrayIndexArray(nextFunctionBlockArrayIndexArray: {number})
-
-```
-
-#### Parameters:
-
-* nextFunctionBlockArrayIndexArray: The array that determines the path to the next function block. The first index is the starting path.
-
-### getNextFunctionBlockArrayIndexArray()
-
-```
-
-BaseWeightBlock:getNextFunctionBlockArrayIndexArray()
-
-```
-
-#### Returns:
-
-* nextFunctionBlockArrayIndexArray: The array that determines the path to the next function block. The first index is the starting path.
-
-### setWaitDuration()
-
-```
-
-BaseWeightBlock:setNextFunctionBlockWaitDuration(waitDuration: number)
-
-```
-
-#### Parameters:
-
-* nextFunctionBlockWaitDuration: The duration to wait for a tensor from next function blocks before timeout.
-
-### getWaitDuration()
-
-```
-
-BaseWeightBlock:getNextFunctionBlockWaitDuration(): number
-
-```
-
-#### Returns:
-
-* nextFunctionBlockWaitDuration: The duration to wait for a tensor from next function blocks before timeout.
 
 ### setLearningRate()
 
@@ -219,20 +167,6 @@ BaseWeightBlock:getRegularizer(): RegularizerObject
 #### Returns:
 
 * Regularizer: The regularizer to be used.
-
-### waitForTransformedTensorRecursive()
-
-```
-
-BaseWeightBlock:findFirstActivationOrWeightBlock(CurrentFunctionBlock: FunctionBlock, nextFunctionBlockArrayIndexArray: {number})
-
-```
-
-#### Parameters:
-
-* CurrentFunctionBlock: The current function block that is being accessed.
-
-* nextFunctionBlockArrayIndexArray: The array that determines the path to the next function block. The first index is the starting path.
 
 ## Inherited From
 
