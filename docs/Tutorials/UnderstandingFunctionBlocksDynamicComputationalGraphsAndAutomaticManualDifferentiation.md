@@ -36,7 +36,7 @@ The differentiate() function uses a given value to find the first-order derivati
 
 ```lua
 
-FunctionBlock:differentiate(initialFirstDerivativeTensor)
+FunctionBlock:differentiate(initialPartialFirstDerivativeTensor)
 
 ```
 
