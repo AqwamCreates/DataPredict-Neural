@@ -134,6 +134,18 @@ BaseFunctionBlock:setFunction(Function: Function)
 
 * Function: The function to be used when calling the transform() function.
 
+### setChainRuleFirstDerivativeFunction()
+
+```
+
+BaseFunctionBlock:setChainRuleFirstDerivativeFunction(ChainRuleFirstDerivativeFunction: Function)
+
+```
+
+#### Parameters:
+
+* ChainRuleFirstDerivativeFunction: The chain rule first derivative function to be used when calling the differentiate() function.
+
 ### setFirstDerivativeFunction()
 
 ```
@@ -144,7 +156,7 @@ BaseFunctionBlock:setFirstDerivativeFunction(FirstDerivativeFunction: Function)
 
 #### Parameters:
 
-* FirstDerivativeFunction: The function to be used when calling the differentiate() function.
+* FirstDerivativeFunction: The first derivative function to be used when calling the differentiate() function.
 
 ### transform()
 
@@ -229,6 +241,38 @@ BaseFunctionBlock:addMultiplePreviousBaseFunctionBlocks(...: BaseFunctionBlockOb
 #### Parameters:
 
 * PreviousBaseFunctionBlock: The previous function block to be linked with the current function block.
+
+### setChainRuleFirstDerivativeFunctionRequiresTransformedTensor()
+
+```
+
+BaseFunctionBlock:setChainRuleFirstDerivativeFunctionRequiresTransformedTensor(option)
+
+```
+
+#### Parameters:
+
+* option: Set whether or not the chain rule first derivative function requires the transformed input tensor.
+
+### getChainRuleFirstDerivativeFunctionRequiresTransformedTensor()
+
+```
+
+BaseFunctionBlock:getChainRuleFirstDerivativeFunctionRequiresTransformedTensor(option: boolean)
+
+```
+
+#### Returns:
+
+* option: Set whether or not the chain rule first derivative function requires the transformed input tensor.
+
+### setNextBaseFunctionBlockByIndex()
+
+```
+
+BaseFunctionBlock:setNextBaseFunctionBlockByIndex(nextBaseFunctionBlockArrayIndex: number, NextBaseFunctionBlock: BaseFunctionBlockObject)
+
+```
 
 ### setFirstDerivativeFunctionRequiresTransformedTensor()
 
@@ -442,21 +486,21 @@ BaseFunctionBlock:getTransformedTensor(doNotDeepCopy: boolean): tensor
 
 ```
 
-BaseFunctionBlock:setTotalPartialFirstDerivativeTensorArray(partialFirstDerivativeTensorArray: {tensor}, doNotDeepCopy: boolean)
+BaseFunctionBlock:setTotalChainRuleFirstDerivativeTensorArray(chainRuleFirstDerivativeTensorArray: {tensor}, doNotDeepCopy: boolean)
 
 ```
 
 #### Parameters
 
-* totalPartialFirstDerivativeTensorArray: An array containing all the total of partial first derivative tensors to be stored into the function block.
+* chainRuleFirstDerivativeTensorArray: An array containing all the total of chain rule first derivative tensors to be stored into the function block.
 
 * doNotDeepCopy: Whether or not to deep copy the input tensor.
 
-### getFirstDerivativeTensorArray()
+### getTotalChainRuleFirstDerivativeTensorArray()
 
 ```
 
-BaseFunctionBlock:getTotalFirstDerivativeTensorArray(doNotDeepCopy: boolean): {tensor}
+BaseFunctionBlock:getTotalChainRuleFirstDerivativeTensorArray(doNotDeepCopy: boolean): {tensor}
 
 ```
 
@@ -466,7 +510,7 @@ BaseFunctionBlock:getTotalFirstDerivativeTensorArray(doNotDeepCopy: boolean): {t
 
 #### Returns:
 
-* firstDerivativeTensorArray: An array containing all the total of partial first derivative tensors that is stored in the function block.
+* chainRuleFirstDerivativeTensorArray: An array containing all the total of chain rule first derivative tensors that is stored in the function block.
 
 ### setFirstDerivativeTensorArray()
 
@@ -598,7 +642,7 @@ BaseFunctionBlock:getSaveTransformedTensor(): boolean
 
 ```
 
-BaseFunctionBlock:setSaveTotalPartialFirstDerivativeTensorArray(option: boolean)
+BaseFunctionBlock:setSaveTotalChainRuleFirstDerivativeTensorArray(option: boolean)
 
 ```
 
@@ -610,7 +654,7 @@ BaseFunctionBlock:setSaveTotalPartialFirstDerivativeTensorArray(option: boolean)
 
 ```
 
-BaseFunctionBlock:getSaveTotalPartialFirstDerivativeTensorArray(): boolean
+BaseFunctionBlock:getSaveTotalChainRuleFirstDerivativeTensorArray(): boolean
 
 ```
 
@@ -682,7 +726,7 @@ BaseFunctionBlock:waitForTransformedTensor(doNotDeepCopy, waitDuration): tensor
 
 ```
 
-BaseFunctionBlock:waitForTotalPartialFirstDerivativeTensorArray(doNotDeepCopy, waitDuration): {tensor}
+BaseFunctionBlock:waitForTotalChainRuleFirstDerivativeTensorArray(doNotDeepCopy, waitDuration): {tensor}
 
 ```
 
@@ -694,7 +738,7 @@ BaseFunctionBlock:waitForTotalPartialFirstDerivativeTensorArray(doNotDeepCopy, w
 
 #### Returns:
 
-* totalPartialFirstDerivativeTensorArray: An array containing all the total of partial first derivative tensor that is stored in the function block.
+* totalChainRuleFirstDerivativeTensorArray: An array containing all the total of chain rule first derivative tensors that is stored in the function block.
 
 ### waitForTotalFirstDerivativeTensorArray()
 
@@ -712,7 +756,7 @@ BaseFunctionBlock:waitForTotalFirstDerivativeTensorArray(doNotDeepCopy, waitDura
 
 #### Returns:
 
-* totalFirstDerivativeTensorArray: An array containing all the total of first derivative tensor that is stored in the function block.
+* totalFirstDerivativeTensorArray: An array containing all the total of first derivative tensors that is stored in the function block.
 
 ## Inherited From
 
