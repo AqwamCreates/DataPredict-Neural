@@ -30,6 +30,12 @@
 | [WassersteinGenerativeAdversarialNetwork](Models/WassersteinGenerativeAdversarialNetwork.md)                           | WGAN            | Same As GAN, But More Stable          |
 | [ConditionalWassersteinGenerativeAdversarialNetwork](Models/ConditionalWassersteinGenerativeAdversarialNetwork.md)     | CWGAN           | Combination Of Both CGAN And WGAN     |
 
+## Others
+
+| Model                                                                  | Alternate Names | Use Cases                             |
+|------------------------------------------------------------------------|-----------------|---------------------------------------|
+| [RandomNetworkDistillation](Models/RandomNetworkDistillation.md)       | RND             | Intrinsic Reward Generation           |
+
 ## BaseModels
 
 [BaseModel](Models/BaseModel.md)
