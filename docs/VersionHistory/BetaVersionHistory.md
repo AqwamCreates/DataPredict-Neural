@@ -1,5 +1,9 @@
 # Beta Version
 
+## Version 1.1
+
+[1.1.0](Beta/1-1-0.md) -- 28/10/2024
+
 ## Version 1.0
 
 [1.0.0](Beta/1-0-0.md) -- 27/10/2024
