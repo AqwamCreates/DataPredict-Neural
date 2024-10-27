@@ -8,7 +8,7 @@ Creates a new holder block object.
 
 ```
 
-BaseHolderBlock.new({Function: function, FirstDerivativeFunction: function, SecondStepFirstDerivativeFunction: function}): HolderBlockObject
+BaseHolderBlock.new({Function: function, ChainRuleFirstDerivativeFunction: function, FirstDerivativeFunction: function}): HolderBlockObject
 
 ```
 
@@ -16,9 +16,9 @@ BaseHolderBlock.new({Function: function, FirstDerivativeFunction: function, Seco
 
 * Function: The nullary function where the function generates an output without using any inputs.
 
-* FirstDerivativeFunction: The first derivative of the nullary function.
+* ChainRuleFirstDerivativeFunction: The chain rule first derivative function of the nullary function.
 
-* SecondStepFirstDerivativeFunction: The second step of first derivative of the nullary function.
+* FirstDerivativeFunction: The first derivative function of the nullary function.
 
 #### Returns:
 
