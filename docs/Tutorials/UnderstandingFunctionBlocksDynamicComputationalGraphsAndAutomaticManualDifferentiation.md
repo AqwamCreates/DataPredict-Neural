@@ -2,7 +2,7 @@
 
 ## Function Blocks
 
-Functional blocks are the very core of this library. They enable us to do automatic differentiation so that we don't have to manually carry out the partial derivatives of any functions.
+Functional blocks are the very core of this library. They enable us to do automatic-manual differentiation so that we don't have to manually carry out the partial derivatives of any functions.
 
 These two functions are the most important parts of the function blocks:
 
