@@ -36,12 +36,11 @@ The differentiate() function uses a given value to find the first-order derivati
 
 ```lua
 
-local firstDerivativeTensor = FunctionBlock:differentiate(initialFirstDerivativeTensor)
+FunctionBlock:differentiate(initialFirstDerivativeTensor)
 
 ```
 
 Just like the transform() function, the first-order derivative values are typically stored in function blocks. This can be manually changed using setSaveTotalFirstDerivativeTensor() function.
-
 
 When "initialPartialFirstDerivativeTensor" is not given, it will use a seed. The seed is always a tensor containing values of 1 and always has the same tensor shape to "transformedTensor".
 
