@@ -130,7 +130,7 @@ As you can see, computational graphs are very powerful and allows us to build an
 
 ## Automatic-Manual Differentiation
 
-The function blocks uses reverse-mode automatic differentiation where it collects the partial derivative from the last function block to the first function block.
+The function blocks uses reverse-mode automatic differentiation where it collects the partial derivatives from the last function block to the first function block.
 
 Also, you may have noticed that we sometimes need to figure out some of the first derivative functions. This is because the function blocks does not provide full automatic differentiation and instead combines both automatic and manual differentiation.
 
