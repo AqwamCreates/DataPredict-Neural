@@ -26,7 +26,7 @@ BaseInstance:getID()
 
 #### Returns:
 
-* id: The global id for this instance.
+* ID: The global ID for this instance.
 
 ### setName()
 
