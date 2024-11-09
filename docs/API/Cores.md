@@ -1,6 +1,6 @@
 # [API Reference](../API.md) - Cores
 
-[FunctionBlock](Cores/FunctionBlock.md)
+[BaseFunctionBlock](Cores/BaseFunctionBlock.md)
 
 [BaseInstance](Cores/BaseInstance.md)
 
