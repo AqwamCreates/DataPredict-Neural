@@ -5,3 +5,5 @@
 [Ridge](Regularizers/Ridge.md) (L2)
 
 [ElasticNet](Regularizers/ElasticNet.md) (L1L2)
+
+[BaseRegularizer](Regularizers/BaseRegularizer.md) (L1L2)
