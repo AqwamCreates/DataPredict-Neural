@@ -1,4 +1,4 @@
-# [API Reference](../../API.md) - [HolderBlock](../HolderBlock.md) - BaseHolderBlock
+# [API Reference](../../API.md) - [HolderBlock](../HolderBlocks.md) - BaseHolderBlock
 
 ## Constructors
 
