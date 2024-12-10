@@ -166,7 +166,7 @@ BaseWeightBlock:getRegularizer(): RegularizerObject
 
 #### Returns:
 
-* Regularizer: The regularizer to be used.
+* Regularizer: The regularizer used by the weight block.
 
 ## Inherited From
 
