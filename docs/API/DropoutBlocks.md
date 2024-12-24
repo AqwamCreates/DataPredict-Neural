@@ -8,4 +8,6 @@
 
 [Dropout3D](DropoutBlocks/Dropout3D.md)
 
+[DropoutND](DropoutBlocks/DropoutND.md)
+
 [BaseDropoutBlock](DropoutBlocks/BaseDropoutBlock.md)
