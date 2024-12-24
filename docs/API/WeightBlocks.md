@@ -8,4 +8,6 @@
 
 [AutomaticBias](WeightBlocks/AutomaticBias.md) (AutoBias)
 
+[DataPredictLinearAndBias](WeightBlocks/DataPredictLinearAndBias.md) (DPLAB)
+
 [BaseWeightBlock](WeightBlocks/BaseWeightBlock.md)
