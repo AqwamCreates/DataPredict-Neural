@@ -1,4 +1,4 @@
-# [API Reference](../../API.md) - [PaddingBlocks](../PaddingBlocks.md) - ZeroPadding (ZeroPad)
+# [API Reference](../../API.md) - [PaddingBlocks](../PaddingBlocks.md) - ReplicationPadding (ReplicationPad)
 
 ## Constructors
 
@@ -8,7 +8,7 @@ Creates a new padding block object. If there are no parameters given for that pa
 
 ```
 
-ZeroPadding.new({headPaddingDimensionSizeArray: {number}, tailPaddingDimensionSizeArray: {number}}): PaddingBlockObject
+ReplicationPadding.new({headPaddingDimensionSizeArray: {number}, tailPaddingDimensionSizeArray: {number}}): PaddingBlockObject
 
 ```
 
