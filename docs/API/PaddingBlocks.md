@@ -4,6 +4,8 @@
 
 [CircularPadding](PaddingBlocks/CircularPadding.md) (CircularPad)
 
-[ReplicationPadding](PaddingBlocks/CircularPadding.md) (ReplicationPad)
+[ConstantPadding](PaddingBlocks/ConstantPadding.md) (ConstantPad) [Note: First Derivative Values Are Approximated.]
+
+[ReplicationPadding](PaddingBlocks/CircularPadding.md) (ReplicationPad) [Note: First Derivative Values Are Approximated.]
 
 [BasePaddingBlock](PaddingBlocks/BasePaddingBlock.md)
