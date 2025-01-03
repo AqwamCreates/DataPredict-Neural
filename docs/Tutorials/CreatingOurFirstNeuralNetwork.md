@@ -90,7 +90,7 @@ local ActivationBlocks = DataPredictNeural.ActivationBlocks
 
 local CostFunction = DataPredictNeural.CostFunctions.MeanSquaredError.new()
 
-local inputTensor = TensorL:createRandomUniformTensor({4, 1}) -- Generating our input tensor here. Pay attention to the dimensions.
+local inputTensor = TensorL:createRandomUniformTensor({4, 9}) -- Generating our input tensor here. Pay attention to the dimensions.
 
 local labelTensor = TensorL:createRandomNormalTensor({4, 3}) -- Generating our label tensor here. Pay attention to the dimensions here as well.
 
@@ -114,13 +114,21 @@ Below, we will demonstrate how the tensor shape changes as we add blocks to our 
 
 SequentialNeuralNetwork:setMultipleFunctionBlocks( -- Input tensor starts with the size of {4, 1}.
 	
-	WeightBlocks.Linear.new({dimensionSizeArray = {1, 3}}), -- {4, 1} * {1, 3} -> {4, 3}
+	WeightBlocks.Linear.new({dimensionSizeArray = {9, 3}}), -- {4, 9} * {9, 3} -> {4, 3}
+
+	WeightBlocks.Bias.new({dimensionSizeArray = {1, 3}}), -- We want to share the bias values to all data, so we need to set the first dimension size to 1.
+
+	ActivationBlocks.LeakyReLU.new(),
 	
 	WeightBlocks.Linear.new({dimensionSizeArray = {3, 5}}), -- {4, 3} * {3, 5} -> {4, 5}
+
+	WeightBlocks.Bias.new({dimensionSizeArray = {1, 5}}),  -- We want to share the bias values to all data, so we need to set the first dimension size to 1.
 	
 	ActivationBlocks.LeakyReLU.new(),
 	
 	WeightBlocks.Linear.new({dimensionSizeArray = {5, 1}}), -- {4, 5} * {5, 3} -> {4, 3}
+
+	WeightBlocks.Bias.new({dimensionSizeArray = {1, 3}}),  -- We want to share the bias values to all data, so we need to set the first dimension size to 1.
 	
 	ActivationBlocks.LeakyReLU.new()
 	
