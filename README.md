@@ -1,6 +1,6 @@
 # DataPredict Neural
 
-![DataPredict Icon](icons/DataPredictNeuralIcon.png)
+![DataPredict Neural Icon](icons/DataPredictNeuralIcon.png)
 
 --------------------------------------------------------------------
 
