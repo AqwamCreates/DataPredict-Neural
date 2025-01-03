@@ -1,5 +1,7 @@
 # DataPredict Neural
 
+![DataPredict Icon](icons/DataPredictNeuralIcon.png)
+
 --------------------------------------------------------------------
 
 ## THIS IS A SOURCE AVAILABLE CODE! NOT OPEN SOURCE! 
