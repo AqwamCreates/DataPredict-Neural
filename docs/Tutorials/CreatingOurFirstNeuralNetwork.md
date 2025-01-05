@@ -126,7 +126,7 @@ SequentialNeuralNetwork:setMultipleFunctionBlocks( -- Input tensor starts with t
 	
 	ActivationBlocks.LeakyReLU.new(),
 	
-	WeightBlocks.Linear.new({dimensionSizeArray = {5, 1}}), -- {4, 5} * {5, 3} -> {4, 3}
+	WeightBlocks.Linear.new({dimensionSizeArray = {5, 3}}), -- {4, 5} * {5, 3} -> {4, 3}
 
 	WeightBlocks.Bias.new({dimensionSizeArray = {1, 3}}),  -- We want to share the bias values to all data, so we need to set the first dimension size to 1.
 	
