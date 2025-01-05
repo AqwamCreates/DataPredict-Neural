@@ -100,7 +100,7 @@ In order for us to be able to calculate the loss tensor, we need to make sure th
 
 When initializing the weights, ensure that the 2nd dimension of the input tensor matches the 1st dimension of the weight tensor.
 
-When doing the dot product between the input tensor and weight tensor, it will give a new tensor shape.
+When doing the dot product between the input tensor and weight tensor in "Linear" block, it will give a new tensor shape.
 
 	* Input tensor: {a, b}
 	
