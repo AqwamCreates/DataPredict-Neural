@@ -114,13 +114,13 @@ Below, we will demonstrate how the tensor shape changes as we add blocks to our 
 
 SequentialNeuralNetwork:setMultipleFunctionBlocks( -- Input tensor starts with the size of {4, 9}.
 	
-	WeightBlocks.Linear.new({dimensionSizeArray = {9, 3}}), -- {4, 9} * {9, 3} -> {4, 3}
+	WeightBlocks.Linear.new({dimensionSizeArray = {9, 7}}), -- {4, 9} * {9, 7} -> {4, 7}
 
-	WeightBlocks.Bias.new({dimensionSizeArray = {1, 3}}), -- We want to share the bias values to all data, so we need to set the first dimension size to 1.
+	WeightBlocks.Bias.new({dimensionSizeArray = {1, 7}}), -- We want to share the bias values to all data, so we need to set the first dimension size to 1.
 
 	ActivationBlocks.LeakyReLU.new(),
 	
-	WeightBlocks.Linear.new({dimensionSizeArray = {3, 5}}), -- {4, 3} * {3, 5} -> {4, 5}
+	WeightBlocks.Linear.new({dimensionSizeArray = {7, 5}}), -- {4, 7} * {7, 5} -> {4, 5}
 
 	WeightBlocks.Bias.new({dimensionSizeArray = {1, 5}}),  -- We want to share the bias values to all data, so we need to set the first dimension size to 1.
 	
