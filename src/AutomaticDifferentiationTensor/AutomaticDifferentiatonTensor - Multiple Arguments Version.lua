@@ -234,6 +234,22 @@ function AHAAutomaticDifferentiatonTensor.tan(tensor)
 
 end
 
+function AHAAutomaticDifferentiatonTensor.exponent(tensor)
+
+	local result = AqwamTensorLibrary:applyFunction(math.exp, tensor)
+
+	local PartialDerivativeFunction = function(derivativeTensor)
+
+		if (not checkIfIsAutomaticDifferentiationTensor(tensor)) then return end
+
+		tensor:differentiate(AqwamTensorLibrary:multiply(result, derivativeTensor))
+
+	end
+
+	return AHAAutomaticDifferentiatonTensor.new(result, PartialDerivativeFunction, {tensor})
+
+end
+
 function AHAAutomaticDifferentiatonTensor.clamp(tensor, lowerBoundTensor, upperBoundTensor)
 	
 	local dimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(tensor)
@@ -957,20 +973,6 @@ function AHAAutomaticDifferentiatonTensor:logarithm(other)
 		return other.new(result, PartialDerivativeFunction, {self, other})
 
 	end
-
-end
-
-function AHAAutomaticDifferentiatonTensor:exponent()
-
-	local result = AqwamTensorLibrary:exponent(self)
-
-	local PartialDerivativeFunction = function(derivativeTensor)
-
-		if checkIfIsAutomaticDifferentiationTensor(self) then self:differentiate(AqwamTensorLibrary:multiply(result, derivativeTensor)) end
-
-	end
-
-	return self.new(result, PartialDerivativeFunction, {self})
 
 end
 
