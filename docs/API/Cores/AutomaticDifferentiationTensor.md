@@ -72,6 +72,40 @@ AutomaticDifferentiationTensor.tan(tensor: tensor/AutomaticDifferentiationTensor
 
 * AutomaticDifferentiationTensorObject: The generated automatic differentiation tensor object.
 
+### exponent()
+
+```
+
+AutomaticDifferentiationTensor.exponent(tensor: number/tensor/AutomaticDifferentiationTensorObject): AutomaticDifferentiationTensorObject
+
+```
+
+#### Parameters:
+
+* tensor: The tensor to be used by the automatic differentiation tensor object.
+
+#### Returns
+
+* AutomaticDifferentiationTensorObject: The generated automatic differentiation tensor object.
+
+### logarithm()
+
+```
+
+AutomaticDifferentiationTensor.logarithm(numberTensor: number/tensor/AutomaticDifferentiationTensorObject, baseTensor: number/tensor/AutomaticDifferentiationTensorObject): AutomaticDifferentiationTensorObject
+
+```
+
+#### Parameters:
+
+* numberTensor: The tensor to be used by the automatic differentiation tensor object.
+
+* baseTensor: The tensor to be used by the automatic differentiation tensor object.
+
+#### Returns
+
+* AutomaticDifferentiationTensorObject: The generated automatic differentiation tensor object.
+
 ### clamp()
 
 ```
@@ -189,22 +223,6 @@ AutomaticDifferentiationTensor:power(AutomaticDifferentiationTensor: number/tens
 #### Parameters:
 
 * AutomaticDifferentiationTensor: The exponent tensor object to be used by the automatic differentiation tensor object.
-
-#### Returns
-
-* AutomaticDifferentiationTensorObject: The generated automatic differentiation tensor object.
-
-### logarithm()
-
-```
-
-AutomaticDifferentiationTensor:logarithm(AutomaticDifferentiationTensor: number/tensor/AutomaticDifferentiationTensorObject): AutomaticDifferentiationTensorObject
-
-```
-
-#### Parameters:
-
-* AutomaticDifferentiationTensor: The base tensor object to be used by the automatic differentiation tensor object.
 
 #### Returns
 
