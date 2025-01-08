@@ -250,6 +250,58 @@ function AHAAutomaticDifferentiatonTensor.exponent(tensor)
 
 end
 
+function AHAAutomaticDifferentiatonTensor.logarithm(numberTensor, baseTensor)
+
+	local result = AqwamTensorLibrary:applyFunction(math.log, numberTensor, baseTensor)
+
+	local PartialDerivativeFunction = function(derivativeTensor)
+
+		if checkIfIsAutomaticDifferentiationTensor(numberTensor) then
+			
+			local numberTensorDimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(numberTensor)
+
+			local collapsedDerivativeTensor = collapseTensor(derivativeTensor, numberTensorDimensionSizeArray)
+
+			local partialDerivativeTensor
+
+			if (baseTensor) then
+
+				local partialDerivativeFunctionToApply = function (number, base) return (1 / (number * math.log(base))) end
+
+				partialDerivativeTensor = AqwamTensorLibrary:applyFunction(partialDerivativeFunctionToApply, numberTensor, baseTensor)
+
+			else
+
+				local partialDerivativeFunctionToApply = function (number) return (1 / number) end
+
+				partialDerivativeTensor = AqwamTensorLibrary:applyFunction(partialDerivativeFunctionToApply, numberTensor)
+
+			end
+
+			numberTensor:differentiate(AqwamTensorLibrary:multiply(partialDerivativeTensor, collapsedDerivativeTensor)) 
+
+		end
+
+		if checkIfIsAutomaticDifferentiationTensor(baseTensor) then
+			
+			local baseTensorDimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(baseTensor)
+
+			local collapsedDerivativeTensor = collapseTensor(derivativeTensor, baseTensorDimensionSizeArray)
+
+			local partialDerivativeFunctionToApply = function (number, base) return -(math.log(number) / (base * math.pow(math.log(base), 2))) end
+
+			local partialDerivativeTensor = AqwamTensorLibrary:applyFunction(partialDerivativeFunctionToApply, numberTensor, baseTensorDimensionSizeArray)
+
+			baseTensor:differentiate(AqwamTensorLibrary:multiply(partialDerivativeTensor, collapsedDerivativeTensor)) 
+
+		end
+
+	end
+
+	return AHAAutomaticDifferentiatonTensor.new(result, PartialDerivativeFunction, {numberTensor, baseTensor})
+
+end
+
 function AHAAutomaticDifferentiatonTensor.clamp(tensor, lowerBoundTensor, upperBoundTensor)
 	
 	local dimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(tensor)
@@ -897,66 +949,6 @@ function AHAAutomaticDifferentiatonTensor:power(other)
 			local collapsedDerivativeTensor = collapseTensor(derivativeTensor, otherDimensionSizeArray)
 
 			local partialDerivativeTensor = AqwamTensorLibrary:applyFunction(function(base, exponent) return (math.pow(base, exponent) * math.log(base)) end, self, other)
-
-			other:differentiate(AqwamTensorLibrary:multiply(partialDerivativeTensor, collapsedDerivativeTensor)) 
-
-		end
-
-	end
-
-	if checkIfIsAutomaticDifferentiationTensor(self) then
-
-		return self.new(result, PartialDerivativeFunction, {self, other})
-
-	else
-
-		return other.new(result, PartialDerivativeFunction, {self, other})
-
-	end
-
-end
-
-function AHAAutomaticDifferentiatonTensor:logarithm(other)
-
-	local selfDimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(self)
-
-	local otherDimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(other)
-
-	local result = AqwamTensorLibrary:logarithm(self, other)
-
-	local PartialDerivativeFunction = function(derivativeTensor)
-
-		if checkIfIsAutomaticDifferentiationTensor(self) then
-
-			local collapsedDerivativeTensor = collapseTensor(derivativeTensor, selfDimensionSizeArray)
-
-			local partialDerivativeTensor
-
-			if (other) then
-
-				local partialDerivativeFunctionToApply = function (number, base) return (1 / (number * math.log(base))) end
-
-				partialDerivativeTensor = AqwamTensorLibrary:applyFunction(partialDerivativeFunctionToApply, self, other)
-
-			else
-
-				local partialDerivativeFunctionToApply = function (number) return (1 / number) end
-
-				partialDerivativeTensor = AqwamTensorLibrary:applyFunction(partialDerivativeFunctionToApply, self)
-
-			end
-
-			self:differentiate(AqwamTensorLibrary:multiply(partialDerivativeTensor, collapsedDerivativeTensor)) 
-
-		end
-
-		if checkIfIsAutomaticDifferentiationTensor(other) then
-
-			local collapsedDerivativeTensor = collapseTensor(derivativeTensor, otherDimensionSizeArray)
-
-			local partialDerivativeFunctionToApply = function (number, base) return -(math.log(number) / (base * math.pow(math.log(base), 2))) end
-
-			local partialDerivativeTensor = AqwamTensorLibrary:applyFunction(partialDerivativeFunctionToApply, self, other)
 
 			other:differentiate(AqwamTensorLibrary:multiply(partialDerivativeTensor, collapsedDerivativeTensor)) 
 
