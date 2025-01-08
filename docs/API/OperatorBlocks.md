@@ -8,6 +8,12 @@
 
 [Divide](OperatorBlocks/Divide.md)
 
+[Power](OperatorBlocks/Power.md)
+
+[Exponent](OperatorBlocks/Exponent.md)
+
+[Logarithm](OperatorBlocks/Logarithm.md)
+
 [Sum](OperatorBlocks/Sum.md)
 
 [Mean](OperatorBlocks/Mean.md)
