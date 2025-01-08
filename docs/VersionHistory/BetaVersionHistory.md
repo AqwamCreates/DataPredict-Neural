@@ -1,8 +1,24 @@
 # Beta Version
 
+## Version 1.7
+
+[1.7.0](Beta/1-7-0.md) -- 8/1/2025
+
+## Version 1.6
+
+[1.6.0](Beta/1-6-0.md)
+
+## Version 1.5
+
+[1.5.0](Beta/1-5-0.md)
+
+## Version 1.4
+
+[1.4.0](Beta/1-4-0.md)
+
 ## Version 1.3
 
-[1.3.0](Beta/1-3-0.md) -- 24/12/2024
+[1.3.0](Beta/1-3-0.md) 
 
 ## Version 1.2
 
