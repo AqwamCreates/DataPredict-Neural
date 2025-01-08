@@ -1,4 +1,4 @@
-# [API Reference](../../API.md) - [PoolingBlocks](../PoolingBlocks.md) - AveragePooling1D
+# [API Reference](../../API.md) - [PoolingBlocks](../PoolingBlocks.md) - AveragePooling1D (AvgPooling1D)
 
 ## Constructors
 
