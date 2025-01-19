@@ -8,7 +8,7 @@ Creates a new weight block object. If there are no parameters given for that par
 
 ```
 
-AutomaticBias.new({numberOfDimensions: number, doNotShareBiasDimensionArray: {number}, learningRate: number, Optimizer: OptimizerObject, Regularizer: RegularizerObject, initializationMode: string}): WeightBlockObject
+AutomaticBias.new({numberOfDimensions: number, shareBiasDimensionArray: {number}, learningRate: number, Optimizer: OptimizerObject, Regularizer: RegularizerObject, initializationMode: string}): WeightBlockObject
 
 ```
 
@@ -16,7 +16,7 @@ AutomaticBias.new({numberOfDimensions: number, doNotShareBiasDimensionArray: {nu
 
 * numberOfDimensions: The number of dimensions in which the bias values will be applied to. The bias values will be applied on the last dimension first.
 
-* doNotShareBiasDimensionArray: An array containing dimensions where the bias are not to be shared.
+* shareBiasDimensionArray: An array containing dimensions where the bias are to be shared.
 
 * learningRate: The speed at which the model learns. Recommended that the value is set between (0 to 1).
 
