@@ -37,7 +37,7 @@ In addition, if you are interested in Roblox tutorials and future projects by me
 
 * Build singular models that are interconnected between servers and clients through distributed training.
 
-* Build models that handles multi-dimensional inputs and outputs to solve any demands of your projects.
+* Build models that handles multi-dimensional tensor inputs and outputs to solve any demands of your projects.
 
 * Dive into user-friendly API designed for you to learn in a couple of minutes.
 
