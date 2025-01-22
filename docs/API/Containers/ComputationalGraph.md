@@ -40,7 +40,7 @@ ComputationalGraph:setMultipleInputBlocks(...: FunctionBlockObject)
 
 Parameters:
 
-* Function: The function blocks to be added to the graph container. Order matters.
+* InputBlock: The function blocks to be added to the graph container. Order matters.
 
 ### setMultipleOutputBlocks()
 
