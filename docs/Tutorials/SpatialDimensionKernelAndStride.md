@@ -40,7 +40,7 @@ You may already have seen that the convolutional blocks and pooling blocks conta
 
 * 1D for data + 1D for channel + 3D for spatial = 5D tensor
 
-Now, you understand why the convolution blocks and pooling blocks generates and error when you supply them an input tensor that has incorrect number of dimensions.
+Now, you understand why the convolution blocks and pooling blocks generates an error when you supply them an input tensor that has incorrect number of dimensions.
 
 ### The Number Of Kernels
 
