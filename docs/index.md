@@ -43,7 +43,7 @@ In addition, if you are interested in Roblox tutorials and future projects by me
 
 * Built for production-grade and research-grade applications.
 
-* Cross compatible with DataPredict library.
+* Cross-compatible with DataPredict library.
 
 ## Tutorials
 
