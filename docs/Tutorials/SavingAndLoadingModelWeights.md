@@ -28,7 +28,7 @@ Linear:setWeightTensor(savedWeightTensor)
 
 In order to save the weights from Containers, we first need to call the getWeightTensorArray() function.
 
-To load a weightTensor, all you need to do is to call the setWeightTensor() function on our weight block.
+To load a weightTensorArray, all you need to do is to call the setWeightTensorArray() function on our weight block.
 
 ```lua
 
@@ -38,7 +38,7 @@ local savedWeightTensorArray = Sequential:getWeightTensorArray()
 
 This should make a deep copy of the weights to savedWeightTensorArray variable.
 
-To load a weightTensorArray, all you need to do is to call the setWeightTensor() function on our weight block.
+To load a weightTensorArray, all you need to do is to call the setWeightTensorArray() function on our weight block.
 
 ```lua
 
