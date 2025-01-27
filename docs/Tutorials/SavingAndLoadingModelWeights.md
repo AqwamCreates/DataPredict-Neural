@@ -52,7 +52,7 @@ You have two ways of saving the weights:
 
 1. Storing it to DataStores.
 
-2. Copy paste the text printed out by the TensorL library and place it in a text file or Roblox's ModuleScripts
+2. Copy paste the text printed out by the TensorL library and place it in a text file or Roblox's ModuleScripts.
 
 ## Wrapping up
 
