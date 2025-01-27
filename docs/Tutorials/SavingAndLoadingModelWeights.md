@@ -42,7 +42,7 @@ To load a weightTensorArray, all you need to do is to call the setWeightTensorAr
 
 ```lua
 
-Linear:setWeightTensorArray(savedWeightTensorArray)
+Sequential:setWeightTensorArray(savedWeightTensorArray)
 
 ```
 
