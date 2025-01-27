@@ -6,7 +6,7 @@ DataPredict Neural provides the ability to save and load weights from trained mo
 
 * Containers.
 
-## Saving And Loading Weights From BaseWeightBlock Classes
+## Saving And Loading Weights From The BaseWeightBlock Classes
 
 In order to save the weights from BaseWeightBlock classes, we first need to call the getWeightTensor() function on one of our weight blocks.
 
@@ -26,7 +26,7 @@ Linear:setWeightTensor(savedWeightTensor)
 
 ```
 
-## Saving And Loading Weights From Containers
+## Saving And Loading Weights From The Containers
 
 In order to save the weights from Containers, we first need to call the getWeightTensorArray() function.
 
