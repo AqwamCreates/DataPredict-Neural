@@ -4,7 +4,7 @@ DataPredict Neural provides the ability to save and load weights from trained mo
 
 * Function Blocks That Are Part Of BaseWeightBlock class.
 
-* Containers
+* Containers.
 
 ## Saving And Loading Weights From BaseWeightBlock Classes
 
