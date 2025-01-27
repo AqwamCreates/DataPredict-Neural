@@ -1,8 +1,12 @@
 # Saving And Loading Model Weights
 
-DataPredict Neural provides the ability to save and load weights from trained models. The only requirement is that the model must be a part of BaseWeightBlock class.
+DataPredict Neural provides the ability to save and load weights from trained models. There are two ways to access these weights.
 
-# Saving
+* Function Blocks That Are Part Of BaseWeightBlock class.
+
+* Containers
+
+## Saving And Loading Weights From BaseWeightBlock Classes
 
 In order to save the weights, we first need to call the getWeightTensor() function on one of our weight blocks.
 
@@ -18,7 +22,7 @@ You have two ways of saving the weights:
 
 1. Storing it to DataStores.
 
-# Loading
+2. Copy paste the text printed out by the TensorL library and place it in a text file or Roblox's ModuleScripts
 
 To load a weightTensor, all you need to do is to call the setWeightTensor() function on our weight block.
 
