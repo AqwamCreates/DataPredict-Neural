@@ -39,6 +39,8 @@ These terms and conditions (“Agreement”) are a legal agreement between you (
 
 * The MIT license can be viewed here: https://opensource.org/license/mit.
 
+## Prohibited Actions
+
 User shall not:
 
 * Sell, resell, distribute, sublicense, or otherwise transfer the Library, in whole or in part, to any third party, whether for profit or not;
