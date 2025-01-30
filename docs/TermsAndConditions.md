@@ -39,6 +39,20 @@ These terms and conditions (“Agreement”) are a legal agreement between you (
 
 * The MIT license can be viewed here: https://opensource.org/license/mit.
 
+## Prohibited Actions
+
+User shall not:
+
+* Sell, resell, distribute, sublicense, or otherwise transfer the Library, in whole or in part, to any third party, whether for profit or not;
+
+* Modify, adapt, translate, reverse engineer, decompile, disassemble, or create derivative works of the Library;
+
+* Remove or alter any copyright, trademark, or other proprietary notices or labels contained in the Library;
+
+* Copyright, trademark, or patent any icons contained in the Library, either individually or as a collection;
+
+* Include the icons from the Library in projects that do not utilize the Library;
+
 ## Liability
 
 The Library is provided "AS IS" and without warranty of any kind. Licensor shall not be liable for any damages or losses, including but not limited to direct, indirect, incidental, consequential, or punitive damages arising out of the use or inability to use the Library.
