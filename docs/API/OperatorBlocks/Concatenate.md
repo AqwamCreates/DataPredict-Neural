@@ -8,9 +8,13 @@ Creates a new operator block object.
 
 ```
 
-Concatenate.new(): OperatorBlockObject
+Concatenate.new({dimension: number}): OperatorBlockObject
 
 ```
+
+### Parameters:
+
+* dimension: The dimension where the tensors are concatenated together.
 
 #### Returns:
 
