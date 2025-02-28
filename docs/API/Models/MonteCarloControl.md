@@ -1,4 +1,4 @@
-# [API Reference](../../API.md) - [Models](../Models.md) - REINFORCE
+# [API Reference](../../API.md) - [Models](../Models.md) - MonteCarloControl
 
 MonteCarloControl is a neural network with reinforcement learning capabilities. It can predict any positive numbers of discrete values.
 
@@ -9,12 +9,12 @@ MonteCarloControl is a neural network with reinforcement learning capabilities. 
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-MonteCarloControl.new({discountFactor: number}): ModelObject
+MonteCarloControl.new(discountFactor: number): ModelObject
 ```
 
 #### Parameters:
 
-* discountFactor: The higher the value, the more likely it focuses on long-term outcomes. The value must be set between 0 and 1.
+* discountFactor: The higher the value, the more likely it focuses on long-term outcomes. The value must be set between 0 and 1. [Default: 0.95]
 
 #### Returns:
 
@@ -27,7 +27,7 @@ MonteCarloControl.new({discountFactor: number}): ModelObject
 Set model's parameters. When any of the arguments are nil, previous argument values for that argument will be used.
 
 ```
-MonteCarloControl:setParameters({discountFactor: number})
+MonteCarloControl:setParameters(discountFactor: number)
 ```
 
 #### Parameters:

@@ -11,7 +11,7 @@ It uses Hasselt et al. (2010) version, where a single neural network is selected
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-DeepDoubleStateActionRewardStateAction.new({discountFactor: number}): ModelObject
+DeepDoubleStateActionRewardStateAction.new(discountFactor: number): ModelObject
 ```
 
 #### Parameters:
@@ -29,7 +29,7 @@ DeepDoubleStateActionRewardStateAction.new({discountFactor: number}): ModelObjec
 Set model's parameters. When any of the arguments are nil, previous argument values for that argument will be used.
 
 ```
-DeepDoubleStateActionRewardStateAction:setParameters({discountFactor: number})
+DeepDoubleStateActionRewardStateAction:setParameters(discountFactor: number)
 ```
 
 #### Parameters:

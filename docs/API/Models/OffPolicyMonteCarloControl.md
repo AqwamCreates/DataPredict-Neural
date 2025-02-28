@@ -9,7 +9,7 @@ OffPolicyMonteCarloControl is a neural network with reinforcement learning capab
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-OffPolicyMonteCarloControl.new({targetPolicyFunction: string, discountFactor: number}): ModelObject
+OffPolicyMonteCarloControl.new(targetPolicyFunction: string, discountFactor: number): ModelObject
 ```
 
 #### Parameters:
@@ -22,7 +22,7 @@ OffPolicyMonteCarloControl.new({targetPolicyFunction: string, discountFactor: nu
 
 	* StableSoftmax: The more stable option of Softmax (Default)
 
-* discountFactor: The higher the value, the more likely it focuses on long-term outcomes. The value must be set between 0 and 1.
+* discountFactor: The higher the value, the more likely it focuses on long-term outcomes. The value must be set between 0 and 1. [Default: 0.95]
 
 #### Returns:
 
@@ -35,7 +35,7 @@ OffPolicyMonteCarloControl.new({targetPolicyFunction: string, discountFactor: nu
 Set model's parameters. When any of the arguments are nil, previous argument values for that argument will be used.
 
 ```
-OffPolicyMonteCarloControl:setParameters({targetPolicyFunction: string, discountFactor: number})
+OffPolicyMonteCarloControl:setParameters(targetPolicyFunction: string, discountFactor: number)
 ```
 
 #### Parameters:

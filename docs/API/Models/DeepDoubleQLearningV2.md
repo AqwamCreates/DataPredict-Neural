@@ -16,9 +16,11 @@ DeepDoubleQLearning.new(averagingRate: number, discountFactor: number): ModelObj
 
 #### Parameters:
 
-* averagingRate: The higher the value, the faster the weights changes. The value must be set between 0 and 1.
+* averagingRate: The higher the value, the faster the weights changes. The value must be set between 0 and 1. [Default: 0.995]
 
-* discountFactor: The higher the value, the more likely it focuses on long-term outcomes. The value must be set between 0 and 1.
+* lambda: At 0, the model acts like the Temporal Difference algorithm. At 1, the model acts as Monte Carlo algorithm. Between 0 and 1, the model acts as both. [Default: 0]
+
+* discountFactor: The higher the value, the more likely it focuses on long-term outcomes. The value must be set between 0 and 1. [Default: 0.95]
 
 #### Returns:
 
@@ -31,7 +33,7 @@ DeepDoubleQLearning.new(averagingRate: number, discountFactor: number): ModelObj
 Set model's parameters. When any of the arguments are nil, previous argument values for that argument will be used.
 
 ```
-DeepDoubleQLearning:setParameters({averagingRate: number, discountFactor: number})
+DeepDoubleQLearning:setParameters(averagingRate: number, discountFactor: number)
 ```
 
 #### Parameters:

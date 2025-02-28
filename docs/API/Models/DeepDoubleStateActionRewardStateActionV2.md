@@ -9,7 +9,7 @@ DeepDoubleStateActionRewardStateActionV2 is a neural network with reinforcement 
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-DeepDoubleStateActionRewardStateAction.new({epsilon: number, averagingRate: number, discountFactor: number}): ModelObject
+DeepDoubleStateActionRewardStateAction.new(epsilon: number, averagingRate: number, discountFactor: number): ModelObject
 ```
 
 #### Parameters:
@@ -29,7 +29,7 @@ DeepDoubleStateActionRewardStateAction.new({epsilon: number, averagingRate: numb
 Set model's parameters. When any of the arguments are nil, previous argument values for that argument will be used.
 
 ```
-DeepDoubleStateActionRewardStateAction:setParameters({epsilon: number, averagingRate: number, discountFactor: number})
+DeepDoubleStateActionRewardStateAction:setParameters(epsilon: number, averagingRate: number, discountFactor: number)
 ```
 
 #### Parameters:
