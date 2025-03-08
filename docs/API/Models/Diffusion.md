@@ -9,14 +9,10 @@ RandomNetworkDistillation is a neural network for producing internal rewards to 
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-Diffusion.new(): RandomNetworkDistillationObject
+Diffusion.new({Model: Model, numberOfDiffusionStep: number, numberOfSamplingStep: number, sampler: string, noiseScheduler: string, initialNoiseValue: number, finalNoiseValue: number}): RandomNetworkDistillationObject
 ```
 
-#### Returns
-
-* Model: The generated model object.
-
-## Functions
+#### Parameters
 
 * Model: The model to be used for diffusion and sampling.
 
@@ -38,10 +34,16 @@ Diffusion.new(): RandomNetworkDistillationObject
 
 * finalNoiseValue: The final noise value to generate noise values.  [Default: 1]
 
+#### Returns
+
+* Model: The generated model object.
+
+## Functions
+
 ### diffuse()
 
 ```
-Diffusion:diffuse(featureTensor: tensor, alpha)
+Diffusion:diffuse(featureTensor: tensor, alpha: number)
 ```
 #### Parameters
 
