@@ -24,9 +24,15 @@ Diffusion.new(): RandomNetworkDistillationObject
 
 * numberOfSamplingStep: The number of sampling steps to be performed when calling the generate() function. [Default: 300]
 
-* sampler: The sampler to be used for denoising the feature tensor. [Default: DDPM]
+* sampler: The sampler to be used for denoising the feature tensor. Available options are:
 
-* noiseScheduler: The noise scheduler to be used for adding noise to the feature tensor. [Default: Linear]
+    * Euler
+    
+    * DDPM (Default)
+
+* noiseScheduler: The noise scheduler to be used for adding noise to the feature tensor. Available options are:
+
+    * Linear (Default)
 
 * initialNoiseValue: The initial noise value to generate noise values. [Default: 0.0001]
 
