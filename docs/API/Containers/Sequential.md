@@ -30,74 +30,6 @@ Parameters:
 
 * FunctionBlock: The function blocks to be added to the sequential container.
 
-### forwardPropagate()
-
-```
-
-Sequential:forwardPropagate(featureTensor: tensor): tensor
-
-```
-
-#### Parameters:
-
-* featureTensor: The feature tensor to be used as an input.
-
-#### Returns:
-
-* generatedLabelTensor: The generated label tensor produced from passing across the function blocks inside the container object.
-
-### calculateWeightLossArray()
-
-```
-
-Sequential:calculateWeightLossTensorArray(lossTensor: tensor): {tensor}
-
-```
-
-#### Parameters:
-
-* lossTensor: The loss tensor to be used for calculating the weights of the function blocks.
-
-#### Returns:
-
-* weightLossTensorArray: An array containing the weight loss tensors. The first tensor in the array represents the weight loss tensor for the first weight block.
-
-### gradientDescent()
-
-```
-
-Sequential:gradientDescent(weightLossTensorArray: {tensor}, numberOfData: number)
-
-```
-
-#### Parameters:
-
-* weightLossTensorArray: An array containing the weight loss tensors. The first tensor in the array represents the weight loss tensor for the first weight block.
-
-* numberOfData: The value to divide with the weight loss tensors.
-
-### backwardPropagate()
-
-```
-
-Sequential:backwardPropagate(lossTensor: tensor)
-
-```
-
-#### Parameters:
-
-* lossTensor: The loss tensor to be used for calculating the weights of the function blocks.
-
-* numberOfData: The value to divide with the weight loss tensors.
-
-### clearAllStoredTensorsFromAllFunctionBlocks()
-
-```
-
-Sequential:clearAllStoredTensorsFromAllFunctionBlocks()
-
-```
-
 ### detachAllFunctionBlocks()
 
 ```
@@ -106,35 +38,13 @@ Sequential:detachAllFunctionBlocks()
 
 ```
 
-### setWeightTensorArray()
+### clearAllStoredTensors()
 
 ```
 
-Sequential:setWeightTensorArray(weightTensorArray: {tensor}, doNotDeepCopy: boolean)
+Sequential:clearAllStoredTensors()
 
 ```
-
-#### Parameters:
-
-* weightTensorArray: An array containing all the weight tensors to be set to individual weight blocks. The first tensor in the array represents the weight tensor for the first weight block.
-
-* doNotDeepCopy: Set whether or not to deep copy the weight tensors in the weight array.
-
-### getWeightTensorArray()
-
-```
-
-Sequential:getWeightTensorArray(doNotDeepCopy: boolean): {tensor}
-
-```
-
-#### Parameters:
-
-* doNotDeepCopy: Set whether or not to deep copy the weight tensors from the weight blocks.
-
-#### Returns
-
-* weightTensorArray: An array containing all the weight tensors from the weight blocks. The first tensor in the array represents the weight tensor for the first weight block.
 
 ### getFunctionBlockByIndex()
 
