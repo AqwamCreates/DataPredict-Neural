@@ -1,4 +1,4 @@
-# [API Reference](../../API.md) - [Containers](../Containers.md) - Sequential
+# [API Reference](../../API.md) - [Containers](../Containers.md) - BaseContainer
 
 ## Constructors
 
@@ -8,7 +8,7 @@ Creates a new container object.
 
 ```
 
-BaseContainer.new({ClassesList: {any}, cutOffValue: number, timeDependent: boolean, parallelGradientDescent: boolean, WeightBlockArray: {WeightBlock}}): ContainerObject
+BaseContainer.new({ClassesList: {any}, cutOffValue: number, timeDependent: boolean, parallelGradientDescent: boolean, WeightBlockArray: {WeightBlock}, OutputBlockArray: {FunctionBlock}}): ContainerObject
 
 ```
 
@@ -20,9 +20,11 @@ BaseContainer.new({ClassesList: {any}, cutOffValue: number, timeDependent: boole
 
 * timeDependent: An indicator that the container uses datasets that are time dependent. Enabling this will cause the container to always use slower backward propagation method. [Default: False]
 
-* parallelGradientDescent: An indicator that container will perform parallel gradient descent. See fastBackwardPropagate() function for more details.
+* parallelGradientDescent: An indicator that container will perform parallel gradient descent. See fastBackwardPropagate() function for more details. [Default: True]
 
-* WeightBlockArray: An array containing all the weight blocks that will be loaded to the container.
+* WeightBlockArray: An array containing all the weight blocks that will be loaded to the container. [Default: {}]
+
+* OutputBlockArray: An array containing all the function blocks that will be loaded to the container. [Default: {}]
 
 #### Returns:
 
