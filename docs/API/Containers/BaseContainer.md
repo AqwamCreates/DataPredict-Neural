@@ -8,19 +8,27 @@ Creates a new container object.
 
 ```
 
-BaseContainer.new({ClassesList: {any}, cutOffValue: , timeDependent: boolean, parallelGrad}): ContainerObject
+BaseContainer.new({ClassesList: {any}, cutOffValue: number, timeDependent: boolean, parallelGradientDescent: boolean, WeightBlockArray: {WeightBlock}}): ContainerObject
 
 ```
+
+#### Parameters:
+
+* ClassesList: The classes to be predicted by the container. Currently, it will generate prediction based on the last dimension. [Default: {}]
+
+* cutOffValue: The cutOffValue that classifies an output between two classes. [Default: 0]
+
+* timeDependent: An indicator that the container uses datasets that are time dependent. Enabling this will cause the container to always use slower backward propagation method. [Default: False]
+
+* parallelGradientDescent: An indicator that container will perform parallel gradient descent. See fastBackwardPropagate() function for more details.
+
+* WeightBlockArray: An array containing all the weight blocks that will be loaded to the container.
 
 #### Returns:
 
 * Container: The generated container object.
 
 ## Functions
-
-Parameters:
-
-* FunctionBlock: The function blocks to be added to the sequential container.
 
 ### forwardPropagate()
 
@@ -70,7 +78,7 @@ Sequential:gradientDescent(weightLossTensorArray: {tensor}, numberOfData: number
 
 ### fastBackwardPropagate()
 
-Performs gradient descent after immediately receiving the weight loss tensor for that particular weight block.
+Performs the gradient descent after immediately receiving the weight loss tensor for that particular weight block.
 
 ```
 
@@ -84,11 +92,11 @@ Sequential:fastBackwardPropagate(lossTensor: tensor)
 
 ### slowBackwardPropagate()
 
-Performs gradient descent after all weight loss tensors are received from all weight blocks.
+Performs the gradient descent after all weight loss tensors are received from all weight blocks.
 
 ```
 
-Sequential:fastBackwardPropagate(lossTensor: tensor)
+Sequential:slowBackwardPropagate(lossTensor: tensor)
 
 ```
 

@@ -76,4 +76,4 @@ Sequential:getFunctionBlockArray(): {FunctionBlockObject}
 
 ## Inherited From
 
-* [BaseInstance](../Cores/BaseInstance.md)
+* [BaseContainer](../Cores/BaseContainer.md)
