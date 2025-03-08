@@ -63,12 +63,20 @@ Diffusion:train(featureTensor: tensor)
 ### sample()
 
 ```
-Diffusion:sample(featureTensor: tensor): tensor
+Diffusion:sample(featureTensor: tensor, alpha: number, cumulativeAlpha: number, currentStandardDeviation: number, nextStandardDeviation: number): tensor
 ```
 
 #### Parameters
 
 * featureTensor: The tensor containing all the features.
+
+* alpha: The amount of features that are retained.
+
+* cumulativeAlpha: The cumulative amount of features that are retained.
+
+* currentStandardDeviation: The standard deviation for the current sampling step.
+
+* nextStandardDeviation: The standard deviation for the next sampling step.
 
 #### Returns
 
