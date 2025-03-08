@@ -2,7 +2,7 @@
 
 | Version                 | Number Of Blocks | Number Of Models | Number Of Optimizers | Number Of Cost Functions | Number Of Containers | Number of Utilities | Number Of Regularizers | Backward Incompatible Changes |
 |-------------------------|------------------|------------------|----------------------|--------------------------|----------------------|---------------------|------------------------|-------------------------------|
-| [1.10](Release/1-10.md) | 74               | 25               | 8                    | 5                        | 6                    | 3                   | 3                      | No                            |
+| [1.10](Release/1-10.md) | 74               | 26               | 8                    | 5                        | 6                    | 3                   | 3                      | No                            |
 | [1.9](Release/1-9.md)   | 73               | 25               | 8                    | 5                        | 2                    | 3                   | 3                      | No                            |
 | [1.8](Release/1-8.md)   | 73               | 22               | 8                    | 5                        | 2                    | 3                   | 3                      | No                            |
 | [1.7](Release/1-7.md)   | 70               | 20               | 8                    | 5                        | 2                    | 3                   | 3                      | No                            |
