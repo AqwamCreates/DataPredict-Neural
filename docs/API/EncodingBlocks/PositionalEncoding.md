@@ -14,7 +14,7 @@ PositionalEncoding.new({finalDimensionSize: number, nValue: number}): EncodingBl
 
 Parameters:
 
-* finalDimensionSize: The final dimension size for the transformed tensor. It is equivalent to the number of labels that are available in the data.
+* sequenceLength: The length of the sequence.
 
 * nValue: A user defined value for tuning.
 
@@ -34,7 +34,7 @@ PositionalEncoding:setParameters({finalDimensionSize: number, nValue: number})
 
 #### Parameters:
 
-* finalDimensionSize: The final dimension size for the transformed tensor. It is equivalent to the number of labels that are available in the data.
+* sequenceLength: The length of the sequence.
 
 * nValue: A user defined value for tuning.
 
