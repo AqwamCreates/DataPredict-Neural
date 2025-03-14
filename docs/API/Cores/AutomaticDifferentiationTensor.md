@@ -6,7 +6,7 @@
 
 ```
 
-AutomaticDifferentiationTensor.new(tensor: tensor, PartialDerivativeFunction: Function, PreviousTensorObject1: AutomaticDifferentiationTensorObject, PreviousTensorObject2: AutomaticDifferentiationTensorObject): AutomaticDifferentiationTensorObject
+AutomaticDifferentiationTensor.new(tensor: tensor, PartialDerivativeFunction: Function, inputTensorArray: tensor/AutomaticDifferentiationTensorObject): AutomaticDifferentiationTensorObject
 
 ```
 
@@ -16,9 +16,7 @@ AutomaticDifferentiationTensor.new(tensor: tensor, PartialDerivativeFunction: Fu
 
 * PartialDerivativeFunction (Optional): The partial derivative function to be multiplied with initialPartialFirstDerivativeTensor. Must supply the initialPartialFirstDerivativeTensor argument to the function.
 
-* PreviousTensorObject1 (Optional): The first previous tensor object that was used to generate the current tensor object.
-
-* PreviousTensorObject2 (Optional): The second previous tensor object that was used to generate the current tensor object.
+* inputTensorArray (Optional): The input tensor objects that was used to generate the current tensor object.
 
 #### Returns
 
