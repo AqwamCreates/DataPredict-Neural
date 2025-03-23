@@ -6,4 +6,4 @@
 
 [PositionalEncoding](EncodingBlocks/PositionalEncoding.md)
 
-[EncodingBlocks](EncodingBlocks/BaseEncodingBlock.md)
+[BaseEncodingBlock](EncodingBlocks/BaseEncodingBlock.md)
