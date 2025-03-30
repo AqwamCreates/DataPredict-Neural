@@ -12,6 +12,8 @@
 
 [PoolingBlocks](API/PoolingBlocks.md)
 
+[PaddingBlocks](API/PaddingBlocks.md)
+
 [ExpansionBlocks](API/ExpansionBlocks.md)
 
 [DropoutBlocks](API/DropoutBlocks.md)
