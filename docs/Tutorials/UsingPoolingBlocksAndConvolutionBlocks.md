@@ -12,7 +12,7 @@ Pooling blocks and convolution blocks allow use to capture spatial information f
 
 ## The Pooling Blocks
 
-We will first create our inputTensor and the average pooling block object as shown below for the purpose of this tutorial.
+We will first create our inputTensor and the average pooling 2D block object as shown below for the purpose of this tutorial.
 
 ```lua
 
@@ -28,4 +28,4 @@ In here, we can see that we have created a 4D tensor. This is because:
 
 * The second dimension is used for the number of kernels.
 
-The last two dimension is the kernel dimensions, where the average pooling block requires these dimensions to get the average input value for the output value.
+The last two dimensions are used for the kernel dimensions, where the average pooling 2D block requires these dimensions to get the average input value for the output value. Note that if you use average pooling 1D, you only need one kernel dimension.
