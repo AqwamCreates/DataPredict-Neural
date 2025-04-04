@@ -8,7 +8,7 @@ Creates a new convolution block object.
 
 ```
 
-AutomaticConvolution1D.new({channelSize: number, numberOfKernels: number kernelDimensionSize: number, strideDimensionSize: number, learningRate: number, Optimizer: OptimizerObject, Regularizer: RegularizerObject, initializationMode: string}): ConvolutionBlockObject
+AutomaticConvolution1D.new({numberOfKernels: number kernelDimensionSize: number, strideDimensionSize: number, learningRate: number, Optimizer: OptimizerObject, Regularizer: RegularizerObject, initializationMode: string}): ConvolutionBlockObject
 
 ```
 
