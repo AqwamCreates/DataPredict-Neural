@@ -16,7 +16,7 @@ We will first create our inputTensor and the pooling block object as shown below
 
 ```lua
 
-local inputTensor = TensorL:createRandomNormalTensor({10, 10, 10}) -- Creating a 3D tensor with the size of 10 x 10 x 10.
+local inputTensor = TensorL:createRandomNormalTensor({10, 10, 10, 10}) -- Creating a 4D tensor with the size of 10 x 10 x 10 x 10.
 
 local AveragePooling2D = DataPredict.PoolingBlocks.AveragePooling2D.new({kernelDimensionSizeArray = {2, 2}, strideDimensionSizeArray = {2, 2})
 
