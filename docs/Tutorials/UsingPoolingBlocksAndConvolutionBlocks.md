@@ -12,9 +12,11 @@ Pooling blocks and convolution blocks allow use to capture spatial information f
 
 ## The Pooling Blocks
 
-In order to construct our pooling block object, we must use the code shown below.
+We will first create our inputTensor and the pooling block object as shown below for the purpose of this tutorial.
 
 ```lua
+
+local inputTensor = TensorL:createRandomNormalTensor({10, 10, 10})
 
 local AveragePooling2D = DataPredict.PoolingBlocks.AveragePooling2D.new({kernelDimensionSizeArray = {2, 2}, strideDimensionSizeArray = {2, 2})
 
