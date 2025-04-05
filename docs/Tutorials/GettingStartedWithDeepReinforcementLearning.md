@@ -72,11 +72,17 @@ Below we will show you the difference between the two above. But first, let's de
 
 local ClassesList = {1, 2}
 
-local NeuralNetwork = DataPredict.Models.NeuralNetwork.new() -- Create the NeuralNetwork first.
+local NeuralNetwork = DataPredictNeural.Container.Sequential.new() -- Create the NeuralNetwork first.
 
-NeuralNetwork:addLayer(4, true, "None")
+NeuralNetwork:setMultipleFunctionBlocks(
 
-NeuralNetwork:addLayer(2, false, "LeakyReLU")
+  DataPredictNeural.WeightBlocks.Linear.new({dimensionSizeArray = {4, 2}}),
+
+  DataPredictNeural.WeightBlocks.Bias.new({dimensionSizeArray = {1, 2}}),
+
+  DataPredictNeural.ActivationFunctions.LeakyReLU.new()
+
+)
 
 NeuralNetwork:setClassesList(ClassesList)
 
@@ -146,7 +152,7 @@ local DeepQLearningQuickSetup = DataPredict.QuickSetups.CategoricalPolicy.new()
 
 DeepQLearningQuickSetup:setModel(DeepQLearning)
 
-DeepQLearningQuickSetup:setClassesList(classesList)
+DeepQLearningQuickSetup:setClassesList(ClassesList)
 
 local environmentFeatureTensor = {{0, 0, 0, 0, 0}}
 
