@@ -47,3 +47,13 @@ From here, we can observe that the first two dimension sizes remain the same. Th
 ## The Convolution Blocks
 
 The convolution blocks generally behaves the same as the pooling blocks. However, the difference is that the convolution blocks will change the number of channels. 
+
+Below, we will demonstrate how the way we set up the convolution blocks affects the number of channels. Additionally, We will also use the same input tensor that we have used for the pooling block.
+
+```
+
+local Convolution2D = DataPredict.PoolingBlocks.Convolution2D.new({numberOfKernels = 7, kernelDimensionSizeArray = {2, 2}, strideDimensionSizeArray = {2, 2})
+
+```
+
+In here, notice that the convolution block has the same parameters as the pooling block, except that it also requires numberOfKernels parameter.
