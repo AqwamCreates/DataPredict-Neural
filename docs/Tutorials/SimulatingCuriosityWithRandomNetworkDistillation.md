@@ -20,7 +20,7 @@ local NeuralNetwork = DataPredictNeural.Container.Sequential.new()
 
 NeuralNetwork:setMultipleFunctionBlocks(
 
-  DataPredictNeural.WeightBlocks.Linear.new({dimensionSizeArray = {10, 4}}),
+  DataPredictNeural.WeightBlocks.Linear.new({dimensionSizeArray = {10, 1}}),
 
   DataPredictNeural.ActivationFunctions.LeakyReLU.new()
 
