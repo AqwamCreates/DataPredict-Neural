@@ -67,7 +67,7 @@ In addition, if you are interested in Roblox tutorials and future projects by me
 
 ## The Advanced Blocks
 
-[Using Pooling Blocks And Convolution Blocks](Tutorials/UsingPoolingBlocksAndConvolutionBlocks)
+[Using Pooling Blocks And Convolution Blocks](Tutorials/UsingPoolingBlocksAndConvolutionBlocks.md)
 
 ## The API
 
