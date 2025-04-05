@@ -65,6 +65,10 @@ In addition, if you are interested in Roblox tutorials and future projects by me
 
 [Spatial Dimension, Kernel And Stride](Tutorials/SpatialDimensionKernelAndStride.md)
 
+## Getting Deeper Into Deep Learning
+
+[Using Pooling Blocks And Convolution Blocks](Tutorials/UsingPoolingBlocksAndConvolutionBlocks)
+
 ## The API
 
 ### API Reference
