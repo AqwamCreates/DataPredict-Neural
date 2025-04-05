@@ -12,9 +12,9 @@ We can expect our models to perform poorly at the start of the training but they
 
 ## The Basics
 
-### Environment Feature Vector
+### Environment Feature Tensor
 
-An environment feature vector is a vector containing all the information related to model's environment. It can contain as many information such as:
+An environment feature tensor is a tensor containing all the information related to model's environment. It can contain as many information such as:
 
 * Distance
 
@@ -22,10 +22,10 @@ An environment feature vector is a vector containing all the information related
 
 * Speed
 
-An example of environment feature vector will look like this:
+An example of environment feature tensor will look like this:
 
 ```lua
-local environmentFeatureVector = {
+local environmentFeatureTensor = {
 
   {1, -32, 234, 12, -97} -- 1 is added at first column for bias, but it is optional.
 
@@ -104,29 +104,29 @@ Below, I will show a code sample using these functions.
 
 while true do
 
-  local previousEnvironmentFeatureVector = {{0, 0, 0, 0, 0}} -- We must keep track our previous feature vector.
+  local previousEnvironmentFeatureTensor = {{0, 0, 0, 0, 0}} -- We must keep track our previous feature tensor.
 
   local action = 1
 
   for step = 1, 1000, 1 do
 
-    local currentEnvironmentFeatureVector = fetchEnvironmentFeatureVector(previousEnvironmentFeatureVector, action)
+    local currentEnvironmentFeatureTensor = fetchEnvironmentFeatureTensor(previousEnvironmentFeatureTensor, action)
 
-    action = DeepQLearning:predict(currentEnvironmentFeatureVector)[1][1]
+    action = DeepQLearning:predict(currentEnvironmentFeatureTensor)[1][1]
 
-    local reward = getReward(currentEnvironmentFeatureVector)
+    local reward = getReward(currentEnvironmentFeatureTensor)
 
-    DeepQLearning:categoricalUpdate(previousEnvironmentFeatureVector, reward, action, currentEnvironmentFeatureVector, 0) -- update() is called whenever a step is made. The value of zero indicates that the current environment feature vector is not a terminal state.
+    DeepQLearning:categoricalUpdate(previousEnvironmentFeatureTensor, reward, action, currentEnvironmentFeatureTensor, 0) -- update() is called whenever a step is made. The value of zero indicates that the current environment feature tensor is not a terminal state.
 
-    previousEnvironmentFeatureVector = environmentVector
+    previousEnvironmentFeatureTensor = environmentTensor
 
-    local hasGameEnded = checkIfGameHasEnded(environmentVector)
+    local hasGameEnded = checkIfGameHasEnded(environmentTensor)
 
     if hasGameEnded then break end
 
   end
 
-  QLearningNeuralNetwork:episodeUpdate(1) -- episodeUpdate() is used whenever an episode ends. An episode is the total number of steps that determines when the model should stop training. The value of one indicates that the current environment feature vector is a terminal state.
+  QLearningNeuralNetwork:episodeUpdate(1) -- episodeUpdate() is used whenever an episode ends. An episode is the total number of steps that determines when the model should stop training. The value of one indicates that the current environment feature tensor is a terminal state.
 
 end
 
@@ -148,17 +148,17 @@ DeepQLearningQuickSetup:setModel(DeepQLearning)
 
 DeepQLearningQuickSetup:setClassesList(classesList)
 
-local environmentFeatureVector = {{0, 0, 0, 0, 0}}
+local environmentFeatureTensor = {{0, 0, 0, 0, 0}}
 
 local action = 1
 
 while true do
 
-  environmentFeatureVector = fetchEnvironmentFeatureVector(environmentFeatureVector, action)
+  environmentFeatureTensor = fetchEnvironmentFeatureTensor(environmentFeatureTensor, action)
 
-  local reward = getReward(environmentFeatureVector, action)
+  local reward = getReward(environmentFeatureTensor, action)
 
-  action = DeepQLearningQuickSetup:reinforce(environmentFeatureVector, reward)
+  action = DeepQLearningQuickSetup:reinforce(environmentFeatureTensor, reward)
 
 end
 
