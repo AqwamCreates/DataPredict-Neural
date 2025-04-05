@@ -24,7 +24,7 @@ NeuralNetwork:setMultipleFunctionBlocks(
 
   DataPredictNeural.WeightBlocks.Linear.new({dimensionSizeArray = {10, 4}}),
 
-   DataPredictNeural.ActivationFunctions.LeakyReLU.new()
+  DataPredictNeural.ActivationFunctions.LeakyReLU.new()
 
 )
 
