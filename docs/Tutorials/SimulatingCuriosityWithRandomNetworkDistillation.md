@@ -16,13 +16,15 @@ Under here, this is how you integrate your reinforcement learning algorithms wit
 
 -- Initializing our NeuralNetwork.
 
+local ActivationFunctions = 
+
 local NeuralNetwork = DataPredictNeural.Container.Sequential.new()
 
 NeuralNetwork:setMultipleFunctionBlocks(
 
-  Linear.new({dimensionSizeArray = {10, 4}}),
+  DataPredictNeural.WeightBlocks.Linear.new({dimensionSizeArray = {10, 4}}),
 
-  LeakyReLU.new()
+   DataPredictNeural.ActivationFunctions.LeakyReLU.new()
 
 )
 
