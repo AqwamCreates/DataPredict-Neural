@@ -73,7 +73,7 @@ In addition, if you are interested in Roblox tutorials and future projects by me
 
 [Getting Started With Deep Reinforcement Learning](Tutorials/GettingStartedWithDeepReinforcementLearning.md)
 
-[Choosing The MostEffective Environment Inputs](Tutorials/ChoosingTheMostEffectiveEnvironmentInputs.md)
+[Choosing The Most Effective Environment Inputs](Tutorials/ChoosingTheMostEffectiveEnvironmentInputs.md)
 
 [Simulating Curiosity With Random Network Distillation](Tutorials/SimulatingCuriosityWithRandomNetworkDistillation.md)
 
