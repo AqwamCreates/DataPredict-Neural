@@ -16,8 +16,6 @@ Under here, this is how you integrate your reinforcement learning algorithms wit
 
 -- Initializing our NeuralNetwork.
 
-local ActivationFunctions = 
-
 local NeuralNetwork = DataPredictNeural.Container.Sequential.new()
 
 NeuralNetwork:setMultipleFunctionBlocks(
