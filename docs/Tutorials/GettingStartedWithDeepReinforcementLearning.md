@@ -2,7 +2,7 @@
 
 ## Requirements
 
-* Knowledge on how to build neural networks, which can be found [here](UsingNeuralNetworksPart1.md).
+* Knowledge on how to build neural networks, which can be found [here](CreatingOurFirstNeuralNetwork.md).
 
 ## What Is Reinforcement Learning?
 
