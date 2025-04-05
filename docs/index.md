@@ -65,9 +65,13 @@ In addition, if you are interested in Roblox tutorials and future projects by me
 
 [Spatial Dimension, Kernel And Stride](Tutorials/SpatialDimensionKernelAndStride.md)
 
-## The Advanced Blocks
+### The Advanced Blocks
 
 [Using Pooling Blocks And Convolution Blocks](Tutorials/UsingPoolingBlocksAndConvolutionBlocks.md)
+
+### Deep Reinforcement Learning
+
+[Simulating Curiosity With Random Network Distillation](Tutorials/SimulatingCuriosityWithRandomNetworkDistillation.md)
 
 ## The API
 
