@@ -26,7 +26,7 @@ In here, we can see that we have created a 4D tensor. This is because:
 
 * The first dimension is used for the number of data.
 
-* The second dimension is used for the number of kernels.
+* The second dimension is used for the number of channels.
 
 The last two dimensions are used for the kernel dimensions, where the average pooling 2D block requires these dimensions to get the average input value for the output value. Note that if you use average pooling 1D, you only need one kernel dimension.
 
