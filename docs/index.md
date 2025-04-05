@@ -75,6 +75,8 @@ In addition, if you are interested in Roblox tutorials and future projects by me
 
 [Simulating Curiosity With Random Network Distillation](Tutorials/SimulatingCuriosityWithRandomNetworkDistillation.md)
 
+[The Action Space And The Reinforcement Learning Algorithms](Tutorials/TheActionSpaceAndTheReinforcementLearningAlgorithms.md)
+
 ## The API
 
 ### API Reference
