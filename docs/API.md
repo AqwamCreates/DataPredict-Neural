@@ -2,8 +2,8 @@
 
 Here’s the second table with the categories and corresponding subcategories:
 
-| Function Blocks                             | Extensions                                                  | Cores                  |
-|---------------------------------------------|-------------------------------------------------------------|------------------------|
+| Function Blocks                                               | Extensions                                | Cores                  |
+|-------------------------------------------------------------- |-------------------------------------------|------------------------|
 | [WeightBlocks](API/WeightBlocks.md)                           | [Containers](API/Containers.md)           | [Cores](API/Cores.md)  |
 | [ShapeTransformationBlocks](API/ShapeTransformationBlocks.md) | [Models](API/Models.md)                   |                        |
 | [ActivationBlocks](API/ActivationBlocks.md)                   | [CostFunctions](API/CostFunctions.md)     |                        |
