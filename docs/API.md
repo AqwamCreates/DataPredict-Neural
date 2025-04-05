@@ -4,8 +4,6 @@
 
 [WeightBlocks](API/WeightBlocks.md)
 
-[ShapeTransformationBlocks](API/ShapeTransformationBlocks.md)
-
 [ActivationBlocks](API/ActivationBlocks.md)
 
 [ConvolutionBlocks](API/ConvolutionBlocks.md)
@@ -14,17 +12,19 @@
 
 [PaddingBlocks](API/PaddingBlocks.md)
 
-[ExpansionBlocks](API/ExpansionBlocks.md)
-
 [DropoutBlocks](API/DropoutBlocks.md)
-
-[AttentionBlocks](API/AttentionBlocks.md)
-
-[OperatorBlocks](API/OperatorBlocks.md)
 
 [EncodingBlocks](API/EncodingBlocks.md)
 
+[OperatorBlocks](API/OperatorBlocks.md)
+
+[ShapeTransformationBlocks](API/ShapeTransformationBlocks.md)
+
+[ExpansionBlocks](API/ExpansionBlocks.md)
+
 [HolderBlocks](API/HolderBlocks.md)
+
+[AttentionBlocks](API/AttentionBlocks.md)
 
 ## Extensions
 
