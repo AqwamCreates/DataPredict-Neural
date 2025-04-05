@@ -46,4 +46,4 @@ From here, we can observe that the first two dimension sizes remain the same. Th
 
 ## The Convolution Blocks
 
-The convolution blocks generally behaves the same as the pooling blocks except for one major difference. 
+The convolution blocks generally behaves the same as the pooling blocks. However, the difference is that the convolution blocks will change the number of channels. 
