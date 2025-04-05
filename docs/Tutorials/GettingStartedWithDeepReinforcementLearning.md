@@ -144,7 +144,7 @@ As you can see, there are a lot of things that we must track of, but it gives yo
 
 To reduce the amount of things we need to track, we can use CategoricalPolicy in "QuickSetups" section. 
 
-Note that you need to use the code from the DataPredict library and must not be confused with DataPredict Neural library.
+Note that you need to use the code from the [DataPredict](https://aqwamcreates.github.io/DataPredict/) library and must not be confused with DataPredict Neural library.
 
 ```lua
 
