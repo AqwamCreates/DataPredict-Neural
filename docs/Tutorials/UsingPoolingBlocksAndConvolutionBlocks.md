@@ -70,3 +70,10 @@ print(outputTensorDimensionSizeArray) -- This would be a 4D tensor with the size
 
 ```
 
+As you can see from the above, the number of channels changes from 3 to 7. The reasoning behind this change is that the convolution blocks will attempt to extract 7 different filters from the input channel.
+
+# Conclusion
+
+The pooling blocks and convolution blocks are important parts for the convolutional neural networks. These blocks allow you to extract useful features and could be used to reduce the size of the input tensor, potentially leading to faster training times.
+
+That's all for today!
