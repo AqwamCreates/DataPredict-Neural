@@ -28,19 +28,17 @@
 
 ## Extensions
 
+[Containers](API/Containers.md)
+
+[Models](API/Models.md)
+
 [CostFunctions](API/CostFunctions.md)
 
 [Optimizers](API/Optimizers.md)
 
-[ValueSchedulers](API/ValueSchedulers.md)
-
 [Regularizers](API/Regularizers.md)
 
-[Containers](API/Containers.md)
-
-## Extras
-
-[Models](API/Models.md)
+[ValueSchedulers](API/ValueSchedulers.md)
 
 [Utilities](API/Utilities.md)
 
