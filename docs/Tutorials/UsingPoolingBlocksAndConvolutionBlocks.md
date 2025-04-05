@@ -43,3 +43,7 @@ print(outputTensorDimensionSizeArray) -- This would be a 4D tensor with the size
 ```
 
 From here, we can observe that the first two dimension sizes remain the same. This is because the pooling operation generally affects the dimensions after the second one.
+
+## The Convolution Blocks
+
+The convolution blocks generally behaves the same as the pooling blocks except for one major difference. 
