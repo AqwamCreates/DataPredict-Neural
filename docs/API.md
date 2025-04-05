@@ -1,47 +1,20 @@
 # API Reference
 
-## Function Blocks
+Here’s the second table with the categories and corresponding subcategories:
 
-[WeightBlocks](API/WeightBlocks.md)
+| Function Blocks                             | Extensions                                                  | Cores                  |
+|---------------------------------------------|-------------------------------------------------------------|------------------------|
+| [WeightBlocks](API/WeightBlocks.md)                           | [Containers](API/Containers.md)           | [Cores](API/Cores.md)  |
+| [ShapeTransformationBlocks](API/ShapeTransformationBlocks.md) | [Models](API/Models.md)                   |                        |
+| [ActivationBlocks](API/ActivationBlocks.md)                   | [CostFunctions](API/CostFunctions.md)     |                        |
+| [ConvolutionBlocks](API/ConvolutionBlocks.md)                 | [Optimizers](API/Optimizers.md)           |                        |
+| [PoolingBlocks](API/PoolingBlocks.md)                         | [Regularizers](API/Regularizers.md)       |                        |
+| [PaddingBlocks](API/PaddingBlocks.md)                         | [ValueSchedulers](API/ValueSchedulers.md) |                        |
+| [ExpansionBlocks](API/ExpansionBlocks.md)                     | [Utilities](API/Utilities.md)             |                        |
+| [DropoutBlocks](API/DropoutBlocks.md)                         |                                           |                        |
+| [AttentionBlocks](API/AttentionBlocks.md)                     |                                           |                        |
+| [OperatorBlocks](API/OperatorBlocks.md)                       |                                           |                        |
+| [EncodingBlocks](API/EncodingBlocks.md)                       |                                           |                        |
+| [HolderBlocks](API/HolderBlocks.md)                           |                                           |                        |
 
-[ShapeTransformationBlocks](API/ShapeTransformationBlocks.md)
-
-[ActivationBlocks](API/ActivationBlocks.md)
-
-[ConvolutionBlocks](API/ConvolutionBlocks.md)
-
-[PoolingBlocks](API/PoolingBlocks.md)
-
-[PaddingBlocks](API/PaddingBlocks.md)
-
-[ExpansionBlocks](API/ExpansionBlocks.md)
-
-[DropoutBlocks](API/DropoutBlocks.md)
-
-[AttentionBlocks](API/AttentionBlocks.md)
-
-[OperatorBlocks](API/OperatorBlocks.md)
-
-[EncodingBlocks](API/EncodingBlocks.md)
-
-[HolderBlocks](API/HolderBlocks.md)
-
-## Extensions
-
-[Containers](API/Containers.md)
-
-[Models](API/Models.md)
-
-[CostFunctions](API/CostFunctions.md)
-
-[Optimizers](API/Optimizers.md)
-
-[Regularizers](API/Regularizers.md)
-
-[ValueSchedulers](API/ValueSchedulers.md)
-
-[Utilities](API/Utilities.md)
-
-## Cores
-
-[Cores](API/Cores.md)
+This should give a clear overview, with each subcategory neatly organized under the corresponding main category.
