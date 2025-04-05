@@ -71,6 +71,8 @@ In addition, if you are interested in Roblox tutorials and future projects by me
 
 ### Deep Reinforcement Learning
 
+[Getting Started With Deep Reinforcement Learning.md](GettingStartedWithDeepReinforcementLearning.md)
+
 [Simulating Curiosity With Random Network Distillation](Tutorials/SimulatingCuriosityWithRandomNetworkDistillation.md)
 
 ## The API
