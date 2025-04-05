@@ -32,11 +32,11 @@ local RandomNetworkDistillation = DataPredictNeural.Models.RandomNetworkDistilla
 
 RandomNetworkDistillation:setModel(NeuralNetwork)
 
--- Call the generate() function to generate an internal reward vector.
+-- Call the generate() function to generate an internal reward tensor.
 
-local internalRewardVector = RandomNetworkDistillation:generate(environmentFeatureVector)
+local internalRewardTensor = RandomNetworkDistillation:generate(environmentFeatureTensor)
 
-local internalReward = rewardVector[1][1]
+local internalReward = rewardTensor[1][1]
 
 ```
 
@@ -48,9 +48,9 @@ You can discourage the AI from exploring by making the internal reward value to 
 
 ```lua
 
-local internalRewardVector = RandomNetworkDistillation:generate(environmentFeatureVector)
+local internalRewardTensor = RandomNetworkDistillation:generate(environmentFeatureTensor)
 
-local internalReward = rewardVector[1][1]
+local internalReward = rewardTensor[1][1]
 
 local negativeInternalReward = -internalReward
 
