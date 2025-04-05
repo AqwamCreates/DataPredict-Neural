@@ -48,12 +48,25 @@ From here, we can observe that the first two dimension sizes remain the same. Th
 
 The convolution blocks generally behaves the same as the pooling blocks. However, the difference is that the convolution blocks will change the number of channels. 
 
-Below, we will demonstrate how the way we set up the convolution blocks affects the number of channels. Additionally, We will also use the same input tensor that we have used for the pooling block.
+Below, we will on demonstrate how the way we set up the convolution blocks affects the number of channels. Additionally, We will also use the same input tensor that we have used for the pooling block.
 
 ```
 
-local Convolution2D = DataPredict.PoolingBlocks.Convolution2D.new({numberOfKernels = 7, kernelDimensionSizeArray = {2, 2}, strideDimensionSizeArray = {2, 2})
+local Convolution2D = DataPredict.ConvolutionBlocks.Convolution2D.new({numberOfKernels = 7, kernelDimensionSizeArray = {2, 2}, strideDimensionSizeArray = {2, 2})
 
 ```
 
-In here, notice that the convolution block has the same parameters as the pooling block, except that it also requires numberOfKernels parameter.
+In here, notice that the convolution block has the same parameters as the pooling block, except for the numberOfKernels parameter. The numberOfKernels parameter determines the number of channels for the output tensor.
+
+Below, we will demonstrate on how the input tensor would be changed when it is passed through the convolution block.
+
+```lua
+
+local outputTensor = Convolution2D:transform(inputTensor)
+
+local outputTensorDimensionSizeArray = TensorL:getDimensionSizeArray(outputTensor)
+
+print(outputTensorDimensionSizeArray) -- This would be a 4D tensor with the size of 20 x 7 x 5 x 5.
+
+```
+
