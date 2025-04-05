@@ -1,6 +1,6 @@
 # Using Pooling Blocks And Convolution Blocks
 
-Pooling blocks and convolution blocks allow use to capture spatial information from the data. These blocks can be confusing to use at first, but in this tutorial, we will show you how those blocks work.
+Pooling blocks and convolution blocks allow use to capture spatial information from the data. These blocks can be confusing to use at first, but in this tutorial, we will show you how those blocks works.
 
 ## Requirements
 
