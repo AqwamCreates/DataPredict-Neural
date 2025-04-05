@@ -34,7 +34,7 @@ local RandomNetworkDistillation = DataPredictNeural.Models.RandomNetworkDistilla
 
 RandomNetworkDistillation:setModel(NeuralNetwork)
 
--- Creating a simple function when receiving environment vector received.
+-- Call the generate() function to generate an internal reward vector.
 
 local internalRewardVector = RandomNetworkDistillation:generate(environmentFeatureVector)
 
