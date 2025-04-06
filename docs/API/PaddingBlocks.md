@@ -2,9 +2,9 @@
 
 [ZeroPadding](PaddingBlocks/ZeroPadding.md) (ZeroPad)
 
-[CircularPadding](PaddingBlocks/CircularPadding.md) (CircularPad)
+[ConstantPadding](PaddingBlocks/ConstantPadding.md) (ConstantPad)
 
-[ConstantPadding](PaddingBlocks/ConstantPadding.md) (ConstantPad) [Note: First Derivative Values Are Approximated.]
+[CircularPadding](PaddingBlocks/CircularPadding.md) (CircularPad)
 
 [ReflectionPadding](PaddingBlocks/ReflectionPadding.md) (ReflectionPad) [Note: First Derivative Values Are Approximated.]
 
