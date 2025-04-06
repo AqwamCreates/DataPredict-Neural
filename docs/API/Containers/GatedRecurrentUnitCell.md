@@ -8,7 +8,7 @@ Creates a new cost function object.
 
 ```
 
-GatedRecurrentUnitCell.new({inputDimensionSize: number, hiddenDimensionSize: number, learningRate: number}): ContainerObject
+GatedRecurrentUnitCell.new({inputDimensionSize: number, hiddenDimensionSize: number, learningRate: number, ClassesList: {any}, cutOffValue: number}): ContainerObject
 
 ```
 

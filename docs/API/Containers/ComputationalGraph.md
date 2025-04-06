@@ -8,7 +8,7 @@ Creates a new cost function object.
 
 ```
 
-ComputationalGraph.new(): ContainerObject
+ComputationalGraph.new({ClassesListArray: {{any}}, cutOffValueArray: {number}}): ContainerObject
 
 ```
 

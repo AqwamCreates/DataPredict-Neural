@@ -8,7 +8,7 @@ Creates a new cost function object.
 
 ```
 
-RecurrentNeuralNetworkCell.new({inputDimensionSize: number, hiddenDimensionSize: number, learningRate: number}): ContainerObject
+RecurrentNeuralNetworkCell.new({inputDimensionSize: number, hiddenDimensionSize: number, learningRate: number, ClassesList: {any}, cutOffValue: number}): ContainerObject
 
 ```
 

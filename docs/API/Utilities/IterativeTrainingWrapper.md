@@ -8,7 +8,7 @@ Creates a new iterative training wrapper object. If there are no parameters give
 
 ```
 
-IterativeTrainingWrapper.new({maxNumberOfIterations: number, Model: ModelObject, CostFunctionArray: {CostFunctionObject}, targetCostValueUpperBoundArray: {number}, targetCostValueLowerBoundArray: {number}, numberOfIterationsToCheckIfConvergedArray: {number}, numberOfIterationsPerCostCalculation: number, isOutputPrinted: boolean, areUsingArraysAsInputs: boolean, iterationWaitDuration: number/boolean}): IterativeTrainingWrapperObject
+IterativeTrainingWrapper.new({maxNumberOfIterations: number, Model: ModelObject, CostFunctionArray: {CostFunctionObject}, targetCostValueUpperBoundArray: {number}, targetCostValueLowerBoundArray: {number}, numberOfIterationsToCheckIfConvergedArray: {number}, numberOfIterationsPerCostCalculation: number, isOutputPrinted: boolean, iterationWaitDuration: number/boolean}): IterativeTrainingWrapperObject
 
 ```
 
@@ -29,8 +29,6 @@ Parameters:
 * numberOfIterationsPerCostCalculation: The number of iterations for each cost calculation.
 	
 * isOutputPrinted: A boolean value that specifies if the output is printed.
-
-* areUsingArraysAsInputs: A boolean value that specifies if array of tensor is used.
 
 * iterationWaitDuration: The duration to wait between iterations. Setting it to 'true' will make it wait until the frame is completed.
 
@@ -44,7 +42,7 @@ IterativeTrainingWrapperObject: The generated iterative training wrapper object.
 
 ```
 
-IterativeTrainingWrapper:setParameters({maxNumberOfIterations: number, Model: ModelObject, CostFunctionArray: {CostFunctionObject}, targetCostValueUpperBoundArray: {number}, targetCostValueLowerBoundArray: {number}, numberOfIterationsToCheckIfConvergedArray: {number}, numberOfIterationsPerCostCalculation: number, isOutputPrinted: boolean, areUsingArraysAsInputs: boolean, iterationWaitDuration: number/boolean}): IterativeTrainingWrapperObject
+IterativeTrainingWrapper:setParameters({maxNumberOfIterations: number, Model: ModelObject, CostFunctionArray: {CostFunctionObject}, targetCostValueUpperBoundArray: {number}, targetCostValueLowerBoundArray: {number}, numberOfIterationsToCheckIfConvergedArray: {number}, numberOfIterationsPerCostCalculation: number, isOutputPrinted: boolean, iterationWaitDuration: number/boolean}): IterativeTrainingWrapperObject
 
 ```
 
@@ -66,15 +64,13 @@ Parameters:
 	
 * isOutputPrinted: A boolean value that specifies if the output is printed.
 
-* areUsingArraysAsInputs: A boolean value that specifies if array of tensor is used.
-
 * iterationWaitDuration: The duration to wait between iterations. Setting it to 'true' will make it wait until the frame is completed.
 
 ### train()
 
 ```
 
-IterativeTrainingWrapper:train(featureTensor: tensor/{tensor}, labelTensor: tensor/{tensor}): {{number}}
+IterativeTrainingWrapper:train(featureTensorArray: {tensor}, labelTensorArray: {tensor}): {{number}}
 
 ```
 

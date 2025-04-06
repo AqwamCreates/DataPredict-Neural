@@ -8,7 +8,7 @@ Creates a new cost function object.
 
 ```
 
-Sequential.new(): ContainerObject
+Sequential.new({ClassesList: {any}, cutOffValue: number}): ContainerObject
 
 ```
 
