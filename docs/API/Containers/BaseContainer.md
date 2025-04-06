@@ -14,10 +14,6 @@ BaseContainer.new({ClassesList: {any}, cutOffValue: number, timeDependent: boole
 
 #### Parameters:
 
-* ClassesList: The classes to be predicted by the container. Currently, it will generate prediction based on the last dimension. [Default: {}]
-
-* cutOffValue: The cutOffValue that classifies an output between two classes. [Default: 0]
-
 * timeDependent: An indicator that the container uses datasets that are time dependent. Enabling this will cause the container to always use slower backward propagation method. [Default: False]
 
 * parallelGradientDescent: An indicator that container will perform parallel gradient descent. See fastBackwardPropagate() function for more details. [Default: True]
@@ -145,6 +141,126 @@ Sequential:getWeightTensorArray(doNotDeepCopy: boolean): {tensor}
 #### Parameters:
 
 * doNotDeepCopy: Set whether or not to deep copy the weight tensors from the weight blocks.
+
+### setMultipleInputBlocks()
+
+```
+
+Sequential:setMultipleInputBlocks(...: FunctionBlockObject)
+
+```
+
+Parameters:
+
+* TrainableBlock: The weight blocks to be added to the graph container. Order matters.
+
+### setMultipleInputBlocks()
+
+```
+
+Sequential:setMultipleInputBlocks(...: FunctionBlockObject)
+
+```
+
+Parameters:
+
+* InputBlock: The function blocks to be added to the graph container. Order matters.
+
+### setMultipleOutputBlocks()
+
+```
+
+Sequential:setMultipleOutputBlocks(...: FunctionBlockObject)
+
+```
+
+### Parameters:
+
+* Function: The function blocks to be added to the graph container. Order matters.
+
+### getWeightBlockByIndex()
+
+```
+
+ComputationalGraph:getWeightBlockByIndex(index): FunctionBlockObject
+
+```
+
+#### Parameters:
+
+* index: The index of the weight block.
+
+#### Returns:
+
+* FunctionBlock: A function block from the specified index.
+
+### getWeightBlockArray()
+
+```
+
+Sequential:getWeightBlockArray(): {FunctionBlockObject}
+
+```
+
+#### Returns:
+
+* WeightBlockArray: An array containing all the weight blocks. The first function block in the array represents the first weight block.
+
+### getInputBlockByIndex()
+
+```
+
+ComputationalGraph:getInputBlockByIndex(index): FunctionBlockObject
+
+```
+
+#### Parameters:
+
+* index: The index of the input block.
+
+#### Returns:
+
+* FunctionBlock: A function block from the specified index.
+
+### getInputBlockArray()
+
+```
+
+ComputationalGraph:getInputBlockArray(): {FunctionBlockObject}
+
+```
+
+#### Returns:
+
+* FunctionBlockArray: An array containing all the function blocks. The first function block in the array represents the first function block.
+
+### getOutputBlockByIndex()
+
+```
+
+ComputationalGraph:getOutputBlockByIndex(index): FunctionBlockObject
+
+```
+
+#### Parameters:
+
+* index: The index of the output block.
+
+#### Returns:
+
+* FunctionBlock: A function block from the specified index.
+
+### getOutputBlockArray()
+
+```
+
+ComputationalGraph:getOutputBlockArray(): {FunctionBlockObject}
+
+```
+
+#### Returns:
+
+* FunctionBlockArray: An array containing all the function blocks. The first function block in the array represents the first function block.
 
 #### Returns
 

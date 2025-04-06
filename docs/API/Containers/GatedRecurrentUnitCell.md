@@ -20,6 +20,10 @@ GatedRecurrentUnitCell.new({inputDimensionSize: number, hiddenDimensionSize: num
 
 * learningRate: The learning rate that will be used by all the weight blocks that are stored in this gated recurrent unit cell.
 
+* ClassesList: The classes to be predicted by the container. Currently, it will generate prediction based on the last dimension. [Default: {}]
+
+* cutOffValue: The cutOff Value that classifies an output between two classes. [Default: 0]
+
 #### Returns:
 
 * Container: The generated container object.
