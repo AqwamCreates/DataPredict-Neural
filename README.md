@@ -1,4 +1,4 @@
-# DataPredict Neural
+# DataPredict™ Neural
 
 ![DataPredict Neural Icon](icons/DataPredictNeuralIcon.png)
 
