@@ -1,6 +1,8 @@
 # [API Reference](../API.md) - Models
 
-## Deep Reinforcement Learning
+## Recurrent Deep Reinforcement Learning
+
+Note that all of these recurrent models require RecurrentNeuralNetworkCell or GatedRecurrentUnitCell containers. It is recommended to use the former since it uses less computational resources than the latter.
 
 | Model                                                                                                                                                     | Alternate Names                           | Use Cases                                                                   |
 |-----------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------|-----------------------------------------------------------------------------|
