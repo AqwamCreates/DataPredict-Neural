@@ -6,6 +6,8 @@
 
 * Currently, these recurrent models have no documentation. Fortunately, you can still refer to the non-recurrent versions of these models.
 
+* Additionally, they cannot work with DataPredict's QuickSetups for deep reinforcement learning. You'll have to use the classic setup to use the recurrent models.
+
 | Model                                                                                                                                                     | Alternate Names                           | Use Cases                                                                   |
 |-----------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------|-----------------------------------------------------------------------------|
 | [RecurrentDeepQLearning](RecurrentModels/RecurrentDeepQLearning.md)                                                                                         | Recurrent Deep Q Network                | Self-Learning Fighting AIs, Self-Learning Parkouring AIs, Self-Driving Cars |
