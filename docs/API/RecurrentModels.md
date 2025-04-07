@@ -2,7 +2,9 @@
 
 ## Recurrent Deep Reinforcement Learning
 
-Note that all of these recurrent models require RecurrentNeuralNetworkCell or GatedRecurrentUnitCell containers. It is recommended to use the former since it uses less computational resources than the latter.
+* Note that all of these recurrent models require RecurrentNeuralNetworkCell or GatedRecurrentUnitCell containers. It is recommended to use the former since it uses less computational resources than the latter.
+
+* Currently, these recurrent models have no documentation. Fortunately, you can still refer to the non-recurrent versions of these models.
 
 | Model                                                                                                                                                     | Alternate Names                           | Use Cases                                                                   |
 |-----------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------|-----------------------------------------------------------------------------|
