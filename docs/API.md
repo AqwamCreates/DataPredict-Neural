@@ -32,6 +32,8 @@
 
 [Models](API/Models.md)
 
+[RecurrentModels](API/RecurrentModels.md)
+
 [CostFunctions](API/CostFunctions.md)
 
 [Optimizers](API/Optimizers.md)
