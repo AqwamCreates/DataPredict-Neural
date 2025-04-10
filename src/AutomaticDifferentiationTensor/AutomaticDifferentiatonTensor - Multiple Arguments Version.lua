@@ -1313,7 +1313,7 @@ function AHAAutomaticDifferentiationTensor:differentiate(derivativeTensor)
 
 			if (derivativeTensorNumberOfDimensions ~= tensorNumberOfDimensions) then error("Unable to differentiate. The derivative tensor has " .. derivativeTensorNumberOfDimensions .. ", but the original tensor has " .. tensorNumberOfDimensions .. ".") end
 
-			for dimension, derivativeTensorDimensionSize in ipairs(derivativeTensorDimensionSizeArray)  do
+			for dimension, derivativeTensorDimensionSize in ipairs(derivativeTensorDimensionSizeArray) do
 
 				local tensorDimensionSize = tensorDimensionSizeArray[dimension]
 
