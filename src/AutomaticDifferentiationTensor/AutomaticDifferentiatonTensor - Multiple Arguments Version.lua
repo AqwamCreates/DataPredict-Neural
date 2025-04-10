@@ -1296,10 +1296,20 @@ end
 function AHAAutomaticDifferentiationTensor:differentiate(derivativeTensor)
 	
 	local tensorDimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(self.tensor)
+	
+	local tensorNumberOfDimensions = #tensorDimensionSizeArray
 
 	if (not derivativeTensor) then
-
-		derivativeTensor = AqwamTensorLibrary:createTensor(tensorDimensionSizeArray, 1)
+		
+		if (tensorNumberOfDimensions >= 1) then
+			
+			derivativeTensor = AqwamTensorLibrary:createTensor(tensorDimensionSizeArray, 1)
+			
+		else
+			
+			derivativeTensor = 1
+			
+		end
 		
 	else
 		
@@ -1308,8 +1318,6 @@ function AHAAutomaticDifferentiationTensor:differentiate(derivativeTensor)
 		local derivativeTensorNumberOfDimensions = #derivativeTensorDimensionSizeArray
 		
 		if (derivativeTensorNumberOfDimensions ~= 0) then
-
-			local tensorNumberOfDimensions = #tensorDimensionSizeArray
 
 			if (derivativeTensorNumberOfDimensions ~= tensorNumberOfDimensions) then error("Unable to differentiate. The derivative tensor has " .. derivativeTensorNumberOfDimensions .. ", but the original tensor has " .. tensorNumberOfDimensions .. ".") end
 
