@@ -342,11 +342,11 @@ function AHAAutomaticDifferentiationTensor.maximum(...)
 
 	dimensionSizeArrayArray[1] = AqwamTensorLibrary:getDimensionSizeArray(tensorArray[1])
 
-	for i = 1, (numberOfTensors - 1), 1 do
+	for i = 2, numberOfTensors, 1 do
 
-		dimensionSizeArrayArray[i] = AqwamTensorLibrary:getDimensionSizeArray(tensorArray[i + 1])
+		dimensionSizeArrayArray[i] = AqwamTensorLibrary:getDimensionSizeArray(tensorArray[i])
 
-		expandedTensorArray[i], expandedTensorArray[i + 1] = AqwamTensorLibrary:broadcastATensorIfDifferentSize(tensorArray[i], tensorArray[i + 1])
+		expandedTensorArray[i - 1], expandedTensorArray[i] = AqwamTensorLibrary:broadcast(tensorArray[i - 1], tensorArray[i])
 
 	end
 
@@ -359,12 +359,14 @@ function AHAAutomaticDifferentiationTensor.maximum(...)
 			if checkIfIsAutomaticDifferentiationTensor(tensor) then
 
 				local functionToApply = function(derivativeValue, ...)
+					
+					local valueArray = {...}
 
 					local isMaximum = false
 
 					local highestValue = -math.huge
 
-					for j, value in ipairs(...) do
+					for j, value in ipairs(valueArray) do
 
 						if (value >= highestValue) then
 
@@ -408,11 +410,11 @@ function AHAAutomaticDifferentiationTensor.minimum(...)
 
 	dimensionSizeArrayArray[1] = AqwamTensorLibrary:getDimensionSizeArray(tensorArray[1])
 
-	for i = 1, (numberOfTensors - 1), 1 do
+	for i = 2, numberOfTensors, 1 do
 
-		dimensionSizeArrayArray[i] = AqwamTensorLibrary:getDimensionSizeArray(tensorArray[i + 1])
+		dimensionSizeArrayArray[i] = AqwamTensorLibrary:getDimensionSizeArray(tensorArray[i])
 
-		expandedTensorArray[i], expandedTensorArray[i + 1] = AqwamTensorLibrary:broadcastATensorIfDifferentSize(tensorArray[i], tensorArray[i + 1])
+		expandedTensorArray[i - 1], expandedTensorArray[i] = AqwamTensorLibrary:broadcast(tensorArray[i - 1], tensorArray[i])
 
 	end
 
@@ -425,12 +427,14 @@ function AHAAutomaticDifferentiationTensor.minimum(...)
 			if checkIfIsAutomaticDifferentiationTensor(tensor) then
 
 				local functionToApply = function(derivativeValue, ...)
+					
+					local valueArray = {...}
 
 					local isMinimum = false
 
 					local lowestValue = -math.huge
 
-					for j, value in ipairs(...) do
+					for j, value in ipairs(valueArray) do
 
 						if (value <= lowestValue) then
 
