@@ -466,6 +466,46 @@ function AHAAutomaticDifferentiationTensor.minimum(...)
 
 end
 
+function AHAAutomaticDifferentiationTensor:findMaximumValue()
+
+	local maximumValue = AqwamTensorLibrary:findMaximumValue(self)
+
+	local PartialDerivativeFunction = function(derivativeTensor)
+
+		if (not AHAAutomaticDifferentiationTensor:checkIfIsAutomaticDifferentiationTensor(self)) then return end
+
+		local functionToApply = function(firstDerivativeValue, value) return ((value == maximumValue) and firstDerivativeValue) or 0 end
+
+		local currentDerivativeTensor = AqwamTensorLibrary:applyFunction(functionToApply, derivativeTensor, self)
+
+		self:differentiate(currentDerivativeTensor)
+
+	end
+
+	return AHAAutomaticDifferentiationTensor.new(maximumValue, PartialDerivativeFunction, {self})
+
+end
+
+function AHAAutomaticDifferentiationTensor:findMinimumValue()
+
+	local minimumValue = AqwamTensorLibrary:findMinimumValue(self)
+
+	local PartialDerivativeFunction = function(derivativeTensor)
+
+		if (not AHAAutomaticDifferentiationTensor:checkIfIsAutomaticDifferentiationTensor(self)) then return end
+
+		local functionToApply = function(firstDerivativeValue, value) return ((value == minimumValue) and firstDerivativeValue) or 0 end
+
+		local currentDerivativeTensor = AqwamTensorLibrary:applyFunction(functionToApply, derivativeTensor, self)
+
+		self:differentiate(currentDerivativeTensor)
+
+	end
+
+	return AHAAutomaticDifferentiationTensor.new(minimumValue, PartialDerivativeFunction, {self})
+
+end
+
 --------------------------------------------------------------------------------------
 
 function AHAAutomaticDifferentiationTensor:__eq(other)
@@ -914,14 +954,25 @@ function AHAAutomaticDifferentiationTensor:dotProduct(other) -- Refer to this ar
 
 	local PartialDerivativeFunction = function(derivativeTensor)
 
-		local otherNumberOfDimensions = #AqwamTensorLibrary:getDimensionSizeArray(other)
-		local selfNumberOfDimensions = #AqwamTensorLibrary:getDimensionSizeArray(self)
+		if checkIfIsAutomaticDifferentiationTensor(self) then
+			
+			local otherNumberOfDimensions = #AqwamTensorLibrary:getDimensionSizeArray(other)
 
-		local transposedOther = AqwamTensorLibrary:transpose(other, {otherNumberOfDimensions - 1, otherNumberOfDimensions})
-		local transposedSelf = AqwamTensorLibrary:transpose(self, {selfNumberOfDimensions - 1, selfNumberOfDimensions})
-
-		if checkIfIsAutomaticDifferentiationTensor(self) then self:differentiate(AqwamTensorLibrary:dotProduct(derivativeTensor, transposedOther)) end
-		if checkIfIsAutomaticDifferentiationTensor(other) then other:differentiate(AqwamTensorLibrary:dotProduct(transposedSelf, derivativeTensor)) end
+			local transposedOther = AqwamTensorLibrary:transpose(other, {otherNumberOfDimensions - 1, otherNumberOfDimensions})
+			
+			self:differentiate(AqwamTensorLibrary:dotProduct(derivativeTensor, transposedOther)) 
+			
+		end
+		
+		if checkIfIsAutomaticDifferentiationTensor(other) then
+			
+			local selfNumberOfDimensions = #AqwamTensorLibrary:getDimensionSizeArray(self)
+			
+			local transposedSelf = AqwamTensorLibrary:transpose(self, {selfNumberOfDimensions - 1, selfNumberOfDimensions})
+			
+			other:differentiate(AqwamTensorLibrary:dotProduct(transposedSelf, derivativeTensor)) 
+			
+		end
 
 	end
 
