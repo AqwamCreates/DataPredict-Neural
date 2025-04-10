@@ -1233,6 +1233,60 @@ end
 
 --------------------------------------------------------------------------------------
 
+function AHAAutomaticDifferentiationTensor:expandDimensionSizes(targetDimensionSizeArray)
+
+	local resultTensor = AqwamTensorLibrary:expandDimensionSizes(self, targetDimensionSizeArray)
+
+	local PartialFirstDerivativeFunction = function(firstDerivativeTensor)
+
+		if (not AHAAutomaticDifferentiationTensor:checkIfIsAutomaticDifferentiationTensor(self)) then return end
+
+		local tensorDimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(self)
+
+		local chainRuleFirstDerivativeTensor = firstDerivativeTensor
+
+		for dimension, dimensionSize in ipairs(tensorDimensionSizeArray) do
+
+			if (dimensionSize == 1) and (targetDimensionSizeArray[dimension] > 1) then
+
+				chainRuleFirstDerivativeTensor = AqwamTensorLibrary:sum(chainRuleFirstDerivativeTensor, dimension)
+
+			end
+
+		end
+
+		self:differentiate(chainRuleFirstDerivativeTensor)
+
+	end
+
+	return AHAAutomaticDifferentiationTensor.new(resultTensor, PartialFirstDerivativeFunction, {self})
+
+end
+
+function AHAAutomaticDifferentiationTensor:expandNumberOfDimensions(dimensionSizeToAddArray)
+
+	local resultTensor = AqwamTensorLibrary:expandNumberOfDimensions(self, dimensionSizeToAddArray)
+
+	local PartialFirstDerivativeFunction = function(firstDerivativeTensor)
+
+		if (not AHAAutomaticDifferentiationTensor:checkIfIsAutomaticDifferentiationTensor(self)) then return end
+
+		local numberOfDimensionsToSum = #dimensionSizeToAddArray
+
+		local chainRuleFirstDerivativeTensor = firstDerivativeTensor
+
+		for i = 1, numberOfDimensionsToSum, 1 do chainRuleFirstDerivativeTensor = AqwamTensorLibrary:sum(chainRuleFirstDerivativeTensor, 1)[1] end -- Remove the first dimension as it is redundant and does not carry any values. If it is not removed, this tensor might broadcast its dimension size elsewhere like during the gradient descent.
+
+		self:differentiate(chainRuleFirstDerivativeTensor)
+
+	end
+
+	return AHAAutomaticDifferentiationTensor.new(resultTensor, PartialFirstDerivativeFunction, {self})
+
+end
+
+--------------------------------------------------------------------------------------
+
 function AHAAutomaticDifferentiationTensor:isAutomaticDifferentiationTensor()
 
 	return true
@@ -1240,12 +1294,38 @@ function AHAAutomaticDifferentiationTensor:isAutomaticDifferentiationTensor()
 end
 
 function AHAAutomaticDifferentiationTensor:differentiate(derivativeTensor)
+	
+	local tensorDimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(self.tensor)
 
 	if (not derivativeTensor) then
 
-		local dimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(self.tensor)
+		derivativeTensor = AqwamTensorLibrary:createTensor(tensorDimensionSizeArray, 1)
+		
+	else
+		
+		local derivativeTensorDimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(derivativeTensor)
 
-		derivativeTensor = AqwamTensorLibrary:createTensor(dimensionSizeArray, 1)
+		local derivativeTensorNumberOfDimensions = #derivativeTensorDimensionSizeArray
+		
+		if (derivativeTensorNumberOfDimensions ~= 0) then
+
+			local tensorNumberOfDimensions = #tensorDimensionSizeArray
+
+			if (derivativeTensorNumberOfDimensions ~= tensorNumberOfDimensions) then error("Unable to differentiate. The derivative tensor has " .. derivativeTensorNumberOfDimensions .. ", but the original tensor has " .. tensorNumberOfDimensions .. ".") end
+
+			for dimension, derivativeTensorDimensionSize in ipairs(derivativeTensorDimensionSizeArray)  do
+
+				local tensorDimensionSize = tensorDimensionSizeArray[dimension]
+
+				if (derivativeTensorDimensionSize ~= tensorDimensionSize) then
+
+					error("Unable to differentiate. The derivative tensor has a dimension size of " .. derivativeTensorDimensionSize .. " at dimension " .. dimension .. ", but the original tensor has " .. tensorDimensionSize .. ".")
+
+				end
+
+			end
+
+		end
 
 	end
 
@@ -1334,8 +1414,18 @@ end
 --------------------------------------------------------------------------------------
 
 function AHAAutomaticDifferentiationTensor:__tostring()
+	
+	local tensor = self.tensor
 
-	return AqwamTensorLibrary:generateTensorString(self.tensor)
+	if (type(tensor) == "table") then
+
+		return AqwamTensorLibrary:generateTensorString(tensor)
+
+	else
+
+		return tostring(tensor)	
+
+	end
 
 end
 
