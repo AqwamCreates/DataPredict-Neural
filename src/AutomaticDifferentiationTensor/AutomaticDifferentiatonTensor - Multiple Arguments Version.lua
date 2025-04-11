@@ -969,24 +969,36 @@ function AHAAutomaticDifferentiationTensor:dotProduct(other) -- Refer to this ar
 	local resultTensor = AqwamTensorLibrary:dotProduct(self, other)
 
 	local PartialDerivativeFunction = function(derivativeTensor)
+		
+		local selfDimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(self)
+
+		local otherDimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(other)
 
 		if checkIfIsAutomaticDifferentiationTensor(self) then
 			
-			local otherNumberOfDimensions = #AqwamTensorLibrary:getDimensionSizeArray(other)
+			local otherNumberOfDimensions = #otherDimensionSizeArray
 
 			local transposedOther = AqwamTensorLibrary:transpose(other, {otherNumberOfDimensions - 1, otherNumberOfDimensions})
 			
-			self:differentiate(AqwamTensorLibrary:dotProduct(derivativeTensor, transposedOther)) 
+			local chainRuleFirstDerivativeTensor = AqwamTensorLibrary:dotProduct(derivativeTensor, transposedOther)
+
+			local collapsedChainRuleFirstDerivativeTensor = collapseTensor(chainRuleFirstDerivativeTensor, selfDimensionSizeArray)
+			
+			self:differentiate(collapsedChainRuleFirstDerivativeTensor) 
 			
 		end
 		
 		if checkIfIsAutomaticDifferentiationTensor(other) then
 			
-			local selfNumberOfDimensions = #AqwamTensorLibrary:getDimensionSizeArray(self)
+			local selfNumberOfDimensions = #selfDimensionSizeArray
 			
 			local transposedSelf = AqwamTensorLibrary:transpose(self, {selfNumberOfDimensions - 1, selfNumberOfDimensions})
 			
-			other:differentiate(AqwamTensorLibrary:dotProduct(transposedSelf, derivativeTensor)) 
+			local chainRuleFirstDerivativeTensor = AqwamTensorLibrary:dotProduct(transposedSelf, derivativeTensor)
+
+			local collapsedChainRuleFirstDerivativeTensor = collapseTensor(chainRuleFirstDerivativeTensor, otherDimensionSizeArray)
+			
+			other:differentiate(collapsedChainRuleFirstDerivativeTensor) 
 			
 		end
 
