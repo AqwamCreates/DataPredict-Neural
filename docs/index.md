@@ -95,6 +95,10 @@ In addition, if you are interested in Roblox tutorials and future projects by me
 
 [DataPredict Neural Library](https://github.com/AqwamCreates/DataPredict-Neural)
 
+[DataPredict Axon Library](https://github.com/AqwamCreates/DataPredict-Axon)
+
+[DataPredict Library](https://github.com/AqwamCreates/DataPredict)
+
 [TensorL Library](https://github.com/AqwamCreates/TensorL)
 
 [TensorL-3D Library](https://github.com/AqwamCreates/TensorL-3D)
