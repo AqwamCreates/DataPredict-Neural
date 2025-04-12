@@ -882,27 +882,25 @@ end
 
 function AHAAutomaticDifferentiationTensor:sum(dimension)
 
-	local dimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(self)
-
 	local resultTensor = AqwamTensorLibrary:sum(self, dimension)
 
 	local PartialDerivativeFunction = function(derivativeTensor)
 
-		if checkIfIsAutomaticDifferentiationTensor(self) then 
+		if not checkIfIsAutomaticDifferentiationTensor(self) then return end
+			
+		local dimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(self)
 
-			if (dimension) then
+		if (dimension) then
 
-				derivativeTensor = AqwamTensorLibrary:expandDimensionSizes(derivativeTensor, dimensionSizeArray)
+			derivativeTensor = AqwamTensorLibrary:expandDimensionSizes(derivativeTensor, dimensionSizeArray)
 
-			else
+		else
 
-				derivativeTensor = AqwamTensorLibrary:expandNumberOfDimensions(derivativeTensor, dimensionSizeArray)
-
-			end
-
-			self:differentiate(derivativeTensor) 
+			derivativeTensor = AqwamTensorLibrary:expandNumberOfDimensions(derivativeTensor, dimensionSizeArray)
 
 		end
+
+		self:differentiate(derivativeTensor) 
 
 	end
 
