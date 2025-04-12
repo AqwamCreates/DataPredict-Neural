@@ -472,7 +472,7 @@ function AHAAutomaticDifferentiationTensor:findMaximumValue()
 
 	local PartialDerivativeFunction = function(derivativeTensor)
 
-		if (not AHAAutomaticDifferentiationTensor:checkIfIsAutomaticDifferentiationTensor(self)) then return end
+		if (not checkIfIsAutomaticDifferentiationTensor(self)) then return end
 
 		local functionToApply = function(firstDerivativeValue, value) return ((value == maximumValue) and firstDerivativeValue) or 0 end
 
@@ -492,7 +492,7 @@ function AHAAutomaticDifferentiationTensor:findMinimumValue()
 
 	local PartialDerivativeFunction = function(derivativeTensor)
 
-		if (not AHAAutomaticDifferentiationTensor:checkIfIsAutomaticDifferentiationTensor(self)) then return end
+		if (not checkIfIsAutomaticDifferentiationTensor(self)) then return end
 
 		local functionToApply = function(firstDerivativeValue, value) return ((value == minimumValue) and firstDerivativeValue) or 0 end
 
@@ -1328,7 +1328,7 @@ function AHAAutomaticDifferentiationTensor:absolute()
 
 	local PartialFirstDerivativeFunction = function(derivativeTensor)
 
-		if (not AHAAutomaticDifferentiationTensor:checkIfIsAutomaticDifferentiationTensor(self)) then return end
+		if (not checkIfIsAutomaticDifferentiationTensor(self)) then return end
 
 		local functionToApply = function (firstDerivativeValue, value) return (((value >= 0) and firstDerivativeValue) or -firstDerivativeValue) end
 
@@ -1350,7 +1350,7 @@ function AHAAutomaticDifferentiationTensor:expandDimensionSizes(targetDimensionS
 
 	local PartialFirstDerivativeFunction = function(firstDerivativeTensor)
 
-		if (not AHAAutomaticDifferentiationTensor:checkIfIsAutomaticDifferentiationTensor(self)) then return end
+		if (not checkIfIsAutomaticDifferentiationTensor(self)) then return end
 
 		local tensorDimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(self)
 
@@ -1380,7 +1380,7 @@ function AHAAutomaticDifferentiationTensor:expandNumberOfDimensions(dimensionSiz
 
 	local PartialFirstDerivativeFunction = function(firstDerivativeTensor)
 
-		if (not AHAAutomaticDifferentiationTensor:checkIfIsAutomaticDifferentiationTensor(self)) then return end
+		if (not checkIfIsAutomaticDifferentiationTensor(self)) then return end
 
 		local numberOfDimensionsToSum = #dimensionSizeToAddArray
 
