@@ -1566,7 +1566,7 @@ function AHAAutomaticDifferentiationTensor:__index(index)
 
 		else
 
-			return tensor
+			return nil
 
 		end
 
