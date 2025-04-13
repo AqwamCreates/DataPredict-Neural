@@ -76,7 +76,7 @@ BaseOptimizer:getLearningRateScheduler(): ValueSchedulerObject
 
 #### Returns:
 
-# LearningRateValueScheduler: The value scheduler object that was used by the learning rate.
+* LearningRateValueScheduler: The value scheduler object that was used by the learning rate.
 
 ### getOptimizerInternalParameterArray()
 
