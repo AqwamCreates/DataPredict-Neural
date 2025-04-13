@@ -14,9 +14,9 @@ FocalLoss.new({alpha: number, gamma: number}): CostFunctionObject
 
 ### Parameters
 
-* alpha: The weighting factor used to deal with class imbalance. Must be between 0 and 1.
+* alpha: The weighting factor used to deal with class imbalance. Must be between 0 and 1. [Default: 0.25]
 
-* gamma: A tunable focusing parameter. Must be a positive value.
+* gamma: An adjustable focusing parameter. Must be a positive value. [Default: 2]
 
 ## Functions
 
@@ -34,7 +34,7 @@ FocalLoss:setParameters({alpha: number, gamma: number})
 
 * alpha: The weighting factor used to deal with class imbalance. Must be between 0 and 1.
 
-* gamma: A tunable focusing parameter. Must be a positive value.
+* gamma: An adjustable focusing parameter. Must be a positive value.
 
 ## Inherited From
 
