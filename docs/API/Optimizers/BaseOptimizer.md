@@ -32,9 +32,9 @@ BaseOptimizer:calculate(learningRate: number, costFunctionDerivativeTensor: tens
 
 #### Parameters:
 
-* learningRate: The learning rate used by a model.
+* learningRate: The learning rate used by the optimizer.
 
-* costFunctionDerivativeTensor: The cost function derivatives calculated by a model.
+* costFunctionDerivativeTensor: The cost function derivatives calculated by the optimizer.
 
 #### Returns:
 
