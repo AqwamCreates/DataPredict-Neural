@@ -20,7 +20,7 @@ Convolution1D.new({channelSize: number, numberOfKernels: number, kernelDimension
 
 * kernelDimensionSize: The dimension size for the kernel.
 
-* strideDimensionSize: The dimension size for the stride. The index of the array represents the dimension and the value represents the size for that particular dimension. 
+* strideDimensionSize: The dimension size for the stride.
 
 * learningRate: The speed at which the model learns. Recommended that the value is set between (0 to 1).
 
