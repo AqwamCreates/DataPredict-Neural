@@ -14,9 +14,9 @@ LearningRateStepDecay.new({decayRate: number, timeStepToDecay: integer}): Optimi
 
 #### Parameters:
 
-* decayRate: The decay rate for learning rate.
-
 * timeStepToDecay: The number of time steps to decay the learning rate.
+
+* decayRate: The decay rate for learning rate.
 
 #### Returns:
 
@@ -34,9 +34,9 @@ LearningRateStepDecay:setParameters({decayRate: number, timeStepToDecay: integer
 
 #### Parameters:
 
-* decayRate: The decay rate for learning rate.
-
 * timeStepToDecay: The number of time steps to decay the learning rate.
+
+* decayRate: The decay rate for learning rate.
 
 ## Inherited From
 
