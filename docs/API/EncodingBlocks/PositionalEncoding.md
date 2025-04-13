@@ -8,7 +8,7 @@ Creates a new encoding block object. If there are no parameters given for that p
 
 ```
 
-PositionalEncoding.new({finalDimensionSize: number, nValue: number}): EncodingBlockObject
+PositionalEncoding.new({sequenceLength: number, nValue: number}): EncodingBlockObject
 
 ```
 
