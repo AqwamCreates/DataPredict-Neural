@@ -1164,13 +1164,13 @@ end
 
 --------------------------------------------------------------------------------------
 
-function AHAAutomaticDifferentiationTensor:transpose(dimensionIndexArray)
+function AHAAutomaticDifferentiationTensor:transpose(dimensionArray)
 
-	local resultTensor = AqwamTensorLibrary:transpose(self, dimensionIndexArray)
+	local resultTensor = AqwamTensorLibrary:transpose(self, dimensionArray)
 
 	local PartialDerivativeFunction = function(derivativeTensor)
 
-		if checkIfIsAutomaticDifferentiationTensor(self) then self:differentiate(AqwamTensorLibrary:transpose(derivativeTensor, dimensionIndexArray)) end
+		if checkIfIsAutomaticDifferentiationTensor(self) then self:differentiate(AqwamTensorLibrary:transpose(derivativeTensor, dimensionArray)) end
 
 	end
 
