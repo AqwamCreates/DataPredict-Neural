@@ -1302,7 +1302,7 @@ end
 
 function AHAAutomaticDifferentiationTensor:zScoreNormalization(dimension)
 
-	local resultTensor = AqwamTensorLibrary:standardDeviation(self, dimension)
+	local resultTensor = AqwamTensorLibrary:zScoreNormalization(self, dimension)
 
 	local PartialDerivativeFunction = function(derivativeTensor)
 
