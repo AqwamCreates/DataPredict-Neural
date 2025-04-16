@@ -33,9 +33,7 @@ In addition, if you are interested in Roblox tutorials and future projects by me
 
 * Take advantage of calculations combining both automatic differentiation and manual differentiation, simplifying complex calculations while maintaining high performance.
 
-* Craft complex models effortlessly using dynamic computational graphs, giving you the ability to create any models you want and modify them at runtime.
-
-* Take advantage of model and data parallelism capabilities for extremely fast training, prediction and experimentation.
+* Take advantage of model and data parallelism capabilities as well as static computational graph for extremely fast training, prediction and experimentation.
 
 * Build singular models that are interconnected between servers and clients through distributed training.
 
