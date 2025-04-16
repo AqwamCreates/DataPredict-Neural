@@ -14,13 +14,11 @@ To start, we must first link our deep learning library with our tensor library. 
 
 ### Tensor Library
 
-| Name                                                                          | Version
-|-------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------|
-| Tensor Library (TensorL Nested)                                               | [0.9.0](https://github.com/AqwamCreates/TensorL/blob/main/TensorL_Table_Nested.lua)                            |
-| Tensor Library - Efficient (TensorL Nested Efficient)                         | [0.9.0](https://github.com/AqwamCreates/TensorL/blob/main/TensorL_Table_Nested_Efficient.lua)                  |
-| Tensor Library - Efficient (TensorL Nested Efficient Version 2)               | [0.9.0](https://github.com/AqwamCreates/TensorL/blob/main/TensorL_Table_Nested_Efficient_Version_2.lua)        | 
-| Tensor Library - Efficient IPairs (TensorL Nested Efficient IPairs)           | [0.9.0](https://github.com/AqwamCreates/TensorL/blob/main/TensorL_Table_Nested_Efficient_IPairs.lua)           |
-| Tensor Library - Efficient IPairs (TensorL Nested Efficient IPairs Version 2) | [0.9.0](https://github.com/AqwamCreates/TensorL/blob/main/TensorL_Table_Nested_Efficient_IPairs_Version_2.lua) |
+| Name                                 | Version
+|--------------------------------------|----------------------------------------------------------------------------------------------------------------|
+| TensorL - Nested                     | [0.9.0](https://github.com/AqwamCreates/TensorL/blob/main/TensorL_Table_Nested.lua)                            |
+| TensorL - Nested Efficient           | [0.9.0](https://github.com/AqwamCreates/TensorL/blob/main/TensorL_Table_Nested_Efficient.lua)                  |
+| TensorL - Nested Efficient Version 2 | [0.9.0](https://github.com/AqwamCreates/TensorL/blob/main/TensorL_Table_Nested_Efficient_Version_2.lua)        |
 
 Note: Tensor Library - Efficient IPairs Version 2 has the most consistent high performance for all tensor operations. So choose the last one if you prefer speed over code readability.
 
