@@ -6,7 +6,7 @@
 
 ```
 
-BaseWeightBlock.new({learningRate: number, Optimizer: OptimizerObject, Regularizer: RegularizerObject, nextFunctionBlockArrayIndexArray: {number}, nextFunctionBlockWaitDuration: number, initializationMode: string}): WeightBlockObject
+BaseWeightBlock.new({learningRate: number, Optimizer: OptimizerObject, Regularizer: RegularizerObject, nextFunctionBlockArrayIndexArray: {number}, nextFunctionBlockWaitDuration: number, initializationMode: string, updateWeightTensorInPlace: boolean}): WeightBlockObject
 
 ```
 
