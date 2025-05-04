@@ -66,7 +66,19 @@ BaseWeightBlock:gradientDescent(weightLossTensor: tensor, numberOfData: number)
 
 * weightLossTensor: A tensor containing the weight loss values. This will be used to update the weights.
 
-* numberOfData: The value to divide with the weight loss tensors.
+## Functions
+
+### gradientAscent()
+
+```
+
+BaseWeightBlock:gradientAscent(weightLossTensor: tensor, numberOfData: number)
+
+```
+
+#### Parameters:
+
+* weightLossTensor: A tensor containing the weight loss values. This will be used to update the weights.
 
 ### setWeightTensor()
 
