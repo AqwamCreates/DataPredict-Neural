@@ -1,6 +1,6 @@
 # Welcome to Aqwam's DataPredict™ Neural Library!
 
-By using or possessing any copies of this library or its assets (including the icons), you agree to our [Terms and Conditions](TermsAndConditions.md). In short:
+By using or possessing any copies of this library or its assets (including the icons), you agree to our [Terms And Conditions](TermsAndConditions.md). In short:
 
 * Public attribution is required when using this library.
 
@@ -12,7 +12,7 @@ By using or possessing any copies of this library or its assets (including the i
 
 Once you pass the commercial use threshold and want to license it, expect to pay for 0.5% to 2% of your project's generated revenue, provided that it uses this library.
 
-For information regarding potential license violations and eligibility for a bounty reward, please refer to the [Terms and Conditions Violation Bounty Reward Information](TermsAndConditionsViolationBountyRewardInformation.md).
+For information regarding potential license violations and eligibility for a bounty reward, please refer to the [Terms And Conditions Violation Bounty Reward Information](TermsAndConditionsViolationBountyRewardInformation.md).
 
 ![DataPredictNeuralIconSmall](https://github.com/AqwamCreates/DataPredict-Neural/assets/67371914/cf4e61af-a7b6-4ba6-98cf-656a245e9960)
 

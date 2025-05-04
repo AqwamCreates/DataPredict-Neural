@@ -46,6 +46,8 @@ BaseWeightBlock.new({learningRate: number, Optimizer: OptimizerObject, Regulariz
 
 	* None
 
+* updateWeightTensorInPlace: Set whether or not to update the weight tensor in place. If true, updates the weight tensor directly for better performance by avoiding new table creation and reducing memory usage. Not supported for scalar values. [Default: true]
+
 #### Returns
 
 * WeightBlock: The generated weight block object.
@@ -64,7 +66,19 @@ BaseWeightBlock:gradientDescent(weightLossTensor: tensor, numberOfData: number)
 
 * weightLossTensor: A tensor containing the weight loss values. This will be used to update the weights.
 
-* numberOfData: The value to divide with the weight loss tensors.
+## Functions
+
+### gradientAscent()
+
+```
+
+BaseWeightBlock:gradientAscent(weightLossTensor: tensor, numberOfData: number)
+
+```
+
+#### Parameters:
+
+* weightLossTensor: A tensor containing the weight loss values. This will be used to update the weights.
 
 ### setWeightTensor()
 
