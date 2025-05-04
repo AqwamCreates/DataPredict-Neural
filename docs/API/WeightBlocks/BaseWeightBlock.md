@@ -46,6 +46,8 @@ BaseWeightBlock.new({learningRate: number, Optimizer: OptimizerObject, Regulariz
 
 	* None
 
+* updateWeightTensorInPlace: Set whether or not to update the weight tensor in place. If true, updates the weight tensor directly for better performance by avoiding new table creation and reducing memory usage. Not supported for scalar values. [Default: true]
+
 #### Returns
 
 * WeightBlock: The generated weight block object.
