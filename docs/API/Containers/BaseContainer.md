@@ -16,7 +16,7 @@ BaseContainer.new({ClassesList: {any}, cutOffValue: number, timeDependent: boole
 
 * timeDependent: An indicator that the container uses datasets that are time dependent. Enabling this will cause the container to always use slower backward propagation method. [Default: False]
 
-* parallelGradientDescent: An indicator that container will perform parallel gradient descent. See fastBackwardPropagate() function for more details. [Default: True]
+* parallelGradientDescent: An indicator that container will perform parallel gradient descent. See fastUpdate() function for more details. [Default: True]
 
 * WeightBlockArray: An array containing all the weight blocks that will be loaded to the container. [Default: {}]
 
@@ -74,13 +74,13 @@ Sequential:gradientDescent(weightLossTensorArray: {tensor}, numberOfData: number
 
 * numberOfData: The value to divide with the weight loss tensors.
 
-### fastBackwardPropagate()
+### fastUpdate()
 
 Performs the gradient descent after immediately receiving the weight loss tensor for that particular weight block.
 
 ```
 
-Sequential:fastBackwardPropagate(lossTensor: tensor)
+Sequential:fastUpdate(lossTensor: tensor)
 
 ```
 
@@ -88,13 +88,13 @@ Sequential:fastBackwardPropagate(lossTensor: tensor)
 
 * lossTensor: The loss tensor to be used for calculating the weights of the function blocks.
 
-### slowBackwardPropagate()
+### slowUpdate()
 
 Performs the gradient descent after all weight loss tensors are received from all weight blocks.
 
 ```
 
-Sequential:slowBackwardPropagate(lossTensor: tensor)
+Sequential:slowUpdate(lossTensor: tensor)
 
 ```
 
@@ -102,13 +102,13 @@ Sequential:slowBackwardPropagate(lossTensor: tensor)
 
 * lossTensor: The loss tensor to be used for calculating the weights of the function blocks.
 
-### backwardPropagate()
+### update()
 
-A wrapper function that switches between fastBackwardPropagate() and slowBackwardPropagate().
+A wrapper function that switches between fastUpdate() and slowUpdate().
 
 ```
 
-Sequential:backwardPropagate(lossTensor: tensor)
+Sequential:update(lossTensor: tensor)
 
 ```
 
