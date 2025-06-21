@@ -2,6 +2,7 @@
 
 | Version                 | Number Of Blocks | Number Of Models | Number Of Recurrent Models | Number Of Optimizers | Number Of Cost Functions | Number Of Containers | Number of Utilities | Number Of Regularizers | Backward Incompatible Changes |
 |-------------------------|------------------|------------------|----------------------------|----------------------|--------------------------|----------------------|---------------------|------------------------|-------------------------------|
+| [1.13](Release/1-13.md) | 74               | 26               | 21                         | 8                    | 5                        | 6                    | 3                   | 3                      | No                            |
 | [1.12](Release/1-12.md) | 74               | 26               | 21                         | 8                    | 5                        | 6                    | 3                   | 3                      | No                            |
 | [1.11](Release/1-11.md) | 74               | 26               | 21                         | 8                    | 5                        | 6                    | 3                   | 3                      | No                            |
 | [1.10](Release/1-10.md) | 74               | 26               | 0                          | 8                    | 5                        | 6                    | 3                   | 3                      | No                            |

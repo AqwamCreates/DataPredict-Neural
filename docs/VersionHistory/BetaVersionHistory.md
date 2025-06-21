@@ -1,5 +1,9 @@
 # Beta Version
 
+## Version 1.9
+
+[1.9.0](Beta/1-9-0.md) -- 22/6/2025
+
 ## Version 1.8
 
 [1.8.0](Beta/1-8-0.md) -- 4/5/2025
