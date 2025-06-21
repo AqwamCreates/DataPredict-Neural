@@ -10,7 +10,7 @@ To start, we must first link our deep learning library with our tensor library. 
 
 | Name               | Release Version                                                                                                                              | Beta Version                                                                                                       | 
 |--------------------|----------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------|
-| DataPredict Neural | [1.13](https://github.com/AqwamCreates/DataPredict-Neural/blob/main/module_scripts/DataPredict%20Neural%20-%20Release%20Version%201.13.rbxm) | [1.9.0](https://github.com/AqwamCreates/DataPredict-Neural/blob/main/module_scripts/AqwamDeepLearningLibrary.rbxm) | 
+| DataPredict Neural | [1.13](https://github.com/AqwamCreates/DataPredict-Neural/blob/main/module_scripts/DataPredictNeural%20-%20Release%20Version%201.13.rbxm) | [1.9.0](https://github.com/AqwamCreates/DataPredict-Neural/blob/main/module_scripts/AqwamDeepLearningLibrary.rbxm) | 
 
 ### Tensor Library
 
