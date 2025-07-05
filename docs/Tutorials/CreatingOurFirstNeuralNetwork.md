@@ -148,7 +148,7 @@ for i = 1, 100000 do
 	
 	local costValue = CostFunction:calculateCostValue(generatedLabelTensor, labelTensor)
 	
-	SequentialNeuralNetwork:backwardPropagate(lossTensor) -- Pass the loss tensor to backwardPropagate() function to update the weights.
+	SequentialNeuralNetwork:update(lossTensor) -- Pass the loss tensor to update() function to update the weights.
 	
 	print(costValue)
 	
@@ -170,7 +170,7 @@ for i = 1, 100000 do
 	
 	local costValue = CostFunction:calculateCostValue(generatedLabelTensor, labelTensor)
 	
-	local weightLossTensorArray = SequentialNeuralNetwork:calculateWeightLossTensorArray(lossTensor) -- Calculate the weight loss tensors for our weights. This table can be sent to another neural network of the same architecture if you want to do distributed training.
+	local weightLossTensorArray = SequentialNeuralNetwork:backwardPropagate(lossTensor) -- Calculate the weight loss tensors for our weights. This table can be sent to another neural network of the same architecture if you want to do distributed training.
 	
 	SequentialNeuralNetwork:gradientDescent(weightLossTensorArray) -- Pass the weight loss array to the gradientDescent() function to update the weights.
 	
