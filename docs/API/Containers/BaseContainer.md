@@ -44,7 +44,7 @@ Sequential:forwardPropagate(featureTensor: tensor): tensor
 
 * generatedLabelTensor: The generated label tensor produced from passing across the function blocks inside the container object.
 
-### calculateWeightLossTensorArray()
+### backwardPropagate()
 
 ```
 
