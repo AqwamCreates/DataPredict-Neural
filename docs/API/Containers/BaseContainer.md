@@ -48,7 +48,7 @@ Sequential:forwardPropagate(featureTensor: tensor): tensor
 
 ```
 
-Sequential:calculateWeightLossTensorArray(lossTensor: tensor): {tensor}
+Sequential:backwardPropagate(lossTensor: tensor): {tensor}
 
 ```
 
