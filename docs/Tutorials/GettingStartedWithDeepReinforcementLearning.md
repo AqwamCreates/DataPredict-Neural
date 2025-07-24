@@ -152,8 +152,6 @@ local DeepQLearningQuickSetup = DataPredict.QuickSetups.CategoricalPolicy.new()
 
 DeepQLearningQuickSetup:setModel(DeepQLearning)
 
-DeepQLearningQuickSetup:setClassesList(ClassesList)
-
 local environmentFeatureTensor = {{0, 0, 0, 0, 0}}
 
 local action = 1
