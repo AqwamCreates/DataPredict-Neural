@@ -68,7 +68,7 @@ local targetPolicyFunctionList = {
 
 	end,
 
-	["Softmax"] = function (actionTensor) -- apparently Lua doesn't really handle very small values such as math.exp(-1000), so I added a more stable computation exp(a) / exp(b) -> exp (a - b)
+	["Softmax"] = function (actionTensor) -- Apparently Lua doesn't really handle very small values such as math.exp(-1000), so I added a more stable computation exp(a) / exp(b) -> exp (a - b).
 
 		local exponentActionTensor = AqwamTensorLibrary:applyFunction(math.exp, actionTensor)
 
