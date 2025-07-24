@@ -40,9 +40,9 @@ local defaultTargetPolicyFunction = "StableSoftmax"
 
 local targetPolicyFunctionList = {
 
-	["Greedy"] = function (actionVector)
+	["Greedy"] = function (actionTensor)
 		
-		local dimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(actionVector)
+		local dimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(actionTensor)
 
 		local targetActionTensor = AqwamTensorLibrary:createTensor(dimensionSizeArray, 0)
 
@@ -50,7 +50,7 @@ local targetPolicyFunctionList = {
 
 		local indexWithHighestActionValue
 
-		for i, actionValue in ipairs(actionVector[1]) do
+		for i, actionValue in ipairs(actionTensor[1]) do
 
 			if (actionValue > highestActionValue) then
 
@@ -68,9 +68,9 @@ local targetPolicyFunctionList = {
 
 	end,
 
-	["Softmax"] = function (actionVector) -- apparently roblox doesn't really handle very small values such as math.exp(-1000), so I added a more stable computation exp(a) / exp(b) -> exp (a - b)
+	["Softmax"] = function (actionTensor) -- apparently Lua doesn't really handle very small values such as math.exp(-1000), so I added a more stable computation exp(a) / exp(b) -> exp (a - b)
 
-		local exponentActionTensor = AqwamTensorLibrary:applyFunction(math.exp, actionVector)
+		local exponentActionTensor = AqwamTensorLibrary:applyFunction(math.exp, actionTensor)
 
 		local exponentActionSumTensor = AqwamTensorLibrary:sum(exponentActionTensor, 2)
 
@@ -80,19 +80,19 @@ local targetPolicyFunctionList = {
 
 	end,
 
-	["StableSoftmax"] = function (actionVector)
+	["StableSoftmax"] = function (actionTensor)
 
-		local highestActionValue = AqwamTensorLibrary:findMaximumValue(actionVector)
+		local highestActionValue = AqwamTensorLibrary:findMaximumValue(actionTensor)
 
-		local subtractedZVector = AqwamTensorLibrary:subtract(actionVector, highestActionValue)
+		local subtractedZTensor = AqwamTensorLibrary:subtract(actionTensor, highestActionValue)
 
-		local exponentActionVector = AqwamTensorLibrary:applyFunction(math.exp, subtractedZVector)
+		local exponentActionTensor = AqwamTensorLibrary:applyFunction(math.exp, subtractedZTensor)
 
-		local exponentActionSumVector = AqwamTensorLibrary:sum(exponentActionVector, 2)
+		local exponentActionSumTensor = AqwamTensorLibrary:sum(exponentActionTensor, 2)
 
-		local targetActionVector = AqwamTensorLibrary:divide(exponentActionVector, exponentActionSumVector)
+		local targetActionTensor = AqwamTensorLibrary:divide(exponentActionTensor, exponentActionSumTensor)
 
-		return targetActionVector
+		return targetActionTensor
 
 	end,
 
