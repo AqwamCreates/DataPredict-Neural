@@ -294,9 +294,9 @@ function GatedRecurrentUnitCellContainer.new(parameterDictionary)
 		
 		NewGatedRecurrentUnitCellContainer.InputCandidateLinear:transform(featureTensor)
 		
-		NewGatedRecurrentUnitCellContainer.OutputInputHolder:transform(hiddenStateTensor)
-
 		NewGatedRecurrentUnitCellContainer.OutputNullaryFunctionHolder:transform()
+		
+		NewGatedRecurrentUnitCellContainer.OutputInputHolder:transform(hiddenStateTensor)
 
 		local transformedTensor = OutputAdd:waitForTransformedTensor()
 
