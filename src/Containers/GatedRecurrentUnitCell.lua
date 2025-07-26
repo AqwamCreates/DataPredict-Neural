@@ -206,6 +206,10 @@ function GatedRecurrentUnitCellContainer.new(parameterDictionary)
 	
 	OutputMultiply2:linkForward(OutputAdd)
 	
+	NewGatedRecurrentUnitCellContainer.inputDimensionSize = inputDimensionSize
+
+	NewGatedRecurrentUnitCellContainer.hiddenDimensionSize = hiddenDimensionSize
+	
 	NewGatedRecurrentUnitCellContainer.InputResetGateLinear = InputResetGateLinear
 
 	NewGatedRecurrentUnitCellContainer.HiddenResetGateLinear = HiddenResetGateLinear
@@ -277,22 +281,22 @@ function GatedRecurrentUnitCellContainer.new(parameterDictionary)
 		CandidateActivation:setTransformedTensor(nil, true) -- To ensure that we don't output old tensor values.
 
 		OutputAdd:setTransformedTensor(nil, true) -- To ensure that we don't output old tensor values.
-
-		NewGatedRecurrentUnitCellContainer.OutputNullaryFunctionHolder:transform()
-
-		NewGatedRecurrentUnitCellContainer.CandidateInputHolder:transform(hiddenStateTensor)
-
-		NewGatedRecurrentUnitCellContainer.OutputInputHolder:transform(hiddenStateTensor)
-
-		NewGatedRecurrentUnitCellContainer.HiddenResetGateLinear:transform(hiddenStateTensor)
-
-		NewGatedRecurrentUnitCellContainer.HiddenUpdateGateLinear:transform(hiddenStateTensor)
-
+		
 		NewGatedRecurrentUnitCellContainer.InputResetGateLinear:transform(featureTensor)
-
+		
+		NewGatedRecurrentUnitCellContainer.HiddenResetGateLinear:transform(hiddenStateTensor)
+		
 		NewGatedRecurrentUnitCellContainer.InputUpdateGateLinear:transform(featureTensor)
 
+		NewGatedRecurrentUnitCellContainer.HiddenUpdateGateLinear:transform(hiddenStateTensor)
+		
+		NewGatedRecurrentUnitCellContainer.CandidateInputHolder:transform(hiddenStateTensor)
+		
 		NewGatedRecurrentUnitCellContainer.InputCandidateLinear:transform(featureTensor)
+		
+		NewGatedRecurrentUnitCellContainer.OutputNullaryFunctionHolder:transform()
+		
+		NewGatedRecurrentUnitCellContainer.OutputInputHolder:transform(hiddenStateTensor)
 
 		local transformedTensor = OutputAdd:waitForTransformedTensor()
 
