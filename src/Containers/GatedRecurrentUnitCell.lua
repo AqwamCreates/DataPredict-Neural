@@ -265,20 +265,14 @@ function GatedRecurrentUnitCellContainer.new(parameterDictionary)
 	NewGatedRecurrentUnitCellContainer.cutOffValue = parameterDictionary.cutOffValue or defaultCutOffValue
 	
 	NewGatedRecurrentUnitCellContainer:setForwardPropagateFunction(function(featureTensor, hiddenStateTensor)
-		
-		local ResetGateActivation = NewGatedRecurrentUnitCellContainer.ResetGateActivation
-
-		local UpdateGateActivation = NewGatedRecurrentUnitCellContainer.UpdateGateActivation
-
-		local CandidateActivation = NewGatedRecurrentUnitCellContainer.CandidateActivation
 
 		local OutputAdd = NewGatedRecurrentUnitCellContainer.OutputAdd
 
-		ResetGateActivation:setTransformedTensor(nil, true) -- To ensure that we don't output old tensor values.
+		NewGatedRecurrentUnitCellContainer.ResetGateActivation:setTransformedTensor(nil, true) -- To ensure that we don't output old tensor values.
 
-		UpdateGateActivation:setTransformedTensor(nil, true) -- To ensure that we don't output old tensor values.
+		NewGatedRecurrentUnitCellContainer.UpdateGateActivation:setTransformedTensor(nil, true) -- To ensure that we don't output old tensor values.
 
-		CandidateActivation:setTransformedTensor(nil, true) -- To ensure that we don't output old tensor values.
+		NewGatedRecurrentUnitCellContainer.CandidateActivation:setTransformedTensor(nil, true) -- To ensure that we don't output old tensor values.
 
 		OutputAdd:setTransformedTensor(nil, true) -- To ensure that we don't output old tensor values.
 		
