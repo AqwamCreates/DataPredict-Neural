@@ -290,9 +290,9 @@ function GatedRecurrentUnitCellContainer.new(parameterDictionary)
 
 		NewGatedRecurrentUnitCellContainer.HiddenUpdateGateLinear:transform(hiddenStateTensor)
 		
-		NewGatedRecurrentUnitCellContainer.CandidateInputHolder:transform(hiddenStateTensor)
-		
 		NewGatedRecurrentUnitCellContainer.InputCandidateLinear:transform(featureTensor)
+		
+		NewGatedRecurrentUnitCellContainer.CandidateInputHolder:transform(hiddenStateTensor)
 		
 		NewGatedRecurrentUnitCellContainer.OutputNullaryFunctionHolder:transform()
 		
