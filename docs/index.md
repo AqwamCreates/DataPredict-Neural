@@ -14,6 +14,8 @@ By using or possessing any copies of this library or its assets (including the i
 
 Once you pass the commercial use threshold and want to license it, expect to pay for 2% of your project's generated revenue, provided that it uses this library. That 2% also includes DataPredict™ and DataPredict™ Axon. All the money will be used for future research and improvements that will be released to the public.
 
+I do not entertain "proof of value" requests. You can read the reasons [here](WhyIDoNotEntertainProofOfValueRequests.md).
+
 For information regarding potential license violations and eligibility for a bounty reward, please refer to the [Terms And Conditions Violation Bounty Reward Information](TermsAndConditionsViolationBountyRewardInformation.md).
 
 ![DataPredictNeuralIconSmall](https://github.com/AqwamCreates/DataPredict-Neural/assets/67371914/cf4e61af-a7b6-4ba6-98cf-656a245e9960)
