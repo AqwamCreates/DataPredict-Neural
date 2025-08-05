@@ -42,7 +42,7 @@ function Ridge.new(parameterDictionary)
 	
 	setmetatable(NewRidge, Ridge)
 	
-	NewRidge:setName("Lasso")
+	NewRidge:setName("Ridge")
 	
 	NewRidge:setCalculateFunction(function(weightTensor)
 		
