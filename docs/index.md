@@ -55,37 +55,37 @@ In addition, if you are interested in Roblox tutorials and future projects by me
 
 ### Installation
 
-[Installation For Roblox](Tutorials/InstallationForRoblox.md)
+* [Installation For Roblox](Tutorials/InstallationForRoblox.md)
 
 ### The Model Basics
 
-[Creating Our First Neural Network](Tutorials/CreatingOurFirstNeuralNetwork.md)
+* [Creating Our First Neural Network](Tutorials/CreatingOurFirstNeuralNetwork.md)
 
-[Understanding Function Blocks, Dynamic Computational Graphs And Automatic-Manual Differentiation](Tutorials/UnderstandingFunctionBlocksDynamicComputationalGraphsAndAutomaticManualDifferentiation.md)
+* [Understanding Function Blocks, Dynamic Computational Graphs And Automatic-Manual Differentiation](Tutorials/UnderstandingFunctionBlocksDynamicComputationalGraphsAndAutomaticManualDifferentiation.md)
 
-[Saving And Loading Model Weights](Tutorials/SavingAndLoadingModelWeights.md)
+* [Saving And Loading Model Weights](Tutorials/SavingAndLoadingModelWeights.md)
 
 ### The Tensor Basics
 
-[General Tensor Conventions](Tutorials/GeneralTensorConventions.md)
+* [General Tensor Conventions](Tutorials/GeneralTensorConventions.md)
 
-[Spatial Dimension, Kernel And Stride](Tutorials/SpatialDimensionKernelAndStride.md)
+* [Spatial Dimension, Kernel And Stride](Tutorials/SpatialDimensionKernelAndStride.md)
 
 ### The Advanced Blocks
 
-[Using Pooling Blocks And Convolution Blocks](Tutorials/UsingPoolingBlocksAndConvolutionBlocks.md)
+* [Using Pooling Blocks And Convolution Blocks](Tutorials/UsingPoolingBlocksAndConvolutionBlocks.md)
 
 ### Deep Reinforcement Learning
 
-[Getting Started With Deep Reinforcement Learning](Tutorials/GettingStartedWithDeepReinforcementLearning.md)
+* [Getting Started With Deep Reinforcement Learning](Tutorials/GettingStartedWithDeepReinforcementLearning.md)
 
-[Choosing The Most Effective Environment Inputs](Tutorials/ChoosingTheMostEffectiveEnvironmentInputs.md)
+* [Choosing The Most Effective Environment Inputs](Tutorials/ChoosingTheMostEffectiveEnvironmentInputs.md)
 
-[Simulating Curiosity With Random Network Distillation](Tutorials/SimulatingCuriosityWithRandomNetworkDistillation.md)
+* [Simulating Curiosity With Random Network Distillation](Tutorials/SimulatingCuriosityWithRandomNetworkDistillation.md)
 
-[The Action Space And The Reinforcement Learning Algorithms](Tutorials/TheActionSpaceAndTheReinforcementLearningAlgorithms.md)
+* [The Action Space And The Reinforcement Learning Algorithms](Tutorials/TheActionSpaceAndTheReinforcementLearningAlgorithms.md)
 
-[Deep Reinforcement Learning Algorithms Properties](Tutorials/DeepReinforcementLearningAlgorithmsProperties.md)
+* [Deep Reinforcement Learning Algorithms Properties](Tutorials/DeepReinforcementLearningAlgorithmsProperties.md)
 
 ## The API
 
