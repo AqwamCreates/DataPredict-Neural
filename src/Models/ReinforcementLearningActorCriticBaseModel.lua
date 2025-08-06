@@ -100,7 +100,7 @@ function ReinforcementLearningActorCriticBaseModel:predict(featureVector, return
 	
 end
 
-function ReinforcementLearningActorCriticBaseModel:getClassesList()
+function ReinforcementLearningActorCriticBaseModel:getActionsList()
 
 	return self.ActorModel:getClassesList()
 
