@@ -28,113 +28,99 @@
 
 local BaseInstance = require(script.Parent.Parent.Cores.BaseInstance)
 
-ReinforcementLearningActorCriticBaseModel = {}
+ReinforcementLearningBaseModel = {}
 
-ReinforcementLearningActorCriticBaseModel.__index = ReinforcementLearningActorCriticBaseModel
+ReinforcementLearningBaseModel.__index = ReinforcementLearningBaseModel
 
-setmetatable(ReinforcementLearningActorCriticBaseModel, BaseInstance)
+setmetatable(ReinforcementLearningBaseModel, BaseInstance)
 
 local defaultDiscountFactor = 0.95
 
-function ReinforcementLearningActorCriticBaseModel.new(parameterDictionary)
+function ReinforcementLearningBaseModel.new(parameterDictionary)
 	
 	parameterDictionary = parameterDictionary or {}
 	
-	local NewReinforcementLearningActorCriticBaseModel = {}
+	local NewReinforcementLearningBaseModel = {}
 	
-	setmetatable(NewReinforcementLearningActorCriticBaseModel, ReinforcementLearningActorCriticBaseModel)
+	setmetatable(NewReinforcementLearningBaseModel, ReinforcementLearningBaseModel)
 	
-	NewReinforcementLearningActorCriticBaseModel:setName("ReinforcementLearningActorCriticBaseModel")
+	NewReinforcementLearningBaseModel:setName("ReinforcementLearningBaseModel")
 
-	NewReinforcementLearningActorCriticBaseModel:setClassName("ReinforcementLearningActorCriticModel")
-
-	NewReinforcementLearningActorCriticBaseModel.discountFactor = parameterDictionary.discountFactor or defaultDiscountFactor
-
-	NewReinforcementLearningActorCriticBaseModel.ActorModel = parameterDictionary.ActorModel
+	NewReinforcementLearningBaseModel:setClassName("ReinforcementLearningModel")
 	
-	NewReinforcementLearningActorCriticBaseModel.CriticModel = parameterDictionary.CriticModel
+	NewReinforcementLearningBaseModel.discountFactor = parameterDictionary.discountFactor or defaultDiscountFactor
 	
-	return NewReinforcementLearningActorCriticBaseModel
+	NewReinforcementLearningBaseModel.Model = parameterDictionary.Model
+	
+	return NewReinforcementLearningBaseModel
 	
 end
 
-function ReinforcementLearningActorCriticBaseModel:setDiscountFactor(discountFactor)
-
+function ReinforcementLearningBaseModel:setDiscountFactor(discountFactor)
+	
 	self.discountFactor = discountFactor
-
+	
 end
 
-function ReinforcementLearningActorCriticBaseModel:getDiscountFactor()
-
+function ReinforcementLearningBaseModel:getDiscountFactor()
+	
 	return self.discountFactor
-
-end
-
-function ReinforcementLearningActorCriticBaseModel:setActorModel(ActorModel)
-	
-	self.ActorModel = ActorModel
 	
 end
 
-function ReinforcementLearningActorCriticBaseModel:setCriticModel(CriticModel)
-
-	self.CriticModel = CriticModel
+function ReinforcementLearningBaseModel:setModel(Model)
+	
+	self.Model = Model
 	
 end
 
-function ReinforcementLearningActorCriticBaseModel:getActorModel()
+function ReinforcementLearningBaseModel:getModel()
 
-	return self.ActorModel
-
-end
-
-function ReinforcementLearningActorCriticBaseModel:getCriticModel()
-
-	return self.CriticModel
+	return self.Model
 
 end
 
-function ReinforcementLearningActorCriticBaseModel:predict(featureVector, returnOriginalOutput)
+function ReinforcementLearningBaseModel:predict(featureVector, returnOriginalOutput)
+
+	return self.Model:predict(featureVector, returnOriginalOutput)
+
+end
+
+function ReinforcementLearningBaseModel:getActionsList()
 	
-	return self.ActorModel:predict(featureVector, returnOriginalOutput)
+	return self.Model:getClassesList()
 	
 end
 
-function ReinforcementLearningActorCriticBaseModel:getClassesList()
-
-	return self.ActorModel:getClassesList()
-
-end
-
-function ReinforcementLearningActorCriticBaseModel:setCategoricalUpdateFunction(categoricalUpdateFunction)
+function ReinforcementLearningBaseModel:setCategoricalUpdateFunction(categoricalUpdateFunction)
 
 	self.categoricalUpdateFunction = categoricalUpdateFunction
 
 end
 
-function ReinforcementLearningActorCriticBaseModel:setDiagonalGaussianUpdateFunction(diagonalGaussianUpdateFunction)
-
+function ReinforcementLearningBaseModel:setDiagonalGaussianUpdateFunction(diagonalGaussianUpdateFunction)
+	
 	self.diagonalGaussianUpdateFunction = diagonalGaussianUpdateFunction
-
+	
 end
 
-function ReinforcementLearningActorCriticBaseModel:categoricalUpdate(previousFeatureVector, action, rewardValue, currentFeatureVector, terminalStateValue)
-
+function ReinforcementLearningBaseModel:categoricalUpdate(previousFeatureVector, action, rewardValue, currentFeatureVector, terminalStateValue)
+	
 	local categoricalUpdateFunction = self.categoricalUpdateFunction
-
+	
 	if (categoricalUpdateFunction) then
-
+		
 		return categoricalUpdateFunction(previousFeatureVector, action, rewardValue, currentFeatureVector, terminalStateValue)
-
+		
 	else
-
-		error("The categorical update function is not implemented!")
-
+		
+		error("The categorical update function is not implemented.")
+		
 	end
 
 end
 
-function ReinforcementLearningActorCriticBaseModel:diagonalGaussianUpdate(previousFeatureVector, actionMeanVector, actionStandardDeviationVector, actionNoiseVector, rewardValue, currentFeatureVector, terminalStateValue)
+function ReinforcementLearningBaseModel:diagonalGaussianUpdate(previousFeatureVector, actionMeanVector, actionStandardDeviationVector, actionNoiseVector, rewardValue, currentFeatureVector, terminalStateValue)
 
 	local diagonalGaussianUpdateFunction = self.diagonalGaussianUpdateFunction
 
@@ -144,54 +130,54 @@ function ReinforcementLearningActorCriticBaseModel:diagonalGaussianUpdate(previo
 
 	else
 
-		error("The diagonal Gaussian update function is not implemented!")
+		error("The diagonal Gaussian update function is not implemented.")
 
 	end
 
 end
 
-function ReinforcementLearningActorCriticBaseModel:setEpisodeUpdateFunction(episodeUpdateFunction)
+function ReinforcementLearningBaseModel:setEpisodeUpdateFunction(episodeUpdateFunction)
 
 	self.episodeUpdateFunction = episodeUpdateFunction
 
 end
 
-function ReinforcementLearningActorCriticBaseModel:episodeUpdate(terminalStateValue)
+function ReinforcementLearningBaseModel:episodeUpdate(terminalStateValue)
 
 	local episodeUpdateFunction = self.episodeUpdateFunction
-
+	
 	if (episodeUpdateFunction) then
-
+		
 		return episodeUpdateFunction(terminalStateValue)
-
+		
 	else
-
-		error("The episode update function is not implemented!")
-
+		
+		error("The episode update function is not implemented.")
+		
 	end
 
 end
 
-function ReinforcementLearningActorCriticBaseModel:setResetFunction(resetFunction)
+function ReinforcementLearningBaseModel:setResetFunction(resetFunction)
 
 	self.resetFunction = resetFunction
 
 end
 
-function ReinforcementLearningActorCriticBaseModel:reset()
-
+function ReinforcementLearningBaseModel:reset()
+	
 	local resetFunction = self.resetFunction
 
 	if (resetFunction) then 
-
+		
 		return resetFunction() 
-
+		
 	else
-
-		error("The reset function is not implemented!")
-
+		
+		error("The reset function is not implemented.")
+		
 	end
 
 end
 
-return ReinforcementLearningActorCriticBaseModel
+return ReinforcementLearningBaseModel
