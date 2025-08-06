@@ -88,7 +88,7 @@ function RecurrentReinforcementLearningBaseModel:predict(featureVector, hiddenSt
 
 end
 
-function RecurrentReinforcementLearningBaseModel:getClassesList()
+function RecurrentReinforcementLearningBaseModel:getActionsList()
 
 	return self.Model:getClassesList()
 
