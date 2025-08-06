@@ -104,7 +104,7 @@ function RecurrentReinforcementLearningActorCriticBaseModel:predict(featureVecto
 
 end
 
-function RecurrentReinforcementLearningActorCriticBaseModel:getClassesList()
+function RecurrentReinforcementLearningActorCriticBaseModel:getActionsList()
 
 	return self.ActorModel:getClassesList()
 
