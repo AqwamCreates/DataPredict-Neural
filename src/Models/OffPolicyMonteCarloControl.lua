@@ -99,6 +99,8 @@ local targetPolicyFunctionList = {
 }
 
 function OffPolicyMonteCarloControlModel.new(parameterDictionary)
+	
+	parameterDictionary = parameterDictionary or {}
 
 	local NewOffPolicyMonteCarloControlModel = ReinforcementLearningBaseModel.new(parameterDictionary)
 
