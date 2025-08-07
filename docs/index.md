@@ -16,7 +16,7 @@ Once you pass the commercial use threshold and want to license it, expect to pay
 
 Thanks to the early adopters, I managed to to fund my Master research thesis (that may be published soon) on how to speed up reinforcement learning training by 10 times from the baseline methods. It is already implemented in the DataPredict™ and DataPredict™ Neural libraries!
 
-You can download and see the full commercial licensing agreement [here](https://github.com/AqwamCreates/DataPredict/blob/main/docs/DataPredict%20Libraries%20Licensing%20Agreement.docx).
+You can download and read the full commercial licensing agreement [here](https://github.com/AqwamCreates/DataPredict/blob/main/docs/DataPredict%20Libraries%20Licensing%20Agreement.docx).
 
 I do not entertain "proof of value" requests. You can read the reasons [here](WhyIDoNotEntertainProofOfValueRequests.md).
 
