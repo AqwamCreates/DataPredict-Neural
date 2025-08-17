@@ -270,7 +270,7 @@ function BaseWeightBlock:generateWeightTensor(dimensionSizeArray, numberOfInputN
 
 	elseif (initializationMode == "XavierUniform") then
 
-		local variancePart1 = 6 / (numberOfInputNeurons + numberOfInputNeurons)
+		local variancePart1 = 6 / (numberOfInputNeurons + numberOfOutputNeurons)
 
 		local variancePart = math.sqrt(variancePart1)
 
