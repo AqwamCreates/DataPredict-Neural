@@ -1,5 +1,9 @@
 # Beta Version
 
+## Version 1.11
+
+[1.11.0](Beta/1-11-0.md) -- Planned At 30/8/2025
+
 ## Version 1.10
 
 [1.10.0](Beta/1-10-0.md) -- 6/8/2025
