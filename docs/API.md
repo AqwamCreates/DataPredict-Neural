@@ -42,6 +42,8 @@
 
 [ValueSchedulers](API/ValueSchedulers.md)
 
+[EligibilityTraces](API/EligibilityTraces.md)
+
 [Utilities](API/Utilities.md)
 
 ## Cores
