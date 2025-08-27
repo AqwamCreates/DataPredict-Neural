@@ -36,8 +36,6 @@ DeepDoubleStateActionRewardStateActionModel.__index = DeepDoubleStateActionRewar
 
 setmetatable(DeepDoubleStateActionRewardStateActionModel, ReinforcementLearningBaseModel)
 
-local defaultLambda = 0
-
 local defaultAveragingRate = 0.995
 
 local function rateAverageWeightTensorArray(averagingRate, TargetWeightTensorArray, PrimaryWeightTensorArray)
@@ -67,20 +65,18 @@ function DeepDoubleStateActionRewardStateActionModel.new(parameterDictionary)
 	setmetatable(NewDeepDoubleStateActionRewardStateActionModel, DeepDoubleStateActionRewardStateActionModel)
 	
 	NewDeepDoubleStateActionRewardStateActionModel:setName("DeepDoubleStateActionRewardStateAction")
-	
-	NewDeepDoubleStateActionRewardStateActionModel.lambda = NewDeepDoubleStateActionRewardStateActionModel.lambda or defaultLambda 
 
 	NewDeepDoubleStateActionRewardStateActionModel.averagingRate = parameterDictionary.averagingRate or defaultAveragingRate
 	
-	NewDeepDoubleStateActionRewardStateActionModel.eligibilityTraceTensor = parameterDictionary.eligibilityTraceTensor
+	NewDeepDoubleStateActionRewardStateActionModel.EligibilityTrace = parameterDictionary.EligibilityTrace
 
 	NewDeepDoubleStateActionRewardStateActionModel:setCategoricalUpdateFunction(function(previousFeatureTensor, action, rewardValue, currentFeatureTensor, terminalStateValue)
 
 		local Model = NewDeepDoubleStateActionRewardStateActionModel.Model
 		
-		local lambda = NewDeepDoubleStateActionRewardStateActionModel.lambda
-		
 		local discountFactor = NewDeepDoubleStateActionRewardStateActionModel.discountFactor
+		
+		local EligibilityTrace = NewDeepDoubleStateActionRewardStateActionModel.EligibilityTrace
 		
 		local qTensor = Model:forwardPropagate(currentFeatureTensor)
 
@@ -94,23 +90,15 @@ function DeepDoubleStateActionRewardStateActionModel.new(parameterDictionary)
 
 		local temporalDifferenceErrorTensor = AqwamTensorLibrary:subtract(targetTensor, previousQTensor)
 		
-		if (lambda ~= 0) then
+		if (EligibilityTrace) then
 
 			local ClassesList = Model:getClassesList()
 
 			local actionIndex = table.find(ClassesList, action)
 
-			local eligibilityTraceTensor = NewDeepDoubleStateActionRewardStateActionModel.eligibilityTraceTensor
+			EligibilityTrace:increment(actionIndex, discountFactor, {1, #ClassesList})
 
-			if (not eligibilityTraceTensor) then eligibilityTraceTensor = AqwamTensorLibrary:createTensor({1, #ClassesList}, 0) end
-
-			eligibilityTraceTensor = AqwamTensorLibrary:multiply(eligibilityTraceTensor, discountFactor * lambda)
-
-			eligibilityTraceTensor[1][actionIndex] = eligibilityTraceTensor[1][actionIndex] + 1
-
-			temporalDifferenceErrorTensor = AqwamTensorLibrary:multiply(temporalDifferenceErrorTensor, eligibilityTraceTensor)
-
-			NewDeepDoubleStateActionRewardStateActionModel.eligibilityTraceTensor = eligibilityTraceTensor
+			temporalDifferenceErrorTensor = EligibilityTrace:calculate(temporalDifferenceErrorTensor)
 
 		end
 		
@@ -132,13 +120,13 @@ function DeepDoubleStateActionRewardStateActionModel.new(parameterDictionary)
 
 	NewDeepDoubleStateActionRewardStateActionModel:setEpisodeUpdateFunction(function(terminalStateValue)
 		
-		NewDeepDoubleStateActionRewardStateActionModel.eligibilityTraceTensor = nil
+		NewDeepDoubleStateActionRewardStateActionModel.EligibilityTrace:reset()
 		
 	end)
 
 	NewDeepDoubleStateActionRewardStateActionModel:setResetFunction(function() 
 		
-		NewDeepDoubleStateActionRewardStateActionModel.eligibilityTraceTensor = nil
+		NewDeepDoubleStateActionRewardStateActionModel.EligibilityTrace:reset()
 		
 	end)
 
