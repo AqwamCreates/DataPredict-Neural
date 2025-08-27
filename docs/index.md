@@ -53,6 +53,12 @@ In addition, if you are interested in Roblox tutorials and future projects by me
 
 * Cross-compatible with DataPredict library.
 
+## The API
+
+### API Reference
+
+* [API Reference](API.md)
+
 ## Tutorials
 
 ### Installation
@@ -88,12 +94,6 @@ In addition, if you are interested in Roblox tutorials and future projects by me
 * [The Action Space And The Reinforcement Learning Algorithms](Tutorials/TheActionSpaceAndTheReinforcementLearningAlgorithms.md)
 
 * [Deep Reinforcement Learning Algorithms Properties](Tutorials/DeepReinforcementLearningAlgorithmsProperties.md)
-
-## The API
-
-### API Reference
-
-* [API Reference](API.md)
 
 ## Links
 
