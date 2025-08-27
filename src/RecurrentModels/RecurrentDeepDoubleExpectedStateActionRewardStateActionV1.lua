@@ -38,8 +38,6 @@ setmetatable(RecurrentDeepDoubleExpectedStateActionRewardStateActionModel, DualR
 
 local defaultEpsilon = 0.5
 
-local defaultLambda = 0
-
 local function deepCopyTable(original, copies)
 
 	copies = copies or {}
@@ -92,11 +90,9 @@ function RecurrentDeepDoubleExpectedStateActionRewardStateActionModel.new(parame
 
 	NewRecurrentDeepDoubleExpectedStateActionRewardStateActionModel.epsilon = parameterDictionary.epsilon or defaultEpsilon
 
-	NewRecurrentDeepDoubleExpectedStateActionRewardStateActionModel.lambda = parameterDictionary.lambda or defaultLambda
+	NewRecurrentDeepDoubleExpectedStateActionRewardStateActionModel.EligibilityTrace = parameterDictionary.EligibilityTrace
 
 	NewRecurrentDeepDoubleExpectedStateActionRewardStateActionModel.WeightTensorArrayArray = parameterDictionary.WeightTensorArrayArray or {}
-
-	NewRecurrentDeepDoubleExpectedStateActionRewardStateActionModel.eligibilityTraceTensor = parameterDictionary.eligibilityTraceTensor
 
 	NewRecurrentDeepDoubleExpectedStateActionRewardStateActionModel:setCategoricalUpdateFunction(function(previousFeatureTensor, action, rewardValue, currentFeatureTensor, terminalStateValue)
 
@@ -140,13 +136,13 @@ function RecurrentDeepDoubleExpectedStateActionRewardStateActionModel.new(parame
 
 	NewRecurrentDeepDoubleExpectedStateActionRewardStateActionModel:setEpisodeUpdateFunction(function(terminalStateValue) 
 
-		NewRecurrentDeepDoubleExpectedStateActionRewardStateActionModel.eligibilityTraceTensor = nil
+		NewRecurrentDeepDoubleExpectedStateActionRewardStateActionModel.EligibilityTrace:reset()
 
 	end)
 
 	NewRecurrentDeepDoubleExpectedStateActionRewardStateActionModel:setResetFunction(function() 
 
-		NewRecurrentDeepDoubleExpectedStateActionRewardStateActionModel.eligibilityTraceTensor = nil
+		NewRecurrentDeepDoubleExpectedStateActionRewardStateActionModel.EligibilityTrace:reset()
 
 	end)
 
@@ -162,7 +158,7 @@ function RecurrentDeepDoubleExpectedStateActionRewardStateActionModel:generateLo
 
 	local epsilon = self.epsilon
 
-	local lambda = self.lambda
+	local EligibilityTrace = self.EligibilityTrace
 	
 	local hiddenStateTensorArray = self.hiddenStateTensorArray
 
@@ -236,19 +232,11 @@ function RecurrentDeepDoubleExpectedStateActionRewardStateActionModel:generateLo
 
 	temporalDifferenceErrorTensor[1][actionIndex] = temporalDifferenceError
 
-	if (lambda ~= 0) then
+	if (EligibilityTrace) then
 
-		local eligibilityTraceTensor = self.eligibilityTraceTensor
+		EligibilityTrace:increment(actionIndex, discountFactor, outputDimensionSizeArray)
 
-		if (not eligibilityTraceTensor) then eligibilityTraceTensor = AqwamTensorLibrary:createTensor(outputDimensionSizeArray, 0) end
-
-		eligibilityTraceTensor = AqwamTensorLibrary:multiply(eligibilityTraceTensor, discountFactor * lambda)
-
-		eligibilityTraceTensor[1][actionIndex] = eligibilityTraceTensor[1][actionIndex] + 1
-
-		temporalDifferenceErrorTensor = AqwamTensorLibrary:multiply(temporalDifferenceErrorTensor, eligibilityTraceTensor)
-
-		self.eligibilityTraceTensor = eligibilityTraceTensor
+		temporalDifferenceErrorTensor = EligibilityTrace:calculate(temporalDifferenceErrorTensor)
 
 	end
 
