@@ -28,220 +28,152 @@
 
 local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
 
-local RecurrentReinforcementLearningActorCriticBaseModel = require(script.Parent.RecurrentReinforcementLearningActorCriticBaseModel)
+local DualRecurrentReinforcementLearningBaseModel = require(script.Parent.DualRecurrentReinforcementLearningBaseModel)
 
-RecurrentAdvantageActorCriticModel = {}
+DeepClippedDoubleQLearningModel = {}
 
-RecurrentAdvantageActorCriticModel.__index = RecurrentAdvantageActorCriticModel
+DeepClippedDoubleQLearningModel.__index = DeepClippedDoubleQLearningModel
 
-setmetatable(RecurrentAdvantageActorCriticModel, RecurrentReinforcementLearningActorCriticBaseModel)
+setmetatable(DeepClippedDoubleQLearningModel, DualRecurrentReinforcementLearningBaseModel)
 
-local defaultLambda = 0
-
-local function calculateProbability(valueTensor)
-
-	local maximumValue = AqwamTensorLibrary:findMaximumValue(valueTensor)
-
-	local zValueTensor = AqwamTensorLibrary:subtract(valueTensor, maximumValue)
-
-	local exponentTensor = AqwamTensorLibrary:exponent(zValueTensor)
-
-	local sumExponentValue = AqwamTensorLibrary:sum(exponentTensor)
-
-	local probabilityTensor = AqwamTensorLibrary:divide(exponentTensor, sumExponentValue)
-
-	return probabilityTensor
-
-end
-
-function RecurrentAdvantageActorCriticModel.new(parameterDictionary)
-
+function DeepClippedDoubleQLearningModel.new(parameterDictionary)
+	
 	parameterDictionary = parameterDictionary or {}
 
-	local NewRecurrentAdvantageActorCriticModel = RecurrentReinforcementLearningActorCriticBaseModel.new(parameterDictionary)
+	local NewDeepClippedDoubleQLearningModel = DualRecurrentReinforcementLearningBaseModel.new(parameterDictionary)
 
-	setmetatable(NewRecurrentAdvantageActorCriticModel, RecurrentAdvantageActorCriticModel)
+	setmetatable(NewDeepClippedDoubleQLearningModel, DeepClippedDoubleQLearningModel)
+	
+	NewDeepClippedDoubleQLearningModel:setName("DeepClippedDoubleQLearning")
+	
+	NewDeepClippedDoubleQLearningModel.EligibilityTrace = parameterDictionary.EligibilityTrace
 
-	RecurrentAdvantageActorCriticModel:setName("RecurrentAdvantageActorCritic")
+	NewDeepClippedDoubleQLearningModel.WeightTensorArrayArray = {}
 
-	NewRecurrentAdvantageActorCriticModel.lambda = parameterDictionary.lambda or defaultLambda
+	NewDeepClippedDoubleQLearningModel:setCategoricalUpdateFunction(function(previousFeatureTensor, action, rewardValue, currentFeatureTensor, terminalStateValue)
 
-	local featureTensorHistory = {}
-
-	local advantageValueHistory = {}
-
-	local actionProbabilityTensorHistory = {}
-
-	NewRecurrentAdvantageActorCriticModel:setCategoricalUpdateFunction(function(previousFeatureTensor, action, rewardValue, currentFeatureTensor, terminalStateValue)
+		local Model = NewDeepClippedDoubleQLearningModel.Model
 		
-		local ActorModel = NewRecurrentAdvantageActorCriticModel.ActorModel
+		local discountFactor = NewDeepClippedDoubleQLearningModel.discountFactor
 		
-		local CriticModel = NewRecurrentAdvantageActorCriticModel.CriticModel
+		local EligibilityTrace = NewDeepClippedDoubleQLearningModel.EligibilityTrace
 		
-		local actorHiddenStateTensor = NewRecurrentAdvantageActorCriticModel.actorHiddenStateTensor
-
-		local criticHiddenStateValue = NewRecurrentAdvantageActorCriticModel.criticHiddenStateValue or 0
-
-		if (not actorHiddenStateTensor) then
-
-			local ClassesList = ActorModel:getClassesList()
-
-			actorHiddenStateTensor = AqwamTensorLibrary:createTensor({1, #ClassesList})
-
-		end
-
-		local actionTensor = ActorModel:forwardPropagate(previousFeatureTensor, actorHiddenStateTensor)
-
-		local previousCriticValue = CriticModel:forwardPropagate(previousFeatureTensor, criticHiddenStateValue)[1][1]
-
-		local currentCriticValue = CriticModel:forwardPropagate(currentFeatureTensor, previousCriticValue)[1][1]
-
-		local actionProbabilityTensor = calculateProbability(actionTensor)
-
-		local advantageValue = rewardValue + (NewRecurrentAdvantageActorCriticModel.discountFactor * (1 - terminalStateValue) * currentCriticValue) - previousCriticValue
-
-		local logActionProbabilityTensor = AqwamTensorLibrary:logarithm(actionProbabilityTensor)
-
-		table.insert(featureTensorHistory, previousFeatureTensor)
-
-		table.insert(actionProbabilityTensorHistory, logActionProbabilityTensor)
-
-		table.insert(advantageValueHistory, advantageValue)
+		local WeightTensorArrayArray = NewDeepClippedDoubleQLearningModel.WeightTensorArrayArray
 		
-		NewRecurrentAdvantageActorCriticModel.actorHiddenStateTensor = logActionProbabilityTensor
+		local hiddenStateTensorArray = NewDeepClippedDoubleQLearningModel.hiddenStateTensorArray
 
-		NewRecurrentAdvantageActorCriticModel.criticHiddenStateValue = previousCriticValue
-
-		return advantageValue
-
-	end)
-
-	NewRecurrentAdvantageActorCriticModel:setDiagonalGaussianUpdateFunction(function(previousFeatureTensor, actionMeanTensor, actionStandardDeviationTensor, actionNoiseTensor, rewardValue, currentFeatureTensor, terminalStateValue)
-
-		if (not actionNoiseTensor) then
-
-			local actionTensorDimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(actionMeanTensor)
-
-			actionNoiseTensor = AqwamTensorLibrary:createRandomUniformTensor(actionTensorDimensionSizeArray) 
-
-		end
-
-		local CriticModel = NewRecurrentAdvantageActorCriticModel.CriticModel
+		local maxQValueArray = {}
 		
-		local criticHiddenStateValue = NewRecurrentAdvantageActorCriticModel.criticHiddenStateValue or 0
-
-		local actionTensorPart1 = AqwamTensorLibrary:multiply(actionStandardDeviationTensor, actionNoiseTensor)
-
-		local actionTensor = AqwamTensorLibrary:add(actionMeanTensor, actionTensorPart1)
-
-		local zScoreTensorPart1 = AqwamTensorLibrary:subtract(actionTensor, actionMeanTensor)
-
-		local zScoreTensor = AqwamTensorLibrary:divide(zScoreTensorPart1, actionStandardDeviationTensor)
-
-		local squaredZScoreTensor = AqwamTensorLibrary:power(zScoreTensor, 2)
-
-		local logActionProbabilityTensorPart1 = AqwamTensorLibrary:logarithm(actionStandardDeviationTensor)
-
-		local logActionProbabilityTensorPart2 = AqwamTensorLibrary:multiply(2, logActionProbabilityTensorPart1)
-
-		local logActionProbabilityTensorPart3 = AqwamTensorLibrary:add(squaredZScoreTensor, logActionProbabilityTensorPart2)
-
-		local logActionProbabilityTensorPart4 = AqwamTensorLibrary:add(logActionProbabilityTensorPart3, math.log(2 * math.pi))
-
-		local logActionProbabilityTensor = AqwamTensorLibrary:multiply(-0.5, logActionProbabilityTensorPart4)
-
-		local previousCriticValue = CriticModel:forwardPropagate(previousFeatureTensor, criticHiddenStateValue)[1][1]
-
-		local currentCriticValue = CriticModel:forwardPropagate(currentFeatureTensor, previousCriticValue)[1][1]
-
-		local advantageValue = rewardValue + (NewRecurrentAdvantageActorCriticModel.discountFactor * (1 - terminalStateValue) * currentCriticValue) - previousCriticValue
-
-		table.insert(featureTensorHistory, previousFeatureTensor)
-
-		table.insert(actionProbabilityTensorHistory, logActionProbabilityTensor)
-
-		table.insert(advantageValueHistory, advantageValue)
+		local ClassesList = Model:getClassesList()
 		
-		NewRecurrentAdvantageActorCriticModel.actorHiddenStateTensor = logActionProbabilityTensor
-
-		NewRecurrentAdvantageActorCriticModel.criticHiddenStateValue = previousCriticValue
-
-		return advantageValue
-
-	end)
-
-	NewRecurrentAdvantageActorCriticModel:setEpisodeUpdateFunction(function()
-
-		local ActorModel = NewRecurrentAdvantageActorCriticModel.ActorModel
-
-		local CriticModel = NewRecurrentAdvantageActorCriticModel.CriticModel
-
-		local lambda = NewRecurrentAdvantageActorCriticModel.lambda
-
-		if (lambda ~= 0) then
-
-			local generalizedAdvantageEstimationValue = 0
-
-			local generalizedAdvantageEstimationHistory = {}
-
-			local discountFactor = NewRecurrentAdvantageActorCriticModel.discountFactor
-
-			for t = #advantageValueHistory, 1, -1 do
-
-				generalizedAdvantageEstimationValue = advantageValueHistory[t] + (discountFactor * lambda * generalizedAdvantageEstimationValue)
-
-				table.insert(generalizedAdvantageEstimationHistory, 1, generalizedAdvantageEstimationValue)
-
-			end
-
-			advantageValueHistory = generalizedAdvantageEstimationHistory
-
-		end
+		local numberOfClasses = #ClassesList
 		
-		local outputDimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(actionProbabilityTensorHistory[1])
+		local outputDimensionSizeArray = {1, numberOfClasses}
 		
-		local actorHiddenStateTensor = AqwamTensorLibrary:createTensor(outputDimensionSizeArray)
+		hiddenStateTensorArray[1] = hiddenStateTensorArray[1] or AqwamTensorLibrary:createTensor(outputDimensionSizeArray, 0)
+		
+		hiddenStateTensorArray[2] = hiddenStateTensorArray[2] or AqwamTensorLibrary:createTensor(outputDimensionSizeArray, 0)
 
-		local criticHiddenTensor = {{0}}
+		for i = 1, 2, 1 do
 
-		for h, featureTensor in ipairs(featureTensorHistory) do
-
-			local advantageValue = advantageValueHistory[h]
-
-			local actorLossTensor = AqwamTensorLibrary:multiply(actionProbabilityTensorHistory[h], advantageValue)
-
-			actorLossTensor = AqwamTensorLibrary:unaryMinus(actorLossTensor)
+			Model:setWeightTensorArray(WeightTensorArrayArray[i], true)
 			
-			actorHiddenStateTensor = ActorModel:forwardPropagate(featureTensor, actorHiddenStateTensor)
+			local previousTensor = Model:forwardPropagate(previousFeatureTensor, hiddenStateTensorArray[i])
 
-			criticHiddenTensor = CriticModel:forwardPropagate(featureTensor, criticHiddenTensor)
+			local _, maxQValue = Model:predict(currentFeatureTensor, previousTensor)
+
+			table.insert(maxQValueArray, maxQValue[1][1])
 			
-			ActorModel:update(actorLossTensor)
-			
-			CriticModel:update(advantageValue)
+			WeightTensorArrayArray[i] = Model:getWeightTensorArray(true)
 
 		end
 
-		table.clear(featureTensorHistory)
+		local maxQValue = math.min(table.unpack(maxQValueArray))
 
-		table.clear(actionProbabilityTensorHistory)
+		local targetValue = rewardValue + (discountFactor * (1 - terminalStateValue) * maxQValue)
 
-		table.clear(advantageValueHistory)
+		local actionIndex = table.find(ClassesList, action)
+		
+		local eligibilityTraceTensor = NewDeepClippedDoubleQLearningModel.eligibilityTraceTensor
+
+		local temporalDifferenceErrorTensor = AqwamTensorLibrary:createTensor({1, 2})
+		
+		if (EligibilityTrace) then
+
+			EligibilityTrace:increment(actionIndex, discountFactor, outputDimensionSizeArray)
+
+		end
+
+		for i = 1, 2, 1 do
+
+			Model:setWeightTensorArray(WeightTensorArrayArray[i], true)
+
+			local previousTensor = Model:forwardPropagate(previousFeatureTensor, hiddenStateTensorArray[i])
+
+			local lastValue = previousTensor[1][actionIndex]
+
+			local temporalDifferenceError = targetValue - lastValue
+
+			local lossTensor = AqwamTensorLibrary:createTensor(outputDimensionSizeArray)
+
+			lossTensor[1][actionIndex] = temporalDifferenceError
+
+			temporalDifferenceErrorTensor[1][i] = temporalDifferenceError
+			
+			if (EligibilityTrace) then lossTensor = EligibilityTrace:calculate(lossTensor) end
+			
+			local negatedLossTensor = AqwamTensorLibrary:unaryMinus(lossTensor) -- The original non-deep Q-Learning version performs gradient ascent. But the neural network performs gradient descent. So, we need to negate the error tensor to make the neural network to perform gradient ascent.
+
+			Model:update(negatedLossTensor)
+			
+			WeightTensorArrayArray[i] = Model:getWeightTensorArray(true)
+			
+			hiddenStateTensorArray[i] = previousTensor
+
+		end
+
+		return temporalDifferenceErrorTensor
 
 	end)
 
-	NewRecurrentAdvantageActorCriticModel:setResetFunction(function()
-
-		table.clear(featureTensorHistory)
-
-		table.clear(actionProbabilityTensorHistory)
-
-		table.clear(advantageValueHistory)
-
+	NewDeepClippedDoubleQLearningModel:setEpisodeUpdateFunction(function(terminalStateValue) 
+		
+		NewDeepClippedDoubleQLearningModel.EligibilityTrace:reset()
+		
 	end)
 
-	return NewRecurrentAdvantageActorCriticModel
+	NewDeepClippedDoubleQLearningModel:setResetFunction(function() 
+		
+		NewDeepClippedDoubleQLearningModel.EligibilityTrace:reset()
+		
+	end)
+
+	return NewDeepClippedDoubleQLearningModel
 
 end
 
-return RecurrentAdvantageActorCriticModel
+function DeepClippedDoubleQLearningModel:setWeightTensorArray1(WeightTensorArray1)
+
+	self.WeightTensorArrayArray[1] = WeightTensorArray1
+
+end
+
+function DeepClippedDoubleQLearningModel:setWeightTensorArray2(WeightTensorArray2)
+
+	self.WeightTensorArrayArray[2] = WeightTensorArray2
+
+end
+
+function DeepClippedDoubleQLearningModel:getWeightTensorArray1(WeightTensorArray1)
+
+	return self.WeightTensorArrayArray[1]
+
+end
+
+function DeepClippedDoubleQLearningModel:getWeightTensorArray2(WeightTensorArray2)
+
+	return self.WeightTensorArrayArray[2]
+
+end
+
+return DeepClippedDoubleQLearningModel
