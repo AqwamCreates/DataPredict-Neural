@@ -36,8 +36,6 @@ DeepQLearningModel.__index = DeepQLearningModel
 
 setmetatable(DeepQLearningModel, ReinforcementLearningBaseModel)
 
-local defaultLambda = 0
-
 function DeepQLearningModel.new(parameterDictionary)
 	
 	parameterDictionary = parameterDictionary or {}
@@ -48,17 +46,15 @@ function DeepQLearningModel.new(parameterDictionary)
 	
 	NewDeepQLearningModel:setName("DeepQLearning")
 	
-	NewDeepQLearningModel.lambda = parameterDictionary.lambda or defaultLambda
-	
-	NewDeepQLearningModel.eligibilityTraceTensor = parameterDictionary.eligibilityTraceTensor
+	NewDeepQLearningModel.EligibilityTrace = parameterDictionary.EligibilityTrace
 
 	NewDeepQLearningModel:setCategoricalUpdateFunction(function(previousFeatureTensor, action, rewardValue, currentFeatureTensor, terminalStateValue)
 
 		local Model = NewDeepQLearningModel.Model
 		
-		local lambda = NewDeepQLearningModel.lambda
-		
 		local discountFactor = NewDeepQLearningModel.discountFactor
+		
+		local EligibilityTrace = NewDeepQLearningModel.EligibilityTrace
 
 		local predictedValue, maxQValue = Model:predict(currentFeatureTensor)
 
@@ -82,23 +78,11 @@ function DeepQLearningModel.new(parameterDictionary)
 
 		temporalDifferenceErrorTensor[1][actionIndex] = temporalDifferenceError
 		
-		if (lambda ~= 0) then
+		if (EligibilityTrace) then
 
-			local ClassesList = Model:getClassesList()
+			EligibilityTrace:increment(actionIndex, discountFactor, outputDimensionSizeArray)
 
-			local actionIndex = table.find(ClassesList, action)
-
-			local eligibilityTraceTensor = NewDeepQLearningModel.eligibilityTraceTensor
-
-			if (not eligibilityTraceTensor) then eligibilityTraceTensor = AqwamTensorLibrary:createTensor(outputDimensionSizeArray, 0) end
-
-			eligibilityTraceTensor = AqwamTensorLibrary:multiply(eligibilityTraceTensor, discountFactor * lambda)
-
-			eligibilityTraceTensor[1][actionIndex] = eligibilityTraceTensor[1][actionIndex] + 1
-
-			temporalDifferenceErrorTensor = AqwamTensorLibrary:multiply(temporalDifferenceErrorTensor, eligibilityTraceTensor)
-
-			NewDeepQLearningModel.eligibilityTraceTensor = eligibilityTraceTensor
+			temporalDifferenceErrorTensor = EligibilityTrace:calculate(temporalDifferenceErrorTensor)
 
 		end
 		
@@ -114,13 +98,13 @@ function DeepQLearningModel.new(parameterDictionary)
 
 	NewDeepQLearningModel:setEpisodeUpdateFunction(function(terminalStateValue) 
 		
-		NewDeepQLearningModel.eligibilityTraceTensor = nil
+		NewDeepQLearningModel.EligibilityTrace:reset()
 		
 	end)
 
 	NewDeepQLearningModel:setResetFunction(function() 
 		
-		NewDeepQLearningModel.eligibilityTraceTensor = nil
+		NewDeepQLearningModel.EligibilityTrace:reset()
 		
 	end)
 
