@@ -46,7 +46,7 @@ function DeepStateActionRewardStateActionModel.new(parameterDictionary)
 	
 	NewDeepStateActionRewardStateActionModel:setName("DeepStateActionRewardStateAction")
 	
-	NewDeepStateActionRewardStateActionModel.EligibilityTrace = NewDeepStateActionRewardStateActionModel.EligibilityTrace
+	NewDeepStateActionRewardStateActionModel.EligibilityTrace = parameterDictionary.EligibilityTrace
 
 	NewDeepStateActionRewardStateActionModel:setCategoricalUpdateFunction(function(previousFeatureTensor, action, rewardValue, currentFeatureTensor, terminalStateValue)
 
