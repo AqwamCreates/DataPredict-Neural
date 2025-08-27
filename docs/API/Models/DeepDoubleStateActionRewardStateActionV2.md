@@ -9,7 +9,7 @@ DeepDoubleStateActionRewardStateActionV2 is a neural network with reinforcement 
 Create new model object. If any of the arguments are nil, default argument values for that argument will be used.
 
 ```
-DeepDoubleStateActionRewardStateAction.new(epsilon: number, averagingRate: number, discountFactor: number): ModelObject
+DeepDoubleStateActionRewardStateAction.new(epsilon: number, averagingRate: number, discountFactor: number, EligibilityTrace: EligibilityTraceObject): ModelObject
 ```
 
 #### Parameters:
@@ -17,6 +17,8 @@ DeepDoubleStateActionRewardStateAction.new(epsilon: number, averagingRate: numbe
 * averagingRate: The higher the value, the faster the weights changes. The value must be set between 0 and 1.
 
 * discountFactor: The higher the value, the more likely it focuses on long-term outcomes. The value must be set between 0 and 1.
+
+* EligibilityTrace: The eligibility trace object to keep track of credit assignments of state-action pairs.
 
 #### Returns:
 
