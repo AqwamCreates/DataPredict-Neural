@@ -36,8 +36,6 @@ DeepClippedDoubleQLearningModel.__index = DeepClippedDoubleQLearningModel
 
 setmetatable(DeepClippedDoubleQLearningModel, ReinforcementLearningBaseModel)
 
-local defaultLambda = 0
-
 function DeepClippedDoubleQLearningModel.new(parameterDictionary)
 	
 	parameterDictionary = parameterDictionary or {}
@@ -48,22 +46,20 @@ function DeepClippedDoubleQLearningModel.new(parameterDictionary)
 	
 	NewDeepClippedDoubleQLearningModel:setName("DeepClippedDoubleQLearning")
 	
-	NewDeepClippedDoubleQLearningModel.lambda = parameterDictionary.lambda or defaultLambda
+	NewDeepClippedDoubleQLearningModel.EligibilityTrace = parameterDictionary.EligibilityTrace
 
 	NewDeepClippedDoubleQLearningModel.WeightTensorArrayArray = {}
-	
-	NewDeepClippedDoubleQLearningModel.eligibilityTraceTensor = parameterDictionary.eligibilityTraceTensor
 
 	NewDeepClippedDoubleQLearningModel:setCategoricalUpdateFunction(function(previousFeatureTensor, action, rewardValue, currentFeatureTensor, terminalStateValue)
 
 		local Model = NewDeepClippedDoubleQLearningModel.Model
 		
-		local lambda = NewDeepClippedDoubleQLearningModel.lambda
-		
 		local discountFactor = NewDeepClippedDoubleQLearningModel.discountFactor
 		
+		local EligibilityTrace = NewDeepClippedDoubleQLearningModel.EligibilityTrace
+		
 		local WeightTensorArrayArray = NewDeepClippedDoubleQLearningModel.WeightTensorArrayArray
-
+		
 		local maxQValueArray = {}
 
 		for i = 1, 2, 1 do
@@ -88,21 +84,13 @@ function DeepClippedDoubleQLearningModel.new(parameterDictionary)
 
 		local numberOfClasses = #ClassesList
 		
-		local eligibilityTraceTensor = NewDeepClippedDoubleQLearningModel.eligibilityTraceTensor
-		
 		local outputDimensionSizeArray = {1, numberOfClasses}
 
 		local temporalDifferenceErrorTensor = AqwamTensorLibrary:createTensor({1, 2})
 		
-		if (lambda ~= 0) then
+		if (EligibilityTrace) then
 
-			if (not eligibilityTraceTensor) then eligibilityTraceTensor = AqwamTensorLibrary:createTensor(outputDimensionSizeArray, 0) end
-
-			eligibilityTraceTensor = AqwamTensorLibrary:multiply(eligibilityTraceTensor, discountFactor * lambda)
-
-			eligibilityTraceTensor[1][actionIndex] = eligibilityTraceTensor[1][actionIndex] + 1
-
-			NewDeepClippedDoubleQLearningModel.eligibilityTraceTensor = eligibilityTraceTensor
+			EligibilityTrace:increment(actionIndex, discountFactor, outputDimensionSizeArray)
 
 		end
 
@@ -122,7 +110,7 @@ function DeepClippedDoubleQLearningModel.new(parameterDictionary)
 
 			temporalDifferenceErrorTensor[1][i] = temporalDifferenceError
 			
-			if (lambda ~= 0) then lossTensor = AqwamTensorLibrary:multiply(lossTensor, eligibilityTraceTensor) end
+			if (EligibilityTrace) then lossTensor = EligibilityTrace:calculate(lossTensor) end
 			
 			local negatedLossTensor = AqwamTensorLibrary:unaryMinus(lossTensor) -- The original non-deep Q-Learning version performs gradient ascent. But the neural network performs gradient descent. So, we need to negate the error tensor to make the neural network to perform gradient ascent.
 
@@ -138,13 +126,13 @@ function DeepClippedDoubleQLearningModel.new(parameterDictionary)
 
 	NewDeepClippedDoubleQLearningModel:setEpisodeUpdateFunction(function(terminalStateValue) 
 		
-		NewDeepClippedDoubleQLearningModel.eligibilityTraceTensor = nil
+		NewDeepClippedDoubleQLearningModel.EligibilityTrace:reset()
 		
 	end)
 
 	NewDeepClippedDoubleQLearningModel:setResetFunction(function() 
 		
-		NewDeepClippedDoubleQLearningModel.eligibilityTraceTensor = nil
+		NewDeepClippedDoubleQLearningModel.EligibilityTrace:reset()
 		
 	end)
 
