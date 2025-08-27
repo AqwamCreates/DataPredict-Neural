@@ -28,142 +28,236 @@
 
 local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
 
-local RecurrentReinforcementLearningBaseModel = require(script.Parent.RecurrentReinforcementLearningBaseModel)
+local DualRecurrentReinforcementLearningBaseModel = require(script.Parent.DualRecurrentReinforcementLearningBaseModel)
 
-RecurrentDeepDoubleQLearningModel = {}
+RecurrentDeepDoubleStateActionRewardStateActionModel = {}
 
-RecurrentDeepDoubleQLearningModel.__index = RecurrentDeepDoubleQLearningModel
+RecurrentDeepDoubleStateActionRewardStateActionModel.__index = RecurrentDeepDoubleStateActionRewardStateActionModel
 
-setmetatable(RecurrentDeepDoubleQLearningModel, RecurrentReinforcementLearningBaseModel)
+setmetatable(RecurrentDeepDoubleStateActionRewardStateActionModel, DualRecurrentReinforcementLearningBaseModel)
 
-local defaultAveragingRate = 0.995
+local function deepCopyTable(original, copies)
 
-local defaultLambda = 0
+	copies = copies or {}
 
-local function rateAverageWeightTensorArray(averagingRate, TargetWeightTensorArray, PrimaryWeightTensorArray)
+	local originalType = type(original)
 
-	local averagingRateComplement = 1 - averagingRate
+	local copy
 
-	for layer = 1, #TargetWeightTensorArray, 1 do
+	if (originalType == 'table') then
 
-		local TargetWeightTensorArrayPart = AqwamTensorLibrary:multiply(averagingRate, TargetWeightTensorArray[layer])
+		if copies[original] then
 
-		local PrimaryWeightTensorArrayPart = AqwamTensorLibrary:multiply(averagingRateComplement, PrimaryWeightTensorArray[layer])
+			copy = copies[original]
 
-		TargetWeightTensorArray[layer] = AqwamTensorLibrary:add(TargetWeightTensorArrayPart, PrimaryWeightTensorArrayPart)
+		else
+
+			copy = {}
+
+			copies[original] = copy
+
+			for originalKey, originalValue in next, original, nil do
+
+				copy[deepCopyTable(originalKey, copies)] = deepCopyTable(originalValue, copies)
+
+			end
+
+			setmetatable(copy, deepCopyTable(getmetatable(original), copies))
+
+		end
+
+	else
+
+		copy = original
 
 	end
 
-	return TargetWeightTensorArray
+	return copy
 
 end
 
-function RecurrentDeepDoubleQLearningModel.new(parameterDictionary)
+function RecurrentDeepDoubleStateActionRewardStateActionModel.new(parameterDictionary)
 
 	parameterDictionary = parameterDictionary or {}
 
-	local NewRecurrentDeepDoubleQLearningModel = RecurrentReinforcementLearningBaseModel.new(parameterDictionary)
+	local NewRecurrentDeepDoubleStateActionRewardStateActionModel = DualRecurrentReinforcementLearningBaseModel.new(parameterDictionary)
 
-	setmetatable(NewRecurrentDeepDoubleQLearningModel, RecurrentDeepDoubleQLearningModel)
+	setmetatable(NewRecurrentDeepDoubleStateActionRewardStateActionModel, RecurrentDeepDoubleStateActionRewardStateActionModel)
 
-	NewRecurrentDeepDoubleQLearningModel:setName("RecurrentDeepDoubleQLearning")
+	NewRecurrentDeepDoubleStateActionRewardStateActionModel:setName("RecurrentDeepDoubleStateActionRewardStateAction")
 
-	NewRecurrentDeepDoubleQLearningModel.averagingRate = parameterDictionary.averagingRate or defaultAveragingRate
+	NewRecurrentDeepDoubleStateActionRewardStateActionModel.EligibilityTrace = parameterDictionary.EligibilityTrace
 
-	NewRecurrentDeepDoubleQLearningModel.lambda = parameterDictionary.lambda or defaultLambda
+	NewRecurrentDeepDoubleStateActionRewardStateActionModel.WeightTensorArrayArray = parameterDictionary.WeightTensorArrayArray or {}
 
-	NewRecurrentDeepDoubleQLearningModel.eligibilityTraceTensor = parameterDictionary.eligibilityTraceTensor
+	NewRecurrentDeepDoubleStateActionRewardStateActionModel:setCategoricalUpdateFunction(function(previousFeatureTensor, action, rewardValue, currentFeatureTensor, terminalStateValue)
 
-	NewRecurrentDeepDoubleQLearningModel:setCategoricalUpdateFunction(function(previousFeatureTensor, action, rewardValue, currentFeatureTensor, terminalStateValue)
+		local Model = NewRecurrentDeepDoubleStateActionRewardStateActionModel.Model
 
-		local Model = NewRecurrentDeepDoubleQLearningModel.Model
-
-		local lambda = NewRecurrentDeepDoubleQLearningModel.lambda
-
-		local discountFactor = NewRecurrentDeepDoubleQLearningModel.discountFactor
+		local hiddenStateTensorArray =  NewRecurrentDeepDoubleStateActionRewardStateActionModel.hiddenStateTensorArray
 		
-		local hiddenStateTensor = NewRecurrentDeepDoubleQLearningModel.hiddenStateTensor
+		local WeightTensorArrayArray = NewRecurrentDeepDoubleStateActionRewardStateActionModel.WeightTensorArrayArray
 
-		local ClassesList = Model:getClassesList()
+		local randomProbability = math.random()
 
-		local numberOfClasses = #ClassesList
+		local updateSecondModel = (randomProbability >= 0.5)
 
-		local outputDimensionSizeArray = {1, numberOfClasses}
+		local selectedModelNumberForTargetTensor = (updateSecondModel and 1) or 2
 
-		if (not hiddenStateTensor) then hiddenStateTensor = AqwamTensorLibrary:createTensor(outputDimensionSizeArray) end
-		
-		local previousQTensor = Model:forwardPropagate(previousFeatureTensor, hiddenStateTensor)
+		local selectedModelNumberForUpdate = (updateSecondModel and 2) or 1
 
-		local _, maxQValue = Model:predict(currentFeatureTensor, previousQTensor)
+		local temporalDifferenceErrorTensor = NewRecurrentDeepDoubleStateActionRewardStateActionModel:generateLossTensor(previousFeatureTensor, action, rewardValue, currentFeatureTensor, terminalStateValue, selectedModelNumberForTargetTensor, selectedModelNumberForUpdate)
 
-		local PrimaryWeightTensorArray = Model:getWeightTensorArray(true)
+		local negatedTemporalDifferenceErrorTensor = AqwamTensorLibrary:unaryMinus(temporalDifferenceErrorTensor) -- The original non-deep SARSA version performs gradient ascent. But the neural network performs gradient descent. So, we need to negate the error tensor to make the neural network to perform gradient ascent.
 
-		local targetValue = rewardValue + (discountFactor * (1 - terminalStateValue) * maxQValue[1][1])
+		Model:setWeightTensorArray(WeightTensorArrayArray[selectedModelNumberForUpdate], true)
+
+		local selectedActionTensor = Model:forwardPropagate(previousFeatureTensor, hiddenStateTensorArray[selectedModelNumberForUpdate])
+
+		Model:update(negatedTemporalDifferenceErrorTensor)
+
+		WeightTensorArrayArray[selectedModelNumberForUpdate] = Model:getWeightTensorArray(true)
+
+		Model:setWeightTensorArray(WeightTensorArrayArray[selectedModelNumberForTargetTensor], true)
+
+		local targetActionTensor = Model:forwardPropagate(previousFeatureTensor, hiddenStateTensorArray[selectedModelNumberForTargetTensor])
+
+		hiddenStateTensorArray[selectedModelNumberForUpdate] = selectedActionTensor
+
+		hiddenStateTensorArray[selectedModelNumberForTargetTensor] = targetActionTensor
+
+		return temporalDifferenceErrorTensor
+
+	end)
+
+	NewRecurrentDeepDoubleStateActionRewardStateActionModel:setEpisodeUpdateFunction(function(terminalStateValue) 
+
+		NewRecurrentDeepDoubleStateActionRewardStateActionModel.EligibilityTrace:reset()
+
+	end)
+
+	NewRecurrentDeepDoubleStateActionRewardStateActionModel:setResetFunction(function()
+
+		NewRecurrentDeepDoubleStateActionRewardStateActionModel.EligibilityTrace:reset()
+
+	end)
+
+	return NewRecurrentDeepDoubleStateActionRewardStateActionModel
+
+end
+
+function RecurrentDeepDoubleStateActionRewardStateActionModel:generateLossTensor(previousFeatureTensor, action, rewardValue, currentFeatureTensor, terminalStateValue, selectedModelNumberForTargetTensor, selectedModelNumberForUpdate)
+
+	local Model = self.Model
+
+	local discountFactor = self.discountFactor
+	
+	local EligibilityTrace = self.EligibilityTrace
+	
+	local hiddenStateTensorArray = self.hiddenStateTensorArray
+
+	local WeightTensorArrayArray = self.WeightTensorArrayArray
+
+	local ClassesList = Model:getClassesList()
+
+	local numberOfClasses = #ClassesList
+
+	local outputDimensionSizeArray = {1, numberOfClasses}
+
+	if (not hiddenStateTensorArray[1]) then hiddenStateTensorArray[1] = AqwamTensorLibrary:createTensor(outputDimensionSizeArray) end
+
+	if (not hiddenStateTensorArray[2]) then hiddenStateTensorArray[2] = AqwamTensorLibrary:createTensor(outputDimensionSizeArray) end
+
+	if (not WeightTensorArrayArray[1]) then WeightTensorArrayArray[1] = Model:getWeightTensorArray(true) end
+
+	if (not WeightTensorArrayArray[2]) then WeightTensorArrayArray[2] = Model:getWeightTensorArray(true) end
+	
+	Model:setWeightTensorArray(WeightTensorArrayArray[selectedModelNumberForUpdate], true)
+
+	local previousTensor = Model:forwardPropagate(previousFeatureTensor, hiddenStateTensorArray[selectedModelNumberForUpdate])
+
+	Model:setWeightTensorArray(WeightTensorArrayArray[selectedModelNumberForTargetTensor], true)
+	
+	local previousTargetQTensor = Model:forwardPropagate(previousFeatureTensor, hiddenStateTensorArray[selectedModelNumberForTargetTensor])
+
+	local qTensor = Model:forwardPropagate(currentFeatureTensor, previousTargetQTensor)
+
+	local discountedQTensor = AqwamTensorLibrary:multiply(discountFactor, qTensor, (1 - terminalStateValue))
+
+	local targetTensor = AqwamTensorLibrary:add(rewardValue, discountedQTensor)
+
+	local temporalDifferenceErrorTensor = AqwamTensorLibrary:subtract(targetTensor, previousTensor)
+
+	if (EligibilityTrace) then
 
 		local ClassesList = Model:getClassesList()
 
 		local actionIndex = table.find(ClassesList, action)
 
-		local lastValue = previousQTensor[1][actionIndex]
+		EligibilityTrace:increment(actionIndex, discountFactor, {1, #ClassesList})
 
-		local temporalDifferenceError = targetValue - lastValue
+		temporalDifferenceErrorTensor = EligibilityTrace:calculate(temporalDifferenceErrorTensor)
 
-		local numberOfClasses = #ClassesList
+	end
 
-		local outputDimensionSizeArray = {1, numberOfClasses}
-
-		local temporalDifferenceErrorTensor = AqwamTensorLibrary:createTensor(outputDimensionSizeArray, 0)
-
-		temporalDifferenceErrorTensor[1][actionIndex] = temporalDifferenceError
-
-		if (lambda ~= 0) then
-
-			local eligibilityTraceTensor = NewRecurrentDeepDoubleQLearningModel.eligibilityTraceTensor
-
-			if (not eligibilityTraceTensor) then eligibilityTraceTensor = AqwamTensorLibrary:createTensor(outputDimensionSizeArray, 0) end
-
-			eligibilityTraceTensor = AqwamTensorLibrary:multiply(eligibilityTraceTensor, discountFactor * lambda)
-
-			eligibilityTraceTensor[1][actionIndex] = eligibilityTraceTensor[1][actionIndex] + 1
-
-			temporalDifferenceErrorTensor = AqwamTensorLibrary:multiply(temporalDifferenceErrorTensor, eligibilityTraceTensor)
-
-			NewRecurrentDeepDoubleQLearningModel.eligibilityTraceTensor = eligibilityTraceTensor
-
-		end
-
-		local negatedTemporalDifferenceErrorTensor = AqwamTensorLibrary:unaryMinus(temporalDifferenceErrorTensor) -- The original non-deep Q-Learning version performs gradient ascent. But the neural network performs gradient descent. So, we need to negate the error tensor to make the neural network to perform gradient ascent.
-
-		Model:forwardPropagate(previousFeatureTensor, hiddenStateTensor)
-
-		Model:update(negatedTemporalDifferenceErrorTensor)
-
-		local TargetWeightTensorArray = Model:getWeightTensorArray(true)
-
-		TargetWeightTensorArray = rateAverageWeightTensorArray(NewRecurrentDeepDoubleQLearningModel.averagingRate, TargetWeightTensorArray, PrimaryWeightTensorArray)
-
-		Model:setWeightTensorArray(TargetWeightTensorArray, true)
-		
-		NewRecurrentDeepDoubleQLearningModel.hiddenStateTensor = previousQTensor
-
-		return temporalDifferenceError
-
-	end)
-
-	NewRecurrentDeepDoubleQLearningModel:setEpisodeUpdateFunction(function(terminalStateValue) 
-
-		NewRecurrentDeepDoubleQLearningModel.eligibilityTraceTensor = nil
-
-	end)
-
-	NewRecurrentDeepDoubleQLearningModel:setResetFunction(function() 
-
-		NewRecurrentDeepDoubleQLearningModel.eligibilityTraceTensor = nil
-
-	end)
-
-	return NewRecurrentDeepDoubleQLearningModel
+	return temporalDifferenceErrorTensor
 
 end
 
-return RecurrentDeepDoubleQLearningModel
+function RecurrentDeepDoubleStateActionRewardStateActionModel:setWeightTensorArray1(WeightTensorArray1, doNotRecurrentDeepCopy)
+
+	if (doNotRecurrentDeepCopy) then
+
+		self.WeightTensorArrayArray[1] = WeightTensorArray1
+
+	else
+
+		self.WeightTensorArrayArray[1] = deepCopyTable(WeightTensorArray1)
+
+	end
+
+end
+
+function RecurrentDeepDoubleStateActionRewardStateActionModel:setWeightTensorArray2(WeightTensorArray2, doNotRecurrentDeepCopy)
+
+	if (doNotRecurrentDeepCopy) then
+
+		self.WeightTensorArrayArray[2] = WeightTensorArray2
+
+	else
+
+		self.WeightTensorArrayArray[2] = deepCopyTable(WeightTensorArray2)
+
+	end
+
+end
+
+function RecurrentDeepDoubleStateActionRewardStateActionModel:getWeightTensorArray1(doNotRecurrentDeepCopy)
+
+	if (doNotRecurrentDeepCopy) then
+
+		return self.WeightTensorArrayArray[1]
+
+	else
+
+		return deepCopyTable(self.WeightTensorArrayArray[1])
+
+	end
+
+end
+
+function RecurrentDeepDoubleStateActionRewardStateActionModel:getWeightTensorArray2(doNotRecurrentDeepCopy)
+
+	if (doNotRecurrentDeepCopy) then
+
+		return self.WeightTensorArrayArray[2]
+
+	else
+
+		return deepCopyTable(self.WeightTensorArrayArray[2])
+
+	end
+
+end
+
+return RecurrentDeepDoubleStateActionRewardStateActionModel
