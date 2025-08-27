@@ -40,8 +40,6 @@ local defaultEpsilon = 0.5
 
 local defaultAveragingRate = 0.995
 
-local defaultLambda = 0
-
 local function rateAverageWeightTensorArray(averagingRate, TargetWeightTensorArray, PrimaryWeightTensorArray)
 
 	local averagingRateComplement = 1 - averagingRate
@@ -74,19 +72,17 @@ function DeepDoubleExpectedStateActionRewardStateActionModel.new(parameterDictio
 
 	NewDeepDoubleExpectedStateActionRewardStateActionModel.averagingRate = parameterDictionary.averagingRate or defaultAveragingRate
 	
-	NewDeepDoubleExpectedStateActionRewardStateActionModel.lambda = parameterDictionary.lambda or defaultLambda
-	
-	NewDeepDoubleExpectedStateActionRewardStateActionModel.eligibilityTraceTensor = parameterDictionary.eligibilityTraceTensor
+	NewDeepDoubleExpectedStateActionRewardStateActionModel.EligibilityTrace = parameterDictionary.EligibilityTrace
 
 	NewDeepDoubleExpectedStateActionRewardStateActionModel:setCategoricalUpdateFunction(function(previousFeatureTensor, action, rewardValue, currentFeatureTensor, terminalStateValue)
 
 		local Model = NewDeepDoubleExpectedStateActionRewardStateActionModel.Model
 
 		local epsilon = NewDeepDoubleExpectedStateActionRewardStateActionModel.epsilon
-		
-		local lambda = NewDeepDoubleExpectedStateActionRewardStateActionModel.lambda
 
 		local discountFactor = NewDeepDoubleExpectedStateActionRewardStateActionModel.discountFactor
+		
+		local EligibilityTrace = NewDeepDoubleExpectedStateActionRewardStateActionModel.EligibilityTrace
 
 		local expectedQValue = 0
 
@@ -148,19 +144,11 @@ function DeepDoubleExpectedStateActionRewardStateActionModel.new(parameterDictio
 
 		temporalDifferenceErrorTensor[1][actionIndex] = temporalDifferenceError
 		
-		if (lambda ~= 0) then
+		if (EligibilityTrace) then
 
-			local eligibilityTraceTensor = NewDeepDoubleExpectedStateActionRewardStateActionModel.eligibilityTraceTensor
+			EligibilityTrace:increment(actionIndex, discountFactor, outputDimensionSizeArray)
 
-			if (not eligibilityTraceTensor) then eligibilityTraceTensor = AqwamTensorLibrary:createTensor(outputDimensionSizeArray, 0) end
-
-			eligibilityTraceTensor = AqwamTensorLibrary:multiply(eligibilityTraceTensor, discountFactor * lambda)
-
-			eligibilityTraceTensor[1][actionIndex] = eligibilityTraceTensor[1][actionIndex] + 1
-
-			temporalDifferenceErrorTensor = AqwamTensorLibrary:multiply(temporalDifferenceErrorTensor, eligibilityTraceTensor)
-
-			NewDeepDoubleExpectedStateActionRewardStateActionModel.eligibilityTraceTensor = eligibilityTraceTensor
+			temporalDifferenceErrorTensor = EligibilityTrace:calculate(temporalDifferenceErrorTensor)
 
 		end
 		
@@ -182,13 +170,13 @@ function DeepDoubleExpectedStateActionRewardStateActionModel.new(parameterDictio
 
 	NewDeepDoubleExpectedStateActionRewardStateActionModel:setEpisodeUpdateFunction(function(terminalStateValue) 
 		
-		NewDeepDoubleExpectedStateActionRewardStateActionModel.eligibilityTraceTensor = nil
+		NewDeepDoubleExpectedStateActionRewardStateActionModel.EligibilityTrace:reset()
 		
 	end)
 
 	NewDeepDoubleExpectedStateActionRewardStateActionModel:setResetFunction(function() 
 		
-		NewDeepDoubleExpectedStateActionRewardStateActionModel.eligibilityTraceTensor = nil
+		NewDeepDoubleExpectedStateActionRewardStateActionModel.EligibilityTrace:reset()
 		
 	end)
 
