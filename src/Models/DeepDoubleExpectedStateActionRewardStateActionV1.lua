@@ -38,8 +38,6 @@ setmetatable(DeepDoubleExpectedStateActionRewardStateActionModel, ReinforcementL
 
 local defaultEpsilon = 0.5
 
-local defaultLambda = 0
-
 local function deepCopyTable(original, copies)
 
 	copies = copies or {}
@@ -92,11 +90,9 @@ function DeepDoubleExpectedStateActionRewardStateActionModel.new(parameterDictio
 	
 	NewDeepDoubleExpectedStateActionRewardStateActionModel.epsilon = parameterDictionary.epsilon or defaultEpsilon
 	
-	NewDeepDoubleExpectedStateActionRewardStateActionModel.lambda = parameterDictionary.lambda or defaultLambda
+	NewDeepDoubleExpectedStateActionRewardStateActionModel.EligibilityTrace = parameterDictionary.EligibilityTrace
 
 	NewDeepDoubleExpectedStateActionRewardStateActionModel.WeightTensorArrayArray = parameterDictionary.WeightTensorArrayArray or {}
-	
-	NewDeepDoubleExpectedStateActionRewardStateActionModel.eligibilityTraceTensor = parameterDictionary.eligibilityTraceTensor
 
 	NewDeepDoubleExpectedStateActionRewardStateActionModel:setCategoricalUpdateFunction(function(previousFeatureTensor, action, rewardValue, currentFeatureTensor, terminalStateValue)
 
@@ -130,13 +126,13 @@ function DeepDoubleExpectedStateActionRewardStateActionModel.new(parameterDictio
 
 	NewDeepDoubleExpectedStateActionRewardStateActionModel:setEpisodeUpdateFunction(function(terminalStateValue) 
 		
-		NewDeepDoubleExpectedStateActionRewardStateActionModel.eligibilityTraceTensor = nil
+		NewDeepDoubleExpectedStateActionRewardStateActionModel.EligibilityTrace:reset()
 		
 	end)
 
 	NewDeepDoubleExpectedStateActionRewardStateActionModel:setResetFunction(function() 
 		
-		NewDeepDoubleExpectedStateActionRewardStateActionModel.eligibilityTraceTensor = nil
+		NewDeepDoubleExpectedStateActionRewardStateActionModel.EligibilityTrace:reset()
 		
 	end)
 
@@ -152,7 +148,7 @@ function DeepDoubleExpectedStateActionRewardStateActionModel:generateLossTensor(
 	
 	local epsilon = self.epsilon
 
-	local lambda = self.lambda
+	local EligibilityTrace = self.EligibilityTrace
 	
 	local WeightTensorArrayArray = self.WeightTensorArrayArray
 
@@ -222,19 +218,11 @@ function DeepDoubleExpectedStateActionRewardStateActionModel:generateLossTensor(
 
 	temporalDifferenceErrorTensor[1][actionIndex] = temporalDifferenceError
 	
-	if (lambda ~= 0) then
+	if (EligibilityTrace) then
 
-		local eligibilityTraceTensor = self.eligibilityTraceTensor
+		EligibilityTrace:increment(actionIndex, discountFactor, outputDimensionSizeArray)
 
-		if (not eligibilityTraceTensor) then eligibilityTraceTensor = AqwamTensorLibrary:createTensor(outputDimensionSizeArray, 0) end
-
-		eligibilityTraceTensor = AqwamTensorLibrary:multiply(eligibilityTraceTensor, discountFactor * lambda)
-
-		eligibilityTraceTensor[1][actionIndex] = eligibilityTraceTensor[1][actionIndex] + 1
-
-		temporalDifferenceErrorTensor = AqwamTensorLibrary:multiply(temporalDifferenceErrorTensor, eligibilityTraceTensor)
-
-		self.eligibilityTraceTensor = eligibilityTraceTensor
+		temporalDifferenceErrorTensor = EligibilityTrace:calculate(temporalDifferenceErrorTensor)
 
 	end
 
