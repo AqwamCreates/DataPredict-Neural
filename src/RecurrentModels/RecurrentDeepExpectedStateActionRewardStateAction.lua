@@ -38,8 +38,6 @@ setmetatable(RecurrentDeepExpectedStateActionRewardStateActionModel, RecurrentRe
 
 local defaultEpsilon = 0.5
 
-local defaultLambda = 0
-
 function RecurrentDeepExpectedStateActionRewardStateActionModel.new(parameterDictionary)
 
 	parameterDictionary = parameterDictionary or {}
@@ -52,9 +50,7 @@ function RecurrentDeepExpectedStateActionRewardStateActionModel.new(parameterDic
 
 	NewRecurrentDeepExpectedStateActionRewardStateActionModel.epsilon = parameterDictionary.epsilon or defaultEpsilon
 
-	NewRecurrentDeepExpectedStateActionRewardStateActionModel.lambda = parameterDictionary.lambda or defaultLambda
-
-	NewRecurrentDeepExpectedStateActionRewardStateActionModel.eligibilityTraceTensor = parameterDictionary.eligibilityTraceTensor
+	NewRecurrentDeepExpectedStateActionRewardStateActionModel.EligibilityTrace = parameterDictionary.EligibilityTrace
 
 	NewRecurrentDeepExpectedStateActionRewardStateActionModel:setCategoricalUpdateFunction(function(previousFeatureTensor, action, rewardValue, currentFeatureTensor, terminalStateValue)
 
@@ -62,9 +58,9 @@ function RecurrentDeepExpectedStateActionRewardStateActionModel.new(parameterDic
 
 		local epsilon = NewRecurrentDeepExpectedStateActionRewardStateActionModel.epsilon
 
-		local lambda = NewRecurrentDeepExpectedStateActionRewardStateActionModel.lambda
-
 		local discountFactor = NewRecurrentDeepExpectedStateActionRewardStateActionModel.discountFactor
+		
+		local EligibilityTrace = NewRecurrentDeepExpectedStateActionRewardStateActionModel.EligibilityTrace
 		
 		local hiddenStateTensor = NewRecurrentDeepExpectedStateActionRewardStateActionModel.hiddenStateTensor
 		
@@ -124,21 +120,11 @@ function RecurrentDeepExpectedStateActionRewardStateActionModel.new(parameterDic
 
 		temporalDifferenceErrorTensor[1][actionIndex] = temporalDifferenceError
 
-		if (lambda ~= 0) then
+		if (EligibilityTrace) then
 
-			local actionIndex = table.find(ClassesList, action)
+			EligibilityTrace:increment(actionIndex, discountFactor, outputDimensionSizeArray)
 
-			local eligibilityTraceTensor = NewRecurrentDeepExpectedStateActionRewardStateActionModel.eligibilityTraceTensor
-
-			if (not eligibilityTraceTensor) then eligibilityTraceTensor = AqwamTensorLibrary:createTensor(outputDimensionSizeArray, 0) end
-
-			eligibilityTraceTensor = AqwamTensorLibrary:multiply(eligibilityTraceTensor, discountFactor * lambda)
-
-			eligibilityTraceTensor[1][actionIndex] = eligibilityTraceTensor[1][actionIndex] + 1
-
-			temporalDifferenceErrorTensor = AqwamTensorLibrary:multiply(temporalDifferenceErrorTensor, eligibilityTraceTensor)
-
-			NewRecurrentDeepExpectedStateActionRewardStateActionModel.eligibilityTraceTensor = eligibilityTraceTensor
+			temporalDifferenceErrorTensor = EligibilityTrace:calculate(temporalDifferenceErrorTensor)
 
 		end
 
@@ -156,13 +142,13 @@ function RecurrentDeepExpectedStateActionRewardStateActionModel.new(parameterDic
 
 	NewRecurrentDeepExpectedStateActionRewardStateActionModel:setEpisodeUpdateFunction(function(terminalStateValue) 
 
-		NewRecurrentDeepExpectedStateActionRewardStateActionModel.eligibilityTraceTensor = nil
+		NewRecurrentDeepExpectedStateActionRewardStateActionModel.EligibilityTrace:reset()
 
 	end)
 
 	NewRecurrentDeepExpectedStateActionRewardStateActionModel:setResetFunction(function() 
 
-		NewRecurrentDeepExpectedStateActionRewardStateActionModel.eligibilityTraceTensor = nil
+		NewRecurrentDeepExpectedStateActionRewardStateActionModel.EligibilityTrace:reset()
 
 	end)
 
