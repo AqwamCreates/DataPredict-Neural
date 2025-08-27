@@ -36,8 +36,6 @@ DeepDoubleQLearningModel.__index = DeepDoubleQLearningModel
 
 setmetatable(DeepDoubleQLearningModel, ReinforcementLearningBaseModel)
 
-local defaultLambda = 0
-
 local function deepCopyTable(original, copies)
 
 	copies = copies or {}
@@ -88,11 +86,9 @@ function DeepDoubleQLearningModel.new(parameterDictionary)
 	
 	NewDeepDoubleQLearningModel:setName("DeepDoubleQLearning")
 	
-	NewDeepDoubleQLearningModel.lambda = parameterDictionary.lambda or defaultLambda
+	NewDeepDoubleQLearningModel.EligibilityTrace = parameterDictionary.EligibilityTrace
 
 	NewDeepDoubleQLearningModel.WeightTensorArrayArray = parameterDictionary.WeightTensorArrayArray or {}
-	
-	NewDeepDoubleQLearningModel.eligibilityTraceTensor = parameterDictionary.eligibilityTraceTensor
 
 	NewDeepDoubleQLearningModel:setCategoricalUpdateFunction(function(previousFeatureTensor, action, rewardValue, currentFeatureTensor, terminalStateValue)
 
@@ -126,13 +122,13 @@ function DeepDoubleQLearningModel.new(parameterDictionary)
 
 	NewDeepDoubleQLearningModel:setEpisodeUpdateFunction(function(terminalStateValue)
 		
-		NewDeepDoubleQLearningModel.eligibilityTraceTensor = nil
+		NewDeepDoubleQLearningModel.EligibilityTrace:reset()
 		
 	end)
 
 	NewDeepDoubleQLearningModel:setResetFunction(function() 
 		
-		NewDeepDoubleQLearningModel.eligibilityTraceTensor = nil
+		NewDeepDoubleQLearningModel.EligibilityTrace:reset()
 		
 	end)
 
@@ -144,9 +140,9 @@ function DeepDoubleQLearningModel:generateLossTensor(previousFeatureTensor, acti
 
 	local Model = self.Model
 	
-	local lambda = self.lambda
-	
 	local discountFactor = self.discountFactor
+	
+	local EligibilityTrace = self.EligibilityTrace
 	
 	local WeightTensorArrayArray = self.WeightTensorArrayArray
 
@@ -180,19 +176,11 @@ function DeepDoubleQLearningModel:generateLossTensor(previousFeatureTensor, acti
 
 	temporalDifferenceErrorTensor[1][actionIndex] = temporalDifferenceError
 	
-	if (lambda ~= 0) then
+	if (EligibilityTrace) then
 
-		local eligibilityTraceTensor = self.eligibilityTraceTensor
+		EligibilityTrace:increment(actionIndex, discountFactor, outputDimensionSizeArray)
 
-		if (not eligibilityTraceTensor) then eligibilityTraceTensor = AqwamTensorLibrary:createTensor(outputDimensionSizeArray, 0) end
-
-		eligibilityTraceTensor = AqwamTensorLibrary:multiply(eligibilityTraceTensor, discountFactor * lambda)
-
-		eligibilityTraceTensor[1][actionIndex] = eligibilityTraceTensor[1][actionIndex] + 1
-
-		temporalDifferenceErrorTensor = AqwamTensorLibrary:multiply(temporalDifferenceErrorTensor, eligibilityTraceTensor)
-
-		self.eligibilityTraceTensor = eligibilityTraceTensor
+		temporalDifferenceErrorTensor = EligibilityTrace:calculate(temporalDifferenceErrorTensor)
 
 	end
 
