@@ -20,7 +20,7 @@ The list of items shown below may not necessarily be implemented in the future. 
 
 * Generalized N-Dimensional Convolution Layer And Pooling Layer
 
-  * Currently we have up to 3 dimensional kernels.
+  * Currently, we have up to 3 dimensional kernels.
 
   * Useful for pushing the boundaries of convolutional neural networks.
 
