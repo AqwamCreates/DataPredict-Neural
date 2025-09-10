@@ -25,3 +25,9 @@ The list of items shown below may not necessarily be implemented in the future. 
   * Useful for pushing the boundaries of convolutional neural networks.
 
   * 4 dimensional kernels are used in videos. Unknown use cases for game environments.
+
+* Less Bloated Function Blocks Design
+
+  * Currently, differentiate() function have excessive amount of code being used. Additionally, we have suspicions that our initial code design decision might not have led to efficient backward propagation calculation.
+
+  * However, the current design still enables model parallelism and data parallelism. As such, we are debating or not if there are tradeoff on code design with parellism flexibility.
