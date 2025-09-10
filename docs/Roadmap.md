@@ -4,13 +4,13 @@
 
 The list of items shown below are likely to be implemented due to its mainstream use, increases learning speed or reduces computational resources.
 
-* None.
+* None
 
 ## Nice-To-Have
 
 The list of items shown below may not necesarily implemented in the future. However, they could be prioritized with external interest or funding.
 
-* Dilated Convolution Neural Network.
+* Dilated Convolution Neural Network
 
   * Enables larger receptive field without more weight parameters.
 
@@ -18,7 +18,7 @@ The list of items shown below may not necesarily implemented in the future. Howe
 
   * Unknown use cases related to game environments.
 
-* Generalized N-Dimensional Convolution Layer And Pooling Layer.
+* Generalized N-Dimensional Convolution Layer And Pooling Layer
 
   * Currently we have up to 3 dimensional kernels.
 
