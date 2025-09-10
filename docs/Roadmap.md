@@ -30,4 +30,4 @@ The list of items shown below may not necessarily be implemented in the future. 
 
   * Currently, differentiate() function have excessive amount of code being used. Additionally, we have suspicions that our initial code design decision might not have led to efficient backward propagation calculation.
 
-  * However, the current design still enable model parallelism and data parallelism. As such, we are debating or not if there are tradeoff on code design with parellism flexibility.
+  * However, the current design still enable model parallelism and data parallelism. As such, we are debating or not if there are tradeoff between code design and parellism flexibility.
