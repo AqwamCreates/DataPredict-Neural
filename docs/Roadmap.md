@@ -2,13 +2,13 @@
 
 ## Core
 
-The list of items below are likely to be implemented due to its mainstream use, increases learning speed or reduces computational resources.
+The list of items shown below are likely to be implemented due to its mainstream use, increases learning speed or reduces computational resources.
 
 * None.
 
 ## Nice-To-Have
 
-The list of items below may not necesarily implemented in the future. However, they could be prioritized with external interest or funding.
+The list of items shown below may not necesarily implemented in the future. However, they could be prioritized with external interest or funding.
 
 * Dilated Convolution Neural Network.
 
