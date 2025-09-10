@@ -10,7 +10,7 @@ The list of items shown below are likely to be implemented due to their mainstre
 
 The list of items shown below may not necessarily be implemented in the future. However, they could be prioritized with external demand, collaboration, or funding.
 
-* Dilated Convolution Layer And Pooling Layer
+* Dilated Convolution Layers And Pooling Layers
 
   * Enables larger receptive field without more weight parameters.
 
@@ -18,7 +18,7 @@ The list of items shown below may not necessarily be implemented in the future. 
 
   * Unknown use cases related to game environments.
 
-* Generalized N-Dimensional Convolution Layer And Pooling Layer
+* Generalized N-Dimensional Convolution Layers And Pooling Layers
 
   * Currently, we have up to 3 dimensional kernels.
 
