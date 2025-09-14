@@ -22,7 +22,7 @@ Once you pass this commercial use threshold and want to license it, keep this in
 
 * That fee also includes DataPredict™ and DataPredict™ Axon. All the money will be used for future research and improvements that will be released to the public.
 
-* Think of it this way: you’re not losing 1% of your revenue; you’re investing 1% to unlock the other 30% you might be leaving on the table.
+* Think of it this way: you’re not losing 1% of your revenue; you’re investing 1% to unlock the other 30% you might be leaving on the table. In some cases, the upside could be even higher.
 
 Thanks to the early adopters, I managed to to fund my Master research thesis (that may be published soon) on how to speed up reinforcement learning training by 10 times from the baseline methods. It is already implemented in the DataPredict™ and DataPredict™ Neural libraries!
 
