@@ -22,6 +22,8 @@ Once you pass this commercial use threshold and want to license it, keep this in
 
 * That fee also includes DataPredict™ and DataPredict™ Axon. All the money will be used for future research and improvements that will be released to the public.
 
+* Think of it this way: you’re not losing 1% of your revenue; you’re investing 1% to unlock the other 30% you might be leaving on the table.
+
 Thanks to the early adopters, I managed to to fund my Master research thesis (that may be published soon) on how to speed up reinforcement learning training by 10 times from the baseline methods. It is already implemented in the DataPredict™ and DataPredict™ Neural libraries!
 
 You can download and read the full commercial licensing agreement [here](https://github.com/AqwamCreates/DataPredict/blob/main/docs/DataPredict%20Libraries%20Licensing%20Agreement.docx).
