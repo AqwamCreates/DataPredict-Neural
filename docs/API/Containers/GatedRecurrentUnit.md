@@ -38,4 +38,4 @@ GatedRecurrentUnit:clearAllStoredTensors()
 
 ## Inherited From
 
-* [BaseContainer](../BaseContainer.md)
+* [BaseContainer](BaseContainer.md)
