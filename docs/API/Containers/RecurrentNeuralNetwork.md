@@ -38,4 +38,4 @@ RecurrentNeuralNetwork:clearAllStoredTensors()
 
 ## Inherited From
 
-* [BaseContainer](../BaseContainer.md)
+* [BaseContainer](BaseContainer.md)
