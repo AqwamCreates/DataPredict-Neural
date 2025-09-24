@@ -126,13 +126,17 @@ function DeepClippedDoubleQLearningModel.new(parameterDictionary)
 
 	NewDeepClippedDoubleQLearningModel:setEpisodeUpdateFunction(function(terminalStateValue) 
 		
-		NewDeepClippedDoubleQLearningModel.EligibilityTrace:reset()
+		local EligibilityTrace = NewDeepClippedDoubleQLearningModel.EligibilityTrace
+		
+		if (EligibilityTrace) then EligibilityTrace:reset() end
 		
 	end)
 
 	NewDeepClippedDoubleQLearningModel:setResetFunction(function() 
 		
-		NewDeepClippedDoubleQLearningModel.EligibilityTrace:reset()
+		local EligibilityTrace = NewDeepClippedDoubleQLearningModel.EligibilityTrace
+
+		if (EligibilityTrace) then EligibilityTrace:reset() end
 		
 	end)
 
