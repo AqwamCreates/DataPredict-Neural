@@ -456,32 +456,40 @@ AqwamDeepLearningLibrary.HolderBlocks = {
 }
 
 AqwamDeepLearningLibrary.Optimizers = {
+
+	AdaDelta = require(Optimizers.AdaptiveDelta),
+	AdaptiveDelta = require(Optimizers.AdaptiveDelta),
+	
+	AdaFactor = require(Optimizers.AdaptiveFactor),
+	AdaptiveFactor = require(Optimizers.AdaptiveFactor),
 	
 	AdaGrad = require(Optimizers.AdaptiveGradient),
 	AdaptiveGradient = require(Optimizers.AdaptiveGradient),
 	
-	AdaGradDelta = require(Optimizers.AdaptiveGradientDelta),
-	AdaptiveGradientDelta = require(Optimizers.AdaptiveGradientDelta),
-	
 	Adam = require(Optimizers.AdaptiveMomentEstimation),
 	AdaptiveMomentEstimation = require(Optimizers.AdaptiveMomentEstimation),
-	
-	NAdam = require(Optimizers.NesterovAcceleratedAdaptiveMomentEstimation),
-	NesterovAcceleratedAdaptiveMomentEstimation = require(Optimizers.NesterovAcceleratedAdaptiveMomentEstimation),
 	
 	AdaMax = require(Optimizers.AdaptiveMomentEstimationMaximum),
 	AdaptiveMomentEstimationMaximum = require(Optimizers.AdaptiveMomentEstimationMaximum),
 	
-	RMSProp  = require(Optimizers.RootMeanSquarePropagation),
-	RootMeanSquarePropagation  = require(Optimizers.RootMeanSquarePropagation),
+	AdamW = require(Optimizers.AdaptiveMomentEstimationWeightDecay),
+	AdaptiveMomentEstimationWeightDecay = require(Optimizers.AdaptiveMomentEstimationWeightDecay),
 	
 	Gravity = require(Optimizers.Gravity),
 	
-	Momentum  = require(Optimizers.Momentum),
+	Momentum = require(Optimizers.Momentum),
 	
-	LearningRateStepDecay = require(Optimizers.LearningRateStepDecay),
+	NAdam = require(Optimizers.NesterovAcceleratedAdaptiveMomentEstimation),
+	NesterovAcceleratedAdaptiveMomentEstimation = require(Optimizers.NesterovAcceleratedAdaptiveMomentEstimation),
 	
-	LearningRateTimeDecay = require(Optimizers.LearningRateTimeDecay),
+	RAdam = require(Optimizers.RectifiedAdaptiveMomentEstimation),
+	RectifiedAdaptiveMomentEstimation = require(Optimizers.RectifiedAdaptiveMomentEstimation),
+	
+	RProp = require(Optimizers.ResilientBackwardPropagation),
+	ResilientBackwardPropagation = require(Optimizers.ResilientBackwardPropagation),
+	
+	RMSProp  = require(Optimizers.RootMeanSquarePropagation),
+	RootMeanSquarePropagation = require(Optimizers.RootMeanSquarePropagation),
 	
 }
 
@@ -500,9 +508,29 @@ AqwamDeepLearningLibrary.Regularizers = {
 
 AqwamDeepLearningLibrary.ValueSchedulers = {
 
-	TimeDecay = require(ValueSchedulers.TimeDecay),
-	
-	StepDecay = require(ValueSchedulers.StepDecay),
+	Chained = require(ValueSchedulers.Chained),
+
+	Constant = require(ValueSchedulers.Constant),
+
+	CosineAnnealing = require(ValueSchedulers.CosineAnnealing),
+
+	Exponential = require(ValueSchedulers.Exponential),
+
+	InverseSquareRoot = require(ValueSchedulers.InverseSquareRoot),
+
+	InverseTime = require(ValueSchedulers.InverseTime),
+
+	Linear = require(ValueSchedulers.Linear),
+
+	MultipleStep = require(ValueSchedulers.MultipleStep),
+
+	Multiplicative = require(ValueSchedulers.Multiplicative),
+
+	Polynomial = require(ValueSchedulers.Polynomial),
+
+	Sequential = require(ValueSchedulers.Sequential),
+
+	Step = require(ValueSchedulers.Step),
 
 }
 
