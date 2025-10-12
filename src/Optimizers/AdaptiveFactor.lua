@@ -38,6 +38,8 @@ setmetatable(AdaptiveFactorOptimizer, BaseOptimizer)
 
 local defaultBeta2DecayRate = -0.8
 
+local defaultWeightDecayRate = 0
+
 local defaultClipValue = 1
 
 local defaultEpsilon1 = 1e-16
@@ -55,6 +57,8 @@ function AdaptiveFactorOptimizer.new(parameterDictionary)
 	NewAdaptiveFactorOptimizer:setName("AdaptiveFactor")
 	
 	NewAdaptiveFactorOptimizer.beta2DecayRate = parameterDictionary.beta2DecayRate or defaultBeta2DecayRate
+	
+	NewAdaptiveFactorOptimizer.weightDecayRate = parameterDictionary.weightDecayRate or defaultWeightDecayRate
 	
 	NewAdaptiveFactorOptimizer.clipValue = parameterDictionary.clipValue or defaultClipValue
 	
@@ -76,11 +80,21 @@ function AdaptiveFactorOptimizer.new(parameterDictionary)
 		
 		local beta2DecayRate = NewAdaptiveFactorOptimizer.beta2DecayRate
 		
+		local weightDecayRate = NewAdaptiveFactorOptimizer.weightDecayRate
+		
 		local beta2 = 1 - math.pow(timeValue, beta2DecayRate)
 		
 		local oneMinusBeta2 = 1 - beta2
 		
 		local gradientTensor = costFunctionDerivativeTensor
+		
+		if (weightDecayRate ~= 0) then
+
+			local decayedWeightMatrix = AqwamTensorLibrary:multiply(weightDecayRate, weightTensor)
+
+			gradientTensor = AqwamTensorLibrary:add(gradientTensor, decayedWeightMatrix)
+
+		end
 		
 		local squaredGradientTensor = AqwamTensorLibrary:power(gradientTensor, 2)
 		
@@ -157,6 +171,12 @@ end
 function AdaptiveFactorOptimizer:setBeta2DecayRate(beta2DecayRate)
 
 	self.beta2DecayRate = beta2DecayRate
+
+end
+
+function AdaptiveFactorOptimizer:setWeightDecayRate(weightDecayRate)
+
+	self.weightDecayRate = weightDecayRate
 
 end
 
