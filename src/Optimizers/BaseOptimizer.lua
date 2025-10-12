@@ -2,7 +2,7 @@
 
 	--------------------------------------------------------------------
 
-	Aqwam's Deep Learning Library (DataPredict Neural)
+	Aqwam's Machine, Deep And Reinforcement Learning Library (DataPredict)
 
 	Author: Aqwam Harish Aiman
 	
@@ -16,7 +16,7 @@
 		
 	By using this library, you agree to comply with our Terms and Conditions in the link below:
 	
-	https://github.com/AqwamCreates/DataPredict-Neural/blob/main/docs/TermsAndConditions.md
+	https://github.com/AqwamCreates/DataPredict/blob/main/docs/TermsAndConditions.md
 	
 	--------------------------------------------------------------------
 	
@@ -35,8 +35,10 @@ BaseOptimizer.__index = BaseOptimizer
 setmetatable(BaseOptimizer, BaseInstance)
 
 function BaseOptimizer.new(parameterDictionary)
+	
+	parameterDictionary = parameterDictionary or {}
 
-	local NewBaseOptimizer = BaseInstance.new()
+	local NewBaseOptimizer = BaseInstance.new(parameterDictionary)
 
 	setmetatable(NewBaseOptimizer, BaseOptimizer)
 
@@ -54,17 +56,15 @@ function BaseOptimizer.new(parameterDictionary)
 
 end
 
-function BaseOptimizer:calculate(learningRate, costFunctionDerivativeTensor)
-
-	local calculateFunction = self.calculateFunction
+function BaseOptimizer:calculate(learningRate, costFunctionDerivativeTensor, weightTensor)
 
 	local LearningRateValueScheduler = self.LearningRateValueScheduler
 
-	if (not calculateFunction) then error("No calculate function for the optimizer!") end
+	if (LearningRateValueScheduler) then learningRate = LearningRateValueScheduler:calculate(learningRate) end
+	
+	costFunctionDerivativeTensor = self.calculateFunction(learningRate, costFunctionDerivativeTensor, weightTensor)
 
-	if LearningRateValueScheduler then learningRate = LearningRateValueScheduler:calculate(learningRate) end
-
-	return self.calculateFunction(learningRate, costFunctionDerivativeTensor)
+	return costFunctionDerivativeTensor
 
 end
 
