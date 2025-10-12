@@ -1,4 +1,4 @@
-# [API Reference](../../API.md) - [Optimizers](../Optimizers.md) - AdaptiveGradientDelta (AdaDelta)
+# [API Reference](../../API.md) - [Optimizers](../Optimizers.md) - AdaptiveDelta (AdaDelta)
 
 ## Constructors
 
@@ -8,7 +8,7 @@ Creates a new optimizer object.
 
 ```
 
-AdaptiveGradientDelta.new({decayRate: number, epsilon: number}): OptimizerObject
+AdaptiveDelta.new({decayRate: number, epsilon: number}): OptimizerObject
 
 ```
 
@@ -28,7 +28,7 @@ AdaptiveGradientDelta.new({decayRate: number, epsilon: number}): OptimizerObject
 
 ```
 
-AdaptiveGradientDelta:setParameters({decayRate: number, epsilon: number})
+AdaptiveDelta:setParameters({decayRate: number, epsilon: number})
 
 ```
 
