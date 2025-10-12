@@ -2,7 +2,7 @@
 
 	--------------------------------------------------------------------
 
-	Aqwam's Deep Learning Library (DataPredict Neural)
+	Aqwam's Machine, Deep And Reinforcement Learning Library (DataPredict)
 
 	Author: Aqwam Harish Aiman
 	
@@ -16,7 +16,7 @@
 		
 	By using this library, you agree to comply with our Terms and Conditions in the link below:
 	
-	https://github.com/AqwamCreates/DataPredict-Neural/blob/main/docs/TermsAndConditions.md
+	https://github.com/AqwamCreates/DataPredict/blob/main/docs/TermsAndConditions.md
 	
 	--------------------------------------------------------------------
 	
@@ -26,9 +26,9 @@
 
 --]]
 
-local BaseOptimizer = require(script.Parent.BaseOptimizer)
-
 local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
+
+local BaseOptimizer = require(script.Parent.BaseOptimizer)
 
 NesterovAcceleratedAdaptiveMomentEstimationOptimizer = {}
 
@@ -40,7 +40,9 @@ local defaultBeta1 = 0.9
 
 local defaultBeta2 = 0.999
 
-local defaultEpsilon = 1 * math.pow(10, -7)
+local defaultWeightDecayRate = 0
+
+local defaultEpsilon = 1e-16
 
 function NesterovAcceleratedAdaptiveMomentEstimationOptimizer.new(parameterDictionary)
 	
@@ -55,56 +57,78 @@ function NesterovAcceleratedAdaptiveMomentEstimationOptimizer.new(parameterDicti
 	NewNesterovAcceleratedAdaptiveMomentEstimationOptimizer.beta1 = parameterDictionary.beta1 or defaultBeta1
 
 	NewNesterovAcceleratedAdaptiveMomentEstimationOptimizer.beta2 = parameterDictionary.beta2 or defaultBeta2
+	
+	NewNesterovAcceleratedAdaptiveMomentEstimationOptimizer.weightDecayRate = parameterDictionary.weightDecayRate or defaultWeightDecayRate
 
 	NewNesterovAcceleratedAdaptiveMomentEstimationOptimizer.epsilon = parameterDictionary.epsilon or defaultEpsilon
 	
 	--------------------------------------------------------------------------------
 	
-	NewNesterovAcceleratedAdaptiveMomentEstimationOptimizer:setCalculateFunction(function(learningRate, costFunctionDerivativeTensor)
+	NewNesterovAcceleratedAdaptiveMomentEstimationOptimizer:setCalculateFunction(function(learningRate, costFunctionDerivativeTensor, weightTensor)
 		
 		local previousMTensor = NewNesterovAcceleratedAdaptiveMomentEstimationOptimizer.optimizerInternalParameterArray[1] or AqwamTensorLibrary:createTensor(AqwamTensorLibrary:getDimensionSizeArray(costFunctionDerivativeTensor), 0)
 
-		local previousNTensor = NewNesterovAcceleratedAdaptiveMomentEstimationOptimizer.optimizerInternalParameterArray[2]  or AqwamTensorLibrary:createTensor(AqwamTensorLibrary:getDimensionSizeArray(costFunctionDerivativeTensor), 0)
+		local previousNTensor = NewNesterovAcceleratedAdaptiveMomentEstimationOptimizer.optimizerInternalParameterArray[2] or AqwamTensorLibrary:createTensor(AqwamTensorLibrary:getDimensionSizeArray(costFunctionDerivativeTensor), 0)
+		
+		local timeValue = NewNesterovAcceleratedAdaptiveMomentEstimationOptimizer.optimizerInternalParameterArray[3] or 1
 		
 		local beta1 = NewNesterovAcceleratedAdaptiveMomentEstimationOptimizer.beta1
 		
 		local beta2 = NewNesterovAcceleratedAdaptiveMomentEstimationOptimizer.beta2
+		
+		local weightDecayRate = NewNesterovAcceleratedAdaptiveMomentEstimationOptimizer.weightDecayRate
+		
+		local gradientTensor = costFunctionDerivativeTensor
+		
+		if (weightDecayRate ~= 0) then
 
-		local meanCostFunctionDerivativeTensor = AqwamTensorLibrary:divide(costFunctionDerivativeTensor, (1 - beta1))
+			local decayedWeightTensor = AqwamTensorLibrary:multiply(weightDecayRate, weightTensor)
+
+			gradientTensor = AqwamTensorLibrary:add(gradientTensor, decayedWeightTensor)
+
+		end
+		
+		local oneMinusBeta1 = (1 - beta1)
+
+		local meanCostFunctionDerivativeTensor = AqwamTensorLibrary:divide(gradientTensor, oneMinusBeta1)
 
 		local mTensorPart1 = AqwamTensorLibrary:multiply(beta1, previousMTensor)
 
-		local mTensorPart2 = AqwamTensorLibrary:multiply((1 - beta1), costFunctionDerivativeTensor)
+		local mTensorPart2 = AqwamTensorLibrary:multiply(oneMinusBeta1, gradientTensor)
 
 		local mTensor = AqwamTensorLibrary:add(mTensorPart1, mTensorPart2)
 
-		local meanMTensor = AqwamTensorLibrary:divide(mTensor, (1 - beta1))
+		local meanMTensor = AqwamTensorLibrary:divide(mTensor, oneMinusBeta1)
 
-		local squaredCostFunctionDerivatives = AqwamTensorLibrary:power(costFunctionDerivativeTensor, 2)
+		local squaredGradientDerivativeTensor = AqwamTensorLibrary:power(gradientTensor, 2)
 
 		local nTensorPart1 = AqwamTensorLibrary:multiply(beta2, previousNTensor)
 
-		local nTensorPart2 = AqwamTensorLibrary:multiply((1 - beta2), squaredCostFunctionDerivatives)
+		local nTensorPart2 = AqwamTensorLibrary:multiply((1 - beta2), squaredGradientDerivativeTensor)
 
 		local nTensor = AqwamTensorLibrary:add(nTensorPart1, nTensorPart2)
+		
+		local multipliedNTensor = AqwamTensorLibrary:multiply(beta2, nTensor)
 
-		local meanNTensor = AqwamTensorLibrary:divide(nTensor, (1 - beta2))
+		local meanNTensor = AqwamTensorLibrary:divide(multipliedNTensor, (1 - math.pow(beta2, timeValue)))
 
-		local finalMTensorPart1 = AqwamTensorLibrary:multiply((1 - beta1), meanCostFunctionDerivativeTensor)
+		local finalMTensorPart1 = AqwamTensorLibrary:multiply(oneMinusBeta1, meanCostFunctionDerivativeTensor)
 
 		local finalMTensorPart2 = AqwamTensorLibrary:multiply(beta1, meanMTensor)
 
 		local finalMTensor = AqwamTensorLibrary:add(finalMTensorPart1, finalMTensorPart2)
 
-		local squareRootedDivisor = AqwamTensorLibrary:power(meanNTensor, 0.5)
+		local squareRootedDivisor = AqwamTensorLibrary:applyFunction(math.sqrt, meanNTensor)
 
 		local finalDivisor = AqwamTensorLibrary:add(squareRootedDivisor, NewNesterovAcceleratedAdaptiveMomentEstimationOptimizer.epsilon)
 
-		local costFunctionDerivativesPart1 = AqwamTensorLibrary:divide(finalMTensor, finalDivisor)
+		local costFunctionDerivativeTensorPart1 = AqwamTensorLibrary:divide(finalMTensor, finalDivisor)
 
-		costFunctionDerivativeTensor = AqwamTensorLibrary:multiply(learningRate, costFunctionDerivativesPart1)
-
-		NewNesterovAcceleratedAdaptiveMomentEstimationOptimizer.optimizerInternalParameterArray = {mTensor, nTensor}
+		costFunctionDerivativeTensor = AqwamTensorLibrary:multiply(learningRate, costFunctionDerivativeTensorPart1)
+		
+		timeValue = timeValue + 1
+		
+		NewNesterovAcceleratedAdaptiveMomentEstimationOptimizer.optimizerInternalParameterArray = {mTensor, nTensor, timeValue}
 
 		return costFunctionDerivativeTensor
 		
@@ -124,6 +148,12 @@ function NesterovAcceleratedAdaptiveMomentEstimationOptimizer:setBeta2(beta2)
 		
 	self.beta2 = beta2
 	
+end
+
+function NesterovAcceleratedAdaptiveMomentEstimationOptimizer:setWeightDecayRate(weightDecayRate)
+
+	self.weightDecayRate = weightDecayRate
+
 end
 
 function NesterovAcceleratedAdaptiveMomentEstimationOptimizer:setEpsilon(epsilon)
