@@ -112,9 +112,9 @@ function GravityOptimizer.new(parameterDictionary)
 
 		local absoluteGradientTensor = AqwamTensorLibrary:applyFunction(math.abs, gradientTensor)
 
-		local maxGradientValue = AqwamTensorLibrary:findMaximumValue(absoluteGradientTensor)
+		local maximumGradientValue = AqwamTensorLibrary:findMaximumValue(absoluteGradientTensor)
 
-		local mTensor = AqwamTensorLibrary:divide(1, maxGradientValue)
+		local mTensor = AqwamTensorLibrary:divide(1, maximumGradientValue)
 
 		local weirdLTensorPart1 = AqwamTensorLibrary:divide(gradientTensor, mTensor)
 
