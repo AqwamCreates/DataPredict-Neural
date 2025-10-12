@@ -2,7 +2,7 @@
 
 	--------------------------------------------------------------------
 
-	Aqwam's Deep Learning Library (DataPredict Neural)
+	Aqwam's Machine, Deep And Reinforcement Learning Library (DataPredict)
 
 	Author: Aqwam Harish Aiman
 	
@@ -16,7 +16,7 @@
 		
 	By using this library, you agree to comply with our Terms and Conditions in the link below:
 	
-	https://github.com/AqwamCreates/DataPredict-Neural/blob/main/docs/TermsAndConditions.md
+	https://github.com/AqwamCreates/DataPredict/blob/main/docs/TermsAndConditions.md
 	
 	--------------------------------------------------------------------
 	
@@ -26,9 +26,9 @@
 
 --]]
 
-local BaseOptimizer = require(script.Parent.BaseOptimizer)
-
 local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
+
+local BaseOptimizer = require(script.Parent.BaseOptimizer)
 
 AdaptiveGradientOptimizer = {}
 
@@ -36,7 +36,11 @@ AdaptiveGradientOptimizer.__index = AdaptiveGradientOptimizer
 
 setmetatable(AdaptiveGradientOptimizer, BaseOptimizer)
 
+local defaultWeightDecayRate = 0
+
 function AdaptiveGradientOptimizer.new(parameterDictionary)
+	
+	parameterDictionary = parameterDictionary or {}
 	
 	local NewAdaptiveGradientOptimizer = BaseOptimizer.new(parameterDictionary)
 	
@@ -44,19 +48,33 @@ function AdaptiveGradientOptimizer.new(parameterDictionary)
 	
 	NewAdaptiveGradientOptimizer:setName("AdaptiveGradient")
 	
+	NewAdaptiveGradientOptimizer.weightDecayRate = NewAdaptiveGradientOptimizer.weightDecayRate or defaultWeightDecayRate
+	
 	--------------------------------------------------------------------------------
 	
-	NewAdaptiveGradientOptimizer:setCalculateFunction(function(learningRate, costFunctionDerivativeTensor)
+	NewAdaptiveGradientOptimizer:setCalculateFunction(function(learningRate, costFunctionDerivativeTensor, weightTensor)
 		
 		local previousSumOfGradientSquaredTensor = NewAdaptiveGradientOptimizer.optimizerInternalParameterArray[1] or AqwamTensorLibrary:createTensor(AqwamTensorLibrary:getDimensionSizeArray(costFunctionDerivativeTensor), 0)
+		
+		local weightDecayRate = NewAdaptiveGradientOptimizer.weightDecayRate
+		
+		local gradientTensor = costFunctionDerivativeTensor
+		
+		if (weightDecayRate ~= 0) then
 
-		local gradientSquaredTensor = AqwamTensorLibrary:power(costFunctionDerivativeTensor, 2)
+			local decayedWeightTensor = AqwamTensorLibrary:multiply(weightDecayRate, weightTensor)
+
+			gradientTensor = AqwamTensorLibrary:add(gradientTensor, decayedWeightTensor)
+
+		end
+		
+		local gradientSquaredTensor = AqwamTensorLibrary:power(gradientTensor, 2)
 
 		local currentSumOfGradientSquaredTensor = AqwamTensorLibrary:add(previousSumOfGradientSquaredTensor, gradientSquaredTensor)
 
-		local squareRootSumOfGradientSquaredTensor = AqwamTensorLibrary:power(currentSumOfGradientSquaredTensor, 0.5)
+		local squareRootSumOfGradientSquaredTensor = AqwamTensorLibrary:applyFunction(math.sqrt, currentSumOfGradientSquaredTensor)
 
-		local costFunctionDerivativeTensorPart1 = AqwamTensorLibrary:divide(costFunctionDerivativeTensor, squareRootSumOfGradientSquaredTensor)
+		local costFunctionDerivativeTensorPart1 = AqwamTensorLibrary:divide(gradientTensor, squareRootSumOfGradientSquaredTensor)
 
 		costFunctionDerivativeTensor = AqwamTensorLibrary:multiply(learningRate, costFunctionDerivativeTensorPart1)
 
@@ -68,6 +86,12 @@ function AdaptiveGradientOptimizer.new(parameterDictionary)
 	
 	return NewAdaptiveGradientOptimizer
 	
+end
+
+function AdaptiveGradientOptimizer:setWeightDecayRate(weightDecayRate)
+
+	self.weightDecayRate = weightDecayRate
+
 end
 
 return AdaptiveGradientOptimizer
