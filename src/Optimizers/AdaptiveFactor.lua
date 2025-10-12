@@ -90,9 +90,9 @@ function AdaptiveFactorOptimizer.new(parameterDictionary)
 		
 		if (weightDecayRate ~= 0) then
 
-			local decayedWeightMatrix = AqwamTensorLibrary:multiply(weightDecayRate, weightTensor)
+			local decayedWeightTensor = AqwamTensorLibrary:multiply(weightDecayRate, weightTensor)
 
-			gradientTensor = AqwamTensorLibrary:add(gradientTensor, decayedWeightMatrix)
+			gradientTensor = AqwamTensorLibrary:add(gradientTensor, decayedWeightTensor)
 
 		end
 		
