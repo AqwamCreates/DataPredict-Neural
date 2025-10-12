@@ -2,7 +2,7 @@
 
 	--------------------------------------------------------------------
 
-	Aqwam's Deep Learning Library (DataPredict Neural)
+	Aqwam's Machine, Deep And Reinforcement Learning Library (DataPredict)
 
 	Author: Aqwam Harish Aiman
 	
@@ -16,7 +16,7 @@
 		
 	By using this library, you agree to comply with our Terms and Conditions in the link below:
 	
-	https://github.com/AqwamCreates/DataPredict-Neural/blob/main/docs/TermsAndConditions.md
+	https://github.com/AqwamCreates/DataPredict/blob/main/docs/TermsAndConditions.md
 	
 	--------------------------------------------------------------------
 	
@@ -26,9 +26,9 @@
 
 --]]
 
-local BaseOptimizer = require(script.Parent.BaseOptimizer)
-
 local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
+
+local BaseOptimizer = require(script.Parent.BaseOptimizer)
 
 RootMeanSquarePropagationOptimizer = {}
 
@@ -36,9 +36,11 @@ RootMeanSquarePropagationOptimizer.__index = RootMeanSquarePropagationOptimizer
 
 setmetatable(RootMeanSquarePropagationOptimizer, BaseOptimizer)
 
-local defaultBetaValue = 0.1
+local defaultBeta = 0.1
 
-local defaultEpsilonValue = 1 * math.pow(10, -7)
+local defaultWeightDecayRate = 0
+
+local defaultEpsilonValue = 1e-16
 
 function RootMeanSquarePropagationOptimizer.new(parameterDictionary)
 	
@@ -50,21 +52,35 @@ function RootMeanSquarePropagationOptimizer.new(parameterDictionary)
 	
 	NewRootMeanSquarePropagationOptimizer:setName("RootMeanSquarePropagation")
 	
-	NewRootMeanSquarePropagationOptimizer.beta = parameterDictionary.beta or defaultBetaValue
+	NewRootMeanSquarePropagationOptimizer.beta = parameterDictionary.beta or defaultBeta
+	
+	NewRootMeanSquarePropagationOptimizer.weightDecayRate = NewRootMeanSquarePropagationOptimizer.weightDecayRate or defaultWeightDecayRate
 	
 	NewRootMeanSquarePropagationOptimizer.epsilon = parameterDictionary.epsilon or defaultEpsilonValue
 	
 	--------------------------------------------------------------------------------
 	
-	NewRootMeanSquarePropagationOptimizer:setCalculateFunction(function(learningRate, costFunctionDerivativeTensor)
+	NewRootMeanSquarePropagationOptimizer:setCalculateFunction(function(learningRate, costFunctionDerivativeTensor, weightTensor)
 		
 		local previousVelocity = NewRootMeanSquarePropagationOptimizer.optimizerInternalParameterArray[1] or AqwamTensorLibrary:createTensor(AqwamTensorLibrary:getDimensionSizeArray(costFunctionDerivativeTensor), 0)
 		
 		local beta = NewRootMeanSquarePropagationOptimizer.beta
+		
+		local weightDecayRate = NewRootMeanSquarePropagationOptimizer.weightDecayRate
+		
+		local gradientTensor = costFunctionDerivativeTensor
 
-		local squaredCostFunctionDerivativeTensor = AqwamTensorLibrary:power(costFunctionDerivativeTensor, 2)
+		if (weightDecayRate ~= 0) then
 
-		local vTensorPart1 = AqwamTensorLibrary:multiply(beta, NewRootMeanSquarePropagationOptimizer.previousVelocity)
+			local decayedWeightTensor = AqwamTensorLibrary:multiply(weightDecayRate, weightTensor)
+
+			gradientTensor = AqwamTensorLibrary:add(gradientTensor, decayedWeightTensor)
+
+		end
+
+		local squaredCostFunctionDerivativeTensor = AqwamTensorLibrary:power(gradientTensor, 2)
+
+		local vTensorPart1 = AqwamTensorLibrary:multiply(beta, previousVelocity)
 
 		local vTensorPart2 = AqwamTensorLibrary:multiply((1 - beta), squaredCostFunctionDerivativeTensor)
 
@@ -72,9 +88,9 @@ function RootMeanSquarePropagationOptimizer.new(parameterDictionary)
 
 		local velocityNonZeroDivisorTensor = AqwamTensorLibrary:add(velocityTensor, NewRootMeanSquarePropagationOptimizer.epsilon)
 
-		local squaredRootVelocityTensor = AqwamTensorLibrary:power(velocityNonZeroDivisorTensor, 0.5)
+		local squaredRootVelocityTensor = AqwamTensorLibrary:applyFunction(math.sqrt, velocityNonZeroDivisorTensor)
 
-		local costFunctionDerivativeTensorPart1 = AqwamTensorLibrary:divide(costFunctionDerivativeTensor, squaredRootVelocityTensor)
+		local costFunctionDerivativeTensorPart1 = AqwamTensorLibrary:divide(gradientTensor, squaredRootVelocityTensor)
 
 		costFunctionDerivativeTensor = AqwamTensorLibrary:multiply(learningRate, costFunctionDerivativeTensorPart1)
 
@@ -92,6 +108,12 @@ function RootMeanSquarePropagationOptimizer:setBeta(beta)
 	
 	self.beta = beta
 	
+end
+
+function RootMeanSquarePropagationOptimizer:setWeightDecayRate(weightDecayRate)
+
+	self.weightDecayRate = weightDecayRate
+
 end
 
 function RootMeanSquarePropagationOptimizer:setEpsilon(epsilon)
