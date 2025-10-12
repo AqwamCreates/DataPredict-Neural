@@ -2,7 +2,7 @@
 
 	--------------------------------------------------------------------
 
-	Aqwam's Machine And Deep Learning Library (DataPredict)
+	Aqwam's Machine, Deep And Reinforcement Learning Library (DataPredict)
 
 	Author: Aqwam Harish Aiman
 	
@@ -26,6 +26,8 @@
 
 --]]
 
+local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
+
 local BaseInstance = require(script.Parent.Parent.Cores.BaseInstance)
 
 BaseValueScheduler = {}
@@ -34,50 +36,11 @@ BaseValueScheduler.__index = BaseValueScheduler
 
 setmetatable(BaseValueScheduler, BaseInstance)
 
-local function deepCopyTable(original, copies)
-
-	copies = copies or {}
-
-	local originalType = type(original)
-
-	local copy
-
-	if (originalType == 'table') then
-
-		if copies[original] then
-
-			copy = copies[original]
-
-		else
-
-			copy = {}
-
-			copies[original] = copy
-
-			for originalKey, originalValue in next, original, nil do
-
-				copy[deepCopyTable(originalKey, copies)] = deepCopyTable(originalValue, copies)
-
-			end
-
-			setmetatable(copy, deepCopyTable(getmetatable(original), copies))
-
-		end
-
-	else
-
-		copy = original
-
-	end
-
-	return copy
-
-end
-
-
-function BaseValueScheduler.new(valueSchedulerName)
+function BaseValueScheduler.new(parameterDictionary)
 	
-	local NewBaseValueScheduler = BaseInstance.new()
+	parameterDictionary = parameterDictionary or {}
+	
+	local NewBaseValueScheduler = BaseInstance.new(parameterDictionary)
 	
 	setmetatable(NewBaseValueScheduler, BaseValueScheduler)
 	
@@ -85,17 +48,27 @@ function BaseValueScheduler.new(valueSchedulerName)
 
 	NewBaseValueScheduler:setClassName("ValueScheduler")
 	
-	NewBaseValueScheduler.calculateFunction = nil
+	NewBaseValueScheduler.calculateFunction = parameterDictionary.calculateFunction
 	
-	NewBaseValueScheduler.valueSchedulerInternalParameterArray = nil
+	NewBaseValueScheduler.timeValue = 0
 	
 	return NewBaseValueScheduler
 	
 end
 
-function BaseValueScheduler:calculate(epsilon)
+function BaseValueScheduler:calculate(valueToSchedule, valueToScale)
 	
-	if (self.calculateFunction) then return self.calculateFunction(epsilon) end
+	local timeValue = self.timeValue
+	
+	timeValue = timeValue + 1
+	
+	self.timeValue = timeValue
+	
+	valueToSchedule = self.calculateFunction(valueToSchedule, timeValue)
+	
+	if (not valueToScale) then return valueToSchedule end
+	
+	return AqwamTensorLibrary:multiply(valueToSchedule, valueToScale)
 	
 end
 
@@ -105,43 +78,9 @@ function BaseValueScheduler:setCalculateFunction(calculateFunction)
 	
 end
 
-function BaseValueScheduler:getValueSchedulerName()
-	
-	return self.valueSchedulerName
-	
-end
-
-function BaseValueScheduler:getValueSchedulerInternalParameterArray(doNotDeepCopy)
-	
-	if (doNotDeepCopy) then
-		
-		return self.valueSchedulerInternalParameterArray
-		
-	else
-		
-		return deepCopyTable(self.valueSchedulerInternalParameterArray)
-		
-	end
-	
-end
-
-function BaseValueScheduler:setValueSchedulerInternalParameterArray(valueSchedulerInternalParameterArray, doNotDeepCopy)
-
-	if (doNotDeepCopy) then
-
-		self.valueSchedulerInternalParameterArray = valueSchedulerInternalParameterArray
-
-	else
-
-		self.valueSchedulerInternalParameterArray = deepCopyTable(valueSchedulerInternalParameterArray)
-
-	end
-
-end
-
 function BaseValueScheduler:reset()
 
-	self.valueSchedulerInternalParameterArray = nil
+	self.timeValue = 0
 
 end
 
