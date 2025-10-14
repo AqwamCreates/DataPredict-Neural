@@ -70,11 +70,13 @@ function AdaptiveMomentEstimationWeightDecayOptimizer.new(parameterDictionary)
 	
 	NewAdaptiveMomentEstimationWeightDecayOptimizer:setCalculateFunction(function(learningRate, costFunctionDerivativeTensor, weightTensor)
 		
-		local previousMomentumTensor = NewAdaptiveMomentEstimationWeightDecayOptimizer.optimizerInternalParameterArray[1] or AqwamTensorLibrary:createTensor(AqwamTensorLibrary:getDimensionSizeArray(costFunctionDerivativeTensor), 0)
-
-		local previousVelocityTensor = NewAdaptiveMomentEstimationWeightDecayOptimizer.optimizerInternalParameterArray[2] or AqwamTensorLibrary:createTensor(AqwamTensorLibrary:getDimensionSizeArray(costFunctionDerivativeTensor), 0)
+		local optimizerInternalParameterArray = NewAdaptiveMomentEstimationWeightDecayOptimizer.optimizerInternalParameterArray or {}
 		
-		local timeValue = NewAdaptiveMomentEstimationWeightDecayOptimizer.optimizerInternalParameterArray[3] or 1
+		local previousMomentumTensor = optimizerInternalParameterArray[1] or AqwamTensorLibrary:createTensor(AqwamTensorLibrary:getDimensionSizeArray(costFunctionDerivativeTensor), 0)
+
+		local previousVelocityTensor = optimizerInternalParameterArray[2] or AqwamTensorLibrary:createTensor(AqwamTensorLibrary:getDimensionSizeArray(costFunctionDerivativeTensor), 0)
+		
+		local timeValue = optimizerInternalParameterArray[3] or 1
 		
 		local beta1 = NewAdaptiveMomentEstimationWeightDecayOptimizer.beta1
 
