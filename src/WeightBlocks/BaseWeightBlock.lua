@@ -330,7 +330,7 @@ function BaseWeightBlock:gradientDescent(weightLossTensor)
 
 	if (Optimizer) then
 
-		weightLossTensor = Optimizer:calculate(learningRate, weightLossTensor)
+		weightLossTensor = Optimizer:calculate(learningRate, weightLossTensor, weightTensor)
 
 	else
 
