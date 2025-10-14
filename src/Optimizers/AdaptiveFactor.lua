@@ -72,11 +72,13 @@ function AdaptiveFactorOptimizer.new(parameterDictionary)
 		
 		local dimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(costFunctionDerivativeTensor)
 		
-		local secondMomentRowFactorTensor = NewAdaptiveFactorOptimizer.optimizerInternalParameterArray[1] or AqwamTensorLibrary:createTensor(dimensionSizeArray, 0)
+		local optimizerInternalParameterArray = NewAdaptiveFactorOptimizer.optimizerInternalParameterArray or {}
 		
-		local secondMomentColumnFactorTensor = NewAdaptiveFactorOptimizer.optimizerInternalParameterArray[2] or AqwamTensorLibrary:createTensor(dimensionSizeArray, 0)
+		local secondMomentRowFactorTensor = optimizerInternalParameterArray[1] or AqwamTensorLibrary:createTensor(dimensionSizeArray, 0)
 		
-		local timeValue = NewAdaptiveFactorOptimizer.optimizerInternalParameterArray[3] or 1
+		local secondMomentColumnFactorTensor = optimizerInternalParameterArray[2] or AqwamTensorLibrary:createTensor(dimensionSizeArray, 0)
+		
+		local timeValue = optimizerInternalParameterArray[3] or 1
 		
 		local beta2DecayRate = NewAdaptiveFactorOptimizer.beta2DecayRate
 		
