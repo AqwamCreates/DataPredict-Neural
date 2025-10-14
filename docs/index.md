@@ -1,6 +1,6 @@
 # Welcome to Aqwam's DataPredict™ Neural Library!
 
-This library was developed solo over more than 1 year (2000+ hours), which would exceed $100,000 USD in industry costs. Additionally, it requires near PhD-level knowledge to build and test all the models in this library. The cost to produce this library is significantly cheaper due to recycling of DataPredict™ (4000+ hours) library codes. To all indie devs who just starting their business, feel free to use it without burning away your money!
+This library was developed solo over more than 1 year (2000+ hours), which would exceed $100,000 USD in industry costs. Additionally, it requires near PhD-level knowledge to build and test all the models in this library. The cost to produce this library is significantly cheaper due to recycling of DataPredict™ (6000+ hours) library codes. To all indie devs who just starting their business, feel free to use it without burning away your money!
 
 By using or possessing any copies of this library or its assets (including the icons), you agree to our [Terms And Conditions](TermsAndConditions.md). In short:
 
