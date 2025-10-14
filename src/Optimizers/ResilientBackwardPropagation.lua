@@ -66,9 +66,11 @@ function ResilientBackwardPropagationOptimizer.new(parameterDictionary)
 	
 	NewResilientBackwardPropagationOptimizer:setCalculateFunction(function(learningRate, costFunctionDerivativeTensor, weightTensor)
 		
-		local previousGradientTensor = NewResilientBackwardPropagationOptimizer.optimizerInternalParameterArray[1] or AqwamTensorLibrary:createTensor(AqwamTensorLibrary:getDimensionSizeArray(costFunctionDerivativeTensor), 0)
+		local optimizerInternalParameterArray = NewResilientBackwardPropagationOptimizer.optimizerInternalParameterArray or {}
 		
-		local learningRateTensor = NewResilientBackwardPropagationOptimizer.optimizerInternalParameterArray[2] or AqwamTensorLibrary:createTensor(AqwamTensorLibrary:getDimensionSizeArray(costFunctionDerivativeTensor), learningRate)
+		local previousGradientTensor = optimizerInternalParameterArray[1] or AqwamTensorLibrary:createTensor(AqwamTensorLibrary:getDimensionSizeArray(costFunctionDerivativeTensor), 0)
+		
+		local learningRateTensor = optimizerInternalParameterArray[2] or AqwamTensorLibrary:createTensor(AqwamTensorLibrary:getDimensionSizeArray(costFunctionDerivativeTensor), learningRate)
 		
 		local etaPlus = NewResilientBackwardPropagationOptimizer.etaPlus
 		
