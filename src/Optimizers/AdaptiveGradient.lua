@@ -54,7 +54,9 @@ function AdaptiveGradientOptimizer.new(parameterDictionary)
 	
 	NewAdaptiveGradientOptimizer:setCalculateFunction(function(learningRate, costFunctionDerivativeTensor, weightTensor)
 		
-		local previousSumOfGradientSquaredTensor = NewAdaptiveGradientOptimizer.optimizerInternalParameterArray[1] or AqwamTensorLibrary:createTensor(AqwamTensorLibrary:getDimensionSizeArray(costFunctionDerivativeTensor), 0)
+		local optimizerInternalParameterArray = NewAdaptiveGradientOptimizer.optimizerInternalParameterArray or {}
+		
+		local previousSumOfGradientSquaredTensor = optimizerInternalParameterArray[1] or AqwamTensorLibrary:createTensor(AqwamTensorLibrary:getDimensionSizeArray(costFunctionDerivativeTensor), 0)
 		
 		local weightDecayRate = NewAdaptiveGradientOptimizer.weightDecayRate
 		
