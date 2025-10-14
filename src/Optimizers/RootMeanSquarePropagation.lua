@@ -62,7 +62,9 @@ function RootMeanSquarePropagationOptimizer.new(parameterDictionary)
 	
 	NewRootMeanSquarePropagationOptimizer:setCalculateFunction(function(learningRate, costFunctionDerivativeTensor, weightTensor)
 		
-		local previousVelocity = NewRootMeanSquarePropagationOptimizer.optimizerInternalParameterArray[1] or AqwamTensorLibrary:createTensor(AqwamTensorLibrary:getDimensionSizeArray(costFunctionDerivativeTensor), 0)
+		local optimizerInternalParameterArray = NewRootMeanSquarePropagationOptimizer.optimizerInternalParameterArray or {}
+		
+		local previousVelocity = optimizerInternalParameterArray[1] or AqwamTensorLibrary:createTensor(AqwamTensorLibrary:getDimensionSizeArray(costFunctionDerivativeTensor), 0)
 		
 		local beta = NewRootMeanSquarePropagationOptimizer.beta
 		
