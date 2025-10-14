@@ -8,13 +8,19 @@ Creates a new eligibility trace object. If any of the arguments are not given, d
 
 ```
 
-BaseEligibilityTrace.new({lambda: number}): EligibilityTraceObject
+BaseEligibilityTrace.new(lambda: number, mode: string): EligibilityTraceObject
 
 ```
 
 #### Parameters:
 
-* lambda: lambda: At 0, the model acts like the Temporal Difference algorithm. At 1, the model acts as Monte Carlo algorithm. Between 0 and 1, the model acts as both. [Default: 0]
+* lambda: At 0, the model acts like the Temporal Difference algorithm. At 1, the model acts as Monte Carlo algorithm. Between 0 and 1, the model acts as both. [Default: 0]
+
+* mode: Controls whether or not to use E(s,a), E(s) or E(a) formulation for creating eligibility trace matrix. Available options are:
+
+  * StateAction (Default)
+
+  * Action
 
 #### Returns:
 
@@ -26,11 +32,13 @@ BaseEligibilityTrace.new({lambda: number}): EligibilityTraceObject
 
 ```
 
-BaseEligibilityTrace:increment(actionIndex: number, discountFactor: number, dimensionSizeArray: {number})
+BaseEligibilityTrace:increment(stateIndex, actionIndex: number, discountFactor: number, dimensionSizeArray: {number})
 
 ```
 
 #### Parameters:
+
+* stateIndex: The state index to be incremented.
 
 * actionIndex: The action index to be incremented.
 
@@ -42,17 +50,17 @@ BaseEligibilityTrace:increment(actionIndex: number, discountFactor: number, dime
 
 ```
 
-BaseEligibilityTrace:calculate(temporalDifferenceErrorTensor: tensor): tensor
+BaseEligibilityTrace:calculate(temporalDifferenceErrorVector: tensor): tensor
 
 ```
 
 #### Parameters:
 
-* temporalDifferenceErrorTensor: A temporal difference error vector.
+* temporalDifferenceErrorVector: A temporal difference error vector.
 
 #### Returns:
 
-* temporalDifferenceErrorTensor: A temporal difference error vector.
+* temporalDifferenceErrorVector: A temporal difference error vector.
 
 ### setCalculateFunction()
 
