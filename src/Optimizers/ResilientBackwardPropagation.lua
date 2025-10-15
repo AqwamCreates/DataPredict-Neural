@@ -44,6 +44,8 @@ local defaultMinimumStepSize = 1e-6
 
 local defaultMaximumStepSize = 50
 
+local defaultWeightDecayRate = 0
+
 function ResilientBackwardPropagationOptimizer.new(parameterDictionary)
 	
 	parameterDictionary = parameterDictionary or {}
@@ -61,6 +63,8 @@ function ResilientBackwardPropagationOptimizer.new(parameterDictionary)
 	NewResilientBackwardPropagationOptimizer.maximumStepSize = parameterDictionary.maximumStepSize or defaultMaximumStepSize
 	
 	NewResilientBackwardPropagationOptimizer.minimumStepSize = parameterDictionary.minimumStepSize or defaultMinimumStepSize
+	
+	NewResilientBackwardPropagationOptimizer.weightDecayRate = parameterDictionary.weightDecayRate or defaultWeightDecayRate
 	
 	--------------------------------------------------------------------------------
 	
@@ -81,6 +85,14 @@ function ResilientBackwardPropagationOptimizer.new(parameterDictionary)
 		local minimumStepSize = NewResilientBackwardPropagationOptimizer.minimumStepSize
 		
 		local gradientTensor = costFunctionDerivativeTensor
+		
+		if (weightDecayRate ~= 0) then
+
+			local decayedWeightTensor = AqwamTensorLibrary:multiply(weightDecayRate, weightTensor)
+
+			gradientTensor = AqwamTensorLibrary:add(gradientTensor, decayedWeightTensor)
+
+		end
 		
 		local multipliedGradientTensor = AqwamTensorLibrary:multiply(gradientTensor, previousGradientTensor)
 		
