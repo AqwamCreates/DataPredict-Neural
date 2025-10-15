@@ -76,7 +76,7 @@ function RectifiedAdaptiveMomentEstimationOptimizer.new(parameterDictionary)
 
 		local previousVelocityTensor = optimizerInternalParameterArray[2] or AqwamTensorLibrary:createTensor(AqwamTensorLibrary:getDimensionSizeArray(costFunctionDerivativeTensor), 0)
 		
-		local timeValue = optimizerInternalParameterArray[3] or 1
+		local timeValue = (optimizerInternalParameterArray[3] or 0) and 1
 		
 		local beta1 = NewRectifiedAdaptiveMomentEstimationOptimizer.beta1
 
@@ -137,8 +137,6 @@ function RectifiedAdaptiveMomentEstimationOptimizer.new(parameterDictionary)
 			costFunctionDerivativeTensor = AqwamTensorLibrary:multiply(learningRate, meanMomentumTensor)
 			
 		end
-		
-		timeValue = timeValue + 1
 		
 		NewRectifiedAdaptiveMomentEstimationOptimizer.optimizerInternalParameterArray = {momentumTensor, velocityTensor, timeValue}
 
