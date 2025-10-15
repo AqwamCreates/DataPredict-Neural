@@ -38,8 +38,6 @@ setmetatable(BaseEligibilityTrace, BaseInstance)
 
 local defaultLambda = 0.5
 
-local defaultMode = "StateAction"
-
 function BaseEligibilityTrace.new(parameterDictionary)
 	
 	parameterDictionary = parameterDictionary or {}
@@ -54,8 +52,6 @@ function BaseEligibilityTrace.new(parameterDictionary)
 	
 	NewBaseEligibilityTrace.lambda = parameterDictionary.lambda or defaultLambda
 	
-	NewBaseEligibilityTrace.mode = parameterDictionary.mode or defaultMode
-	
 	NewBaseEligibilityTrace.eligibilityTraceTensor = nil
 	
 	return NewBaseEligibilityTrace
@@ -64,35 +60,7 @@ end
 
 function BaseEligibilityTrace:increment(actionIndex, discountFactor, dimensionSizeArray) -- This function is needed because we have double version of reinforcement learning algorithms require separate application of (temporalDifferenceErrorVector * eligibilityTraceMatrix).
 	
-	local eligibilityTraceTensor = self.eligibilityTraceTensor
-		
-	if (not eligibilityTraceTensor) then
-		
-		local mode = self.mode
-		
-		local selectedDimensionSizeArray
-		
-		if (mode == "StateAction") then
-			
-			selectedDimensionSizeArray = dimensionSizeArray
-			
-		elseif (mode == "Action") then
-			
-			selectedDimensionSizeArray = {1, dimensionSizeArray[2]}	
-			
-		elseif (mode == "State") then
-			
-			error("\"State\" mode is only available on DataPredict™'s eligibility traces.")
-			
-		else
-		
-			error("Unknown mode.")
-			
-		end
-		
-		eligibilityTraceTensor = AqwamTensorLibrary:createTensor(selectedDimensionSizeArray, 0)
-		
-	end
+	local eligibilityTraceTensor = self.eligibilityTraceTensor or AqwamTensorLibrary:createTensor(dimensionSizeArray, 0) 
 
 	eligibilityTraceTensor = AqwamTensorLibrary:multiply(eligibilityTraceTensor, discountFactor * self.lambda)
 	
@@ -128,7 +96,7 @@ end
 
 function BaseEligibilityTrace:reset()
 	
-	self.eligibilityTraceMatrix = nil
+	self.eligibilityTraceTensor = nil
 	
 end
 
