@@ -70,19 +70,9 @@ function BaseEligibilityTrace:increment(actionIndex, discountFactor, dimensionSi
 	
 end
 
-function BaseEligibilityTrace:calculate(temporalDifferenceError, actionIndex)
+function BaseEligibilityTrace:calculate(temporalDifferenceErrorTensor)
 	
-	local eligibilityTraceTensor = self.eligibilityTraceTensor
-	
-	if (not actionIndex) then
-		
-		return AqwamTensorLibrary:multiply(temporalDifferenceError, eligibilityTraceTensor)
-		
-	else
-		
-		return (temporalDifferenceError * eligibilityTraceTensor)
-		
-	end
+	return AqwamTensorLibrary:multiply(temporalDifferenceErrorTensor, self.eligibilityTraceTensor)
 	
 end
 
