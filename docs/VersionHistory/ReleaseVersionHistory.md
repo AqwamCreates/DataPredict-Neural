@@ -1,4 +1,4 @@
-# Release Version
+# DataPredict™ Neural Release Version
 
 | Version                 | Number Of Blocks | Number Of Models | Number Of Recurrent Models | Number Of Optimizers | Number Of Value Schedulers | Number Of Cost Functions | Number Of Containers | Number of Utilities | Number Of Regularizers | Backward Incompatible Changes |
 |-------------------------|------------------|------------------|----------------------------|----------------------|----------------------------|--------------------------|----------------------|---------------------|------------------------|-------------------------------|
