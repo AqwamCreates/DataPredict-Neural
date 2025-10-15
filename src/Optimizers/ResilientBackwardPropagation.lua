@@ -98,24 +98,24 @@ function ResilientBackwardPropagationOptimizer.new(parameterDictionary)
 		
 		local multipliedGradientTensor = AqwamTensorLibrary:multiply(gradientTensor, previousGradientTensor)
 		
-		for i, unwrappedMultipliedGradientVector in ipairs(multipliedGradientTensor) do
-			
-			for j, unwrappedGradientValue in ipairs(unwrappedMultipliedGradientVector) do
-				
-				if (unwrappedGradientValue > 0) then
-					
+		for i, subMultipliedGradientTensor in ipairs(multipliedGradientTensor) do
+
+			for j, gradientValue in ipairs(subMultipliedGradientTensor) do
+
+				if (gradientValue > 0) then
+
 					learningRateTensor[i][j] = math.min(learningRateTensor[i][j] * etaPlus, maximumStepSize)
-					
-				elseif (unwrappedGradientValue < 0) then
-					
+
+				elseif (gradientValue < 0) then
+
 					learningRateTensor[i][j] = math.max(learningRateTensor[i][j] * etaMinus, minimumStepSize)
-					
+
 					gradientTensor[i][j] = 0
-					
+
 				end
-				
+
 			end
-			
+
 		end
 		
 		local signTensor = AqwamTensorLibrary:applyFunction(math.sign, gradientTensor)
