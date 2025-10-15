@@ -65,12 +65,14 @@ function AdaptiveMomentEstimationMaximumOptimizer.new(parameterDictionary)
 	--------------------------------------------------------------------------------
 	
 	NewAdaptiveMomentEstimationMaximumOptimizer:setCalculateFunction(function(learningRate, costFunctionDerivativeTensor, weightTensor)
-
-		local momentTensor = NewAdaptiveMomentEstimationMaximumOptimizer.optimizerInternalParameterArray[1] or AqwamTensorLibrary:createTensor(AqwamTensorLibrary:getDimensionSizeArray(costFunctionDerivativeTensor), 0)
-
-		local exponentWeightTensor = NewAdaptiveMomentEstimationMaximumOptimizer.optimizerInternalParameterArray[2] or AqwamTensorLibrary:createTensor(AqwamTensorLibrary:getDimensionSizeArray(costFunctionDerivativeTensor), 0)
 		
-		local timeValue = NewAdaptiveMomentEstimationMaximumOptimizer.optimizerInternalParameterArray[3] or 1
+		local optimizerInternalParameterArray = NewAdaptiveMomentEstimationMaximumOptimizer.optimizerInternalParameterArray or {}
+
+		local momentTensor = optimizerInternalParameterArray[1] or AqwamTensorLibrary:createTensor(AqwamTensorLibrary:getDimensionSizeArray(costFunctionDerivativeTensor), 0)
+
+		local exponentWeightTensor = optimizerInternalParameterArray[2] or AqwamTensorLibrary:createTensor(AqwamTensorLibrary:getDimensionSizeArray(costFunctionDerivativeTensor), 0)
+		
+		local timeValue = (optimizerInternalParameterArray[3] or 0) + 1
 		
 		local beta1 = NewAdaptiveMomentEstimationMaximumOptimizer.beta1
 		
@@ -109,8 +111,6 @@ function AdaptiveMomentEstimationMaximumOptimizer.new(parameterDictionary)
 		local costFunctionDerivativeTensorPart1 = AqwamTensorLibrary:divide(momentTensor, divisorTensor)
 
 		costFunctionDerivativeTensor = AqwamTensorLibrary:multiply(learningRate, costFunctionDerivativeTensorPart1)
-		
-		timeValue = timeValue + 1
 		
 		NewAdaptiveMomentEstimationMaximumOptimizer.optimizerInternalParameterArray = {momentTensor, exponentWeightTensor, timeValue}
 
