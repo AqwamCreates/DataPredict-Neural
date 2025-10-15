@@ -1,4 +1,4 @@
-# # DataPredict™ Neural Beta Version
+# DataPredict™ Neural Beta Version
 
 ## Version 1.12
 
