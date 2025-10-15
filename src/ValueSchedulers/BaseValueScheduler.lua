@@ -82,7 +82,7 @@ end
 
 function BaseValueScheduler:reset()
 
-	self.timeValue = defaultTimeValue
+	self.timeValue = 0
 
 end
 
