@@ -84,6 +84,8 @@ function ResilientBackwardPropagationOptimizer.new(parameterDictionary)
 		
 		local minimumStepSize = NewResilientBackwardPropagationOptimizer.minimumStepSize
 		
+		local weightDecayRate = NewResilientBackwardPropagationOptimizer.weightDecayRate
+		
 		local gradientTensor = costFunctionDerivativeTensor
 		
 		if (weightDecayRate ~= 0) then
