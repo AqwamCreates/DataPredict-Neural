@@ -2,7 +2,7 @@
 
 	--------------------------------------------------------------------
 
-	Aqwam's Deep Learning Library (DataPredict Neural)
+	Aqwam's Machine,  And Reinforcement Learning Library (DataPredict)
 
 	Author: Aqwam Harish Aiman
 	
@@ -16,7 +16,7 @@
 		
 	By using this library, you agree to comply with our Terms and Conditions in the link below:
 	
-	https://github.com/AqwamCreates/DataPredict-Neural/blob/main/docs/TermsAndConditions.md
+	https://github.com/AqwamCreates/DataPredict/blob/main/docs/TermsAndConditions.md
 	
 	--------------------------------------------------------------------
 	
@@ -80,6 +80,18 @@ function ReinforcementLearningBaseModel:getModel()
 
 end
 
+function ReinforcementLearningBaseModel:setModelParameters(ModelParameters, doNotCopy)
+
+	self.Model:setModelParameters(ModelParameters, doNotCopy)
+
+end
+
+function ReinforcementLearningBaseModel:getModelParameters(doNotCopy)
+
+	return self.Model:getModelParameters(doNotCopy)
+
+end
+
 function ReinforcementLearningBaseModel:predict(featureVector, returnOriginalOutput)
 
 	return self.Model:predict(featureVector, returnOriginalOutput)
@@ -106,33 +118,13 @@ end
 
 function ReinforcementLearningBaseModel:categoricalUpdate(previousFeatureVector, action, rewardValue, currentFeatureVector, terminalStateValue)
 	
-	local categoricalUpdateFunction = self.categoricalUpdateFunction
-	
-	if (categoricalUpdateFunction) then
-		
-		return categoricalUpdateFunction(previousFeatureVector, action, rewardValue, currentFeatureVector, terminalStateValue)
-		
-	else
-		
-		error("The categorical update function is not implemented.")
-		
-	end
+	return self.categoricalUpdateFunction(previousFeatureVector, action, rewardValue, currentFeatureVector, terminalStateValue)
 
 end
 
 function ReinforcementLearningBaseModel:diagonalGaussianUpdate(previousFeatureVector, actionMeanVector, actionStandardDeviationVector, actionNoiseVector, rewardValue, currentFeatureVector, terminalStateValue)
 
-	local diagonalGaussianUpdateFunction = self.diagonalGaussianUpdateFunction
-
-	if (diagonalGaussianUpdateFunction) then
-
-		return diagonalGaussianUpdateFunction(previousFeatureVector, actionMeanVector, actionStandardDeviationVector, actionNoiseVector, rewardValue, currentFeatureVector, terminalStateValue)
-
-	else
-
-		error("The diagonal Gaussian update function is not implemented.")
-
-	end
+	return self.diagonalGaussianUpdateFunction(previousFeatureVector, actionMeanVector, actionStandardDeviationVector, actionNoiseVector, rewardValue, currentFeatureVector, terminalStateValue)
 
 end
 
@@ -144,17 +136,7 @@ end
 
 function ReinforcementLearningBaseModel:episodeUpdate(terminalStateValue)
 
-	local episodeUpdateFunction = self.episodeUpdateFunction
-	
-	if (episodeUpdateFunction) then
-		
-		return episodeUpdateFunction(terminalStateValue)
-		
-	else
-		
-		error("The episode update function is not implemented.")
-		
-	end
+	return self.episodeUpdateFunction(terminalStateValue)
 
 end
 
@@ -166,17 +148,7 @@ end
 
 function ReinforcementLearningBaseModel:reset()
 	
-	local resetFunction = self.resetFunction
-
-	if (resetFunction) then 
-		
-		return resetFunction() 
-		
-	else
-		
-		error("The reset function is not implemented.")
-		
-	end
+	self.resetFunction() 
 
 end
 
