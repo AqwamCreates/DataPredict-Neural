@@ -50,7 +50,7 @@ The convolution blocks generally behaves the same as the pooling blocks. However
 
 Below, we will on demonstrate how the way we set up the convolution blocks affects the number of channels. Additionally, We will also use the same input tensor that we have used for the pooling block.
 
-```
+```lua
 
 local Convolution2D = DataPredict.ConvolutionBlocks.Convolution2D.new({numberOfKernels = 7, kernelDimensionSizeArray = {2, 2}, strideDimensionSizeArray = {2, 2})
 
