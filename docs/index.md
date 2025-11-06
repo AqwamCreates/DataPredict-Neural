@@ -4,7 +4,7 @@ By using or possessing any copies of this library or its assets (including the i
 
 This library was developed solo over more than 1 year (2000+ hours), which would exceed $100,000 USD in industry costs. Additionally, it requires near PhD-level knowledge to build and test all the models in this library. The cost to produce this library is significantly cheaper due to recycling of DataPredict™ (6000+ hours) library codes. To all indie devs who just starting their business, feel free to use it without burning away your money!
 
-| License Type                                                              | Percentage To Pay Based On Project's Gross Revenue In USD | Additional Notes                          |
+| License Type Based On Gross Revenue Per Company / Group / Individual      | Percentage To Pay Based On Project's Gross Revenue In USD | Additional Notes                          |
 |---------------------------------------------------------------------------|-----------------------------------------------------------|-------------------------------------------|
 | Non-B2B + Less Than Or Equal To 3K USD Within 365 Days (Not Per 365 Days) | 0%                                                        | Requires Public Disclosure Of DataPredict |
 | Standard                                                                  | 2% That Decreases As Gross Revenue Increases              | Requires Public Disclosure Of DataPredict |
