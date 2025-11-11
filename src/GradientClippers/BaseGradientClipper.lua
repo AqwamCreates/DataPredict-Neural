@@ -74,7 +74,7 @@ function BaseGradientClipper:calculate(learningRate, costFunctionDerivativeTenso
 		
 	end
 	
-	return costFunctionDerivativeMatrix
+	return costFunctionDerivativeTensor
 	
 end
 
