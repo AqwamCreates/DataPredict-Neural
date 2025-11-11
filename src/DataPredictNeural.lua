@@ -62,9 +62,11 @@ local HolderBlocks = script.HolderBlocks
 
 local Optimizers = script.Optimizers
 
-local Regularizers = script.Regularizers
+local GradientClippers = script.GradientClippers
 
 local ValueSchedulers = script.ValueSchedulers
+
+local Regularizers = script.Regularizers
 
 local EligibilityTraces = script.EligibilityTraces
 
@@ -493,19 +495,6 @@ AqwamDeepLearningLibrary.Optimizers = {
 	
 }
 
-AqwamDeepLearningLibrary.Regularizers = {
-	
-	L1 = require(Regularizers.Lasso),
-	Lasso = require(Regularizers.Lasso),
-	
-	L2 = require(Regularizers.Ridge),
-	Ridge = require(Regularizers.Ridge),
-	
-	L1L2 = require(Regularizers.ElasticNet),
-	ElasticNet = require(Regularizers.ElasticNet),
-	
-}
-
 AqwamDeepLearningLibrary.ValueSchedulers = {
 
 	Chained = require(ValueSchedulers.Chained),
@@ -531,6 +520,27 @@ AqwamDeepLearningLibrary.ValueSchedulers = {
 	Sequential = require(ValueSchedulers.Sequential),
 
 	Step = require(ValueSchedulers.Step),
+
+}
+
+AqwamDeepLearningLibrary.Regularizers = {
+
+	L1 = require(Regularizers.Lasso),
+	Lasso = require(Regularizers.Lasso),
+
+	L2 = require(Regularizers.Ridge),
+	Ridge = require(Regularizers.Ridge),
+
+	L1L2 = require(Regularizers.ElasticNet),
+	ElasticNet = require(Regularizers.ElasticNet),
+
+}
+
+AqwamMachineDeepAndReinforcementLearningLibrary.GradientClippers = {
+
+	ClipValue = require(GradientClippers.ClipValue),
+
+	ClipNormalization = require(GradientClippers.ClipNormalization),
 
 }
 
