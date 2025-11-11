@@ -536,7 +536,7 @@ AqwamDeepLearningLibrary.Regularizers = {
 
 }
 
-AqwamMachineDeepAndReinforcementLearningLibrary.GradientClippers = {
+AqwamDeepLearningLibrary.GradientClippers = {
 
 	ClipValue = require(GradientClippers.ClipValue),
 
