@@ -115,8 +115,12 @@ function BaseOptimizer:setOptimizerInternalParameterArray(optimizerInternalParam
 end
 
 function BaseOptimizer:reset()
+	
+	local LearningRateScheduler = self.LearningRateValueScheduler
 
 	self.optimizerInternalParameterArray = nil
+	
+	if (LearningRateScheduler) then LearningRateScheduler:reset() end
 
 end
 
