@@ -1,30 +1,20 @@
 # Welcome to Aqwam's DataPredict™ Neural Library!
 
-By using or possessing any copies of this library or its assets (including the icons), you agree to our [Terms And Conditions](TermsAndConditions.md).
+## Commercial Use Information
 
-This library was developed solo over more than 1 year (2000+ hours), which would exceed $100,000 USD in industry costs. Additionally, it requires near PhD-level knowledge to build and test all the models in this library. The cost to produce this library is significantly cheaper due to recycling of DataPredict™ (6000+ hours) library codes. To all indie devs who just starting their business, feel free to use it without burning away your money!
+* [How Does DataPredict Reduce Costs For In-Game Machine Learning?](https://github.com/AqwamCreates/DataPredict/blob/main/docs/CostReductionInformation.md)
 
-| License Type Based On Gross Revenue Per Company / Group / Individual      | Percentage To Pay Based On Project's Gross Revenue In USD | Additional Notes                          |
-|---------------------------------------------------------------------------|-----------------------------------------------------------|-------------------------------------------|
-| Non-B2B + Less Than Or Equal To 3K USD Within 365 Days (Not Per 365 Days) | 0%                                                        | Requires Public Disclosure Of DataPredict |
-| Standard                                                                  | 2% That Decreases As Gross Revenue Increases              | Requires Public Disclosure Of DataPredict |
-| White-Label                                                               | 5%                                                        | None                                      |
+* [Commercial Use Licensing](https://github.com/AqwamCreates/DataPredict/blob/main/docs/DataPredictLibrariesLicensingAgreements.md)
 
-* Because machine, deep and reinforcement learning models try to find the best solution for you during training, you are likely (but not guaranteed) to increase your revenue over this cost.
+## Terms And Conditions Information
 
-* You're not licensing convenience; you're licensing a higher probability of increased revenue.
+* By using or possessing any copies of this library or its assets (including the icons), you agree to our [Terms And Conditions](TermsAndConditions.md).
 
-* Think of it this way: you’re not losing 0.5%-5% of your revenue; you’re investing 0.5%-5% to unlock the other 30% you might be leaving on the table. In some cases, the upside could be even higher.
+  * Small devs and non-B2B projects earning ≤3K USD within 365 days (not per 365 days) can use DataPredict™ for free!
+ 
+  * Standard and White-Label tiers available for commercial projects.
 
-* That fee also includes DataPredict™ and DataPredict™ Axon. All the money will be used for future research and improvements that will be released to the public.
-
-Thanks to the early adopters, I managed to to fund my Master research thesis (that may be published soon) on how to speed up reinforcement learning training by 10 times from the baseline methods. It is already implemented in the DataPredict™ and DataPredict™ Neural libraries!
-
-You can download and read the full list of commercial licensing agreements [here](https://github.com/AqwamCreates/DataPredict/blob/main/docs/DataPredictLibrariesLicensingAgreements.md).
-
-I do not entertain "proof of value" requests. You can read the reasons [here](WhyIDoNotEntertainProofOfValueRequests.md).
-
-For information regarding potential license violations and eligibility for a bounty reward, please refer to the [Terms And Conditions Violation Bounty Reward Information](TermsAndConditionsViolationBountyRewardInformation.md).
+* For information regarding potential license violations and eligibility for a bounty reward, please refer to the [Terms And Conditions Violation Bounty Reward Information](TermsAndConditionsViolationBountyRewardInformation.md).
 
 ![DataPredictNeuralIconSmall](https://github.com/AqwamCreates/DataPredict-Neural/assets/67371914/cf4e61af-a7b6-4ba6-98cf-656a245e9960)
 
