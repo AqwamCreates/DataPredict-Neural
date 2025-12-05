@@ -30,7 +30,7 @@ local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker
 
 local ReinforcementLearningBaseModel = require(script.Parent.ReinforcementLearningBaseModel)
 
-DeepClippedDoubleQLearningModel = {}
+local DeepClippedDoubleQLearningModel = {}
 
 DeepClippedDoubleQLearningModel.__index = DeepClippedDoubleQLearningModel
 
@@ -50,7 +50,7 @@ function DeepClippedDoubleQLearningModel.new(parameterDictionary)
 
 	NewDeepClippedDoubleQLearningModel.WeightTensorArrayArray = {}
 
-	NewDeepClippedDoubleQLearningModel:setCategoricalUpdateFunction(function(previousFeatureTensor, action, rewardValue, currentFeatureTensor, terminalStateValue)
+	NewDeepClippedDoubleQLearningModel:setCategoricalUpdateFunction(function(previousFeatureTensor, previousAction, rewardValue, currentFeatureTensor, currentAction, terminalStateValue)
 
 		local Model = NewDeepClippedDoubleQLearningModel.Model
 		
@@ -80,7 +80,7 @@ function DeepClippedDoubleQLearningModel.new(parameterDictionary)
 
 		local ClassesList = Model:getClassesList()
 
-		local actionIndex = table.find(ClassesList, action)
+		local actionIndex = table.find(ClassesList, previousAction)
 
 		local numberOfClasses = #ClassesList
 		

@@ -30,7 +30,7 @@ local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker
 
 local ReinforcementLearningActorCriticBaseModel = require(script.Parent.ReinforcementLearningActorCriticBaseModel)
 
-ActorCriticModel = {}
+local ActorCriticModel = {}
 
 ActorCriticModel.__index = ActorCriticModel
 
@@ -86,7 +86,7 @@ function ActorCriticModel.new(parameterDictionary)
 	
 	local criticValueHistory = {}
 
-	NewActorCriticModel:setCategoricalUpdateFunction(function(previousFeatureTensor, action, rewardValue, currentFeatureTensor, terminalStateValue)
+	NewActorCriticModel:setCategoricalUpdateFunction(function(previousFeatureTensor, previousAction, rewardValue, currentFeatureTensor, currentAction, terminalStateValue)
 
 		local actionTensor = NewActorCriticModel.ActorModel:forwardPropagate(previousFeatureTensor, true)
 		
@@ -106,27 +106,27 @@ function ActorCriticModel.new(parameterDictionary)
 
 	end)
 
-	NewActorCriticModel:setDiagonalGaussianUpdateFunction(function(previousFeatureTensor, actionMeanTensor, actionStandardDeviationTensor, actionNoiseTensor, rewardValue, currentFeatureTensor, terminalStateValue)
+	NewActorCriticModel:setDiagonalGaussianUpdateFunction(function(previousFeatureTensor, previousActionMeanTensor, previousActionStandardDeviationTensor, previousActionNoiseTensor, rewardValue, currentFeatureTensor, currentActionMeanTensor, terminalStateValue)
 
-		if (not actionNoiseTensor) then
+		if (not previousActionNoiseTensor) then
 			
-			local actionTensorDimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(actionMeanTensor)
+			local actionTensorDimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(previousActionMeanTensor)
 			
-			actionNoiseTensor = AqwamTensorLibrary:createRandomUniformTensor(actionTensorDimensionSizeArray) 
+			previousActionNoiseTensor = AqwamTensorLibrary:createRandomUniformTensor(actionTensorDimensionSizeArray) 
 			
 		end
 
-		local actionTensorPart1 = AqwamTensorLibrary:multiply(actionStandardDeviationTensor, actionNoiseTensor)
+		local actionTensorPart1 = AqwamTensorLibrary:multiply(previousActionStandardDeviationTensor, previousActionNoiseTensor)
 
-		local actionTensor = AqwamTensorLibrary:add(actionMeanTensor, actionTensorPart1)
+		local actionTensor = AqwamTensorLibrary:add(previousActionMeanTensor, actionTensorPart1)
 
-		local zScoreTensorPart1 = AqwamTensorLibrary:subtract(actionTensor, actionMeanTensor)
+		local zScoreTensorPart1 = AqwamTensorLibrary:subtract(actionTensor, previousActionMeanTensor)
 
-		local zScoreTensor = AqwamTensorLibrary:divide(zScoreTensorPart1, actionStandardDeviationTensor)
+		local zScoreTensor = AqwamTensorLibrary:divide(zScoreTensorPart1, previousActionStandardDeviationTensor)
 
 		local squaredZScoreTensor = AqwamTensorLibrary:power(zScoreTensor, 2)
 
-		local logActionProbabilityTensorPart1 = AqwamTensorLibrary:logarithm(actionStandardDeviationTensor)
+		local logActionProbabilityTensorPart1 = AqwamTensorLibrary:logarithm(previousActionStandardDeviationTensor)
 
 		local logActionProbabilityTensorPart2 = AqwamTensorLibrary:multiply(2, logActionProbabilityTensorPart1)
 
