@@ -33,11 +33,15 @@ These terms and conditions (“Agreement”) are a legal agreement between you (
 
 * The term "commercial use" encompasses all forms of utilization and application, including integration, storing, and hosting from another computer, server, or machine. This applies to companies (or individuals, if none) whose combined revenue (including from subsidiaries or related entities) exceeds $3,000 within 365 days (not per 365 days) or those engaged in business-to-business activities.
 
-* The Library can be utilized for both internal and external commercial purposes under the condition that all source codes, data, arts, models, videos, audios, music, or any other assets that interact with the Library, whether directly or indirectly, must be released and distributed to the public under the MIT license for all versions permanently and immediately. Such assets must also be placed in areas that are approved by the Licensor. While waiting for approval from the Licensor, the User must place them in areas that are commonly viewed by the general public.
+* Commercial use is permitted subject to the following conditions, where if the User engages in commercial use as defined in Section 3.1, the Licensor reserves the right, at its sole discretion and without prior notice, to:
 
-* If User initially does not meet "commercial use" definition but then meet to "commercial use" definition in the future, the User have a grace period of 30 days to release all the interacting source codes, data, arts, models, videos, audios, music, or any other assets under MIT license. However, the Licensor reserves the right to revoke this requirement at any given time in writing.
+  * Provide all User's Interacting Code to Licensor for review;
+ 
+  * Release any or all User's Interacting Code under MIT license either publicly, privately to Licensor, or to designated third parties;
+ 
+  * Determine the timing and manner of such release.
 
-* The User is not allowed to remove distributed codes released under the MIT license due to the commercial usage of this Library from the public without the Licensor's permission.
+* User may not remove codes that the Licensor has released under MIT license pursuant to this Agreement.
 
 * Failure to comply with these conditions will make the User liable for damages due to non-compliance, and the User must pay monetary compensation. No other forms of compensation will be accepted.
 
@@ -119,7 +123,7 @@ This Agreement shall be governed by and construed in accordance with the laws of
 
 ## Changes to Terms and Conditions
 
-Licensor reserve the right to change these terms and conditions at any time, without prior notice. User continued use of the software library after such changes will constitute User's acceptance of the new terms and conditions.
+Licensor reserves the right to modify this Agreement at any time. Modified terms will be posted in the Library's repository. The modified terms will become effective 30 days after posting for all Users who continue to use the Library. User's continued use of the Library after this 30-day period constitutes acceptance of the modified terms. If User does not agree to the modified terms, User must stop all use and possession of the Library.
 
 ## Termination
 
@@ -136,5 +140,3 @@ No waiver by Licensor of any breach of this Agreement by Licensee shall be consi
 This Agreement constitutes the entire agreement between User and Licensor with respect to the subject matter hereof and supersedes all prior or contemporaneous communications and proposals, whether oral or written, between User and Licensor.
 
 In the event that any provision within this Agreement is found to be invalid, illegal, or unenforceable under any applicable law or by a court of competent jurisdiction, the remaining provisions of this Agreement shall remain in full force and effect, and the invalid, illegal, or unenforceable provision shall be deemed modified to the extent necessary to make it valid, legal, and enforceable, preserving the intentions of the parties to the maximum extent possible.
-
-By using or possessing the Library, User agrees to be bound by the terms of this Agreement. If User does not agree to the terms of this Agreement, User shall not use or possess the Library.
