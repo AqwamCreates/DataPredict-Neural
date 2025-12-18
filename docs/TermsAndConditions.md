@@ -1,11 +1,12 @@
 # TERMS AND CONDITIONS
 
 ## License
-These terms and conditions (“Agreement”) are a legal agreement between you (or company or organization) recognized as “User” and Aqwam Harish Aiman recognised as “Licensor” for the use of DataPredict Neural Library (“Library”) within this terms and conditions. By using or possessing the Library, User, agrees to be bound by the terms of this Agreement.
+
+These terms and conditions (“Agreement”) is a legal agreement between you (or company or organization) recognized as “User” and Aqwam Harish Aiman recognised as “Licensor” for the use of DataPredict Neural Library (“Library”) within this terms and conditions. By using the Library, User, agrees to be bound by the terms of this Agreement.
 
 ## Definitions
 
-* For the purposes of this Agreement, "interaction" shall include, but is not limited to:
+* The definition of "Interaction" shall include, but is not limited to:
 
   * Direct Usage: Any instance where the Library is explicitly called, linked, imported, compiled, or otherwise included as part of another program, application, system, or project.
 
@@ -29,19 +30,29 @@ These terms and conditions (“Agreement”) are a legal agreement between you (
 
   * Supportive or Auxiliary Use: Any usage of the Library to aid in the development, testing, debugging, or execution of other projects, systems, or applications.
 
+* The definition of "Commercial Use" encompasses all forms of utilization and application, including integration, storing, and hosting from another computer, server, or machine. This applies to companies (or individuals, if none) whose combined gross revenue (including from subsidiaries or related entities) exceeds $3,000 within 365 days (not per 365 days) or those engaged in business-to-business activities.
+
+* The definition of "User's Third Parties" shall include, but is not limited to:
+
+  * Any individual or entity that receives, accesses, or benefits from the Library through User's actions;
+
+  * Clients, customers, contractors, subcontractors, partners, affiliates, or any entity to which User provides access to the Library.
+
 ## Commercial Use Conditions
 
-* The term "commercial use" encompasses all forms of utilization and application, including integration, storing, and hosting from another computer, server, or machine. This applies to companies (or individuals, if none) whose combined revenue (including from subsidiaries or related entities) exceeds $3,000 within 365 days (not per 365 days) or those engaged in business-to-business activities.
+* Commercial Use is permitted subject to the following conditions, where if the User engages in commercial use, the Licensor reserves the right, at its sole discretion and without prior notice, to:
 
-* The Library can be utilized for both internal and external commercial purposes under the condition that all source codes, data, arts, models, videos, audios, music, or any other assets that interact with the Library, whether directly or indirectly, must be released and distributed to the public under the MIT license for all versions permanently and immediately. Such assets must also be placed in areas that are approved by the Licensor. While waiting for approval from the Licensor, the User must place them in areas that are commonly viewed by the general public.
+  * Provide all User's Interacting assets to Licensor for review;
+ 
+  * Release any or all User's Interacting assets under Apache 2.0 license either publicly, privately to Licensor, or to designated third parties;
+ 
+  * Determine the timing and manner of such release.
 
-* If User initially does not meet "commercial use" definition but then meet to "commercial use" definition in the future, the User have a grace period of 30 days to release all the interacting source codes, data, arts, models, videos, audios, music, or any other assets under MIT license. However, the Licensor reserves the right to revoke this requirement at any given time in writing.
+* The User may not remove codes that the Licensor has released under Apache 2.0 license pursuant to this Agreement.
 
-* The User is not allowed to remove distributed codes released under the MIT license due to the commercial usage of this Library from the public without the Licensor's permission.
+* The User agrees that release of Interacting assets under Apache 2.0 license constitutes reasonable alternative consideration and benefit in lieu for the use and posession of the Library. This remedy represents the parties' good faith estimate of fair compensation.
 
-* Failure to comply with these conditions will make the User liable for damages due to non-compliance, and the User must pay monetary compensation. No other forms of compensation will be accepted.
-
-* The MIT license can be viewed here: https://opensource.org/license/mit.
+* The Apache 2.0 license can be viewed here: https://choosealicense.com/licenses/apache-2.0/.
 
 ## Prohibited Actions
 
@@ -66,10 +77,6 @@ User shall not:
 * Use the Library in any manner that violates any applicable laws or regulations.
 
 Should the User violates the prohibited actions as stated above, the User must pay monetary compensation. No other forms of compensation will be accepted.
-
-## Liability
-
-The Library is provided "AS IS" and without warranty of any kind. Licensor shall not be liable for any damages or losses, including but not limited to direct, indirect, incidental, consequential, or punitive damages arising out of the use or inability to use the Library.
 
 ## Ownership and Credit
 
@@ -111,7 +118,23 @@ The determination of compensatory damages shall be made by a court of competent 
 
 ## Waiver of Confidentiality Rights
 
-User acknowledges and agrees that, in the event Licensor suspects a violation of this Agreement, particularly in cases where the Library is commercially used without conforming to the commercial use conditions, the User hereby waives all rights to keep the codes that uses the Library confidential. This waiver includes but is not limited to any obligation to maintain confidentiality regarding the Library and its usage, even in relation to the User's clients. In such instances, the User shall not assert any right to confidentiality with respect to the Library, and the User shall fully cooperate with Licensor in any legal proceedings, including the revelation of the code without prior notice. This provision is essential to protect the intellectual property and commercial interests of the Licensor. Should the client possesses or uses the library without valid commercial agreement with the Licensor, they shall be held liable as well regardless if the client is aware of it or not. Only the monetary forms of compensation will be accepted.
+The User acknowledges and agrees that, in the event Licensor have a reasonable belief of a violation of this Agreement, Licensor may request User provide relevant assets for review. User may assert confidentiality, but the User's refusal may be considered in determining the violation. The User also agrees that the User will not interfere the Licensor's review from the User's Third Parties.
+
+## In Relation Of User's Third Parties
+
+* The User acknowledges that if the Library is used or possesed by the User's Third Parties, the User would be liable for User's Third Parties' use and possesion of the Library.
+
+* The User may avoid liability for User's Third Parties' violations if:
+
+  * The User had written agreement with User's Third Party requiring compliance;
+  
+  * The User made reasonable efforts to monitor compliance;
+  
+  * The User promptly notifies Licensor upon discovering violation.
+
+## Liability
+
+The Library is provided "AS IS" and without warranty of any kind. Licensor shall not be liable for any damages or losses, including but not limited to direct, indirect, incidental, consequential, or punitive damages arising out of the use or inability to use the Library.
 
 ## Governing Law
 
@@ -119,13 +142,11 @@ This Agreement shall be governed by and construed in accordance with the laws of
 
 ## Changes to Terms and Conditions
 
-Licensor reserve the right to change these terms and conditions at any time, without prior notice. User continued use of the software library after such changes will constitute User's acceptance of the new terms and conditions.
+Licensor reserves the right to modify this Agreement at any time without prior notice. Modified terms will be posted in the Library's repository. The modified terms will become effective 30 days after posting for all Users who continue to use the Library. User's continued use of the Library after this 30-day period constitutes acceptance of the modified terms. If User does not agree to the modified terms, User must stop all use and possession of the Library.
 
 ## Termination
 
-* Licensor may terminate this Agreement at any time if User breaches any provision of this Agreement. Upon termination, User shall immediately cease all use of the Library and destroy all copies of the Library in its possession.
-
-* Upon the event of a modification or update to this Agreement, it shall hereby render the previous iteration of this Agreement null and void, with the authority to do so exercised without prior notice. The terms and stipulations articulated within the revised Agreement shall instantaneously supersede any antecedent agreements. The User is thereby mandated to promptly adhere to the conditions delineated within the updated license. Failure to comply shall warrant termination in accordance with the provisions detailed above.
+Licensor may terminate this Agreement at any time if User breaches any provision of this Agreement. Upon termination, User shall immediately cease all use of the Library and destroy all copies of the Library in its possession.
 
 ## No Waiver
 
@@ -137,4 +158,4 @@ This Agreement constitutes the entire agreement between User and Licensor with r
 
 In the event that any provision within this Agreement is found to be invalid, illegal, or unenforceable under any applicable law or by a court of competent jurisdiction, the remaining provisions of this Agreement shall remain in full force and effect, and the invalid, illegal, or unenforceable provision shall be deemed modified to the extent necessary to make it valid, legal, and enforceable, preserving the intentions of the parties to the maximum extent possible.
 
-By using or possessing the Library, User agrees to be bound by the terms of this Agreement. If User does not agree to the terms of this Agreement, User shall not use or possess the Library.
+By using or possessing the Library, User agrees to be bound by the terms of this Agreement. If User does not agree to the terms of this Agreement, User shall not use the Library.
