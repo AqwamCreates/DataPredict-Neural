@@ -30,7 +30,7 @@ local BasePaddingBlock = require(script.Parent.BasePaddingBlock)
 
 local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
 
-ConstantPaddingBlock = {}
+local ConstantPaddingBlock = {}
 
 ConstantPaddingBlock.__index = ConstantPaddingBlock
 
