@@ -30,7 +30,7 @@ local BaseHolderBlock = require(script.Parent.BaseHolderBlock)
 
 local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
 
-InputHolderBlock = {}
+local InputHolderBlock = {}
 
 InputHolderBlock.__index = InputHolderBlock
 
