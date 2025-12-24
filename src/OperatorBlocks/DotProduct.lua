@@ -30,7 +30,7 @@ local BaseOperatorBlock = require(script.Parent.BaseOperatorBlock)
 
 local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
 
-DotProductBlock = {}
+local DotProductBlock = {}
 
 DotProductBlock.__index = DotProductBlock
 
