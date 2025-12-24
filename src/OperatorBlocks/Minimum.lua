@@ -30,11 +30,73 @@ local BaseOperatorBlock = require(script.Parent.BaseOperatorBlock)
 
 local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
 
-MinimumBlock = {}
+local MinimumBlock = {}
 
 MinimumBlock.__index = MinimumBlock
 
 setmetatable(MinimumBlock, BaseOperatorBlock)
+
+function MinimumBlock.new()
+
+	local NewMinimumBlock = BaseOperatorBlock.new()
+
+	setmetatable(NewMinimumBlock, MinimumBlock)
+
+	NewMinimumBlock:setName("Minimum")
+	
+	NewMinimumBlock:setFirstDerivativeFunctionRequiresTransformedTensor(false)
+	
+	NewMinimumBlock:setFunction(function(inputTensorArray)
+		
+		return AqwamTensorLibrary:applyFunction(math.min, table.unpack(inputTensorArray))
+	
+	end)
+
+	NewMinimumBlock:setChainRuleFirstDerivativeFunction(function(initialPartialFirstDerivativeTensor, transformedTensor, inputTensorArray)
+		
+		local chainRuleFirstDerivativeTensorArray = {}
+		
+		for i, inputTensor in ipairs(inputTensorArray) do
+			
+			local functionToApply = function(initialPartialFirstDerivativeValue, ...)
+
+				local isMinimum = false
+
+				local lowestValue = -math.huge
+
+				for j, value in ipairs(...) do
+
+					if (value <= lowestValue) then
+
+						isMinimum = (i == j)
+
+						lowestValue = value
+
+					end
+
+				end
+
+				return (isMinimum and initialPartialFirstDerivativeValue) or 0
+
+			end
+			
+			local dimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(inputTensor)
+
+			local firstDerivativeTensor = AqwamTensorLibrary:applyFunction(functionToApply, initialPartialFirstDerivativeTensor, table.unpack(inputTensorArray))
+
+			chainRuleFirstDerivativeTensorArray[i] = NewMinimumBlock:collapseTensor(initialPartialFirstDerivativeTensor, dimensionSizeArray)
+
+		end
+
+		return chainRuleFirstDerivativeTensorArray
+		
+	end)
+
+	return NewMinimumBlock
+
+end
+
+return MinimumBlocksetmetatable(MinimumBlock, BaseOperatorBlock)
 
 function MinimumBlock.new()
 
