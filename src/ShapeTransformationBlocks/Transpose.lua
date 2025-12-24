@@ -30,7 +30,7 @@ local BaseShapeTransformationBlock = require(script.Parent.BaseShapeTransformati
 
 local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
 
-TransposeBlock = {}
+local TransposeBlock = {}
 
 TransposeBlock.__index = TransposeBlock
 
