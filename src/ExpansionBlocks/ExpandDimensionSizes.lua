@@ -30,7 +30,7 @@ local BaseExpansionBlocks = require(script.Parent.BaseExpansionBlocks)
 
 local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
 
-ExpandDimensionSizesBlock = {}
+local ExpandDimensionSizesBlock = {}
 
 ExpandDimensionSizesBlock.__index = ExpandDimensionSizesBlock
 
