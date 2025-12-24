@@ -30,104 +30,180 @@ local BaseWeightBlock = require(script.Parent.BaseWeightBlock)
 
 local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
 
-AutomaticBiasBlock = {}
+local DataPredictLinearAndBiasBlock = {}
 
-AutomaticBiasBlock.__index = AutomaticBiasBlock
+DataPredictLinearAndBiasBlock.__index = DataPredictLinearAndBiasBlock
 
-setmetatable(AutomaticBiasBlock, BaseWeightBlock)
+setmetatable(DataPredictLinearAndBiasBlock, BaseWeightBlock)
 
-local defaultShareBiasDimensionArray = {1}
+local defaultHasBiasOnCurrentLayer = true
 
-function AutomaticBiasBlock.new(parameterDictionary)
+local defaultHasBiasOnNextLayer = true
+
+local function getValueOrDefaultValue(value, defaultValue)
+
+	if (type(value) == "nil") then return defaultValue end
+
+	return value
+
+end
+
+function DataPredictLinearAndBiasBlock.new(parameterDictionary) -- For cross compatibility with DataPredict Library Neural Networks.
 
 	parameterDictionary = parameterDictionary or {}
+	
+	local hasBiasOnCurrentLayer = getValueOrDefaultValue(parameterDictionary.hasBiasOnCurrentLayer, defaultHasBiasOnCurrentLayer)
+	
+	local hasBiasOnNextLayer = getValueOrDefaultValue(parameterDictionary.hasBiasOnNextLayer, defaultHasBiasOnNextLayer)
+	
+	local dimensionSizeArray = parameterDictionary.dimensionSizeArray
+	
+	dimensionSizeArray[1] = dimensionSizeArray[1] + ((hasBiasOnCurrentLayer and 1) or 0)
+	
+	dimensionSizeArray[2] = dimensionSizeArray[2] + ((hasBiasOnNextLayer and 1) or 0)
+	
+	local NewDataPredictLinearAndBiasBlock = BaseWeightBlock.new(parameterDictionary)
 
-	local NewAutomaticBiasBlock = BaseWeightBlock.new(parameterDictionary)
+	setmetatable(NewDataPredictLinearAndBiasBlock, DataPredictLinearAndBiasBlock)
 
-	setmetatable(NewAutomaticBiasBlock, AutomaticBiasBlock)
+	NewDataPredictLinearAndBiasBlock:setName("DataPredictLinearAndBiasBlock")
 
-	NewAutomaticBiasBlock:setName("AutomaticBias")
+	NewDataPredictLinearAndBiasBlock:setFirstDerivativeFunctionRequiresTransformedTensor(false)
+	
+	NewDataPredictLinearAndBiasBlock.hasBiasOnCurrentLayer = hasBiasOnNextLayer
+	
+	NewDataPredictLinearAndBiasBlock.hasBiasOnNextLayer = hasBiasOnNextLayer
 
-	local numberOfDimensions = parameterDictionary.numberOfDimensions
-
-	local shareBiasDimensionArray = parameterDictionary.shareBiasDimensionArray or defaultShareBiasDimensionArray
-
-	if (not numberOfDimensions) then error("The number of dimensions for the bias function block is not set.") end
-
-	if (numberOfDimensions <= 0) then error("The number of dimensions for the bias function block cannot be less than or equal to zero.") end
-
-	if (type(shareBiasDimensionArray) ~= "table") then error("The share bias dimension array is not a table.") end
-
-	for i, dimension in ipairs(shareBiasDimensionArray) do
-
-		if (dimension <= 0) then
-
-			error("The share bias contains a dimension that is less than or equal to zero at the index " .. i .. ".")
-
-		elseif (dimension > numberOfDimensions) then
-
-			error("The share bias contains a dimension that is greater than number of dimensions at the index " .. i .. ".")
-
-		end
-
-	end
-
-	NewAutomaticBiasBlock.numberOfDimensions = numberOfDimensions
-
-	NewAutomaticBiasBlock.shareBiasDimensionArray = shareBiasDimensionArray
-
-	NewAutomaticBiasBlock:setFunction(function(inputTensorArray)
-
+	NewDataPredictLinearAndBiasBlock:setFunction(function(inputTensorArray)
+		
 		local inputTensor = inputTensorArray[1]
 
-		local weightTensor = NewAutomaticBiasBlock:getWeightTensor(true)
+		local weightTensor = NewDataPredictLinearAndBiasBlock:getWeightTensor(true)
 
 		if (not weightTensor) then
 
-			local numberOfDimensions = NewAutomaticBiasBlock.numberOfDimensions
+			weightTensor = NewDataPredictLinearAndBiasBlock:generateWeightTensor()
 
-			local shareBiasDimensionArray = NewAutomaticBiasBlock.shareBiasDimensionArray
+			NewDataPredictLinearAndBiasBlock:setWeightTensor(weightTensor, true)
 
-			local inputTensorDimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(inputTensor)
+		end
+		
+		if (NewDataPredictLinearAndBiasBlock.hasBiasOnCurrentLayer) then
 
-			local numberOfDimensionsForInputTensor = #inputTensorDimensionSizeArray
-
-			if (numberOfDimensions > numberOfDimensionsForInputTensor) then error("The number of dimensions for the bias function block exceeds the number of dimensions for the input tensor.") end
-
-			local weightTensorDimensionSizeArray = table.clone(inputTensorDimensionSizeArray)
-
-			for _, dimension in ipairs(shareBiasDimensionArray) do weightTensorDimensionSizeArray[dimension] = 1 end
-
-			weightTensor = NewAutomaticBiasBlock:generateWeightTensor(weightTensorDimensionSizeArray)
-
-			NewAutomaticBiasBlock:setWeightTensor(weightTensor, true)
+			for data = 1, #inputTensor, 1 do inputTensor[data][1] = 1 end -- Because we actually calculated the output of previous layers instead of using bias neurons and the model parameters takes into account of bias neuron size, we will set the first column to one so that it remains as bias neuron.
 
 		end
 
-		return AqwamTensorLibrary:add(inputTensor, weightTensor)
+		return AqwamTensorLibrary:dotProduct(inputTensorArray[1], weightTensor)
 
 	end)
 
-	NewAutomaticBiasBlock:setChainRuleFirstDerivativeFunction(function(initialPartialFirstDerivativeTensor, transformedTensor, inputTensor)
+	NewDataPredictLinearAndBiasBlock:setChainRuleFirstDerivativeFunction(function(initialPartialFirstDerivativeTensor, transformedTensor, inputTensorArray)
 
-		return {initialPartialFirstDerivativeTensor}
+		local weightTensor = NewDataPredictLinearAndBiasBlock:getWeightTensor(true)
+
+		if (not weightTensor) then
+
+			weightTensor = NewDataPredictLinearAndBiasBlock:generateWeightTensor()
+
+			NewDataPredictLinearAndBiasBlock:setWeightTensor(weightTensor, true)
+
+		end
+
+		local weightTensorNumberOfDimensions = #AqwamTensorLibrary:getDimensionSizeArray(weightTensor)
+		
+		local partialFirstDerivativeTensor = AqwamTensorLibrary:copy(initialPartialFirstDerivativeTensor)
+
+		if (NewDataPredictLinearAndBiasBlock.hasBiasOnNextLayer) then -- There are two bias here, one for previous layer and one for the next one. In order the previous values does not propagate to the next layer, the first column must be set to zero, since the first column refers to bias for next layer. The first row is for bias at the current layer.
+
+			for i = 1, #partialFirstDerivativeTensor, 1 do partialFirstDerivativeTensor[i][1] = 0 end
+
+		end
+
+		local chainRuleFirstDerivativeTensor = AqwamTensorLibrary:dotProduct(partialFirstDerivativeTensor, AqwamTensorLibrary:transpose(weightTensor, {weightTensorNumberOfDimensions - 1, weightTensorNumberOfDimensions}))
+
+		return {chainRuleFirstDerivativeTensor}
 
 	end)
 
-	NewAutomaticBiasBlock:setFirstDerivativeFunction(function(initialPartialFirstDerivativeTensor) -- Since the bias tensor can be broadcasted, we need to sum the dimensions that are the result of the broadcasting so that it matches the original bias tensor size.
+	NewDataPredictLinearAndBiasBlock:setFirstDerivativeFunction(function(initialPartialFirstDerivativeTensor, transformedTensor, inputTensorArray)  
 
-		local weightTensor = NewAutomaticBiasBlock:getWeightTensor(true)
+		--[[
+		
+		We only have calculated the partial derivative and not the full derivative. So another first derivative function is needed to in order to calculate full derivative.
+		
+		Refer to https://www.3blue1brown.com/lessons/backpropagation-calculus
+		
+		--]]
 
-		local weightTensorDimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(weightTensor)
+		local inputTensor = inputTensorArray[1]
+		
+		local inputTensorNumberOfDimensions =  AqwamTensorLibrary:getNumberOfDimensions(inputTensor)
+		
+		local transposedInputTensor = AqwamTensorLibrary:transpose(inputTensor, {inputTensorNumberOfDimensions - 1, inputTensorNumberOfDimensions})
+		
+		local partialFirstDerivativeTensor = AqwamTensorLibrary:copy(initialPartialFirstDerivativeTensor)
+		
+		if (NewDataPredictLinearAndBiasBlock.hasBiasOnNextLayer) then -- There are two bias here, one for previous layer and one for the next one. In order the previous values does not propagate to the next layer, the first column must be set to zero, since the first column refers to bias for next layer. The first row is for bias at the current layer.
 
-		local firstDerivativeTensor = NewAutomaticBiasBlock:collapseTensor(initialPartialFirstDerivativeTensor, weightTensorDimensionSizeArray)
+			for i = 1, #partialFirstDerivativeTensor, 1 do partialFirstDerivativeTensor[i][1] = 0 end
+
+		end
+		
+		local firstDerivativeTensor = AqwamTensorLibrary:dotProduct(transposedInputTensor, partialFirstDerivativeTensor)
 
 		return {firstDerivativeTensor}
 
 	end)
 
-	return NewAutomaticBiasBlock
+	return NewDataPredictLinearAndBiasBlock
 
 end
 
-return AutomaticBiasBlock
+function DataPredictLinearAndBiasBlock:gradientDescent(weightLossTensor, numberOfData)
+
+	local weightTensor = self.weightTensor
+
+	local learningRate = self.learningRate
+
+	local Optimizer = self.Optimizer
+
+	local Regularizer = self.Regularizer
+
+	if (Regularizer) then
+
+		local regularizationTensor = Regularizer:calculate(weightTensor)
+
+		weightLossTensor = AqwamTensorLibrary:add(weightLossTensor, regularizationTensor)
+
+	end
+
+	if (numberOfData ~= nil) and (numberOfData ~= 1) then 
+
+		weightLossTensor = AqwamTensorLibrary:divide(weightLossTensor, numberOfData) 
+
+	end
+
+	if (Optimizer) then
+
+		weightLossTensor = Optimizer:calculate(learningRate, weightLossTensor)
+
+	else
+
+		weightLossTensor = AqwamTensorLibrary:multiply(learningRate, weightLossTensor)
+
+	end
+	
+	local newWeightTensor = AqwamTensorLibrary:subtract(weightTensor, weightLossTensor)
+	
+	if (self.hasBiasOnNextLayer) then -- There are two bias here, one for previous layer and one for the next one. In order the previous values does not propagate to the next layer, the first column must be set to zero, since the first column refers to bias for next layer. The first row is for bias at the current layer.
+
+		for i = 1, #newWeightTensor, 1 do newWeightTensor[i][1] = 0 end
+
+	end
+
+	self.weightTensor = newWeightTensor
+
+end
+
+return DataPredictLinearAndBiasBlock
