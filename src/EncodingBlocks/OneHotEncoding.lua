@@ -30,7 +30,7 @@ local BaseEncodingBlock = require(script.Parent.BaseEncodingBlock)
 
 local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
 
-OneHotEncodingBlock = {}
+local OneHotEncodingBlock = {}
 
 OneHotEncodingBlock.__index = OneHotEncodingBlock
 
