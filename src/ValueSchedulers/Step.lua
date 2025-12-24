@@ -28,7 +28,7 @@
 
 local BaseValueScheduler = require(script.Parent.BaseValueScheduler)
 
-StepValueScheduler = {}
+local StepValueScheduler = {}
 
 StepValueScheduler.__index = StepValueScheduler
 
