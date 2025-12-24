@@ -30,7 +30,7 @@ local BaseHolderBlock = require(script.Parent.BaseHolderBlock)
 
 local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
 
-NullaryFunctionHolderBlock = {}
+local NullaryFunctionHolderBlock = {}
 
 NullaryFunctionHolderBlock.__index = NullaryFunctionHolderBlock
 
