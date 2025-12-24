@@ -30,7 +30,7 @@ local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker
 
 local BaseInstance = require(script.Parent.BaseInstance)
 
-BaseFunctionBlock = {}
+local BaseFunctionBlock = {}
 
 BaseFunctionBlock.__index = BaseFunctionBlock
 
