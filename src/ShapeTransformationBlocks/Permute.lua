@@ -30,7 +30,7 @@ local BaseShapeTransformationBlock = require(script.Parent.BaseShapeTransformati
 
 local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
 
-PermuteBlock = {}
+local PermuteBlock = {}
 
 PermuteBlock.__index = PermuteBlock
 
