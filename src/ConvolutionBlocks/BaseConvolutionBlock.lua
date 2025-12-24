@@ -30,7 +30,7 @@ local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker
 
 local BaseWeightBlock = require(script.Parent.Parent.WeightBlocks.BaseWeightBlock)
 
-BaseConvolutionBlock = {}
+local BaseConvolutionBlock = {}
 
 BaseConvolutionBlock.__index = BaseConvolutionBlock
 
