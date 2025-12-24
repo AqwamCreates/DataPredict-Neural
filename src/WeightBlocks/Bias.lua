@@ -30,7 +30,7 @@ local BaseWeightBlock = require(script.Parent.BaseWeightBlock)
 
 local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
 
-BiasBlock = {}
+local BiasBlock = {}
 
 BiasBlock.__index = BiasBlock
 
