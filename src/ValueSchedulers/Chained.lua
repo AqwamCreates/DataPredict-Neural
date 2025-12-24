@@ -28,42 +28,52 @@
 
 local BaseValueScheduler = require(script.Parent.BaseValueScheduler)
 
-local ExponentValueScheduler = {}
+local ChainedValueScheduler = {}
 
-ExponentValueScheduler.__index = ExponentValueScheduler
+ChainedValueScheduler.__index = ChainedValueScheduler
 
-setmetatable(ExponentValueScheduler, BaseValueScheduler)
+setmetatable(ChainedValueScheduler, BaseValueScheduler)
 
-local defaultDecayRate = 0.5
-
-function ExponentValueScheduler.new(parameterDictionary)
+function ChainedValueScheduler.new(parameterDictionary)
 	
 	parameterDictionary = parameterDictionary or {}
 	
-	local NewExponentValueScheduler = BaseValueScheduler.new(parameterDictionary)
+	local NewChainedValueScheduler = BaseValueScheduler.new(parameterDictionary)
 	
-	setmetatable(NewExponentValueScheduler, ExponentValueScheduler)
+	setmetatable(NewChainedValueScheduler, ChainedValueScheduler)
 	
-	NewExponentValueScheduler:setName("Exponent")
+	NewChainedValueScheduler:setName("Chained")
 	
-	NewExponentValueScheduler.decayRate = parameterDictionary.decayRate or defaultDecayRate
+	local ValueSchedulerArray = parameterDictionary.ValueSchedulerArray
+	
+	if (not ValueSchedulerArray) then error("No value scheduler array.") end
+	
+	if (#ValueSchedulerArray <= 0) then error("No value scheduler.") end
+	
+	NewChainedValueScheduler.ValueSchedulerArray = ValueSchedulerArray
 	
 	--------------------------------------------------------------------------------
 	
-	NewExponentValueScheduler:setCalculateFunction(function(value, timeValue)
+	NewChainedValueScheduler:setCalculateFunction(function(value, timeValue)
+		
+		for _, ValueScheduler in ipairs(NewChainedValueScheduler.ValueSchedulerArray) do
+			
+			value = ValueScheduler:calculate(value, timeValue)
+			
+		end
 
-		return (value * math.exp(-NewExponentValueScheduler.decayRate * timeValue))
+		return value
 		
 	end)
 	
-	return NewExponentValueScheduler
+	return NewChainedValueScheduler
 	
 end
 
-function ExponentValueScheduler:setDecayRate(decayRate)
+function ChainedValueScheduler:setValueSchedulerArray(ValueSchedulerArray)
 	
-	self.decayRate = decayRate
+	self.ValueSchedulerArray = ValueSchedulerArray
 	
 end
 
-return ExponentValueScheduler
+return ChainedValueScheduler
