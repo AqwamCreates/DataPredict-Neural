@@ -30,7 +30,7 @@ local BaseCostFunction = require(script.Parent.BaseCostFunction)
 
 local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
 
-BinaryCrossEntropy = {}
+local BinaryCrossEntropy = {}
 
 BinaryCrossEntropy.__index = BinaryCrossEntropy
 
