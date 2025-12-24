@@ -30,7 +30,7 @@ local BaseCostFunction = require(script.Parent.BaseCostFunction)
 
 local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
 
-FocalLoss = {}
+local FocalLoss = {}
 
 FocalLoss.__index = FocalLoss
 
