@@ -30,7 +30,7 @@ local BaseCostFunction = require(script.Parent.BaseCostFunction)
 
 local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
 
-MeanSquaredError = {}
+local MeanSquaredError = {}
 
 MeanSquaredError.__index = MeanSquaredError
 
