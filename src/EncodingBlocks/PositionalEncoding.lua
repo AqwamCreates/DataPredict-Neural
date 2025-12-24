@@ -30,7 +30,7 @@ local BaseEncodingBlock = require(script.Parent.BaseEncodingBlock)
 
 local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
 
-PositionalEncodingBlock = {}
+local PositionalEncodingBlock = {}
 
 PositionalEncodingBlock.__index = PositionalEncodingBlock
 
