@@ -30,7 +30,7 @@ local BaseActivationBlock = require(script.Parent.BaseActivationBlock)
 
 local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
 
-RectifiedLinearUnitBlock = {}
+local RectifiedLinearUnitBlock = {}
 
 RectifiedLinearUnitBlock.__index = RectifiedLinearUnitBlock
 
