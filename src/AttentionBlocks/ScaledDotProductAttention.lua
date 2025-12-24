@@ -30,7 +30,7 @@ local BaseAttentionBlock = require(script.Parent.BaseAttentionBlock)
 
 local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
 
-ScaledDotProductAttentionBlock = {}
+local ScaledDotProductAttentionBlock = {}
 
 ScaledDotProductAttentionBlock.__index = ScaledDotProductAttentionBlock
 
