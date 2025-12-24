@@ -28,13 +28,75 @@
 
 local BaseValueScheduler = require(script.Parent.BaseValueScheduler)
 
-LinearValueScheduler = {}
+local LinearValueScheduler = {}
 
 LinearValueScheduler.__index = LinearValueScheduler
 
 setmetatable(LinearValueScheduler, BaseValueScheduler)
 
 local defaultTimeValue = 5
+
+local defaultStartFactor = 1/3
+
+local defaultEndFactor = 1
+
+function LinearValueScheduler.new(parameterDictionary)
+	
+	parameterDictionary = parameterDictionary or {}
+	
+	local NewLinearValueScheduler = BaseValueScheduler.new(parameterDictionary)
+	
+	setmetatable(NewLinearValueScheduler, LinearValueScheduler)
+	
+	NewLinearValueScheduler:setName("Linear")
+	
+	NewLinearValueScheduler.timeValue = parameterDictionary.timeValue or defaultTimeValue
+	
+	NewLinearValueScheduler.startFactor = parameterDictionary.startFactor or defaultStartFactor
+	
+	NewLinearValueScheduler.endFactor = parameterDictionary.endFactor or defaultEndFactor
+	
+	--------------------------------------------------------------------------------
+	
+	NewLinearValueScheduler:setCalculateFunction(function(value, timeValue)
+		
+		local otherTimeValue = NewLinearValueScheduler.timeValue
+		
+		local endFactor = NewLinearValueScheduler.endFactor
+		
+		if (timeValue >= otherTimeValue) then return (value * endFactor) end
+		
+		local startFactor = NewLinearValueScheduler.startFactor
+		
+		local factor = startFactor + ((endFactor - startFactor) * (timeValue / otherTimeValue))
+
+		return (value * factor)
+		
+	end)
+	
+	return NewLinearValueScheduler
+	
+end
+
+function LinearValueScheduler:setTimeValue(timeValue)
+
+	self.timeValue = timeValue
+
+end
+
+function LinearValueScheduler:setStartFactor(startFactor)
+	
+	self.startFactor = startFactor
+	
+end
+
+function LinearValueScheduler:setEndFactor(endFactor)
+	
+	self.endFactor = endFactor
+	
+end
+
+return LinearValueSchedulerlocal defaultTimeValue = 5
 
 local defaultStartFactor = 1/3
 
