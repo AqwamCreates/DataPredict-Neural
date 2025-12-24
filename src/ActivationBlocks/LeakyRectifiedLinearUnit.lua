@@ -30,7 +30,7 @@ local BaseActivationBlock = require(script.Parent.BaseActivationBlock)
 
 local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
 
-LeakyRectifiedLinearUnitBlock = {}
+local LeakyRectifiedLinearUnitBlock = {}
 
 LeakyRectifiedLinearUnitBlock.__index = LeakyRectifiedLinearUnitBlock
 

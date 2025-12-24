@@ -30,7 +30,7 @@ local BaseActivationBlock = require(script.Parent.BaseActivationBlock)
 
 local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
 
-MishBlock = {}
+local MishBlock = {}
 
 MishBlock.__index = MishBlock
 

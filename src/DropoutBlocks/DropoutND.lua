@@ -30,7 +30,7 @@ local BaseDropoutBlock = require(script.Parent.BaseDropoutBlock)
 
 local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
 
-DropoutNDBlock = {}
+local DropoutNDBlock = {}
 
 DropoutNDBlock.__index = DropoutNDBlock
 

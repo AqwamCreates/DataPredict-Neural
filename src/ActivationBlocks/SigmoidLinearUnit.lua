@@ -30,7 +30,7 @@ local BaseActivationBlock = require(script.Parent.BaseActivationBlock)
 
 local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
 
-SigmoidLinearUnitBlock = {}
+local SigmoidLinearUnitBlock = {}
 
 SigmoidLinearUnitBlock.__index = SigmoidLinearUnitBlock
 
