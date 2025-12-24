@@ -30,7 +30,7 @@ local BaseOperatorBlock = require(script.Parent.BaseOperatorBlock)
 
 local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
 
-MaximumBlock = {}
+local MaximumBlock = {}
 
 MaximumBlock.__index = MaximumBlock
 
