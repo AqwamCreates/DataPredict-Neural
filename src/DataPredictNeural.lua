@@ -108,6 +108,9 @@ AqwamDeepLearningLibrary.Models = {
 	AC = require(Models.ActorCritic),
 	ActorCritic = require(Models.ActorCritic),
 	
+	TDAC = require(Models.TemporalDifferenceActorCritic),
+	TemporalDifferenceActorCritic = require(Models.TemporalDifferenceActorCritic),
+	
 	A2C = require(Models.AdvantageActorCritic),
 	AdvantageActorCritic = require(Models.AdvantageActorCritic),
 	
@@ -131,6 +134,9 @@ AqwamDeepLearningLibrary.Models = {
 	MonteCarloControl = require(Models.MonteCarloControl),
 	
 	OffPolicyMonteCarloControl = require(Models.OffPolicyMonteCarloControl),
+	
+	TD = require(Models.TemporalDifference),
+	TemporalDifference = require(Models.TemporalDifference),
 	
 	DQN = require(Models.DeepQLearning),
 	DeepQLearning = require(Models.DeepQLearning),
