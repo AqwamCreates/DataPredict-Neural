@@ -30,7 +30,7 @@ local BaseOperatorBlock = require(script.Parent.BaseOperatorBlock)
 
 local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
 
-DivideBlock = {}
+local DivideBlock = {}
 
 DivideBlock.__index = DivideBlock
 
@@ -60,7 +60,19 @@ function DivideBlock.new()
 
 			local dimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(inputTensor)
 
-			chainRuleFirstDerivativeTensorArray[i] = NewDivideBlock:collapseTensor(initialPartialFirstDerivativeTensor, dimensionSizeArray)
+			local chainRuleFirstDerivativeTensor = AqwamTensorLibrary:divide(transformedTensor, inputTensor)
+			
+			chainRuleFirstDerivativeTensor = AqwamTensorLibrary:multiply(chainRuleFirstDerivativeTensor, initialPartialFirstDerivativeTensor)
+
+			if ((i % 2) == 0) then
+				
+				local squaredDivisorTensor = AqwamTensorLibrary:power(inputTensor, 2)
+				
+				chainRuleFirstDerivativeTensor = AqwamTensorLibrary:divide(chainRuleFirstDerivativeTensor, squaredDivisorTensor) 
+			
+			end
+
+			chainRuleFirstDerivativeTensorArray[i] = NewDivideBlock:collapseTensor(chainRuleFirstDerivativeTensor, dimensionSizeArray)
 
 		end
 
