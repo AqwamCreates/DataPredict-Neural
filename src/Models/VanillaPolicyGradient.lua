@@ -2,7 +2,7 @@
 
 	--------------------------------------------------------------------
 
-	Aqwam's Deep Learning Library (DataPredict Neural)
+	Aqwam's Machine, Deep And Reinforcement Learning Library (DataPredict)
 
 	Author: Aqwam Harish Aiman
 	
@@ -16,7 +16,7 @@
 		
 	By using this library, you agree to comply with our Terms and Conditions in the link below:
 	
-	https://github.com/AqwamCreates/DataPredict-Neural/blob/main/docs/TermsAndConditions.md
+	https://github.com/AqwamCreates/DataPredict/blob/main/docs/TermsAndConditions.md
 	
 	--------------------------------------------------------------------
 	
@@ -28,270 +28,188 @@
 
 local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
 
-local ReinforcementLearningActorCriticBaseModel = require(script.Parent.ReinforcementLearningActorCriticBaseModel)
+local DeepReinforcementLearningActorCriticBaseModel = require(script.Parent.DeepReinforcementLearningActorCriticBaseModel)
 
-TwinDelayedDeepDeterministicPolicyGradientModel = {}
+local VanillaPolicyGradientModel = {}
 
-TwinDelayedDeepDeterministicPolicyGradientModel.__index = TwinDelayedDeepDeterministicPolicyGradientModel
+VanillaPolicyGradientModel.__index = VanillaPolicyGradientModel
 
-setmetatable(TwinDelayedDeepDeterministicPolicyGradientModel, ReinforcementLearningActorCriticBaseModel)
+setmetatable(VanillaPolicyGradientModel, DeepReinforcementLearningActorCriticBaseModel)
 
-local defaultAveragingRate = 0.995
+local function calculateProbability(valueTensor)
 
-local defaultNoiseClippingFactor = 0.5
+	local highestActionValue = AqwamTensorLibrary:findMaximumValue(valueTensor)
 
-local defaultPolicyDelayAmount = 3
+	local subtractedZTensor = AqwamTensorLibrary:subtract(valueTensor, highestActionValue)
 
-local function rateAverageWeightTensorArray(averagingRate, TargetWeightTensorArray, PrimaryWeightTensorArray)
+	local exponentActionTensor = AqwamTensorLibrary:applyFunction(math.exp, subtractedZTensor)
 
-	local averagingRateComplement = 1 - averagingRate
+	local exponentActionSumTensor = AqwamTensorLibrary:sum(exponentActionTensor, 2)
 
-	for layer = 1, #TargetWeightTensorArray, 1 do
+	local targetActionTensor = AqwamTensorLibrary:divide(exponentActionTensor, exponentActionSumTensor)
 
-		local TargetWeightTensorArrayPart = AqwamTensorLibrary:multiply(averagingRate, TargetWeightTensorArray[layer])
-
-		local PrimaryWeightTensorArrayPart = AqwamTensorLibrary:multiply(averagingRateComplement, PrimaryWeightTensorArray[layer])
-
-		TargetWeightTensorArray[layer] = AqwamTensorLibrary:add(TargetWeightTensorArrayPart, PrimaryWeightTensorArrayPart)
-
-	end
-
-	return TargetWeightTensorArray
+	return targetActionTensor
 
 end
 
-function TwinDelayedDeepDeterministicPolicyGradientModel.new(parameterDictionary)
+local function calculateRewardToGo(rewardHistory, discountFactor)
 
-	parameterDictionary = parameterDictionary or {}
+	local rewardToGoArray = {}
 
-	local NewTwinDelayedDeepDeterministicPolicyGradient = ReinforcementLearningActorCriticBaseModel.new(parameterDictionary)
+	local discountedReward = 0
 
-	setmetatable(NewTwinDelayedDeepDeterministicPolicyGradient, TwinDelayedDeepDeterministicPolicyGradientModel)
+	for h = #rewardHistory, 1, -1 do
 
-	NewTwinDelayedDeepDeterministicPolicyGradient:setName("TwinDelayedDeepDeterministicPolicyGradient")
+		discountedReward = rewardHistory[h] + (discountFactor * discountedReward)
 
-	NewTwinDelayedDeepDeterministicPolicyGradient.averagingRate = parameterDictionary.averagingRate or defaultAveragingRate
+		table.insert(rewardToGoArray, 1, discountedReward)
 
-	NewTwinDelayedDeepDeterministicPolicyGradient.noiseClippingFactor = parameterDictionary.noiseClippingFactor or defaultNoiseClippingFactor
+	end
 
-	NewTwinDelayedDeepDeterministicPolicyGradient.policyDelayAmount = parameterDictionary.policyDelayAmount or defaultPolicyDelayAmount
+	return rewardToGoArray
 
-	NewTwinDelayedDeepDeterministicPolicyGradient.CriticWeightTensorArrayArray = parameterDictionary.CriticWeightTensorArrayArray or {}
+end
 
-	local TargetCriticWeightTensorArrayArray = {}
+function VanillaPolicyGradientModel.new(parameterDictionary)
 
-	local currentNumberOfUpdate = 0
+	local NewVanillaPolicyGradientModel = DeepReinforcementLearningActorCriticBaseModel.new(parameterDictionary)
 
-	NewTwinDelayedDeepDeterministicPolicyGradient:setDiagonalGaussianUpdateFunction(function(previousFeatureTensor, actionMeanTensor, actionStandardDeviationTensor, actionNoiseTensor, rewardValue, currentFeatureTensor, terminalStateValue)
+	setmetatable(NewVanillaPolicyGradientModel, VanillaPolicyGradientModel)
 
-		if (not actionNoiseTensor) then
+	NewVanillaPolicyGradientModel:setName("VanillaPolicyGradient")
 
-			local actionTensordimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(actionMeanTensor)
+	local featureTensorHistory = {}
 
-			actionNoiseTensor = AqwamTensorLibrary:createRandomUniformTensor(actionTensordimensionSizeArray) 
+	local actionProbabilityGradientTensorHistory = {}
 
-		end
+	local rewardValueHistory = {}
 
-		local ActorModel = NewTwinDelayedDeepDeterministicPolicyGradient.ActorModel
+	local advantageValueHistory = {}
 
-		local CriticModel = NewTwinDelayedDeepDeterministicPolicyGradient.CriticModel
+	NewVanillaPolicyGradientModel:setCategoricalUpdateFunction(function(previousFeatureTensor, previousAction, rewardValue, currentFeatureTensor, currentAction, terminalStateValue)
 
-		local averagingRate = NewTwinDelayedDeepDeterministicPolicyGradient.averagingRate
+		local ActorModel = NewVanillaPolicyGradientModel.ActorModel
 
-		local noiseClippingFactor = NewTwinDelayedDeepDeterministicPolicyGradient.noiseClippingFactor
+		local CriticModel = NewVanillaPolicyGradientModel.CriticModel
 
-		local CriticWeightTensorArrayArray = NewTwinDelayedDeepDeterministicPolicyGradient.CriticWeightTensorArrayArray
+		local actionTensor = ActorModel:forwardPropagate(previousFeatureTensor)
 
-		local noiseClipFunction = function(value) return math.clamp(value, -noiseClippingFactor, noiseClippingFactor) end
+		local actionProbabilityTensor = calculateProbability(actionTensor)
 
-		local currentActionNoiseTensor = AqwamTensorLibrary:createRandomNormalTensor({1, #actionMeanTensor[1]})
+		local previousCriticValue = CriticModel:forwardPropagate(previousFeatureTensor)[1][1]
 
-		local clippedCurrentActionNoiseTensor = AqwamTensorLibrary:applyFunction(noiseClipFunction, currentActionNoiseTensor)
+		local currentCriticValue = CriticModel:forwardPropagate(currentFeatureTensor)[1][1]
 
-		local previousActionTensor = AqwamTensorLibrary:multiply(actionStandardDeviationTensor, actionNoiseTensor)
+		local advantageValue = rewardValue + (NewVanillaPolicyGradientModel.discountFactor * currentCriticValue) - previousCriticValue
 
-		previousActionTensor = AqwamTensorLibrary:add(previousActionTensor, actionMeanTensor)
+		local ClassesList = ActorModel:getClassesList()
 
-		local previousActionArray = previousActionTensor[1] 
+		local classIndex = table.find(ClassesList, previousAction)
 
-		local lowestActionValue = math.min(table.unpack(previousActionArray))
+		local actionProbabilityGradientTensor = {}
 
-		local highestActionValue = math.max(table.unpack(previousActionArray))
+		for i, _ in ipairs(ClassesList) do
 
-		local currentActionMeanTensor = ActorModel:forwardPropagate(currentFeatureTensor, true)
-
-		local ActorWeightTensorArray = ActorModel:getWeightTensorArray(true)
-
-		local targetActionTensorPart1 = AqwamTensorLibrary:add(currentActionMeanTensor, clippedCurrentActionNoiseTensor)
-
-		local actionClipFunction = function(value)
-
-			if (lowestActionValue ~= lowestActionValue) or (highestActionValue ~= highestActionValue) then
-
-				error("Received nan values.")
-
-			elseif (lowestActionValue < highestActionValue) then
-
-				return math.clamp(value, lowestActionValue, highestActionValue) 
-
-			elseif (lowestActionValue > highestActionValue) then
-
-				return math.clamp(value, highestActionValue, lowestActionValue)
-
-			else
-
-				return lowestActionValue
-
-			end
+			actionProbabilityGradientTensor[i] = (((i == classIndex) and 1) or 0) - actionProbabilityTensor[1][i]
 
 		end
 
-		local targetActionTensor = AqwamTensorLibrary:applyFunction(actionClipFunction, targetActionTensorPart1)
+		actionProbabilityGradientTensor = {actionProbabilityGradientTensor}
 
-		local targetCriticActionInputTensor = AqwamTensorLibrary:concatenate(currentFeatureTensor, targetActionTensor, 2)
+		table.insert(featureTensorHistory, previousFeatureTensor)
 
-		local currentCriticValueArray = {}
+		table.insert(actionProbabilityGradientTensorHistory, actionProbabilityGradientTensor)
 
-		for i = 1, 2, 1 do 
+		table.insert(rewardValueHistory, rewardValue)
 
-			CriticModel:setWeightTensorArray(TargetCriticWeightTensorArrayArray[i])
+		table.insert(advantageValueHistory, advantageValue)
 
-			currentCriticValueArray[i] = CriticModel:forwardPropagate(targetCriticActionInputTensor)[1][1] 
-
-			local CriticWeightTensorArray = CriticModel:getWeightTensorArray(true)
-
-			TargetCriticWeightTensorArrayArray[i] = CriticWeightTensorArray
-
-		end
-
-		local minimumCurrentCriticValue = math.min(table.unpack(currentCriticValueArray))
-
-		local yValuePart1 = NewTwinDelayedDeepDeterministicPolicyGradient.discountFactor * (1 - terminalStateValue) * minimumCurrentCriticValue
-
-		local yValue = rewardValue + yValuePart1
-
-		local temporalDifferenceErrorTensor = AqwamTensorLibrary:createTensor({1, 2}, 0)
-
-		local previousCriticActionMeanInputTensor = AqwamTensorLibrary:concatenate(previousFeatureTensor, actionMeanTensor, 2)
-
-		for i = 1, 2, 1 do 
-
-			CriticModel:setWeightTensorArray(CriticWeightTensorArrayArray[i], true)
-
-			local previousCriticValue = CriticModel:forwardPropagate(previousCriticActionMeanInputTensor, true)[1][1] 
-
-			local criticLoss = previousCriticValue - yValue
-
-			temporalDifferenceErrorTensor[1][i] = -criticLoss -- We perform gradient descent here, so the critic loss is negated so that it can be used as temporal difference value.
-
-			CriticModel:update(criticLoss, true)
-
-			CriticWeightTensorArrayArray[i] = CriticModel:getWeightTensorArray(true)
-
-		end
-
-		currentNumberOfUpdate = currentNumberOfUpdate + 1
-
-		if ((currentNumberOfUpdate % NewTwinDelayedDeepDeterministicPolicyGradient.policyDelayAmount) == 0) then
-
-			local actionTensor = AqwamTensorLibrary:multiply(actionStandardDeviationTensor, actionNoiseTensor)
-
-			actionTensor = AqwamTensorLibrary:add(actionTensor, actionMeanTensor)
-
-			local previousCriticActionInputTensor = AqwamTensorLibrary:concatenate(previousFeatureTensor, actionTensor, 2)
-
-			CriticModel:setWeightTensorArray(CriticWeightTensorArrayArray[1], true)
-
-			local currentQValue = CriticModel:forwardPropagate(previousCriticActionInputTensor, true)[1][1]
-
-			ActorModel:forwardPropagate(previousFeatureTensor, true)
-
-			ActorModel:update(-currentQValue, true)
-
-			for i = 1, 2, 1 do TargetCriticWeightTensorArrayArray[i] = rateAverageWeightTensorArray(averagingRate, TargetCriticWeightTensorArrayArray[i], CriticWeightTensorArrayArray[i]) end
-
-			local TargetActorWeightTensorArray = ActorModel:getWeightTensorArray(true)
-
-			TargetActorWeightTensorArray = rateAverageWeightTensorArray(averagingRate, TargetActorWeightTensorArray, ActorWeightTensorArray)
-
-			ActorModel:setWeightTensorArray(TargetActorWeightTensorArray, true)
-
-		end
-
-		return temporalDifferenceErrorTensor
+		return advantageValue
 
 	end)
 
-	NewTwinDelayedDeepDeterministicPolicyGradient:setEpisodeUpdateFunction(function() 
+	NewVanillaPolicyGradientModel:setDiagonalGaussianUpdateFunction(function(previousFeatureTensor, previousActionMeanTensor, previousActionStandardDeviationTensor, previousActionNoiseTensor, rewardValue, currentFeatureTensor, currentActionMeanTensor, terminalStateValue)
 
-		currentNumberOfUpdate = 0
+		if (not previousActionNoiseTensor) then previousActionNoiseTensor = AqwamTensorLibrary:createRandomNormalTensor({1, #previousActionMeanTensor[1]}) end
+
+		local CriticModel = NewVanillaPolicyGradientModel.CriticModel
+
+		local actionTensorPart1 = AqwamTensorLibrary:multiply(previousActionStandardDeviationTensor, previousActionNoiseTensor)
+
+		local actionTensor = AqwamTensorLibrary:add(previousActionMeanTensor, actionTensorPart1)
+
+		local actionProbabilityGradientTensorPart1 = AqwamTensorLibrary:subtract(actionTensor, previousActionMeanTensor)
+
+		local actionProbabilityGradientTensorPart2 = AqwamTensorLibrary:power(previousActionStandardDeviationTensor, 2)
+
+		local actionProbabilityGradientTensor = AqwamTensorLibrary:divide(actionProbabilityGradientTensorPart1, actionProbabilityGradientTensorPart2)
+
+		local previousCriticValue = CriticModel:forwardPropagate(previousFeatureTensor)[1][1]
+
+		local currentCriticValue = CriticModel:forwardPropagate(currentFeatureTensor)[1][1]
+
+		local advantageValue = rewardValue + (NewVanillaPolicyGradientModel.discountFactor * currentCriticValue) - previousCriticValue
+
+		table.insert(featureTensorHistory, previousFeatureTensor)
+
+		table.insert(actionProbabilityGradientTensorHistory, actionProbabilityGradientTensor)
+
+		table.insert(rewardValueHistory, rewardValue)
+
+		table.insert(advantageValueHistory, advantageValue)
+
+		return advantageValue
 
 	end)
 
-	NewTwinDelayedDeepDeterministicPolicyGradient:setResetFunction(function() 
+	NewVanillaPolicyGradientModel:setEpisodeUpdateFunction(function(terminalStateValue)
 
-		currentNumberOfUpdate = 0
+		local ActorModel = NewVanillaPolicyGradientModel.ActorModel
+
+		local CriticModel = NewVanillaPolicyGradientModel.CriticModel
+
+		for h, featureTensor in ipairs(featureTensorHistory) do
+
+			local advantageValue = advantageValueHistory[h]
+
+			advantageValue = AqwamTensorLibrary:unaryMinus(advantageValue)
+
+			local actorLossTensor = AqwamTensorLibrary:multiply(actionProbabilityGradientTensorHistory[h], advantageValue)
+
+			CriticModel:forwardPropagate(featureTensor, true)
+
+			ActorModel:forwardPropagate(featureTensor, true)
+
+			CriticModel:update(advantageValue, true)
+
+			ActorModel:update(actorLossTensor, true)
+
+		end
+
+		table.clear(featureTensorHistory)
+
+		table.clear(actionProbabilityGradientTensorHistory)
+
+		table.clear(rewardValueHistory)
+
+		table.clear(advantageValueHistory)
 
 	end)
 
-	return NewTwinDelayedDeepDeterministicPolicyGradient
+	NewVanillaPolicyGradientModel:setResetFunction(function()
+
+		table.clear(featureTensorHistory)
+
+		table.clear(actionProbabilityGradientTensorHistory)
+
+		table.clear(rewardValueHistory)
+
+		table.clear(advantageValueHistory)
+
+	end)
+
+	return NewVanillaPolicyGradientModel
 
 end
 
-function TwinDelayedDeepDeterministicPolicyGradientModel:setCrtiticWeightTensorArray1(CriticWeightTensorArray1, doNotDeepCopy)
-
-	if (doNotDeepCopy) then
-
-		self.CriticWeightTensorArrayArray[1] = CriticWeightTensorArray1
-
-	else
-
-		self.CriticWeightTensorArrayArray[1] = self:deepCopyTable(CriticWeightTensorArray1)
-
-	end
-
-end
-
-function TwinDelayedDeepDeterministicPolicyGradientModel:setCriticWeightTensorArray2(CriticWeightTensorArray2, doNotDeepCopy)
-
-	if (doNotDeepCopy) then
-
-		self.CriticWeightTensorArrayArray[2] = CriticWeightTensorArray2
-
-	else
-
-		self.CriticWeightTensorArrayArray[2] = self:deepCopyTable(CriticWeightTensorArray2)
-
-	end
-
-end
-
-function TwinDelayedDeepDeterministicPolicyGradientModel:getCriticWeightTensorArray1(doNotDeepCopy)
-
-	if (doNotDeepCopy) then
-
-		return self.CriticWeightTensorArrayArray[1]
-
-	else
-
-		return self:deepCopyTable(self.CriticWeightTensorArrayArray[1])
-
-	end
-
-end
-
-function TwinDelayedDeepDeterministicPolicyGradientModel:getCriticWeightTensorArray2(doNotDeepCopy)
-
-	if (doNotDeepCopy) then
-
-		return self.CriticWeightTensorArrayArray[2]
-
-	else
-
-		return self:deepCopyTable(self.CriticWeightTensorArrayArray[2])
-
-	end
-
-end
-
-return TwinDelayedDeepDeterministicPolicyGradientModel
+return VanillaPolicyGradientModel
