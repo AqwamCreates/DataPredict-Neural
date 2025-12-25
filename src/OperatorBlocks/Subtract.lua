@@ -59,8 +59,12 @@ function SubtractBlock.new()
 		for i, inputTensor in ipairs(inputTensorArray) do
 
 			local dimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(inputTensor)
+			
+			local chainRuleFirstDerivativeTensor = NewSubtractBlock:collapseTensor(initialPartialFirstDerivativeTensor, dimensionSizeArray)
+			
+			if (i >= 2) then chainRuleFirstDerivativeTensor = AqwamTensorLibrary:unaryMinus(chainRuleFirstDerivativeTensor) end
 
-			chainRuleFirstDerivativeTensorArray[i] = NewSubtractBlock:collapseTensor(initialPartialFirstDerivativeTensor, dimensionSizeArray)
+			chainRuleFirstDerivativeTensorArray[i] = chainRuleFirstDerivativeTensor
 
 		end
 
