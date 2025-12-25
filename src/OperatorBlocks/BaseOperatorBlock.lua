@@ -26,50 +26,34 @@
 
 --]]
 
-local BaseOperatorBlock = require(script.Parent.BaseOperatorBlock)
-
 local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
 
-AddBlock = {}
+local BaseFunctionBlock = require(script.Parent.Parent.Cores.BaseFunctionBlock)
 
-AddBlock.__index = AddBlock
+local BaseOperatorBlock = {}
 
-setmetatable(AddBlock, BaseOperatorBlock)
+BaseOperatorBlock.__index = BaseOperatorBlock
 
-function AddBlock.new()
+setmetatable(BaseOperatorBlock, BaseFunctionBlock)
 
-	local NewAddBlock = BaseOperatorBlock.new()
-
-	setmetatable(NewAddBlock, AddBlock)
-
-	NewAddBlock:setName("Add")
+function BaseOperatorBlock.new()
 	
-	NewAddBlock:setFirstDerivativeFunctionRequiresTransformedTensor(false)
+	local NewBaseOperatorBlock = BaseFunctionBlock.new()
 	
-	NewAddBlock:setFunction(function(inputTensorArray)
-		
-		return AqwamTensorLibrary:add(table.unpack(inputTensorArray))
+	setmetatable(NewBaseOperatorBlock, BaseOperatorBlock)
 	
-	end)
-
-	NewAddBlock:setChainRuleFirstDerivativeFunction(function(initialPartialFirstDerivativeTensor, transformedTensor, inputTensorArray)
-		
-		local chainRuleFirstDerivativeTensorArray = {}
-		
-		for i, inputTensor in ipairs(inputTensorArray) do
-			
-			local dimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(inputTensor)
-
-			chainRuleFirstDerivativeTensorArray[i] = NewAddBlock:collapseTensor(initialPartialFirstDerivativeTensor, dimensionSizeArray)
-
-		end
-
-		return chainRuleFirstDerivativeTensorArray
-		
-	end)
-
-	return NewAddBlock
-
+	NewBaseOperatorBlock:setName("BaseCompressionBlock")
+	
+	NewBaseOperatorBlock:setClassName("OperatorBlock")
+	
+	NewBaseOperatorBlock:setSaveInputTensorArray(true)
+	
+	NewBaseOperatorBlock:setSaveTransformedTensor(true)
+	
+	NewBaseOperatorBlock:setSaveTotalFirstDerivativeTensorArray(true)
+	
+	return NewBaseOperatorBlock
+	
 end
 
-return AddBlock
+return BaseOperatorBlock
