@@ -70,33 +70,41 @@ function DeepDoubleStateActionRewardStateActionModel.new(parameterDictionary)
 	
 	NewDeepDoubleStateActionRewardStateActionModel.EligibilityTrace = parameterDictionary.EligibilityTrace
 
-	NewDeepDoubleStateActionRewardStateActionModel:setCategoricalUpdateFunction(function(previousFeatureTensor, action, rewardValue, currentFeatureTensor, terminalStateValue)
+	NewDeepDoubleStateActionRewardStateActionModel:setCategoricalUpdateFunction(function(previousFeatureTensor, previousAction, rewardValue, currentFeatureTensor, currentAction, terminalStateValue)
 
 		local Model = NewDeepDoubleStateActionRewardStateActionModel.Model
 		
 		local discountFactor = NewDeepDoubleStateActionRewardStateActionModel.discountFactor
 		
 		local EligibilityTrace = NewDeepDoubleStateActionRewardStateActionModel.EligibilityTrace
-		
-		local qTensor = Model:forwardPropagate(currentFeatureTensor)
 
 		local PrimaryWeightTensorArray = Model:getWeightTensorArray(true)
-
-		local discountedQTensor = AqwamTensorLibrary:multiply(discountFactor, qTensor, (1 - terminalStateValue))
-
-		local targetTensor = AqwamTensorLibrary:add(rewardValue, discountedQTensor)
-
+		
+		local currentQTensor = Model:forwardPropagate(currentFeatureTensor)
+		
 		local previousQTensor = Model:forwardPropagate(previousFeatureTensor)
 
-		local temporalDifferenceErrorTensor = AqwamTensorLibrary:subtract(targetTensor, previousQTensor)
-		
+		local ClassesList = Model:getClassesList()
+
+		local numberOfClasses = #ClassesList
+
+		local previousActionIndex = table.find(ClassesList, previousAction)
+
+		local currentActionIndex = table.find(ClassesList, currentAction)
+
+		local targetValue = rewardValue + (discountFactor * currentQTensor[1][currentActionIndex] * (1 - terminalStateValue))
+
+		local temporalDifferenceError = targetValue - previousQTensor[1][previousActionIndex] 
+
+		local outputDimensionSizeArray = {1, numberOfClasses}
+
+		local temporalDifferenceErrorTensor = AqwamTensorLibrary:createTensor(outputDimensionSizeArray, 0)
+
+		temporalDifferenceErrorTensor[1][previousActionIndex] = temporalDifferenceError
+
 		if (EligibilityTrace) then
 
-			local ClassesList = Model:getClassesList()
-
-			local actionIndex = table.find(ClassesList, action)
-
-			EligibilityTrace:increment(actionIndex, discountFactor, {1, #ClassesList})
+			EligibilityTrace:increment(1, previousActionIndex, discountFactor, outputDimensionSizeArray)
 
 			temporalDifferenceErrorTensor = EligibilityTrace:calculate(temporalDifferenceErrorTensor)
 
@@ -114,7 +122,7 @@ function DeepDoubleStateActionRewardStateActionModel.new(parameterDictionary)
 
 		Model:setWeightTensorArray(TargetWeightTensorArray, true)
 
-		return temporalDifferenceErrorTensor
+		return temporalDifferenceError
 
 	end)
 
