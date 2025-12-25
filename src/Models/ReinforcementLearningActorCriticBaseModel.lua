@@ -148,9 +148,9 @@ function ReinforcementLearningActorCriticBaseModel:categoricalUpdate(previousFea
 
 end
 
-function ReinforcementLearningActorCriticBaseModel:diagonalGaussianUpdate(previousFeatureTensor, actionMeanTensor, actionStandardDeviationTensor, actionNoiseTensor, rewardValue, currentFeatureTensor, currentMeanTensor, terminalStateValue)
+function ReinforcementLearningActorCriticBaseModel:diagonalGaussianUpdate(previousFeatureTensor, previousActionMeanTensor, previousActionStandardDeviationTensor, previousActionNoiseTensor, rewardValue, currentFeatureTensor, currentMeanTensor, terminalStateValue)
 
-	return self.diagonalGaussianUpdateFunction(previousFeatureTensor, actionMeanTensor, actionStandardDeviationTensor, actionNoiseTensor, rewardValue, currentFeatureTensor, currentMeanTensor, terminalStateValue)
+	return self.diagonalGaussianUpdateFunction(previousFeatureTensor, previousActionMeanTensor, previousActionStandardDeviationTensor, previousActionNoiseTensor, rewardValue, currentFeatureTensor, currentMeanTensor, terminalStateValue)
 
 end
 
