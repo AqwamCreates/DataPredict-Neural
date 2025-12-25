@@ -28,13 +28,13 @@
 
 local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
 
-local DeepReinforcementLearningActorCriticBaseModel = require(script.Parent.DeepReinforcementLearningActorCriticBaseModel)
+local ReinforcementLearningActorCriticBaseModel = require(script.Parent.ReinforcementLearningActorCriticBaseModel)
 
 local ProximalPolicyOptimizationModel = {}
 
 ProximalPolicyOptimizationModel.__index = ProximalPolicyOptimizationModel
 
-setmetatable(ProximalPolicyOptimizationModel, DeepReinforcementLearningActorCriticBaseModel)
+setmetatable(ProximalPolicyOptimizationModel, ReinforcementLearningActorCriticBaseModel)
 
 local defaultLambda = 0
 
@@ -104,7 +104,7 @@ function ProximalPolicyOptimizationModel.new(parameterDictionary)
 
 	parameterDictionary = parameterDictionary or {}
 
-	local NewProximalPolicyOptimizationModel = DeepReinforcementLearningActorCriticBaseModel.new(parameterDictionary)
+	local NewProximalPolicyOptimizationModel = ReinforcementLearningActorCriticBaseModel.new(parameterDictionary)
 
 	setmetatable(NewProximalPolicyOptimizationModel, ProximalPolicyOptimizationModel)
 
