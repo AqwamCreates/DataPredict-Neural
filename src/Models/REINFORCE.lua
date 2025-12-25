@@ -28,13 +28,13 @@
 
 local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
 
-local DeepReinforcementLearningBaseModel = require(script.Parent.DeepReinforcementLearningBaseModel)
+local ReinforcementLearningBaseModel = require(script.Parent.ReinforcementLearningBaseModel)
 
 local DeepREINFORCEModel = {}
 
 DeepREINFORCEModel.__index = DeepREINFORCEModel
 
-setmetatable(DeepREINFORCEModel, DeepReinforcementLearningBaseModel)
+setmetatable(DeepREINFORCEModel, ReinforcementLearningBaseModel)
 
 local function calculateProbability(valueTensor)
 
@@ -72,7 +72,7 @@ end
 
 function DeepREINFORCEModel.new(parameterDictionary)
 
-	local NewDeepREINFORCEModel = DeepReinforcementLearningBaseModel.new(parameterDictionary)
+	local NewDeepREINFORCEModel = ReinforcementLearningBaseModel.new(parameterDictionary)
 
 	setmetatable(NewDeepREINFORCEModel, DeepREINFORCEModel)
 
