@@ -28,13 +28,13 @@
 
 local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
 
-local DeepReinforcementLearningActorCriticBaseModel = require(script.Parent.DeepReinforcementLearningActorCriticBaseModel)
+local ReinforcementLearningActorCriticBaseModel = require(script.Parent.ReinforcementLearningActorCriticBaseModel)
 
 local SoftActorCriticModel = {}
 
 SoftActorCriticModel.__index = SoftActorCriticModel
 
-setmetatable(SoftActorCriticModel, DeepReinforcementLearningActorCriticBaseModel)
+setmetatable(SoftActorCriticModel, ReinforcementLearningActorCriticBaseModel)
 
 local defaultAlpha = 0.1
 
@@ -104,7 +104,7 @@ function SoftActorCriticModel.new(parameterDictionary)
 
 	parameterDictionary = parameterDictionary or {}
 
-	local NewSoftActorCritic = DeepReinforcementLearningActorCriticBaseModel.new(parameterDictionary)
+	local NewSoftActorCritic = ReinforcementLearningActorCriticBaseModel.new(parameterDictionary)
 
 	setmetatable(NewSoftActorCritic, SoftActorCriticModel)
 
