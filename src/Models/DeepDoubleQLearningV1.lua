@@ -36,46 +36,6 @@ DeepDoubleQLearningModel.__index = DeepDoubleQLearningModel
 
 setmetatable(DeepDoubleQLearningModel, ReinforcementLearningBaseModel)
 
-local function deepCopyTable(original, copies)
-
-	copies = copies or {}
-
-	local originalType = type(original)
-
-	local copy
-
-	if (originalType == 'table') then
-
-		if copies[original] then
-
-			copy = copies[original]
-
-		else
-
-			copy = {}
-
-			copies[original] = copy
-
-			for originalKey, originalValue in next, original, nil do
-
-				copy[deepCopyTable(originalKey, copies)] = deepCopyTable(originalValue, copies)
-
-			end
-
-			setmetatable(copy, deepCopyTable(getmetatable(original), copies))
-
-		end
-
-	else
-
-		copy = original
-
-	end
-
-	return copy
-
-end
-
 function DeepDoubleQLearningModel.new(parameterDictionary)
 	
 	parameterDictionary = parameterDictionary or {}
@@ -116,7 +76,7 @@ function DeepDoubleQLearningModel.new(parameterDictionary)
 
 		WeightTensorArrayArray[selectedModelNumberForUpdate] = Model:getWeightTensorArray(true)
 
-		return temporalDifferenceErrorTensor
+		return temporalDifferenceError
 
 	end)
 
@@ -200,7 +160,7 @@ function DeepDoubleQLearningModel:setWeightTensorArray1(WeightTensorArray1, doNo
 
 	else
 
-		self.WeightTensorArrayArray[1] = deepCopyTable(WeightTensorArray1)
+		self.WeightTensorArrayArray[1] = self:deepCopyTable(WeightTensorArray1)
 
 	end
 
@@ -214,7 +174,7 @@ function DeepDoubleQLearningModel:setWeightTensorArray2(WeightTensorArray2, doNo
 
 	else
 
-		self.WeightTensorArrayArray[2] = deepCopyTable(WeightTensorArray2)
+		self.WeightTensorArrayArray[2] = self:deepCopyTable(WeightTensorArray2)
 
 	end
 
@@ -228,7 +188,7 @@ function DeepDoubleQLearningModel:getWeightTensorArray1(doNotDeepCopy)
 
 	else
 
-		return deepCopyTable(self.WeightTensorArrayArray[1])
+		return self:deepCopyTable(self.WeightTensorArrayArray[1])
 
 	end
 
@@ -242,7 +202,7 @@ function DeepDoubleQLearningModel:getWeightTensorArray2(doNotDeepCopy)
 
 	else
 
-		return deepCopyTable(self.WeightTensorArrayArray[2])
+		return self:deepCopyTable(self.WeightTensorArrayArray[2])
 
 	end
 
