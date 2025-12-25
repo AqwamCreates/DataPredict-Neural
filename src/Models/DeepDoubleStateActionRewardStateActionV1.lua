@@ -176,19 +176,19 @@ function DeepDoubleStateActionRewardStateActionModel:generateLossTensor(previous
 
 	local outputDimensionSizeArray = {1, numberOfClasses}
 
-	local temporalDifferenceErrorVector = AqwamTensorLibrary:createTensor(outputDimensionSizeArray, 0)
+	local temporalDifferenceErrorTensor = AqwamTensorLibrary:createTensor(outputDimensionSizeArray, 0)
 
-	temporalDifferenceErrorVector[1][previousActionIndex] = temporalDifferenceError
+	temporalDifferenceErrorTensor[1][previousActionIndex] = temporalDifferenceError
 
 	if (EligibilityTrace) then
 
 		EligibilityTrace:increment(1, previousActionIndex, discountFactor, outputDimensionSizeArray)
 
-		temporalDifferenceErrorVector = EligibilityTrace:calculate(temporalDifferenceErrorVector)
+		temporalDifferenceErrorTensor = EligibilityTrace:calculate(temporalDifferenceErrorTensor)
 
 	end
 
-	return temporalDifferenceErrorVector, temporalDifferenceError
+	return temporalDifferenceErrorTensor, temporalDifferenceError
 
 end
 
