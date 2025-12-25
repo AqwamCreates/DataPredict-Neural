@@ -30,7 +30,7 @@ local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker
 
 local BaseOptimizer = require(script.Parent.BaseOptimizer)
 
-AdaptiveFactorOptimizer = {}
+local AdaptiveFactorOptimizer = {}
 
 AdaptiveFactorOptimizer.__index = AdaptiveFactorOptimizer
 
@@ -104,9 +104,9 @@ function AdaptiveFactorOptimizer.new(parameterDictionary)
 		
 		local oneColumnTensor = AqwamTensorLibrary:createTensor({dimensionSizeArray[2], 1}, 1)
 		
-		local transposedOneRowTensor = AqwamTensorLibrary:transpose(oneRowTensor)
+		local transposedOneRowTensor = AqwamTensorLibrary:transpose(oneRowTensor, {1, 2})
 		
-		local transposedOneColumnTensor = AqwamTensorLibrary:transpose(oneColumnTensor)
+		local transposedOneColumnTensor = AqwamTensorLibrary:transpose(oneColumnTensor, {1, 2})
 		
 		local dotProductOnTensor = AqwamTensorLibrary:dotProduct(oneRowTensor, transposedOneColumnTensor)
 		
