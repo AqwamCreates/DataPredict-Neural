@@ -30,7 +30,7 @@ local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker
 
 local ReinforcementLearningBaseModel = require(script.Parent.ReinforcementLearningBaseModel)
 
-DeepDoubleStateActionRewardStateActionModel = {}
+local DeepDoubleStateActionRewardStateActionModel = {}
 
 DeepDoubleStateActionRewardStateActionModel.__index = DeepDoubleStateActionRewardStateActionModel
 
@@ -90,7 +90,7 @@ function DeepDoubleStateActionRewardStateActionModel.new(parameterDictionary)
 
 	NewDeepDoubleStateActionRewardStateActionModel.WeightTensorArrayArray = parameterDictionary.WeightTensorArrayArray or {}
 
-	NewDeepDoubleStateActionRewardStateActionModel:setCategoricalUpdateFunction(function(previousFeatureTensor, action, rewardValue, currentFeatureTensor, terminalStateValue)
+	NewDeepDoubleStateActionRewardStateActionModel:setCategoricalUpdateFunction(function(previousFeatureTensor, action, rewardValue, currentFeatureTensor, currentAction, terminalStateValue)
 
 		local Model = NewDeepDoubleStateActionRewardStateActionModel.Model
 		
@@ -104,7 +104,7 @@ function DeepDoubleStateActionRewardStateActionModel.new(parameterDictionary)
 
 		local selectedModelNumberForUpdate = (updateSecondModel and 2) or 1
 
-		local temporalDifferenceErrorTensor = NewDeepDoubleStateActionRewardStateActionModel:generateLossTensor(previousFeatureTensor, action, rewardValue, currentFeatureTensor, terminalStateValue, selectedModelNumberForTargetTensor, selectedModelNumberForUpdate)
+		local temporalDifferenceErrorTensor, temporalDifferenceError = NewDeepDoubleStateActionRewardStateActionModel:generateLossTensor(previousFeatureTensor, action, rewardValue, currentFeatureTensor, currentAction, terminalStateValue, selectedModelNumberForTargetTensor, selectedModelNumberForUpdate)
 		
 		local negatedTemporalDifferenceErrorTensor = AqwamTensorLibrary:unaryMinus(temporalDifferenceErrorTensor) -- The original non-deep SARSA version performs gradient ascent. But the neural network performs gradient descent. So, we need to negate the error tensor to make the neural network to perform gradient ascent.
 		
@@ -116,7 +116,7 @@ function DeepDoubleStateActionRewardStateActionModel.new(parameterDictionary)
 
 		WeightTensorArrayArray[selectedModelNumberForUpdate] = Model:getWeightTensorArray(true)
 
-		return temporalDifferenceErrorTensor
+		return temporalDifferenceError
 
 	end)
 
@@ -140,7 +140,7 @@ function DeepDoubleStateActionRewardStateActionModel.new(parameterDictionary)
 
 end
 
-function DeepDoubleStateActionRewardStateActionModel:generateLossTensor(previousFeatureTensor, action, rewardValue, currentFeatureTensor, terminalStateValue, selectedModelNumberForTargetTensor, selectedModelNumberForUpdate)
+function DeepDoubleStateActionRewardStateActionModel:generateLossTensor(previousFeatureTensor, previousAction, rewardValue, currentFeatureTensor, currentAction, terminalStateValue, selectedModelNumberForTargetTensor, selectedModelNumberForUpdate)
 
 	local Model = self.Model
 	
@@ -156,31 +156,39 @@ function DeepDoubleStateActionRewardStateActionModel:generateLossTensor(previous
 	
 	Model:setWeightTensorArray(WeightTensorArrayArray[selectedModelNumberForUpdate], true)
 
-	local previousTensor = Model:forwardPropagate(previousFeatureTensor)
+	local previousQTensor = Model:forwardPropagate(previousFeatureTensor)
 
 	Model:setWeightTensorArray(WeightTensorArrayArray[selectedModelNumberForTargetTensor], true)
-
-	local qTensor = Model:forwardPropagate(currentFeatureTensor)
-
-	local discountedQTensor = AqwamTensorLibrary:multiply(discountFactor, qTensor, (1- terminalStateValue))
-
-	local targetTensor = AqwamTensorLibrary:add(rewardValue, discountedQTensor)
-
-	local temporalDifferenceErrorTensor = AqwamTensorLibrary:subtract(targetTensor, previousTensor)
 	
+	local currentQTensor = Model:forwardPropagate(currentFeatureTensor)
+
+	local ClassesList = Model:getClassesList()
+	
+	local numberOfClasses = #ClassesList
+
+	local previousActionIndex = table.find(ClassesList, previousAction)
+
+	local currentActionIndex = table.find(ClassesList, currentAction)
+
+	local targetValue = rewardValue + (discountFactor * currentQTensor[1][currentActionIndex] * (1 - terminalStateValue))
+
+	local temporalDifferenceError = targetValue - previousQTensor[1][previousActionIndex] 
+
+	local outputDimensionSizeArray = {1, numberOfClasses}
+
+	local temporalDifferenceErrorVector = AqwamTensorLibrary:createTensor(outputDimensionSizeArray, 0)
+
+	temporalDifferenceErrorVector[1][previousActionIndex] = temporalDifferenceError
+
 	if (EligibilityTrace) then
 
-		local ClassesList = Model:getClassesList()
+		EligibilityTrace:increment(1, previousActionIndex, discountFactor, outputDimensionSizeArray)
 
-		local actionIndex = table.find(ClassesList, action)
-
-		EligibilityTrace:increment(actionIndex, discountFactor, {1, #ClassesList})
-
-		temporalDifferenceErrorTensor = EligibilityTrace:calculate(temporalDifferenceErrorTensor)
+		temporalDifferenceErrorVector = EligibilityTrace:calculate(temporalDifferenceErrorVector)
 
 	end
 
-	return temporalDifferenceErrorTensor
+	return temporalDifferenceErrorVector, temporalDifferenceError
 
 end
 
