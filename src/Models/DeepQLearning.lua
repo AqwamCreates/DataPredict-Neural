@@ -48,7 +48,7 @@ function DeepQLearningModel.new(parameterDictionary)
 	
 	NewDeepQLearningModel.EligibilityTrace = parameterDictionary.EligibilityTrace
 
-	NewDeepQLearningModel:setCategoricalUpdateFunction(function(previousFeatureTensor, action, rewardValue, currentFeatureTensor, terminalStateValue)
+	NewDeepQLearningModel:setCategoricalUpdateFunction(function(previousFeatureTensor, previousAction, rewardValue, currentFeatureTensor, currentAction, terminalStateValue)
 
 		local Model = NewDeepQLearningModel.Model
 		
@@ -66,7 +66,7 @@ function DeepQLearningModel.new(parameterDictionary)
 
 		local previousTensor = Model:forwardPropagate(previousFeatureTensor)
 
-		local actionIndex = table.find(ClassesList, action)
+		local actionIndex = table.find(ClassesList, previousAction)
 
 		local lastValue = previousTensor[1][actionIndex]
 
@@ -92,7 +92,7 @@ function DeepQLearningModel.new(parameterDictionary)
 
 		Model:update(negatedTemporalDifferenceErrorTensor, true)
 
-		return temporalDifferenceError
+		return temporalDifferenceErrorTensor
 
 	end)
 
