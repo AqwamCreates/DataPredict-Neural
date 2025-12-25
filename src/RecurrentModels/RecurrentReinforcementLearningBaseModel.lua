@@ -82,9 +82,9 @@ function RecurrentReinforcementLearningBaseModel:getModel()
 
 end
 
-function RecurrentReinforcementLearningBaseModel:predict(featureVector, hiddenStateVector, returnOriginalOutput)
+function RecurrentReinforcementLearningBaseModel:predict(featureTensor, hiddenStateTensor, returnOriginalOutput)
 
-	return self.Model:predict(featureVector, hiddenStateVector, returnOriginalOutput)
+	return self.Model:predict(featureTensor, hiddenStateTensor, returnOriginalOutput)
 
 end
 
@@ -106,13 +106,13 @@ function RecurrentReinforcementLearningBaseModel:setDiagonalGaussianUpdateFuncti
 
 end
 
-function RecurrentReinforcementLearningBaseModel:categoricalUpdate(previousFeatureVector, previousAction, rewardValue, currentFeatureVector, currentAction, terminalStateValue)
+function RecurrentReinforcementLearningBaseModel:categoricalUpdate(previousFeatureTensor, previousAction, rewardValue, currentFeatureTensor, currentAction, terminalStateValue)
 
 	local categoricalUpdateFunction = self.categoricalUpdateFunction
 
 	if (categoricalUpdateFunction) then
 
-		return categoricalUpdateFunction(previousFeatureVector, previousAction, rewardValue, currentFeatureVector, currentAction, terminalStateValue)
+		return categoricalUpdateFunction(previousFeatureTensor, previousAction, rewardValue, currentFeatureTensor, currentAction, terminalStateValue)
 
 	else
 
@@ -122,13 +122,13 @@ function RecurrentReinforcementLearningBaseModel:categoricalUpdate(previousFeatu
 
 end
 
-function RecurrentReinforcementLearningBaseModel:diagonalGaussianUpdate(previousFeatureVector, actionMeanVector, actionStandardDeviationVector, actionNoiseVector, rewardValue, currentFeatureVector, terminalStateValue)
+function RecurrentReinforcementLearningBaseModel:diagonalGaussianUpdate(previousFeatureTensor, previousActionMeanTensor, previousActionStandardDeviationTensor, previousActionNoiseTensor, rewardValue, currentFeatureTensor, currentActionMeanTensor, terminalStateValue)
 
 	local diagonalGaussianUpdateFunction = self.diagonalGaussianUpdateFunction
 
 	if (diagonalGaussianUpdateFunction) then
 
-		return diagonalGaussianUpdateFunction(previousFeatureVector, actionMeanVector, actionStandardDeviationVector, actionNoiseVector, rewardValue, currentFeatureVector, terminalStateValue)
+		return diagonalGaussianUpdateFunction(previousFeatureTensor, previousActionMeanTensor, previousActionStandardDeviationTensor, previousActionNoiseTensor, rewardValue, currentFeatureTensor, currentActionMeanTensor, terminalStateValue)
 
 	else
 
