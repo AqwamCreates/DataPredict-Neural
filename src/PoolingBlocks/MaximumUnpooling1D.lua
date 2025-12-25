@@ -30,7 +30,7 @@ local BasePoolingBlock = require(script.Parent.BasePoolingBlock)
 
 local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
 
-MaximumUnpooling1DBlock = {}
+local MaximumUnpooling1DBlock = {}
 
 MaximumUnpooling1DBlock.__index = MaximumUnpooling1DBlock
 
