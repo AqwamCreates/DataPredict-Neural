@@ -30,7 +30,7 @@ local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker
 
 local ReinforcementLearningBaseModel = require(script.Parent.ReinforcementLearningBaseModel)
 
-DeepDoubleExpectedStateActionRewardStateActionModel = {}
+local DeepDoubleExpectedStateActionRewardStateActionModel = {}
 
 DeepDoubleExpectedStateActionRewardStateActionModel.__index = DeepDoubleExpectedStateActionRewardStateActionModel
 
@@ -74,7 +74,7 @@ function DeepDoubleExpectedStateActionRewardStateActionModel.new(parameterDictio
 	
 	NewDeepDoubleExpectedStateActionRewardStateActionModel.EligibilityTrace = parameterDictionary.EligibilityTrace
 
-	NewDeepDoubleExpectedStateActionRewardStateActionModel:setCategoricalUpdateFunction(function(previousFeatureTensor, action, rewardValue, currentFeatureTensor, terminalStateValue)
+	NewDeepDoubleExpectedStateActionRewardStateActionModel:setCategoricalUpdateFunction(function(previousFeatureTensor, action, rewardValue, currentFeatureTensor, currentAction, terminalStateValue)
 
 		local Model = NewDeepDoubleExpectedStateActionRewardStateActionModel.Model
 
