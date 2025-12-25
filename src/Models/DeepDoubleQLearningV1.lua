@@ -90,7 +90,7 @@ function DeepDoubleQLearningModel.new(parameterDictionary)
 
 	NewDeepDoubleQLearningModel.WeightTensorArrayArray = parameterDictionary.WeightTensorArrayArray or {}
 
-	NewDeepDoubleQLearningModel:setCategoricalUpdateFunction(function(previousFeatureTensor, action, rewardValue, currentFeatureTensor, currentAction, terminalStateValue)
+	NewDeepDoubleQLearningModel:setCategoricalUpdateFunction(function(previousFeatureTensor, previousAction, rewardValue, currentFeatureTensor, currentAction, terminalStateValue)
 
 		local Model = NewDeepDoubleQLearningModel.Model
 		
@@ -104,7 +104,7 @@ function DeepDoubleQLearningModel.new(parameterDictionary)
 
 		local selectedModelNumberForUpdate = (updateSecondModel and 2) or 1
 
-		local temporalDifferenceErrorTensor, temporalDifferenceError = NewDeepDoubleQLearningModel:generateLossTensor(previousFeatureTensor, action, rewardValue, currentFeatureTensor, terminalStateValue, selectedModelNumberForTargetTensor, selectedModelNumberForUpdate)
+		local temporalDifferenceErrorTensor, temporalDifferenceError = NewDeepDoubleQLearningModel:generateLossTensor(previousFeatureTensor, previousAction, rewardValue, currentFeatureTensor, terminalStateValue, selectedModelNumberForTargetTensor, selectedModelNumberForUpdate)
 		
 		local negatedTemporalDifferenceErrorTensor = AqwamTensorLibrary:unaryMinus(temporalDifferenceErrorTensor) -- The original non-deep Q-Learning version performs gradient ascent. But the neural network performs gradient descent. So, we need to negate the error tensor to make the neural network to perform gradient ascent.
 		
@@ -140,7 +140,7 @@ function DeepDoubleQLearningModel.new(parameterDictionary)
 
 end
 
-function DeepDoubleQLearningModel:generateLossTensor(previousFeatureTensor, action, rewardValue, currentFeatureTensor, terminalStateValue, selectedModelNumberForTargetTensor, selectedModelNumberForUpdate)
+function DeepDoubleQLearningModel:generateLossTensor(previousFeatureTensor, previousAction, rewardValue, currentFeatureTensor, terminalStateValue, selectedModelNumberForTargetTensor, selectedModelNumberForUpdate)
 
 	local Model = self.Model
 	
@@ -168,7 +168,7 @@ function DeepDoubleQLearningModel:generateLossTensor(previousFeatureTensor, acti
 
 	local numberOfClasses = #ClassesList
 
-	local actionIndex = table.find(ClassesList, action)
+	local actionIndex = table.find(ClassesList, previousAction)
 
 	local lastValue = previousQTensor[1][actionIndex]
 
