@@ -2,7 +2,7 @@
 
 	--------------------------------------------------------------------
 
-	Aqwam's Deep Learning Library (DataPredict Neural)
+	Aqwam's Machine, Deep And Reinforcement Learning Library (DataPredict)
 
 	Author: Aqwam Harish Aiman
 	
@@ -16,7 +16,7 @@
 		
 	By using this library, you agree to comply with our Terms and Conditions in the link below:
 	
-	https://github.com/AqwamCreates/DataPredict-Neural/blob/main/docs/TermsAndConditions.md
+	https://github.com/AqwamCreates/DataPredict/blob/main/docs/TermsAndConditions.md
 	
 	--------------------------------------------------------------------
 	
@@ -28,33 +28,33 @@
 
 local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
 
-local ReinforcementLearningActorCriticBaseModel = require(script.Parent.ReinforcementLearningActorCriticBaseModel)
+local DeepReinforcementLearningActorCriticBaseModel = require(script.Parent.DeepReinforcementLearningActorCriticBaseModel)
 
-SoftActorCriticModel = {}
+local SoftActorCriticModel = {}
 
 SoftActorCriticModel.__index = SoftActorCriticModel
 
-setmetatable(SoftActorCriticModel, ReinforcementLearningActorCriticBaseModel)
+setmetatable(SoftActorCriticModel, DeepReinforcementLearningActorCriticBaseModel)
 
 local defaultAlpha = 0.1
 
 local defaultAveragingRate = 0.995
 
-local function rateAverageWeightTensorArray(averagingRate, TargetWeightTensorArray, PrimaryWeightTensorArray)
+local function rateAverageModelParameters(averagingRate, TargetModelParameters, PrimaryModelParameters)
 
 	local averagingRateComplement = 1 - averagingRate
 
-	for layer = 1, #TargetWeightTensorArray, 1 do
+	for layer = 1, #TargetModelParameters, 1 do
 
-		local TargetWeightTensorArrayPart = AqwamTensorLibrary:multiply(averagingRate, TargetWeightTensorArray[layer])
+		local TargetModelParametersPart = AqwamTensorLibrary:multiply(averagingRate, TargetModelParameters[layer])
 
-		local PrimaryWeightTensorArrayPart = AqwamTensorLibrary:multiply(averagingRateComplement, PrimaryWeightTensorArray[layer])
+		local PrimaryModelParametersPart = AqwamTensorLibrary:multiply(averagingRateComplement, PrimaryModelParameters[layer])
 
-		TargetWeightTensorArray[layer] = AqwamTensorLibrary:add(TargetWeightTensorArrayPart, PrimaryWeightTensorArrayPart)
+		TargetModelParameters[layer] = AqwamTensorLibrary:add(TargetModelParametersPart, PrimaryModelParametersPart)
 
 	end
 
-	return TargetWeightTensorArray
+	return TargetModelParameters
 
 end
 
@@ -74,29 +74,29 @@ local function calculateCategoricalProbability(valueTensor)
 
 end
 
-local function calculateDiagonalGaussianProbability(actionMeanTensor, actionStandardDeviationTensor, actionNoiseTensor)
+local function calculateDiagonalGaussianProbability(meanTensor, standardDeviationTensor, noiseTensor)
 
-	local actionTensorPart1 = AqwamTensorLibrary:multiply(actionStandardDeviationTensor, actionNoiseTensor)
+	local valueTensorPart1 = AqwamTensorLibrary:multiply(standardDeviationTensor, noiseTensor)
 
-	local actionTensor = AqwamTensorLibrary:add(actionMeanTensor, actionTensorPart1)
+	local valueTensor = AqwamTensorLibrary:add(meanTensor, valueTensorPart1)
 
-	local zScoreTensorPart1 = AqwamTensorLibrary:subtract(actionTensor, actionMeanTensor)
+	local zScoreTensorPart1 = AqwamTensorLibrary:subtract(valueTensor, meanTensor)
 
-	local zScoreTensor = AqwamTensorLibrary:divide(zScoreTensorPart1, actionStandardDeviationTensor)
+	local zScoreTensor = AqwamTensorLibrary:divide(zScoreTensorPart1, standardDeviationTensor)
 
 	local squaredZScoreTensor = AqwamTensorLibrary:power(zScoreTensor, 2)
 
-	local logActionProbabilityTensorPart1 = AqwamTensorLibrary:logarithm(actionStandardDeviationTensor)
+	local logValueTensorPart1 = AqwamTensorLibrary:logarithm(standardDeviationTensor)
 
-	local logActionProbabilityTensorPart2 = AqwamTensorLibrary:multiply(2, logActionProbabilityTensorPart1)
+	local logValueTensorPart2 = AqwamTensorLibrary:multiply(2, logValueTensorPart1)
 
-	local logActionProbabilityTensorPart3 = AqwamTensorLibrary:add(squaredZScoreTensor, logActionProbabilityTensorPart2)
+	local logValueTensorPart3 = AqwamTensorLibrary:add(squaredZScoreTensor, logValueTensorPart2)
 
-	local logActionProbabilityTensorPart4 = AqwamTensorLibrary:add(logActionProbabilityTensorPart3, math.log(2 * math.pi))
+	local logValueTensor = AqwamTensorLibrary:add(logValueTensorPart3, math.log(2 * math.pi))
 
-	local logActionProbabilityTensor = AqwamTensorLibrary:multiply(-0.5, logActionProbabilityTensorPart4)
+	logValueTensor = AqwamTensorLibrary:multiply(-0.5, logValueTensor)
 
-	return logActionProbabilityTensor
+	return logValueTensor
 
 end
 
@@ -104,7 +104,7 @@ function SoftActorCriticModel.new(parameterDictionary)
 
 	parameterDictionary = parameterDictionary or {}
 
-	local NewSoftActorCritic = ReinforcementLearningActorCriticBaseModel.new(parameterDictionary)
+	local NewSoftActorCritic = DeepReinforcementLearningActorCriticBaseModel.new(parameterDictionary)
 
 	setmetatable(NewSoftActorCritic, SoftActorCriticModel)
 
@@ -114,10 +114,10 @@ function SoftActorCriticModel.new(parameterDictionary)
 
 	NewSoftActorCritic.averagingRate = parameterDictionary.averagingRate or defaultAveragingRate
 
-	NewSoftActorCritic.CriticWeightTensorArrayArray = parameterDictionary.CriticWeightTensorArrayArray or {}
+	NewSoftActorCritic.CriticModelParametersArray = parameterDictionary.CriticModelParametersArray or {}
 
-	NewSoftActorCritic:setCategoricalUpdateFunction(function(previousFeatureTensor, action, rewardValue, currentFeatureTensor, terminalStateValue)
-		
+	NewSoftActorCritic:setCategoricalUpdateFunction(function(previousFeatureTensor, previousAction, rewardValue, currentFeatureTensor, currentAction, terminalStateValue)
+
 		local ActorModel = NewSoftActorCritic.ActorModel
 
 		local CriticModel = NewSoftActorCritic.CriticModel
@@ -134,29 +134,21 @@ function SoftActorCriticModel.new(parameterDictionary)
 
 		local currentLogActionProbabilityTensor = AqwamTensorLibrary:logarithm(currentActionProbabilityTensor)
 
-		return NewSoftActorCritic:update(previousFeatureTensor, previousLogActionProbabilityTensor, currentLogActionProbabilityTensor, action, rewardValue, currentFeatureTensor, terminalStateValue)
+		return NewSoftActorCritic:update(previousFeatureTensor, previousLogActionProbabilityTensor, currentLogActionProbabilityTensor, previousAction, rewardValue, currentFeatureTensor, terminalStateValue)
 
 	end)
 
-	NewSoftActorCritic:setDiagonalGaussianUpdateFunction(function(previousFeatureTensor, actionMeanTensor, actionStandardDeviationTensor, actionNoiseTensor, rewardValue, currentFeatureTensor, terminalStateValue)
+	NewSoftActorCritic:setDiagonalGaussianUpdateFunction(function(previousFeatureTensor, previousActionMeanTensor, previousActionStandardDeviationTensor, previousActionNoiseTensor, rewardValue, currentFeatureTensor, currentActionMeanTensor, terminalStateValue)
 
-		if (not actionNoiseTensor) then
+		if (not previousActionNoiseTensor) then previousActionNoiseTensor = AqwamTensorLibrary:createRandomNormalTensor({1, #previousActionMeanTensor[1]}) end
 
-			local actionTensordimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(actionMeanTensor)
-
-			actionNoiseTensor = AqwamTensorLibrary:createRandomUniformTensor(actionTensordimensionSizeArray) 
-
-		end
-
-		local currentActionMeanTensor = NewSoftActorCritic.ActorModel:forwardPropagate(currentFeatureTensor, true)
-
-		local dimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(actionNoiseTensor)
+		local dimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(previousActionNoiseTensor)
 
 		local currentActionNoiseTensor = AqwamTensorLibrary:createRandomUniformTensor(dimensionSizeArray)
 
-		local previousLogActionProbabilityTensor = calculateDiagonalGaussianProbability(actionMeanTensor, actionStandardDeviationTensor, actionNoiseTensor)
+		local previousLogActionProbabilityTensor = calculateDiagonalGaussianProbability(previousActionMeanTensor, previousActionStandardDeviationTensor, previousActionStandardDeviationTensor)
 
-		local currentLogActionProbabilityTensor = calculateDiagonalGaussianProbability(currentActionMeanTensor, actionStandardDeviationTensor, currentActionNoiseTensor)
+		local currentLogActionProbabilityTensor = calculateDiagonalGaussianProbability(currentActionMeanTensor, previousActionStandardDeviationTensor, currentActionNoiseTensor)
 
 		return NewSoftActorCritic:update(previousFeatureTensor, previousLogActionProbabilityTensor, currentLogActionProbabilityTensor, nil, rewardValue, currentFeatureTensor, terminalStateValue)
 
@@ -170,9 +162,9 @@ function SoftActorCriticModel.new(parameterDictionary)
 
 end
 
-function SoftActorCriticModel:update(previousFeatureTensor, previousLogActionProbabilityTensor, currentLogActionProbabilityTensor, action, rewardValue, currentFeatureTensor, terminalStateValue)
+function SoftActorCriticModel:update(previousFeatureTensor, previousLogActionProbabilityTensor, currentLogActionProbabilityTensor, previousAction, rewardValue, currentFeatureTensor, terminalStateValue)
 
-	local CriticWeightTensorArrayArray = self.CriticWeightTensorArrayArray
+	local CriticModelParametersArray = self.CriticModelParametersArray
 
 	local CriticModel = self.CriticModel
 
@@ -182,15 +174,15 @@ function SoftActorCriticModel:update(previousFeatureTensor, previousLogActionPro
 
 	local averagingRate = self.averagingRate
 
-	local PreviousCriticWeightTensorArrayArray = {}
+	local PreviousCriticModelParametersArray = {}
 
 	local previousLogActionProbabilityValue
 
-	if (action) then
+	if (previousAction) then
 
 		local ClassesList = ActorModel:getClassesList()
 
-		local actionIndex = table.find(ClassesList, action)
+		local actionIndex = table.find(ClassesList, previousAction)
 
 		previousLogActionProbabilityValue = previousLogActionProbabilityTensor[1][actionIndex]
 
@@ -204,13 +196,13 @@ function SoftActorCriticModel:update(previousFeatureTensor, previousLogActionPro
 
 	for i = 1, 2, 1 do 
 
-		CriticModel:setWeightTensorArray(CriticWeightTensorArrayArray[i])
+		CriticModel:setModelParameters(CriticModelParametersArray[i])
 
 		currentCriticValueArray[i] = CriticModel:forwardPropagate(currentFeatureTensor)[1][1] 
 
-		local CriticWeightTensorArray = CriticModel:getWeightTensorArray(true)
+		local CriticModelParameters = CriticModel:getModelParameters(true)
 
-		PreviousCriticWeightTensorArrayArray[i] = CriticWeightTensorArray
+		PreviousCriticModelParametersArray[i] = CriticModelParameters
 
 	end
 
@@ -226,7 +218,7 @@ function SoftActorCriticModel:update(previousFeatureTensor, previousLogActionPro
 
 	for i = 1, 2, 1 do 
 
-		CriticModel:setWeightTensorArray(PreviousCriticWeightTensorArrayArray[i], true)
+		CriticModel:setModelParameters(PreviousCriticModelParametersArray[i], true)
 
 		local previousCriticValue = CriticModel:forwardPropagate(previousFeatureTensor, true)[1][1] 
 
@@ -238,9 +230,9 @@ function SoftActorCriticModel:update(previousFeatureTensor, previousLogActionPro
 
 		CriticModel:update(criticLoss, true)
 
-		local TargetWeightTensorArray = CriticModel:getWeightTensorArray(true)
+		local TargetModelParameters = CriticModel:getModelParameters(true)
 
-		CriticWeightTensorArrayArray[i] = rateAverageWeightTensorArray(averagingRate, TargetWeightTensorArray, PreviousCriticWeightTensorArrayArray[i])
+		CriticModelParametersArray[i] = rateAverageModelParameters(averagingRate, TargetModelParameters, PreviousCriticModelParametersArray[i])
 
 	end
 
@@ -260,57 +252,57 @@ function SoftActorCriticModel:update(previousFeatureTensor, previousLogActionPro
 
 end
 
-function SoftActorCriticModel:setCrtiticWeightTensorArray1(CriticWeightTensorArray1, doNotDeepCopy)
+function SoftActorCriticModel:setCrtiticModelParameters1(CriticModelParameters1, doNotDeepCopy)
 
 	if (doNotDeepCopy) then
 
-		self.CriticWeightTensorArrayArray[1] = CriticWeightTensorArray1
+		self.CriticModelParametersArray[1] = CriticModelParameters1
 
 	else
 
-		self.CriticWeightTensorArrayArray[1] = self:deepCopyTable(CriticWeightTensorArray1)
+		self.CriticModelParametersArray[1] = self:deepCopyTable(CriticModelParameters1)
 
 	end
 
 end
 
-function SoftActorCriticModel:setCriticWeightTensorArray2(CriticWeightTensorArray2, doNotDeepCopy)
+function SoftActorCriticModel:setCriticModelParameters2(CriticModelParameters2, doNotDeepCopy)
 
 	if (doNotDeepCopy) then
 
-		self.CriticWeightTensorArrayArray[2] = CriticWeightTensorArray2
+		self.CriticModelParametersArray[2] = CriticModelParameters2
 
 	else
 
-		self.CriticWeightTensorArrayArray[2] = self:deepCopyTable(CriticWeightTensorArray2)
+		self.CriticModelParametersArray[2] = self:deepCopyTable(CriticModelParameters2)
 
 	end
 
 end
 
-function SoftActorCriticModel:getCriticWeightTensorArray1(doNotDeepCopy)
+function SoftActorCriticModel:getCriticModelParameters1(doNotDeepCopy)
 
 	if (doNotDeepCopy) then
 
-		return self.CriticWeightTensorArrayArray[1]
+		return self.CriticModelParametersArray[1]
 
 	else
 
-		return self:deepCopyTable(self.CriticWeightTensorArrayArray[1])
+		return self:deepCopyTable(self.CriticModelParametersArray[1])
 
 	end
 
 end
 
-function SoftActorCriticModel:getCriticWeightTensorArray2(doNotDeepCopy)
+function SoftActorCriticModel:getCriticModelParameters2(doNotDeepCopy)
 
 	if (doNotDeepCopy) then
 
-		return self.CriticWeightTensorArrayArray[2]
+		return self.CriticModelParametersArray[2]
 
 	else
 
-		return self:deepCopyTable(self.CriticWeightTensorArrayArray[2])
+		return self:deepCopyTable(self.CriticModelParametersArray[2])
 
 	end
 
