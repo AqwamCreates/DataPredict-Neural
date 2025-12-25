@@ -2,7 +2,7 @@
 
 	--------------------------------------------------------------------
 
-	Aqwam's Deep Learning Library (DataPredict Neural)
+	Aqwam's Machine, Deep And Reinforcement Learning Library (DataPredict)
 
 	Author: Aqwam Harish Aiman
 	
@@ -16,7 +16,7 @@
 		
 	By using this library, you agree to comply with our Terms and Conditions in the link below:
 	
-	https://github.com/AqwamCreates/DataPredict-Neural/blob/main/docs/TermsAndConditions.md
+	https://github.com/AqwamCreates/DataPredict/blob/main/docs/TermsAndConditions.md
 	
 	--------------------------------------------------------------------
 	
@@ -28,27 +28,27 @@
 
 local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
 
-local ReinforcementLearningBaseModel = require(script.Parent.ReinforcementLearningBaseModel)
+local DeepReinforcementLearningBaseModel = require(script.Parent.DeepReinforcementLearningBaseModel)
 
-REINFORCEModel = {}
+local DeepREINFORCEModel = {}
 
-REINFORCEModel.__index = REINFORCEModel
+DeepREINFORCEModel.__index = DeepREINFORCEModel
 
-setmetatable(REINFORCEModel, ReinforcementLearningBaseModel)
+setmetatable(DeepREINFORCEModel, DeepReinforcementLearningBaseModel)
 
 local function calculateProbability(valueTensor)
 
-	local highestActionValue = AqwamTensorLibrary:findMaximumValue(valueTensor)
+	local maximumValue = AqwamTensorLibrary:findMaximumValue(valueTensor)
 
-	local subtractedZTensor = AqwamTensorLibrary:subtract(valueTensor, highestActionValue)
+	local zValueTensor = AqwamTensorLibrary:subtract(valueTensor, maximumValue)
 
-	local exponentActionTensor = AqwamTensorLibrary:applyFunction(math.exp, subtractedZTensor)
+	local exponentTensor = AqwamTensorLibrary:exponent(zValueTensor)
 
-	local exponentActionSumTensor = AqwamTensorLibrary:sum(exponentActionTensor, 2)
+	local sumExponentValue = AqwamTensorLibrary:sum(exponentTensor)
 
-	local targetActionTensor = AqwamTensorLibrary:divide(exponentActionTensor, exponentActionSumTensor)
+	local probabilityTensor = AqwamTensorLibrary:divide(exponentTensor, sumExponentValue)
 
-	return targetActionTensor
+	return probabilityTensor
 
 end
 
@@ -70,81 +70,81 @@ local function calculateRewardToGo(rewardValueHistory, discountFactor)
 
 end
 
-function REINFORCEModel.new(parameterDictionary)
+function DeepREINFORCEModel.new(parameterDictionary)
 
-	local NewREINFORCEModel = ReinforcementLearningBaseModel.new(parameterDictionary)
+	local NewDeepREINFORCEModel = DeepReinforcementLearningBaseModel.new(parameterDictionary)
 
-	setmetatable(NewREINFORCEModel, REINFORCEModel)
-	
-	NewREINFORCEModel:setName("REINFORCE")
-	
+	setmetatable(NewDeepREINFORCEModel, DeepREINFORCEModel)
+
+	NewDeepREINFORCEModel:setName("DeepREINFORCE")
+
 	local featureTensorArray = {}
 
-	local actionProbabilityTensorArray = {}
+	local actionProbabilityGradientTensorHistory = {}
 
-	local rewardValueArray = {}
+	local rewardValueHistory = {}
 
-	NewREINFORCEModel:setCategoricalUpdateFunction(function(previousFeatureTensor, action, rewardValue, currentFeatureTensor, terminalStateValue)
+	NewDeepREINFORCEModel:setCategoricalUpdateFunction(function(previousFeatureTensor, previousAction, rewardValue, currentFeatureTensor, currentAction, terminalStateValue)
 
-		local actionTensor = NewREINFORCEModel.Model:forwardPropagate(previousFeatureTensor)
+		local Model = NewDeepREINFORCEModel.Model
+
+		local actionTensor = Model:forwardPropagate(previousFeatureTensor)
 
 		local actionProbabilityTensor = calculateProbability(actionTensor)
 
-		local logActionProbabilityTensor = AqwamTensorLibrary:logarithm(actionProbabilityTensor)
-		
-		table.insert(featureTensorArray, previousFeatureTensor)
+		local ClassesList = Model:getClassesList()
 
-		table.insert(actionProbabilityTensorArray, logActionProbabilityTensor)
+		local classIndex = table.find(ClassesList, previousAction)
 
-		table.insert(rewardValueArray, rewardValue)
+		local actionProbabilityGradientTensor = {}
 
-	end)
+		for i, _ in ipairs(ClassesList) do
 
-	NewREINFORCEModel:setDiagonalGaussianUpdateFunction(function(previousFeatureTensor, actionMeanTensor, actionStandardDeviationTensor, actionNoiseTensor, rewardValue, currentFeatureTensor, terminalStateValue)
-
-		if (not actionNoiseTensor) then
-
-			local actionTensordimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(actionMeanTensor)
-
-			actionNoiseTensor = AqwamTensorLibrary:createRandomUniformTensor(actionTensordimensionSizeArray) 
+			actionProbabilityGradientTensor[i] = (((i == classIndex) and 1) or 0) - actionProbabilityTensor[1][i]
 
 		end
 
-		local actionTensorPart1 = AqwamTensorLibrary:multiply(actionStandardDeviationTensor, actionNoiseTensor)
+		actionProbabilityGradientTensor = {actionProbabilityGradientTensor}
 
-		local actionTensor = AqwamTensorLibrary:add(actionMeanTensor, actionTensorPart1)
-
-		local zScoreTensorPart1 = AqwamTensorLibrary:subtract(actionTensor, actionMeanTensor)
-
-		local zScoreTensor = AqwamTensorLibrary:divide(zScoreTensorPart1, actionStandardDeviationTensor)
-
-		local squaredZScoreTensor = AqwamTensorLibrary:power(zScoreTensor, 2)
-
-		local logActionProbabilityTensorPart1 = AqwamTensorLibrary:logarithm(actionStandardDeviationTensor)
-
-		local logActionProbabilityTensorPart2 = AqwamTensorLibrary:multiply(2, logActionProbabilityTensorPart1)
-
-		local logActionProbabilityTensorPart3 = AqwamTensorLibrary:add(squaredZScoreTensor, logActionProbabilityTensorPart2)
-
-		local logActionProbabilityTensor = AqwamTensorLibrary:add(logActionProbabilityTensorPart3, math.log(2 * math.pi))
-		
 		table.insert(featureTensorArray, previousFeatureTensor)
 
-		table.insert(actionProbabilityTensorArray, logActionProbabilityTensor)
+		table.insert(actionProbabilityGradientTensorHistory, actionProbabilityGradientTensor)
 
-		table.insert(rewardValueArray, rewardValue)
+		table.insert(rewardValueHistory, rewardValue)
 
 	end)
 
-	NewREINFORCEModel:setEpisodeUpdateFunction(function(terminalStateValue)
+	NewDeepREINFORCEModel:setDiagonalGaussianUpdateFunction(function(previousFeatureTensor, previousActionMeanTensor, previousActionStandardDeviationTensor, previousActionNoiseTensor, rewardValue, currentFeatureTensor, currentActionMeanTensor, terminalStateValue)
 
-		local Model = NewREINFORCEModel.Model
+		if (not previousActionNoiseTensor) then previousActionNoiseTensor = AqwamTensorLibrary:createRandomNormalTensor({1, #previousActionMeanTensor[1]}) end
 
-		local rewardToGoArray = calculateRewardToGo(rewardValueArray, NewREINFORCEModel.discountFactor)
+		local actionTensorPart1 = AqwamTensorLibrary:multiply(previousActionStandardDeviationTensor, previousActionNoiseTensor)
 
-		for h, actionProbabilityTensor in ipairs(actionProbabilityTensorArray) do
+		local actionTensor = AqwamTensorLibrary:add(previousActionMeanTensor, actionTensorPart1)
 
-			local lossTensor = AqwamTensorLibrary:multiply(actionProbabilityTensor, rewardToGoArray[h])
+		local actionProbabilityGradientTensorPart1 = AqwamTensorLibrary:subtract(actionTensor, previousActionMeanTensor)
+
+		local actionProbabilityGradientTensorPart2 = AqwamTensorLibrary:power(previousActionStandardDeviationTensor, 2)
+
+		local actionProbabilityGradientTensor = AqwamTensorLibrary:divide(actionProbabilityGradientTensorPart1, actionProbabilityGradientTensorPart2)
+
+		table.insert(featureTensorArray, previousFeatureTensor)
+
+		table.insert(actionProbabilityGradientTensorHistory, actionProbabilityGradientTensor)
+
+		table.insert(rewardValueHistory, rewardValue)
+
+	end)
+
+	NewDeepREINFORCEModel:setEpisodeUpdateFunction(function(terminalStateValue)
+
+		local Model = NewDeepREINFORCEModel.Model
+
+		local rewardToGoArray = calculateRewardToGo(rewardValueHistory, NewDeepREINFORCEModel.discountFactor)
+
+		for h, actionProbabilityGradientTensor in ipairs(actionProbabilityGradientTensorHistory) do
+
+			local lossTensor = AqwamTensorLibrary:multiply(actionProbabilityGradientTensor, rewardToGoArray[h])
 
 			lossTensor = AqwamTensorLibrary:unaryMinus(lossTensor)
 
@@ -153,27 +153,27 @@ function REINFORCEModel.new(parameterDictionary)
 			Model:update(lossTensor, true)
 
 		end
-		
+
 		table.clear(featureTensorArray)
 
-		table.clear(actionProbabilityTensorArray)
+		table.clear(actionProbabilityGradientTensorHistory)
 
-		table.clear(rewardValueArray)
+		table.clear(rewardValueHistory)
 
 	end)
 
-	NewREINFORCEModel:setResetFunction(function()
-		
+	NewDeepREINFORCEModel:setResetFunction(function()
+
 		table.clear(featureTensorArray)
 
-		table.clear(actionProbabilityTensorArray)
+		table.clear(actionProbabilityGradientTensorHistory)
 
-		table.clear(rewardValueArray)
+		table.clear(rewardValueHistory)
 
 	end)
 
-	return NewREINFORCEModel
+	return NewDeepREINFORCEModel
 
 end
 
-return REINFORCEModel
+return DeepREINFORCEModel
