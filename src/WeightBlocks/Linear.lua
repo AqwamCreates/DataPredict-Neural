@@ -96,7 +96,7 @@ function LinearBlock.new(parameterDictionary)
 
 		local inputTensor = inputTensorArray[1]
 		
-		local inputTensorNumberOfDimensions =  AqwamTensorLibrary:getNumberOfDimensions(inputTensor)
+		local inputTensorNumberOfDimensions = AqwamTensorLibrary:getNumberOfDimensions(inputTensor)
 		
 		local transposedInputTensor = AqwamTensorLibrary:transpose(inputTensor, {inputTensorNumberOfDimensions - 1, inputTensorNumberOfDimensions})
 		

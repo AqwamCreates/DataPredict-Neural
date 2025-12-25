@@ -1,5 +1,9 @@
 # DataPredict™ Neural Beta Version
 
+## Version 1.14
+
+[1.14.0](Beta/1-14-0.md) -- 25/12/2025
+
 ## Version 1.13
 
 [1.13.0](Beta/1-13-0.md) -- 12/11/2025
