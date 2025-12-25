@@ -1,0 +1,91 @@
+--[[
+
+	--------------------------------------------------------------------
+
+	Aqwam's Machine, Deep And Reinforcement Learning Library (DataPredict)
+
+	Author: Aqwam Harish Aiman
+	
+	Email: aqwam.harish.aiman@gmail.com
+	
+	YouTube: https://www.youtube.com/channel/UCUrwoxv5dufEmbGsxyEUPZw
+	
+	LinkedIn: https://www.linkedin.com/in/aqwam-harish-aiman/
+	
+	--------------------------------------------------------------------
+		
+	By using this library, you agree to comply with our Terms and Conditions in the link below:
+	
+	https://github.com/AqwamCreates/DataPredict/blob/main/docs/TermsAndConditions.md
+	
+	--------------------------------------------------------------------
+	
+	DO NOT REMOVE THIS TEXT!
+	
+	--------------------------------------------------------------------
+
+--]]
+
+local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
+
+local ReinforcementLearningBaseModel = require(script.Parent.ReinforcementLearningBaseModel)
+
+local DeepTemporalDifferenceModel = {}
+
+DeepTemporalDifferenceModel.__index = DeepTemporalDifferenceModel
+
+setmetatable(DeepTemporalDifferenceModel, ReinforcementLearningBaseModel)
+
+function DeepTemporalDifferenceModel.new(parameterDictionary)
+	
+	parameterDictionary = parameterDictionary or {}
+
+	local NewDeepTemporalDifferenceModel = ReinforcementLearningBaseModel.new(parameterDictionary)
+
+	setmetatable(NewDeepTemporalDifferenceModel, DeepTemporalDifferenceModel)
+	
+	NewDeepTemporalDifferenceModel:setName("DeepTemporalDifference")
+	
+	NewDeepTemporalDifferenceModel:setCategoricalUpdateFunction(function(previousFeatureTensor, previousAction, rewardValue, currentFeatureTensor, currentAction, terminalStateValue)
+		
+		local Model = NewDeepTemporalDifferenceModel.Model
+		
+		local discountFactor = NewDeepTemporalDifferenceModel.discountFactor
+
+		local currentQTensor = Model:forwardPropagate(currentFeatureTensor)
+
+		local previousQTensor = Model:forwardPropagate(previousFeatureTensor)
+		
+		local targetValue = rewardValue + (discountFactor * currentQTensor[1][1] * (1 - terminalStateValue))
+		
+		local temporalDifferenceError = targetValue - previousQTensor[1][1]
+		
+		local negatedTemporalDifferenceErrorTensor = {{-temporalDifferenceError}}
+		
+		Model:forwardPropagate(previousFeatureTensor, true)
+
+		Model:update(negatedTemporalDifferenceErrorTensor, true)
+		
+		return temporalDifferenceError
+
+	end)
+	
+	NewDeepTemporalDifferenceModel:setEpisodeUpdateFunction(function(terminalStateValue) 
+		
+	end)
+	
+	NewDeepTemporalDifferenceModel:setResetFunction(function() 
+		
+	end)
+
+	return NewDeepTemporalDifferenceModel
+
+end
+
+function DeepTemporalDifferenceModel:setParameters(discountFactor)
+
+	self.discountFactor = discountFactor or self.discountFactor
+
+end
+
+return DeepTemporalDifferenceModel
