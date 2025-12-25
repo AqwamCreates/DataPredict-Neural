@@ -30,7 +30,7 @@ local BasePoolingBlock = require(script.Parent.BasePoolingBlock)
 
 local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
 
-MinimumPooling1DBlock = {}
+local MinimumPooling1DBlock = {}
 
 MinimumPooling1DBlock.__index = MinimumPooling1DBlock
 
