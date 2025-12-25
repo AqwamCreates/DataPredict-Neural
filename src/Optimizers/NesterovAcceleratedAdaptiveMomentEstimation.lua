@@ -30,7 +30,7 @@ local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker
 
 local BaseOptimizer = require(script.Parent.BaseOptimizer)
 
-NesterovAcceleratedAdaptiveMomentEstimationOptimizer = {}
+local NesterovAcceleratedAdaptiveMomentEstimationOptimizer = {}
 
 NesterovAcceleratedAdaptiveMomentEstimationOptimizer.__index = NesterovAcceleratedAdaptiveMomentEstimationOptimizer
 
@@ -72,7 +72,7 @@ function NesterovAcceleratedAdaptiveMomentEstimationOptimizer.new(parameterDicti
 
 		local previousNTensor = optimizerInternalParameterArray[2] or AqwamTensorLibrary:createTensor(AqwamTensorLibrary:getDimensionSizeArray(costFunctionDerivativeTensor), 0)
 		
-		local timeValue = optimizerInternalParameterArray[3] or 1
+		local timeValue = (optimizerInternalParameterArray[3] or 0) + 1
 		
 		local beta1 = NewNesterovAcceleratedAdaptiveMomentEstimationOptimizer.beta1
 		
@@ -127,8 +127,6 @@ function NesterovAcceleratedAdaptiveMomentEstimationOptimizer.new(parameterDicti
 		local costFunctionDerivativeTensorPart1 = AqwamTensorLibrary:divide(finalMTensor, finalDivisor)
 
 		costFunctionDerivativeTensor = AqwamTensorLibrary:multiply(learningRate, costFunctionDerivativeTensorPart1)
-		
-		timeValue = timeValue + 1
 		
 		NewNesterovAcceleratedAdaptiveMomentEstimationOptimizer.optimizerInternalParameterArray = {mTensor, nTensor, timeValue}
 
