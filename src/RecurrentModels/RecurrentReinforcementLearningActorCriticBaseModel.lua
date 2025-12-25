@@ -122,13 +122,13 @@ function RecurrentReinforcementLearningActorCriticBaseModel:setDiagonalGaussianU
 
 end
 
-function RecurrentReinforcementLearningActorCriticBaseModel:categoricalUpdate(previousFeatureVector, action, rewardValue, currentFeatureVector, terminalStateValue)
+function RecurrentReinforcementLearningActorCriticBaseModel:categoricalUpdate(previousFeatureVector, previousAction, rewardValue, currentFeatureVector, currentAction, terminalStateValue)
 
 	local categoricalUpdateFunction = self.categoricalUpdateFunction
 
 	if (categoricalUpdateFunction) then
 
-		return categoricalUpdateFunction(previousFeatureVector, action, rewardValue, currentFeatureVector, terminalStateValue)
+		return categoricalUpdateFunction(previousFeatureVector, previousAction, rewardValue, currentFeatureVector, currentAction, terminalStateValue)
 
 	else
 
