@@ -2,7 +2,7 @@
 
 	--------------------------------------------------------------------
 
-	Aqwam's Deep Learning Library (DataPredict Neural)
+	Aqwam's Machine, Deep And Reinforcement Learning Library (DataPredict)
 
 	Author: Aqwam Harish Aiman
 	
@@ -16,7 +16,7 @@
 		
 	By using this library, you agree to comply with our Terms and Conditions in the link below:
 	
-	https://github.com/AqwamCreates/DataPredict-Neural/blob/main/docs/TermsAndConditions.md
+	https://github.com/AqwamCreates/DataPredict/blob/main/docs/TermsAndConditions.md
 	
 	--------------------------------------------------------------------
 	
@@ -28,13 +28,13 @@
 
 local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
 
-local ReinforcementLearningActorCriticBaseModel = require(script.Parent.ReinforcementLearningActorCriticBaseModel)
+local DeepReinforcementLearningActorCriticBaseModel = require(script.Parent.DeepReinforcementLearningActorCriticBaseModel)
 
-TwinDelayedDeepDeterministicPolicyGradientModel = {}
+local TwinDelayedDeepDeterministicPolicyGradientModel = {}
 
 TwinDelayedDeepDeterministicPolicyGradientModel.__index = TwinDelayedDeepDeterministicPolicyGradientModel
 
-setmetatable(TwinDelayedDeepDeterministicPolicyGradientModel, ReinforcementLearningActorCriticBaseModel)
+setmetatable(TwinDelayedDeepDeterministicPolicyGradientModel, DeepReinforcementLearningActorCriticBaseModel)
 
 local defaultAveragingRate = 0.995
 
@@ -42,21 +42,21 @@ local defaultNoiseClippingFactor = 0.5
 
 local defaultPolicyDelayAmount = 3
 
-local function rateAverageWeightTensorArray(averagingRate, TargetWeightTensorArray, PrimaryWeightTensorArray)
+local function rateAverageModelParameters(averagingRate, TargetModelParameters, PrimaryModelParameters)
 
 	local averagingRateComplement = 1 - averagingRate
 
-	for layer = 1, #TargetWeightTensorArray, 1 do
+	for layer = 1, #TargetModelParameters, 1 do
 
-		local TargetWeightTensorArrayPart = AqwamTensorLibrary:multiply(averagingRate, TargetWeightTensorArray[layer])
+		local TargetModelParametersPart = AqwamTensorLibrary:multiply(averagingRate, TargetModelParameters[layer])
 
-		local PrimaryWeightTensorArrayPart = AqwamTensorLibrary:multiply(averagingRateComplement, PrimaryWeightTensorArray[layer])
+		local PrimaryModelParametersPart = AqwamTensorLibrary:multiply(averagingRateComplement, PrimaryModelParameters[layer])
 
-		TargetWeightTensorArray[layer] = AqwamTensorLibrary:add(TargetWeightTensorArrayPart, PrimaryWeightTensorArrayPart)
+		TargetModelParameters[layer] = AqwamTensorLibrary:add(TargetModelParametersPart, PrimaryModelParametersPart)
 
 	end
 
-	return TargetWeightTensorArray
+	return TargetModelParameters
 
 end
 
@@ -64,33 +64,27 @@ function TwinDelayedDeepDeterministicPolicyGradientModel.new(parameterDictionary
 
 	parameterDictionary = parameterDictionary or {}
 
-	local NewTwinDelayedDeepDeterministicPolicyGradient = ReinforcementLearningActorCriticBaseModel.new(parameterDictionary)
+	local NewTwinDelayedDeepDeterministicPolicyGradient = DeepReinforcementLearningActorCriticBaseModel.new(parameterDictionary)
 
 	setmetatable(NewTwinDelayedDeepDeterministicPolicyGradient, TwinDelayedDeepDeterministicPolicyGradientModel)
 
 	NewTwinDelayedDeepDeterministicPolicyGradient:setName("TwinDelayedDeepDeterministicPolicyGradient")
-	
+
 	NewTwinDelayedDeepDeterministicPolicyGradient.noiseClippingFactor = parameterDictionary.noiseClippingFactor or defaultNoiseClippingFactor
 
 	NewTwinDelayedDeepDeterministicPolicyGradient.policyDelayAmount = parameterDictionary.policyDelayAmount or defaultPolicyDelayAmount
 
 	NewTwinDelayedDeepDeterministicPolicyGradient.averagingRate = parameterDictionary.averagingRate or defaultAveragingRate
 
-	NewTwinDelayedDeepDeterministicPolicyGradient.CriticWeightTensorArrayArray = parameterDictionary.CriticWeightTensorArrayArray or {}
+	NewTwinDelayedDeepDeterministicPolicyGradient.CriticModelParametersArray = parameterDictionary.CriticModelParametersArray or {}
 
-	local TargetCriticWeightTensorArrayArray = {}
+	local TargetCriticModelParametersArray = {}
 
 	local currentNumberOfUpdate = 0
 
-	NewTwinDelayedDeepDeterministicPolicyGradient:setDiagonalGaussianUpdateFunction(function(previousFeatureTensor, actionMeanTensor, actionStandardDeviationTensor, actionNoiseTensor, rewardValue, currentFeatureTensor, terminalStateValue)
+	NewTwinDelayedDeepDeterministicPolicyGradient:setDiagonalGaussianUpdateFunction(function(previousFeatureTensor, previousActionMeanTensor, previousActionStandardDeviationTensor, previousActionNoiseTensor, rewardValue, currentFeatureTensor, currentActionMeanTensor, terminalStateValue)
 
-		if (not actionNoiseTensor) then
-
-			local actionTensordimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(actionMeanTensor)
-
-			actionNoiseTensor = AqwamTensorLibrary:createRandomUniformTensor(actionTensordimensionSizeArray) 
-
-		end
+		if (not previousActionNoiseTensor) then previousActionNoiseTensor = AqwamTensorLibrary:createRandomNormalTensor({1, #previousActionMeanTensor[1]}) end
 
 		local ActorModel = NewTwinDelayedDeepDeterministicPolicyGradient.ActorModel
 
@@ -100,17 +94,17 @@ function TwinDelayedDeepDeterministicPolicyGradientModel.new(parameterDictionary
 
 		local noiseClippingFactor = NewTwinDelayedDeepDeterministicPolicyGradient.noiseClippingFactor
 
-		local CriticWeightTensorArrayArray = NewTwinDelayedDeepDeterministicPolicyGradient.CriticWeightTensorArrayArray
+		local CriticModelParametersArray = NewTwinDelayedDeepDeterministicPolicyGradient.CriticModelParametersArray
 
 		local noiseClipFunction = function(value) return math.clamp(value, -noiseClippingFactor, noiseClippingFactor) end
 
-		local currentActionNoiseTensor = AqwamTensorLibrary:createRandomNormalTensor({1, #actionMeanTensor[1]})
+		local currentActionNoiseTensor = AqwamTensorLibrary:createRandomNormalTensor({1, #previousActionMeanTensor[1]})
 
 		local clippedCurrentActionNoiseTensor = AqwamTensorLibrary:applyFunction(noiseClipFunction, currentActionNoiseTensor)
 
-		local previousActionTensor = AqwamTensorLibrary:multiply(actionStandardDeviationTensor, actionNoiseTensor)
+		local previousActionTensor = AqwamTensorLibrary:multiply(previousActionStandardDeviationTensor, previousActionNoiseTensor)
 
-		previousActionTensor = AqwamTensorLibrary:add(previousActionTensor, actionMeanTensor)
+		previousActionTensor = AqwamTensorLibrary:add(previousActionTensor, previousActionMeanTensor)
 
 		local previousActionArray = previousActionTensor[1] 
 
@@ -118,9 +112,7 @@ function TwinDelayedDeepDeterministicPolicyGradientModel.new(parameterDictionary
 
 		local highestActionValue = math.max(table.unpack(previousActionArray))
 
-		local currentActionMeanTensor = ActorModel:forwardPropagate(currentFeatureTensor, true)
-
-		local ActorWeightTensorArray = ActorModel:getWeightTensorArray(true)
+		local ActorModelParameters = ActorModel:getModelParameters(true)
 
 		local targetActionTensorPart1 = AqwamTensorLibrary:add(currentActionMeanTensor, clippedCurrentActionNoiseTensor)
 
@@ -154,13 +146,13 @@ function TwinDelayedDeepDeterministicPolicyGradientModel.new(parameterDictionary
 
 		for i = 1, 2, 1 do 
 
-			CriticModel:setWeightTensorArray(TargetCriticWeightTensorArrayArray[i])
+			CriticModel:setModelParameters(TargetCriticModelParametersArray[i])
 
 			currentCriticValueArray[i] = CriticModel:forwardPropagate(targetCriticActionInputTensor)[1][1] 
 
-			local CriticWeightTensorArray = CriticModel:getWeightTensorArray(true)
+			local CriticModelParameters = CriticModel:getModelParameters(true)
 
-			TargetCriticWeightTensorArrayArray[i] = CriticWeightTensorArray
+			TargetCriticModelParametersArray[i] = CriticModelParameters
 
 		end
 
@@ -172,11 +164,11 @@ function TwinDelayedDeepDeterministicPolicyGradientModel.new(parameterDictionary
 
 		local temporalDifferenceErrorTensor = AqwamTensorLibrary:createTensor({1, 2}, 0)
 
-		local previousCriticActionMeanInputTensor = AqwamTensorLibrary:concatenate(previousFeatureTensor, actionMeanTensor, 2)
+		local previousCriticActionMeanInputTensor = AqwamTensorLibrary:concatenate(previousFeatureTensor, previousActionMeanTensor, 2)
 
-		for i = 1, 2, 1 do 
+		for i = 1, 2, 1 do
 
-			CriticModel:setWeightTensorArray(CriticWeightTensorArrayArray[i], true)
+			CriticModel:setModelParameters(CriticModelParametersArray[i], true)
 
 			local previousCriticValue = CriticModel:forwardPropagate(previousCriticActionMeanInputTensor, true)[1][1] 
 
@@ -186,7 +178,7 @@ function TwinDelayedDeepDeterministicPolicyGradientModel.new(parameterDictionary
 
 			CriticModel:update(criticLoss, true)
 
-			CriticWeightTensorArrayArray[i] = CriticModel:getWeightTensorArray(true)
+			CriticModelParametersArray[i] = CriticModel:getModelParameters(true)
 
 		end
 
@@ -194,13 +186,13 @@ function TwinDelayedDeepDeterministicPolicyGradientModel.new(parameterDictionary
 
 		if ((currentNumberOfUpdate % NewTwinDelayedDeepDeterministicPolicyGradient.policyDelayAmount) == 0) then
 
-			local actionTensor = AqwamTensorLibrary:multiply(actionStandardDeviationTensor, actionNoiseTensor)
+			local previousActionTensor = AqwamTensorLibrary:multiply(previousActionStandardDeviationTensor, previousActionNoiseTensor)
 
-			actionTensor = AqwamTensorLibrary:add(actionTensor, actionMeanTensor)
+			previousActionTensor = AqwamTensorLibrary:add(previousActionTensor, previousActionMeanTensor)
 
-			local previousCriticActionInputTensor = AqwamTensorLibrary:concatenate(previousFeatureTensor, actionTensor, 2)
+			local previousCriticActionInputTensor = AqwamTensorLibrary:concatenate(previousFeatureTensor, previousActionTensor, 2)
 
-			CriticModel:setWeightTensorArray(CriticWeightTensorArrayArray[1], true)
+			CriticModel:setModelParameters(CriticModelParametersArray[1], true)
 
 			local currentQValue = CriticModel:forwardPropagate(previousCriticActionInputTensor, true)[1][1]
 
@@ -208,13 +200,13 @@ function TwinDelayedDeepDeterministicPolicyGradientModel.new(parameterDictionary
 
 			ActorModel:update(-currentQValue, true)
 
-			for i = 1, 2, 1 do TargetCriticWeightTensorArrayArray[i] = rateAverageWeightTensorArray(averagingRate, TargetCriticWeightTensorArrayArray[i], CriticWeightTensorArrayArray[i]) end
+			for i = 1, 2, 1 do TargetCriticModelParametersArray[i] = rateAverageModelParameters(averagingRate, TargetCriticModelParametersArray[i], CriticModelParametersArray[i]) end
 
-			local TargetActorWeightTensorArray = ActorModel:getWeightTensorArray(true)
+			local TargetActorModelParameters = ActorModel:getModelParameters(true)
 
-			TargetActorWeightTensorArray = rateAverageWeightTensorArray(averagingRate, TargetActorWeightTensorArray, ActorWeightTensorArray)
+			TargetActorModelParameters = rateAverageModelParameters(averagingRate, TargetActorModelParameters, ActorModelParameters)
 
-			ActorModel:setWeightTensorArray(TargetActorWeightTensorArray, true)
+			ActorModel:setModelParameters(TargetActorModelParameters, true)
 
 		end
 
@@ -238,57 +230,57 @@ function TwinDelayedDeepDeterministicPolicyGradientModel.new(parameterDictionary
 
 end
 
-function TwinDelayedDeepDeterministicPolicyGradientModel:setCrtiticWeightTensorArray1(CriticWeightTensorArray1, doNotDeepCopy)
+function TwinDelayedDeepDeterministicPolicyGradientModel:setCrtiticModelParameters1(CriticModelParameters1, doNotDeepCopy)
 
 	if (doNotDeepCopy) then
 
-		self.CriticWeightTensorArrayArray[1] = CriticWeightTensorArray1
+		self.CriticModelParametersArray[1] = CriticModelParameters1
 
 	else
 
-		self.CriticWeightTensorArrayArray[1] = self:deepCopyTable(CriticWeightTensorArray1)
+		self.CriticModelParametersArray[1] = self:deepCopyTable(CriticModelParameters1)
 
 	end
 
 end
 
-function TwinDelayedDeepDeterministicPolicyGradientModel:setCriticWeightTensorArray2(CriticWeightTensorArray2, doNotDeepCopy)
+function TwinDelayedDeepDeterministicPolicyGradientModel:setCriticModelParameters2(CriticModelParameters2, doNotDeepCopy)
 
 	if (doNotDeepCopy) then
 
-		self.CriticWeightTensorArrayArray[2] = CriticWeightTensorArray2
+		self.CriticModelParametersArray[2] = CriticModelParameters2
 
 	else
 
-		self.CriticWeightTensorArrayArray[2] = self:deepCopyTable(CriticWeightTensorArray2)
+		self.CriticModelParametersArray[2] = self:deepCopyTable(CriticModelParameters2)
 
 	end
 
 end
 
-function TwinDelayedDeepDeterministicPolicyGradientModel:getCriticWeightTensorArray1(doNotDeepCopy)
+function TwinDelayedDeepDeterministicPolicyGradientModel:getCriticModelParameters1(doNotDeepCopy)
 
 	if (doNotDeepCopy) then
 
-		return self.CriticWeightTensorArrayArray[1]
+		return self.CriticModelParametersArray[1]
 
 	else
 
-		return self:deepCopyTable(self.CriticWeightTensorArrayArray[1])
+		return self:deepCopyTable(self.CriticModelParametersArray[1])
 
 	end
 
 end
 
-function TwinDelayedDeepDeterministicPolicyGradientModel:getCriticWeightTensorArray2(doNotDeepCopy)
+function TwinDelayedDeepDeterministicPolicyGradientModel:getCriticModelParameters2(doNotDeepCopy)
 
 	if (doNotDeepCopy) then
 
-		return self.CriticWeightTensorArrayArray[2]
+		return self.CriticModelParametersArray[2]
 
 	else
 
-		return self:deepCopyTable(self.CriticWeightTensorArrayArray[2])
+		return self:deepCopyTable(self.CriticModelParametersArray[2])
 
 	end
 
