@@ -30,25 +30,27 @@ local BasePoolingBlock = require(script.Parent.BasePoolingBlock)
 
 local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
 
-local AveragePooling2DBlock = {}
+local MaximumPooling2DBlock = {}
 
-AveragePooling2DBlock.__index = AveragePooling2DBlock
+MaximumPooling2DBlock.__index = MaximumPooling2DBlock
 
-setmetatable(AveragePooling2DBlock, BasePoolingBlock)
+setmetatable(MaximumPooling2DBlock, BasePoolingBlock)
 
 local defaultKernelDimensionSizeArray = {2, 2}
 
 local defaultStrideDimensionSizeArray = {1, 1}
 
-function AveragePooling2DBlock.new(parameterDictionary)
+function MaximumPooling2DBlock.new(parameterDictionary)
 
 	parameterDictionary = parameterDictionary or {}
 
-	local NewAveragePooling2DBlock = BasePoolingBlock.new()
+	local NewMaximumPooling2DBlock = BasePoolingBlock.new()
 
-	setmetatable(NewAveragePooling2DBlock, AveragePooling2DBlock)
+	setmetatable(NewMaximumPooling2DBlock, MaximumPooling2DBlock)
 
-	NewAveragePooling2DBlock:setName("AveragePooling2D")
+	NewMaximumPooling2DBlock:setName("MaximumPooling2D")
+
+	NewMaximumPooling2DBlock:setChainRuleFirstDerivativeFunctionRequiresTransformedTensor(true)
 
 	local kernelDimensionSizeArray = parameterDictionary.kernelDimensionSizeArray or defaultKernelDimensionSizeArray
 
@@ -58,11 +60,11 @@ function AveragePooling2DBlock.new(parameterDictionary)
 
 	if (#strideDimensionSizeArray ~= 2) then error("The number of dimensions for the stride dimension size array does not equal to 2.") end
 
-	NewAveragePooling2DBlock.kernelDimensionSizeArray = kernelDimensionSizeArray
+	NewMaximumPooling2DBlock.kernelDimensionSizeArray = kernelDimensionSizeArray
 
-	NewAveragePooling2DBlock.strideDimensionSizeArray = strideDimensionSizeArray
+	NewMaximumPooling2DBlock.strideDimensionSizeArray = strideDimensionSizeArray
 
-	NewAveragePooling2DBlock:setFunction(function(inputTensorArray)
+	NewMaximumPooling2DBlock:setFunction(function(inputTensorArray)
 
 		local inputTensor = inputTensorArray[1]
 
@@ -70,11 +72,11 @@ function AveragePooling2DBlock.new(parameterDictionary)
 		
 		local numberOfDimensions = #inputTensorDimensionSizeArray
 
-		if (numberOfDimensions ~= 4) then error("Unable to pass the input tensor to the 2D spatial average pooling function block. The number of dimensions of the input tensor does not equal to 4. The input tensor have " .. numberOfDimensions .. " dimensions.") end
+		if (numberOfDimensions ~= 4) then error("Unable to pass the input tensor to the 2D spatial minimum pooling function block. The number of dimensions of the input tensor does not equal to 4. The input tensor have " .. numberOfDimensions .. " dimensions.") end
 
-		local kernelDimensionSizeArray = NewAveragePooling2DBlock.kernelDimensionSizeArray 
+		local kernelDimensionSizeArray = NewMaximumPooling2DBlock.kernelDimensionSizeArray 
 
-		local strideDimensionSizeArray = NewAveragePooling2DBlock.strideDimensionSizeArray
+		local strideDimensionSizeArray = NewMaximumPooling2DBlock.strideDimensionSizeArray
 
 		local transformedTensorDimensionSizeArray = table.clone(inputTensorDimensionSizeArray)
 
@@ -106,9 +108,9 @@ function AveragePooling2DBlock.new(parameterDictionary)
 
 						local extractedInputTensor = AqwamTensorLibrary:extract(subInputTensor, originDimensionIndexArray, targetDimensionIndexArray)
 
-						local averageValue = AqwamTensorLibrary:mean(extractedInputTensor)
+						local maximumValue = AqwamTensorLibrary:findMaximumValue(extractedInputTensor)
 
-						transformedTensor[a][b][c][d] = averageValue
+						transformedTensor[a][b][c][d] = maximumValue
 
 					end
 
@@ -122,19 +124,19 @@ function AveragePooling2DBlock.new(parameterDictionary)
 
 	end)
 
-	NewAveragePooling2DBlock:setChainRuleFirstDerivativeFunction(function(initialPartialFirstDerivativeTensor, transformedTensor, inputTensorArray)
+	NewMaximumPooling2DBlock:setChainRuleFirstDerivativeFunction(function(initialPartialFirstDerivativeTensor, transformedTensor, inputTensorArray)
 
-		local kernelDimensionSizeArray = NewAveragePooling2DBlock.kernelDimensionSizeArray
+		local kernelDimensionSizeArray = NewMaximumPooling2DBlock.kernelDimensionSizeArray
 
-		local strideDimensionSizeArray = NewAveragePooling2DBlock.strideDimensionSizeArray
+		local strideDimensionSizeArray = NewMaximumPooling2DBlock.strideDimensionSizeArray
 
-		local inputTensorDimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(inputTensorArray[1])
+		local inputTensor = inputTensorArray[1]
+
+		local inputTensorDimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(inputTensor)
 
 		local initialPartialFirstDerivativeTensorSizeArray = AqwamTensorLibrary:getDimensionSizeArray(initialPartialFirstDerivativeTensor)
 
 		local chainRuleFirstDerivativeTensor = AqwamTensorLibrary:createTensor(inputTensorDimensionSizeArray)
-
-		local kernelArea = kernelDimensionSizeArray[3] * kernelDimensionSizeArray[4]
 
 		for a = 1, initialPartialFirstDerivativeTensorSizeArray[1], 1 do
 
@@ -154,7 +156,7 @@ function AveragePooling2DBlock.new(parameterDictionary)
 
 							for y = originDimensionIndexArray[2], targetDimensionIndexArray[2], 1 do
 
-								chainRuleFirstDerivativeTensor[a][b][x][y] = chainRuleFirstDerivativeTensor[a][b][x][y] + initialPartialFirstDerivativeValue
+								if (transformedTensor[a][b][c][d] == inputTensor[a][b][x][y]) then chainRuleFirstDerivativeTensor[a][b][x][y] = chainRuleFirstDerivativeTensor[a][b][x][y] + initialPartialFirstDerivativeValue end
 
 							end
 
@@ -168,14 +170,12 @@ function AveragePooling2DBlock.new(parameterDictionary)
 
 		end
 
-		chainRuleFirstDerivativeTensor = AqwamTensorLibrary:divide(chainRuleFirstDerivativeTensor, kernelArea)
-
 		return {chainRuleFirstDerivativeTensor}
 
 	end)
 
-	return NewAveragePooling2DBlock
+	return NewMaximumPooling2DBlock
 
 end
 
-return AveragePooling2DBlock
+return MaximumPooling2DBlock
