@@ -28,7 +28,7 @@
 
 local BaseInstance = require(script.Parent.Parent.Cores.BaseInstance)
 
-ReinforcementLearningBaseModel = {}
+local ReinforcementLearningBaseModel = {}
 
 ReinforcementLearningBaseModel.__index = ReinforcementLearningBaseModel
 
@@ -37,41 +37,41 @@ setmetatable(ReinforcementLearningBaseModel, BaseInstance)
 local defaultDiscountFactor = 0.95
 
 function ReinforcementLearningBaseModel.new(parameterDictionary)
-	
+
 	parameterDictionary = parameterDictionary or {}
-	
+
 	local NewReinforcementLearningBaseModel = {}
-	
+
 	setmetatable(NewReinforcementLearningBaseModel, ReinforcementLearningBaseModel)
-	
+
 	NewReinforcementLearningBaseModel:setName("ReinforcementLearningBaseModel")
 
 	NewReinforcementLearningBaseModel:setClassName("ReinforcementLearningModel")
-	
+
 	NewReinforcementLearningBaseModel.discountFactor = parameterDictionary.discountFactor or defaultDiscountFactor
-	
+
 	NewReinforcementLearningBaseModel.Model = parameterDictionary.Model
-	
+
 	return NewReinforcementLearningBaseModel
-	
+
 end
 
 function ReinforcementLearningBaseModel:setDiscountFactor(discountFactor)
-	
+
 	self.discountFactor = discountFactor
-	
+
 end
 
 function ReinforcementLearningBaseModel:getDiscountFactor()
-	
+
 	return self.discountFactor
-	
+
 end
 
 function ReinforcementLearningBaseModel:setModel(Model)
-	
+
 	self.Model = Model
-	
+
 end
 
 function ReinforcementLearningBaseModel:getModel()
@@ -92,16 +92,22 @@ function ReinforcementLearningBaseModel:getModelParameters(doNotCopy)
 
 end
 
-function ReinforcementLearningBaseModel:predict(featureVector, returnOriginalOutput)
+function ReinforcementLearningBaseModel:predict(featureTensor, returnOriginalOutput)
 
-	return self.Model:predict(featureVector, returnOriginalOutput)
+	return self.Model:predict(featureTensor, returnOriginalOutput)
+
+end
+
+function ReinforcementLearningBaseModel:setActionsList(ActionsList)
+
+	self.Model:setClassesList(ActionsList)
 
 end
 
 function ReinforcementLearningBaseModel:getActionsList()
-	
+
 	return self.Model:getClassesList()
-	
+
 end
 
 function ReinforcementLearningBaseModel:setCategoricalUpdateFunction(categoricalUpdateFunction)
@@ -111,20 +117,20 @@ function ReinforcementLearningBaseModel:setCategoricalUpdateFunction(categorical
 end
 
 function ReinforcementLearningBaseModel:setDiagonalGaussianUpdateFunction(diagonalGaussianUpdateFunction)
-	
+
 	self.diagonalGaussianUpdateFunction = diagonalGaussianUpdateFunction
-	
-end
-
-function ReinforcementLearningBaseModel:categoricalUpdate(previousFeatureVector, action, rewardValue, currentFeatureVector, terminalStateValue)
-	
-	return self.categoricalUpdateFunction(previousFeatureVector, action, rewardValue, currentFeatureVector, terminalStateValue)
 
 end
 
-function ReinforcementLearningBaseModel:diagonalGaussianUpdate(previousFeatureVector, actionMeanVector, actionStandardDeviationVector, actionNoiseVector, rewardValue, currentFeatureVector, terminalStateValue)
+function ReinforcementLearningBaseModel:categoricalUpdate(previousFeatureTensor, previousAction, rewardValue, currentFeatureTensor, currentAction, terminalStateValue)
 
-	return self.diagonalGaussianUpdateFunction(previousFeatureVector, actionMeanVector, actionStandardDeviationVector, actionNoiseVector, rewardValue, currentFeatureVector, terminalStateValue)
+	return self.categoricalUpdateFunction(previousFeatureTensor, previousAction, rewardValue, currentFeatureTensor, currentAction, terminalStateValue)
+
+end
+
+function ReinforcementLearningBaseModel:diagonalGaussianUpdate(previousFeatureTensor, actionMeanTensor, actionStandardDeviationTensor, actionNoiseTensor, rewardValue, currentFeatureTensor, terminalStateValue)
+
+	return self.diagonalGaussianUpdateFunction(previousFeatureTensor, actionMeanTensor, actionStandardDeviationTensor, actionNoiseTensor, rewardValue, currentFeatureTensor, terminalStateValue)
 
 end
 
@@ -147,7 +153,7 @@ function ReinforcementLearningBaseModel:setResetFunction(resetFunction)
 end
 
 function ReinforcementLearningBaseModel:reset()
-	
+
 	self.resetFunction() 
 
 end
