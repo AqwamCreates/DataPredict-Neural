@@ -2,7 +2,7 @@
 
 	--------------------------------------------------------------------
 
-	Aqwam's Deep Learning Library (DataPredict Neural)
+	Aqwam's Machine, Deep And Reinforcement Learning Library (DataPredict)
 
 	Author: Aqwam Harish Aiman
 	
@@ -16,7 +16,7 @@
 		
 	By using this library, you agree to comply with our Terms and Conditions in the link below:
 	
-	https://github.com/AqwamCreates/DataPredict-Neural/blob/main/docs/TermsAndConditions.md
+	https://github.com/AqwamCreates/DataPredict/blob/main/docs/TermsAndConditions.md
 	
 	--------------------------------------------------------------------
 	
@@ -28,13 +28,13 @@
 
 local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
 
-local ReinforcementLearningActorCriticBaseModel = require(script.Parent.ReinforcementLearningActorCriticBaseModel)
+local DeepReinforcementLearningActorCriticBaseModel = require(script.Parent.DeepReinforcementLearningActorCriticBaseModel)
 
 local AdvantageActorCriticModel = {}
 
 AdvantageActorCriticModel.__index = AdvantageActorCriticModel
 
-setmetatable(AdvantageActorCriticModel, ReinforcementLearningActorCriticBaseModel)
+setmetatable(AdvantageActorCriticModel, DeepReinforcementLearningActorCriticBaseModel)
 
 local defaultLambda = 0
 
@@ -55,28 +55,30 @@ local function calculateProbability(valueTensor)
 end
 
 function AdvantageActorCriticModel.new(parameterDictionary)
-	
+
 	parameterDictionary = parameterDictionary or {}
 
-	local NewAdvantageActorCriticModel = ReinforcementLearningActorCriticBaseModel.new(parameterDictionary)
+	local NewAdvantageActorCriticModel = DeepReinforcementLearningActorCriticBaseModel.new(parameterDictionary)
 
 	setmetatable(NewAdvantageActorCriticModel, AdvantageActorCriticModel)
-	
+
 	AdvantageActorCriticModel:setName("AdvantageActorCritic")
-	
+
 	NewAdvantageActorCriticModel.lambda = parameterDictionary.lambda or defaultLambda
-	
+
 	local featureTensorHistory = {}
 
 	local advantageValueHistory = {}
 
-	local actionProbabilityTensorHistory = {}
+	local actionProbabilityGradientTensorHistory = {}
 
 	NewAdvantageActorCriticModel:setCategoricalUpdateFunction(function(previousFeatureTensor, previousAction, rewardValue, currentFeatureTensor, currentAction, terminalStateValue)
 
+		local ActorModel = NewAdvantageActorCriticModel.ActorModel
+
 		local CriticModel = NewAdvantageActorCriticModel.CriticModel
 
-		local actionTensor = NewAdvantageActorCriticModel.ActorModel:forwardPropagate(previousFeatureTensor)
+		local actionTensor = ActorModel:forwardPropagate(previousFeatureTensor)
 
 		local previousCriticValue = CriticModel:forwardPropagate(previousFeatureTensor)[1][1]
 
@@ -86,11 +88,23 @@ function AdvantageActorCriticModel.new(parameterDictionary)
 
 		local advantageValue = rewardValue + (NewAdvantageActorCriticModel.discountFactor * (1 - terminalStateValue) * currentCriticValue) - previousCriticValue
 
-		local logActionProbabilityTensor = AqwamTensorLibrary:logarithm(actionProbabilityTensor)
-		
+		local ClassesList = ActorModel:getClassesList()
+
+		local classIndex = table.find(ClassesList, previousAction)
+
+		local actionProbabilityGradientTensor = {}
+
+		for i, _ in ipairs(ClassesList) do
+
+			actionProbabilityGradientTensor[i] = (((i == classIndex) and 1) or 0) - actionProbabilityTensor[1][i]
+
+		end
+
+		actionProbabilityGradientTensor = {actionProbabilityGradientTensor}
+
 		table.insert(featureTensorHistory, previousFeatureTensor)
 
-		table.insert(actionProbabilityTensorHistory, logActionProbabilityTensor)
+		table.insert(actionProbabilityGradientTensorHistory, actionProbabilityGradientTensor)
 
 		table.insert(advantageValueHistory, advantageValue)
 
@@ -100,13 +114,7 @@ function AdvantageActorCriticModel.new(parameterDictionary)
 
 	NewAdvantageActorCriticModel:setDiagonalGaussianUpdateFunction(function(previousFeatureTensor, previousActionMeanTensor, previousActionStandardDeviationTensor, previousActionNoiseTensor, rewardValue, currentFeatureTensor, currentActionMeanTensor, terminalStateValue)
 
-		if (not previousActionNoiseTensor) then
-
-			local actionTensorDimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(previousActionMeanTensor)
-
-			previousActionNoiseTensor = AqwamTensorLibrary:createRandomUniformTensor(actionTensorDimensionSizeArray) 
-
-		end
+		if (not previousActionNoiseTensor) then previousActionNoiseTensor = AqwamTensorLibrary:createRandomNormalTensor({1, #previousActionMeanTensor[1]}) end
 
 		local CriticModel = NewAdvantageActorCriticModel.CriticModel
 
@@ -114,31 +122,21 @@ function AdvantageActorCriticModel.new(parameterDictionary)
 
 		local actionTensor = AqwamTensorLibrary:add(previousActionMeanTensor, actionTensorPart1)
 
-		local zScoreTensorPart1 = AqwamTensorLibrary:subtract(actionTensor, previousActionMeanTensor)
+		local actionProbabilityGradientTensorPart1 = AqwamTensorLibrary:subtract(actionTensor, previousActionMeanTensor)
 
-		local zScoreTensor = AqwamTensorLibrary:divide(zScoreTensorPart1, previousActionStandardDeviationTensor)
+		local actionProbabilityGradientTensorPart2 = AqwamTensorLibrary:power(previousActionStandardDeviationTensor, 2)
 
-		local squaredZScoreTensor = AqwamTensorLibrary:power(zScoreTensor, 2)
-
-		local logActionProbabilityTensorPart1 = AqwamTensorLibrary:logarithm(previousActionStandardDeviationTensor)
-
-		local logActionProbabilityTensorPart2 = AqwamTensorLibrary:multiply(2, logActionProbabilityTensorPart1)
-
-		local logActionProbabilityTensorPart3 = AqwamTensorLibrary:add(squaredZScoreTensor, logActionProbabilityTensorPart2)
-
-		local logActionProbabilityTensorPart4 = AqwamTensorLibrary:add(logActionProbabilityTensorPart3, math.log(2 * math.pi))
-
-		local logActionProbabilityTensor = AqwamTensorLibrary:multiply(-0.5, logActionProbabilityTensorPart4)
+		local actionProbabilityGradientTensor = AqwamTensorLibrary:divide(actionProbabilityGradientTensorPart1, actionProbabilityGradientTensorPart2)
 
 		local previousCriticValue = CriticModel:forwardPropagate(previousFeatureTensor)[1][1]
 
 		local currentCriticValue = CriticModel:forwardPropagate(currentFeatureTensor)[1][1]
 
 		local advantageValue = rewardValue + (NewAdvantageActorCriticModel.discountFactor * (1 - terminalStateValue) * currentCriticValue) - previousCriticValue
-		
+
 		table.insert(featureTensorHistory, previousFeatureTensor)
-		
-		table.insert(actionProbabilityTensorHistory, logActionProbabilityTensor)
+
+		table.insert(actionProbabilityGradientTensorHistory, actionProbabilityGradientTensor)
 
 		table.insert(advantageValueHistory, advantageValue)
 
@@ -147,13 +145,13 @@ function AdvantageActorCriticModel.new(parameterDictionary)
 	end)
 
 	NewAdvantageActorCriticModel:setEpisodeUpdateFunction(function()
-		
+
 		local ActorModel = NewAdvantageActorCriticModel.ActorModel
 
 		local CriticModel = NewAdvantageActorCriticModel.CriticModel
-		
+
 		local lambda = NewAdvantageActorCriticModel.lambda
-		
+
 		if (lambda ~= 0) then
 
 			local generalizedAdvantageEstimationValue = 0
@@ -173,38 +171,38 @@ function AdvantageActorCriticModel.new(parameterDictionary)
 			advantageValueHistory = generalizedAdvantageEstimationHistory
 
 		end
-		
+
 		for h, featureTensor in ipairs(featureTensorHistory) do
 
 			local advantageValue = advantageValueHistory[h]
 
-			local actorLossTensor = AqwamTensorLibrary:multiply(actionProbabilityTensorHistory[h], advantageValue)
+			advantageValue = -advantageValue
 
-			actorLossTensor = AqwamTensorLibrary:unaryMinus(actorLossTensor)
-			
-			ActorModel:forwardPropagate(featureTensor, true)
+			local actorLossTensor = AqwamTensorLibrary:multiply(actionProbabilityGradientTensorHistory[h], advantageValue)
 
 			CriticModel:forwardPropagate(featureTensor, true)
 
-			ActorModel:update(actorLossTensor, true)
+			ActorModel:forwardPropagate(featureTensor, true)
 
 			CriticModel:update(advantageValue, true)
-			
+
+			ActorModel:update(actorLossTensor, true)
+
 		end
-		
+
 		table.clear(featureTensorHistory)
 
-		table.clear(actionProbabilityTensorHistory)
+		table.clear(actionProbabilityGradientTensorHistory)
 
 		table.clear(advantageValueHistory)
 
 	end)
 
 	NewAdvantageActorCriticModel:setResetFunction(function()
-		
+
 		table.clear(featureTensorHistory)
 
-		table.clear(actionProbabilityTensorHistory)
+		table.clear(actionProbabilityGradientTensorHistory)
 
 		table.clear(advantageValueHistory)
 
