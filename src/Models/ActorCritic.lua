@@ -2,7 +2,7 @@
 
 	--------------------------------------------------------------------
 
-	Aqwam's Deep Learning Library (DataPredict Neural)
+	Aqwam's Machine, Deep And Reinforcement Learning Library (DataPredict)
 
 	Author: Aqwam Harish Aiman
 	
@@ -16,7 +16,7 @@
 		
 	By using this library, you agree to comply with our Terms and Conditions in the link below:
 	
-	https://github.com/AqwamCreates/DataPredict-Neural/blob/main/docs/TermsAndConditions.md
+	https://github.com/AqwamCreates/DataPredict/blob/main/docs/TermsAndConditions.md
 	
 	--------------------------------------------------------------------
 	
@@ -28,13 +28,13 @@
 
 local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
 
-local ReinforcementLearningActorCriticBaseModel = require(script.Parent.ReinforcementLearningActorCriticBaseModel)
+local DeepReinforcementLearningActorCriticBaseModel = require(script.Parent.DeepReinforcementLearningActorCriticBaseModel)
 
 local ActorCriticModel = {}
 
 ActorCriticModel.__index = ActorCriticModel
 
-setmetatable(ActorCriticModel, ReinforcementLearningActorCriticBaseModel)
+setmetatable(ActorCriticModel, DeepReinforcementLearningActorCriticBaseModel)
 
 local function calculateProbability(valueTensor)
 
@@ -72,75 +72,73 @@ end
 
 function ActorCriticModel.new(parameterDictionary)
 
-	local NewActorCriticModel = ReinforcementLearningActorCriticBaseModel.new(parameterDictionary)
+	local NewActorCriticModel = DeepReinforcementLearningActorCriticBaseModel.new(parameterDictionary)
 
 	setmetatable(NewActorCriticModel, ActorCriticModel)
-	
+
 	NewActorCriticModel:setName("ActorCritic")
-	
+
 	local featureTensorHistory = {}
 
-	local actionProbabilityTensorHistory = {}
+	local actionProbabilityGradientTensorHistory = {}
 
 	local rewardValueHistory = {}
-	
+
 	local criticValueHistory = {}
 
 	NewActorCriticModel:setCategoricalUpdateFunction(function(previousFeatureTensor, previousAction, rewardValue, currentFeatureTensor, currentAction, terminalStateValue)
 
-		local actionTensor = NewActorCriticModel.ActorModel:forwardPropagate(previousFeatureTensor, true)
-		
+		local ActorModel = NewActorCriticModel.ActorModel
+
+		local actionTensor = ActorModel:forwardPropagate(previousFeatureTensor, true)
+
 		local criticValue = NewActorCriticModel.CriticModel:forwardPropagate(previousFeatureTensor)[1][1]
 
 		local actionProbabilityTensor = calculateProbability(actionTensor)
 
-		local logActionProbabilityTensor = AqwamTensorLibrary:logarithm(actionProbabilityTensor)
-		
+		local ClassesList = ActorModel:getClassesList()
+
+		local classIndex = table.find(ClassesList, previousAction)
+
+		local actionProbabilityGradientTensor = {}
+
+		for i, _ in ipairs(ClassesList) do
+
+			actionProbabilityGradientTensor[i] = (((i == classIndex) and 1) or 0) - actionProbabilityTensor[1][i]
+
+		end
+
+		actionProbabilityGradientTensor = {actionProbabilityGradientTensor}
+
 		table.insert(featureTensorHistory, previousFeatureTensor)
 
-		table.insert(actionProbabilityTensorHistory, logActionProbabilityTensor)
+		table.insert(actionProbabilityGradientTensorHistory, actionProbabilityGradientTensor)
 
 		table.insert(rewardValueHistory, rewardValue)
-		
+
 		table.insert(criticValueHistory, criticValue)
 
 	end)
 
 	NewActorCriticModel:setDiagonalGaussianUpdateFunction(function(previousFeatureTensor, previousActionMeanTensor, previousActionStandardDeviationTensor, previousActionNoiseTensor, rewardValue, currentFeatureTensor, currentActionMeanTensor, terminalStateValue)
 
-		if (not previousActionNoiseTensor) then
-			
-			local actionTensorDimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(previousActionMeanTensor)
-			
-			previousActionNoiseTensor = AqwamTensorLibrary:createRandomUniformTensor(actionTensorDimensionSizeArray) 
-			
-		end
+		if (not previousActionNoiseTensor) then previousActionNoiseTensor = AqwamTensorLibrary:createRandomNormalTensor({1, #previousActionMeanTensor[1]}) end
 
 		local actionTensorPart1 = AqwamTensorLibrary:multiply(previousActionStandardDeviationTensor, previousActionNoiseTensor)
 
 		local actionTensor = AqwamTensorLibrary:add(previousActionMeanTensor, actionTensorPart1)
 
-		local zScoreTensorPart1 = AqwamTensorLibrary:subtract(actionTensor, previousActionMeanTensor)
+		local actionProbabilityGradientTensorPart1 = AqwamTensorLibrary:subtract(actionTensor, previousActionMeanTensor)
 
-		local zScoreTensor = AqwamTensorLibrary:divide(zScoreTensorPart1, previousActionStandardDeviationTensor)
+		local actionProbabilityGradientTensorPart2 = AqwamTensorLibrary:power(previousActionStandardDeviationTensor, 2)
 
-		local squaredZScoreTensor = AqwamTensorLibrary:power(zScoreTensor, 2)
-
-		local logActionProbabilityTensorPart1 = AqwamTensorLibrary:logarithm(previousActionStandardDeviationTensor)
-
-		local logActionProbabilityTensorPart2 = AqwamTensorLibrary:multiply(2, logActionProbabilityTensorPart1)
-
-		local logActionProbabilityTensorPart3 = AqwamTensorLibrary:add(squaredZScoreTensor, logActionProbabilityTensorPart2)
-
-		local logActionProbabilityTensorPart4 = AqwamTensorLibrary:add(logActionProbabilityTensorPart3, math.log(2 * math.pi))
-
-		local logActionProbabilityTensor = AqwamTensorLibrary:multiply(-0.5, logActionProbabilityTensorPart4)
+		local actionProbabilityGradientTensor = AqwamTensorLibrary:divide(actionProbabilityGradientTensorPart1, actionProbabilityGradientTensorPart2)
 
 		local criticValue = NewActorCriticModel.CriticModel:forwardPropagate(previousFeatureTensor)[1][1]
 
 		table.insert(featureTensorHistory, previousFeatureTensor)
 
-		table.insert(actionProbabilityTensorHistory, logActionProbabilityTensor)
+		table.insert(actionProbabilityGradientTensorHistory, actionProbabilityGradientTensor)
 
 		table.insert(rewardValueHistory, rewardValue)
 
@@ -149,7 +147,7 @@ function ActorCriticModel.new(parameterDictionary)
 	end)
 
 	NewActorCriticModel:setEpisodeUpdateFunction(function(terminalStateValue)
-		
+
 		local ActorModel = NewActorCriticModel.ActorModel
 
 		local CriticModel = NewActorCriticModel.CriticModel
@@ -158,25 +156,23 @@ function ActorCriticModel.new(parameterDictionary)
 
 		for h, featureTensor in ipairs(featureTensorHistory) do
 
-			local criticLoss = rewardToGoHistory[h] - criticValueHistory[h]
+			local criticLoss = criticValueHistory[h] - rewardToGoHistory[h]
 
-			local actorLossTensor = AqwamTensorLibrary:multiply(actionProbabilityTensorHistory[h], criticLoss)
-			
-			actorLossTensor = AqwamTensorLibrary:unaryMinus(actorLossTensor)
+			local actorLossTensor = AqwamTensorLibrary:multiply(actionProbabilityGradientTensorHistory[h], criticLoss)
+
+			CriticModel:forwardPropagate(featureTensor, true)
 
 			ActorModel:forwardPropagate(featureTensor, true)
 
-			CriticModel:forwardPropagate(featureTensor, true)
-			
-			ActorModel:update(actorLossTensor, true)
-			
 			CriticModel:update(criticLoss, true)
+
+			ActorModel:update(actorLossTensor, true)
 
 		end
 
 		table.clear(featureTensorHistory)
 
-		table.clear(actionProbabilityTensorHistory)
+		table.clear(actionProbabilityGradientTensorHistory)
 
 		table.clear(rewardValueHistory)
 
@@ -188,7 +184,7 @@ function ActorCriticModel.new(parameterDictionary)
 
 		table.clear(featureTensorHistory)
 
-		table.clear(actionProbabilityTensorHistory)
+		table.clear(actionProbabilityGradientTensorHistory)
 
 		table.clear(rewardValueHistory)
 
