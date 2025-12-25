@@ -94,17 +94,13 @@ function DeepExpectedStateActionRewardStateActionModel.new(parameterDictionary)
 
 		local greedyActionProbability = ((1 - epsilon) / numberOfGreedyActions) + nonGreedyActionProbability
 
+		local actionProbability
+
 		for _, qValue in ipairs(unwrappedTargetTensor) do
 
-			if (qValue == maxQValue) then
+			actionProbability = ((qValue == maxQValue) and greedyActionProbability) or nonGreedyActionProbability
 
-				expectedQValue = expectedQValue + (qValue * greedyActionProbability)
-
-			else
-
-				expectedQValue = expectedQValue + (qValue * nonGreedyActionProbability)
-
-			end
+			expectedQValue = expectedQValue + (qValue * actionProbability)
 
 		end
 
@@ -134,7 +130,7 @@ function DeepExpectedStateActionRewardStateActionModel.new(parameterDictionary)
 
 		Model:update(negatedTemporalDifferenceErrorTensor, true)
 
-		return temporalDifferenceError
+		return temporalDifferenceErrorTensor
 
 	end)
 
