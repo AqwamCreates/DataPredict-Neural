@@ -116,7 +116,7 @@ function OffPolicyMonteCarloControlModel.new(parameterDictionary)
 
 	local rewardValueHistory = {}
 
-	NewOffPolicyMonteCarloControlModel:setCategoricalUpdateFunction(function(previousFeatureTensor, action, rewardValue, currentFeatureTensor, terminalStateValue)
+	NewOffPolicyMonteCarloControlModel:setCategoricalUpdateFunction(function(previousFeatureTensor, action, rewardValue, currentFeatureTensor, currentAction, terminalStateValue)
 
 		local actionTensor = NewOffPolicyMonteCarloControlModel.Model:forwardPropagate(previousFeatureTensor)
 		
