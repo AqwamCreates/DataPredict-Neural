@@ -576,10 +576,6 @@ AqwamDeepLearningLibrary.Cores = {
 	
 	BaseInstance = require(Cores.BaseInstance),
 	
-	AutomaticDifferentiationTensor = require(Cores.AutomaticDifferentiationTensor),
-	
-	SymbolicDifferentiationTensor = require(Cores.SymbolicDifferentiationTensor),
-	
 }
 
 return AqwamDeepLearningLibrary
