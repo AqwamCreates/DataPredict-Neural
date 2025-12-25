@@ -160,7 +160,7 @@ function DeepDoubleExpectedStateActionRewardStateActionModel.new(parameterDictio
 
 		Model:setWeightTensorArray(TargetWeightTensorArray, true)
 
-		return temporalDifferenceErrorTensor
+		return temporalDifferenceError
 
 	end)
 
