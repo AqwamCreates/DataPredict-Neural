@@ -28,13 +28,13 @@
 
 local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
 
-local DeepReinforcementLearningActorCriticBaseModel = require(script.Parent.DeepReinforcementLearningActorCriticBaseModel)
+local ReinforcementLearningActorCriticBaseModel = require(script.Parent.ReinforcementLearningActorCriticBaseModel)
 
 local DeepDeterministicPolicyGradientModel = {}
 
 DeepDeterministicPolicyGradientModel.__index = DeepDeterministicPolicyGradientModel
 
-setmetatable(DeepDeterministicPolicyGradientModel, DeepReinforcementLearningActorCriticBaseModel)
+setmetatable(DeepDeterministicPolicyGradientModel, ReinforcementLearningActorCriticBaseModel)
 
 local defaultAveragingRate = 0.995
 
@@ -60,7 +60,7 @@ function DeepDeterministicPolicyGradientModel.new(parameterDictionary)
 
 	parameterDictionary = parameterDictionary or {}
 
-	local NewDeepDeterministicPolicyGradientModel = DeepReinforcementLearningActorCriticBaseModel.new(parameterDictionary)
+	local NewDeepDeterministicPolicyGradientModel = ReinforcementLearningActorCriticBaseModel.new(parameterDictionary)
 
 	setmetatable(NewDeepDeterministicPolicyGradientModel, DeepDeterministicPolicyGradientModel)
 
