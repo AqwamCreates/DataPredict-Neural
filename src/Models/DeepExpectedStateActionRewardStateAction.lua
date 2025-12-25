@@ -130,7 +130,7 @@ function DeepExpectedStateActionRewardStateActionModel.new(parameterDictionary)
 
 		Model:update(negatedTemporalDifferenceErrorTensor, true)
 
-		return temporalDifferenceErrorTensor
+		return temporalDifferenceError
 
 	end)
 
