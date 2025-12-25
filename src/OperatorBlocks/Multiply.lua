@@ -63,8 +63,12 @@ function MultiplyBlock.new()
 		for i, inputTensor in ipairs(inputTensorArray) do
 
 			local dimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(inputTensor)
+			
+			local chainRuleFirstDerivativeTensor = AqwamTensorLibrary:divide(transformedTensor, inputTensor)
+			
+			chainRuleFirstDerivativeTensor = AqwamTensorLibrary:multiply(chainRuleFirstDerivativeTensor, initialPartialFirstDerivativeTensor)
 
-			chainRuleFirstDerivativeTensorArray[i] = NewMultiplyBlock:collapseTensor(initialPartialFirstDerivativeTensor, dimensionSizeArray)
+			chainRuleFirstDerivativeTensorArray[i] = NewMultiplyBlock:collapseTensor(chainRuleFirstDerivativeTensor, dimensionSizeArray)
 
 		end
 
