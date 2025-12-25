@@ -28,7 +28,7 @@
 
 local BaseInstance = require(script.Parent.Parent.Cores.BaseInstance)
 
-ReinforcementLearningActorCriticBaseModel = {}
+local ReinforcementLearningActorCriticBaseModel = {}
 
 ReinforcementLearningActorCriticBaseModel.__index = ReinforcementLearningActorCriticBaseModel
 
@@ -37,13 +37,13 @@ setmetatable(ReinforcementLearningActorCriticBaseModel, BaseInstance)
 local defaultDiscountFactor = 0.95
 
 function ReinforcementLearningActorCriticBaseModel.new(parameterDictionary)
-	
+
 	parameterDictionary = parameterDictionary or {}
-	
+
 	local NewReinforcementLearningActorCriticBaseModel = {}
-	
+
 	setmetatable(NewReinforcementLearningActorCriticBaseModel, ReinforcementLearningActorCriticBaseModel)
-	
+
 	NewReinforcementLearningActorCriticBaseModel:setName("ReinforcementLearningActorCriticBaseModel")
 
 	NewReinforcementLearningActorCriticBaseModel:setClassName("ReinforcementLearningActorCriticModel")
@@ -51,11 +51,11 @@ function ReinforcementLearningActorCriticBaseModel.new(parameterDictionary)
 	NewReinforcementLearningActorCriticBaseModel.discountFactor = parameterDictionary.discountFactor or defaultDiscountFactor
 
 	NewReinforcementLearningActorCriticBaseModel.ActorModel = parameterDictionary.ActorModel
-	
+
 	NewReinforcementLearningActorCriticBaseModel.CriticModel = parameterDictionary.CriticModel
-	
+
 	return NewReinforcementLearningActorCriticBaseModel
-	
+
 end
 
 function ReinforcementLearningActorCriticBaseModel:setDiscountFactor(discountFactor)
@@ -71,15 +71,15 @@ function ReinforcementLearningActorCriticBaseModel:getDiscountFactor()
 end
 
 function ReinforcementLearningActorCriticBaseModel:setActorModel(ActorModel)
-	
+
 	self.ActorModel = ActorModel
-	
+
 end
 
 function ReinforcementLearningActorCriticBaseModel:setCriticModel(CriticModel)
 
 	self.CriticModel = CriticModel
-	
+
 end
 
 function ReinforcementLearningActorCriticBaseModel:getActorModel()
@@ -97,25 +97,31 @@ end
 function ReinforcementLearningActorCriticBaseModel:setModelParametersArray(ModelParametersArray, doNotCopy)
 
 	self.ActorModel:setModelParameters(ModelParametersArray[1], doNotCopy)
-	
+
 	self.CriticModel:setModelParameters(ModelParametersArray[2], doNotCopy)
 
 end
 
 function ReinforcementLearningActorCriticBaseModel:getModelParametersArray(doNotCopy)
-	
+
 	local ActorModelParameters = self.ActorModel:getModelParameters(doNotCopy)
-	
+
 	local CriticModelParameters = self.CriticModel:getModelParameters(doNotCopy)
 
 	return {ActorModelParameters, CriticModelParameters}
 
 end
 
-function ReinforcementLearningActorCriticBaseModel:predict(featureVector, returnOriginalOutput)
-	
-	return self.ActorModel:predict(featureVector, returnOriginalOutput)
-	
+function ReinforcementLearningActorCriticBaseModel:predict(featureTensor, returnOriginalOutput)
+
+	return self.ActorModel:predict(featureTensor, returnOriginalOutput)
+
+end
+
+function ReinforcementLearningActorCriticBaseModel:setActionsList(ActionsList)
+
+	self.ActorModel:setClassesList(ActionsList)
+
 end
 
 function ReinforcementLearningActorCriticBaseModel:getActionsList()
@@ -136,15 +142,15 @@ function ReinforcementLearningActorCriticBaseModel:setDiagonalGaussianUpdateFunc
 
 end
 
-function ReinforcementLearningActorCriticBaseModel:categoricalUpdate(previousFeatureVector, action, rewardValue, currentFeatureVector, terminalStateValue)
+function ReinforcementLearningActorCriticBaseModel:categoricalUpdate(previousFeatureTensor, previousAction, rewardValue, currentFeatureTensor, currentAction, terminalStateValue)
 
-	return self.categoricalUpdateFunction(previousFeatureVector, action, rewardValue, currentFeatureVector, terminalStateValue)
+	return self.categoricalUpdateFunction(previousFeatureTensor, previousAction, rewardValue, currentFeatureTensor, currentAction, terminalStateValue)
 
 end
 
-function ReinforcementLearningActorCriticBaseModel:diagonalGaussianUpdate(previousFeatureVector, actionMeanVector, actionStandardDeviationVector, actionNoiseVector, rewardValue, currentFeatureVector, terminalStateValue)
+function ReinforcementLearningActorCriticBaseModel:diagonalGaussianUpdate(previousFeatureTensor, actionMeanTensor, actionStandardDeviationTensor, actionNoiseTensor, rewardValue, currentFeatureTensor, currentMeanTensor, terminalStateValue)
 
-	return self.diagonalGaussianUpdateFunction(previousFeatureVector, actionMeanVector, actionStandardDeviationVector, actionNoiseVector, rewardValue, currentFeatureVector, terminalStateValue)
+	return self.diagonalGaussianUpdateFunction(previousFeatureTensor, actionMeanTensor, actionStandardDeviationTensor, actionNoiseTensor, rewardValue, currentFeatureTensor, currentMeanTensor, terminalStateValue)
 
 end
 
