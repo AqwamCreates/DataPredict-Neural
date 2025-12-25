@@ -38,46 +38,6 @@ setmetatable(DeepDoubleExpectedStateActionRewardStateActionModel, ReinforcementL
 
 local defaultEpsilon = 0.5
 
-local function deepCopyTable(original, copies)
-
-	copies = copies or {}
-
-	local originalType = type(original)
-
-	local copy
-
-	if (originalType == 'table') then
-
-		if copies[original] then
-
-			copy = copies[original]
-
-		else
-
-			copy = {}
-
-			copies[original] = copy
-
-			for originalKey, originalValue in next, original, nil do
-
-				copy[deepCopyTable(originalKey, copies)] = deepCopyTable(originalValue, copies)
-
-			end
-
-			setmetatable(copy, deepCopyTable(getmetatable(original), copies))
-
-		end
-
-	else
-
-		copy = original
-
-	end
-
-	return copy
-
-end
-
 function DeepDoubleExpectedStateActionRewardStateActionModel.new(parameterDictionary)
 	
 	parameterDictionary = parameterDictionary or {}
@@ -108,7 +68,7 @@ function DeepDoubleExpectedStateActionRewardStateActionModel.new(parameterDictio
 
 		local selectedModelNumberForUpdate = (updateSecondModel and 2) or 1
 
-		local temporalDifferenceErrorTensor, temporalDifferenceError = NewDeepDoubleExpectedStateActionRewardStateActionModel:generateLossTensor(previousFeatureTensor, previousAction, rewardValue, currentFeatureTensor, terminalStateValue, selectedModelNumberForTargetTensor, selectedModelNumberForUpdate)
+		local temporalDifferenceErrorTensor = NewDeepDoubleExpectedStateActionRewardStateActionModel:generateLossTensor(previousFeatureTensor, previousAction, rewardValue, currentFeatureTensor, terminalStateValue, selectedModelNumberForTargetTensor, selectedModelNumberForUpdate)
 		
 		local negatedTemporalDifferenceErrorTensor = AqwamTensorLibrary:unaryMinus(temporalDifferenceErrorTensor) -- The original non-deep expected SARSA version performs gradient ascent. But the neural network performs gradient descent. So, we need to negate the error tensor to make the neural network to perform gradient ascent.
 		
@@ -120,7 +80,7 @@ function DeepDoubleExpectedStateActionRewardStateActionModel.new(parameterDictio
 
 		WeightTensorArrayArray[selectedModelNumberForUpdate] = Model:getWeightTensorArray(true)
 
-		return temporalDifferenceError
+		return temporalDifferenceErrorTensor
 
 	end)
 
@@ -195,18 +155,14 @@ function DeepDoubleExpectedStateActionRewardStateActionModel:generateLossTensor(
 	local nonGreedyActionProbability = epsilon / numberOfClasses
 
 	local greedyActionProbability = ((1 - epsilon) / numberOfGreedyActions) + nonGreedyActionProbability
+	
+	local actionProbability
 
 	for _, qValue in ipairs(unwrappedTargetTensor) do
+		
+		actionProbability = ((qValue == maxQValue) and greedyActionProbability) or nonGreedyActionProbability
 
-		if (qValue == maxQValue) then
-
-			expectedQValue = expectedQValue + (qValue * greedyActionProbability)
-
-		else
-
-			expectedQValue = expectedQValue + (qValue * nonGreedyActionProbability)
-
-		end
+		expectedQValue = expectedQValue + (qValue * actionProbability)
 
 	end
 
@@ -230,7 +186,7 @@ function DeepDoubleExpectedStateActionRewardStateActionModel:generateLossTensor(
 
 	end
 
-	return temporalDifferenceErrorTensor, temporalDifferenceError
+	return temporalDifferenceErrorTensor
 
 end
 
@@ -242,7 +198,7 @@ function DeepDoubleExpectedStateActionRewardStateActionModel:setWeightTensorArra
 
 	else
 
-		self.WeightTensorArrayArray[1] = deepCopyTable(WeightTensorArray1)
+		self.WeightTensorArrayArray[1] = self:deepCopyTable(WeightTensorArray1)
 
 	end
 
@@ -256,7 +212,7 @@ function DeepDoubleExpectedStateActionRewardStateActionModel:setWeightTensorArra
 
 	else
 
-		self.WeightTensorArrayArray[2] = deepCopyTable(WeightTensorArray2)
+		self.WeightTensorArrayArray[2] = self:deepCopyTable(WeightTensorArray2)
 
 	end
 
@@ -270,7 +226,7 @@ function DeepDoubleExpectedStateActionRewardStateActionModel:getWeightTensorArra
 
 	else
 
-		return deepCopyTable(self.WeightTensorArrayArray[1])
+		return self:deepCopyTable(self.WeightTensorArrayArray[1])
 
 	end
 
@@ -284,7 +240,7 @@ function DeepDoubleExpectedStateActionRewardStateActionModel:getWeightTensorArra
 
 	else
 
-		return deepCopyTable(self.WeightTensorArrayArray[2])
+		return self:deepCopyTable(self.WeightTensorArrayArray[2])
 
 	end
 
