@@ -30,7 +30,7 @@ local BasePoolingBlock = require(script.Parent.BasePoolingBlock)
 
 local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
 
-AveragePooling3DBlock = {}
+local AveragePooling3DBlock = {}
 
 AveragePooling3DBlock.__index = AveragePooling3DBlock
 
