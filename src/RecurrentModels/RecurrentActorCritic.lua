@@ -166,7 +166,7 @@ function RecurrentActorCriticModel.new(parameterDictionary)
 
 		table.insert(criticValueHistory, criticValue)
 		
-		NewRecurrentActorCriticModel.actorHiddenStateTensor = actionTensor
+		NewRecurrentActorCriticModel.actorHiddenStateTensor = previousActionMeanTensor
 
 		NewRecurrentActorCriticModel.criticHiddenStateValue = criticValue
 
