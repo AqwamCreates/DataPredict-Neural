@@ -2,7 +2,7 @@
 
 	--------------------------------------------------------------------
 
-	Aqwam's Deep Learning Library (DataPredict Neural)
+	Aqwam's Machine And Deep Learning Library (DataPredict)
 
 	Author: Aqwam Harish Aiman
 	
@@ -16,7 +16,7 @@
 		
 	By using this library, you agree to comply with our Terms and Conditions in the link below:
 	
-	https://github.com/AqwamCreates/DataPredict-Neural/blob/main/docs/TermsAndConditions.md
+	https://github.com/AqwamCreates/DataPredict/blob/main/docs/TermsAndConditions.md
 	
 	--------------------------------------------------------------------
 	
@@ -28,184 +28,94 @@
 
 local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
 
-local DualRecurrentReinforcementLearningBaseModel = require(script.Parent.DualRecurrentReinforcementLearningBaseModel)
+local RecurrentReinforcementLearningBaseModel = require(script.Parent.RecurrentReinforcementLearningBaseModel)
 
-RecurrentDeepDoubleQLearningModel = {}
+RecurrentDeepQLearningModel = {}
 
-RecurrentDeepDoubleQLearningModel.__index = RecurrentDeepDoubleQLearningModel
+RecurrentDeepQLearningModel.__index = RecurrentDeepQLearningModel
 
-setmetatable(RecurrentDeepDoubleQLearningModel, DualRecurrentReinforcementLearningBaseModel)
+setmetatable(RecurrentDeepQLearningModel, RecurrentReinforcementLearningBaseModel)
 
-local defaultLambda = 0
-
-local function deepCopyTable(original, copies)
-
-	copies = copies or {}
-
-	local originalType = type(original)
-
-	local copy
-
-	if (originalType == 'table') then
-
-		if copies[original] then
-
-			copy = copies[original]
-
-		else
-
-			copy = {}
-
-			copies[original] = copy
-
-			for originalKey, originalValue in next, original, nil do
-
-				copy[deepCopyTable(originalKey, copies)] = deepCopyTable(originalValue, copies)
-
-			end
-
-			setmetatable(copy, deepCopyTable(getmetatable(original), copies))
-
-		end
-
-	else
-
-		copy = original
-
-	end
-
-	return copy
-
-end
-
-function RecurrentDeepDoubleQLearningModel.new(parameterDictionary)
+function RecurrentDeepQLearningModel.new(parameterDictionary)
 
 	parameterDictionary = parameterDictionary or {}
 
-	local NewRecurrentDeepDoubleQLearningModel = DualRecurrentReinforcementLearningBaseModel.new(parameterDictionary)
+	local NewRecurrentDeepQLearningModel = RecurrentReinforcementLearningBaseModel.new(parameterDictionary)
 
-	setmetatable(NewRecurrentDeepDoubleQLearningModel, RecurrentDeepDoubleQLearningModel)
+	setmetatable(NewRecurrentDeepQLearningModel, RecurrentDeepQLearningModel)
 
-	NewRecurrentDeepDoubleQLearningModel:setName("RecurrentDeepDoubleQLearning")
+	NewRecurrentDeepQLearningModel:setName("RecurrentDeepQLearning")
 
-	NewRecurrentDeepDoubleQLearningModel.EligibilityTrace = parameterDictionary.EligibilityTrace
+	NewRecurrentDeepQLearningModel.EligibilityTrace = parameterDictionary.EligibilityTrace
 
-	NewRecurrentDeepDoubleQLearningModel.WeightTensorArrayArray = parameterDictionary.WeightTensorArrayArray or {}
+	NewRecurrentDeepQLearningModel:setCategoricalUpdateFunction(function(previousFeatureTensor, previousAction, rewardValue, currentFeatureTensor, currentAction, terminalStateValue)
 
-	NewRecurrentDeepDoubleQLearningModel:setCategoricalUpdateFunction(function(previousFeatureTensor, previousAction, rewardValue, currentFeatureTensor, currentAction, terminalStateValue)
+		local Model = NewRecurrentDeepQLearningModel.Model
 
-		local Model = NewRecurrentDeepDoubleQLearningModel.Model
-
-		local hiddenStateTensorArray = NewRecurrentDeepDoubleQLearningModel.hiddenStateTensorArray
+		local discountFactor = NewRecurrentDeepQLearningModel.discountFactor
 		
-		local WeightTensorArrayArray = NewRecurrentDeepDoubleQLearningModel.WeightTensorArrayArray
+		local EligibilityTrace = NewRecurrentDeepQLearningModel.EligibilityTrace
 
-		local randomProbability = math.random()
+		local hiddenStateTensor = NewRecurrentDeepQLearningModel.hiddenStateTensor
 
-		local updateSecondModel = (randomProbability >= 0.5)
+		local ClassesList = Model:getClassesList()
 
-		local selectedModelNumberForTargetTensor = (updateSecondModel and 1) or 2
+		local numberOfClasses = #ClassesList
 
-		local selectedModelNumberForUpdate = (updateSecondModel and 2) or 1
+		local outputDimensionSizeArray = {1, numberOfClasses}
 
-		local temporalDifferenceErrorTensor, temporalDifferenceError = NewRecurrentDeepDoubleQLearningModel:generateLossTensor(previousFeatureTensor, previousAction, rewardValue, currentFeatureTensor, terminalStateValue, selectedModelNumberForTargetTensor, selectedModelNumberForUpdate)
+		if (not hiddenStateTensor) then hiddenStateTensor = AqwamTensorLibrary:createTensor(outputDimensionSizeArray) end
+
+		local previousTensor = Model:forwardPropagate(previousFeatureTensor, hiddenStateTensor)
+		
+		local _, maxQValue = Model:predict(currentFeatureTensor, previousTensor)
+
+		local targetValue = rewardValue + (discountFactor * (1 - terminalStateValue) * maxQValue[1][1])
+
+		local actionIndex = table.find(ClassesList, previousAction)
+
+		local lastValue = previousTensor[1][actionIndex]
+
+		local temporalDifferenceError = targetValue - lastValue
+
+		local temporalDifferenceErrorTensor = AqwamTensorLibrary:createTensor(outputDimensionSizeArray, 0)
+
+		temporalDifferenceErrorTensor[1][actionIndex] = temporalDifferenceError
+
+		if (EligibilityTrace) then
+
+			EligibilityTrace:increment(actionIndex, discountFactor, outputDimensionSizeArray)
+
+			temporalDifferenceErrorTensor = EligibilityTrace:calculate(temporalDifferenceErrorTensor)
+
+		end
 
 		local negatedTemporalDifferenceErrorTensor = AqwamTensorLibrary:unaryMinus(temporalDifferenceErrorTensor) -- The original non-deep Q-Learning version performs gradient ascent. But the neural network performs gradient descent. So, we need to negate the error tensor to make the neural network to perform gradient ascent.
-		
-		Model:setWeightTensorArray(WeightTensorArrayArray[selectedModelNumberForUpdate], true)
-		
-		local selectedActionTensor = Model:forwardPropagate(previousFeatureTensor, hiddenStateTensorArray[selectedModelNumberForUpdate])
+
+		Model:forwardPropagate(previousFeatureTensor, hiddenStateTensor)
 
 		Model:update(negatedTemporalDifferenceErrorTensor)
 
-		WeightTensorArrayArray[selectedModelNumberForUpdate] = Model:getWeightTensorArray(true)
+		NewRecurrentDeepQLearningModel.hiddenStateTensor = previousTensor
 
-		Model:setWeightTensorArray(WeightTensorArrayArray[selectedModelNumberForTargetTensor], true)
-
-		local targetActionTensor = Model:forwardPropagate(previousFeatureTensor, hiddenStateTensorArray[selectedModelNumberForTargetTensor])
-
-		hiddenStateTensorArray[selectedModelNumberForUpdate] = selectedActionTensor
-
-		hiddenStateTensorArray[selectedModelNumberForTargetTensor] = targetActionTensor
-
-		return temporalDifferenceErrorTensor
+		return temporalDifferenceError
 
 	end)
 
-	NewRecurrentDeepDoubleQLearningModel:setEpisodeUpdateFunction(function(terminalStateValue)
+	NewRecurrentDeepQLearningModel:setEpisodeUpdateFunction(function(terminalStateValue) 
 
-		NewRecurrentDeepDoubleQLearningModel.EligibilityTrace:reset()
-
-	end)
-
-	NewRecurrentDeepDoubleQLearningModel:setResetFunction(function() 
-
-		NewRecurrentDeepDoubleQLearningModel.EligibilityTrace:reset()
+		NewRecurrentDeepQLearningModel.EligibilityTrace:reset()
 
 	end)
 
-	return NewRecurrentDeepDoubleQLearningModel
+	NewRecurrentDeepQLearningModel:setResetFunction(function() 
+
+		NewRecurrentDeepQLearningModel.EligibilityTrace:reset()
+
+	end)
+
+	return NewRecurrentDeepQLearningModel
 
 end
 
-function RecurrentDeepDoubleQLearningModel:generateLossTensor(previousFeatureTensor, action, rewardValue, currentFeatureTensor, terminalStateValue, selectedModelNumberForTargetTensor, selectedModelNumberForUpdate)
-
-	local Model = self.Model
-
-	local discountFactor = self.discountFactor
-	
-	local EligibilityTrace = self.EligibilityTrace
-	
-	local hiddenStateTensorArray = self.hiddenStateTensorArray
-	
-	local WeightTensorArrayArray = self.WeightTensorArrayArray
-	
-	local ClassesList = Model:getClassesList()
-
-	local numberOfClasses = #ClassesList
-	
-	local outputDimensionSizeArray = {1, numberOfClasses}
-
-	if (not hiddenStateTensorArray[1]) then hiddenStateTensorArray[1] = AqwamTensorLibrary:createTensor(outputDimensionSizeArray) end
-		
-	if (not hiddenStateTensorArray[2]) then hiddenStateTensorArray[2] = AqwamTensorLibrary:createTensor(outputDimensionSizeArray) end
-
-	if (not WeightTensorArrayArray[1]) then WeightTensorArrayArray[1] = Model:getWeightTensorArray(true) end
-		
-	if (not WeightTensorArrayArray[2]) then WeightTensorArrayArray[2] = Model:getWeightTensorArray(true) end
-
-	Model:setWeightTensorArray(WeightTensorArrayArray[selectedModelNumberForUpdate], true)
-
-	local previousQTensor = Model:forwardPropagate(previousFeatureTensor, hiddenStateTensorArray[selectedModelNumberForUpdate])
-
-	Model:setWeightTensorArray(WeightTensorArrayArray[selectedModelNumberForTargetTensor], true)
-
-	local previousQTensor = Model:forwardPropagate(previousFeatureTensor, hiddenStateTensorArray[selectedModelNumberForTargetTensor])
-
-	local _, maxQValue = Model:predict(currentFeatureTensor, previousQTensor)
-
-	local targetValue = rewardValue + (discountFactor * (1 - terminalStateValue) * maxQValue[1][1])
-
-	local actionIndex = table.find(ClassesList, action)
-
-	local lastValue = previousQTensor[1][actionIndex]
-
-	local temporalDifferenceError = targetValue - lastValue
-
-	local temporalDifferenceErrorTensor = AqwamTensorLibrary:createTensor(outputDimensionSizeArray, 0)
-
-	temporalDifferenceErrorTensor[1][actionIndex] = temporalDifferenceError
-
-	if (EligibilityTrace) then
-
-		EligibilityTrace:increment(actionIndex, discountFactor, outputDimensionSizeArray)
-
-		temporalDifferenceErrorTensor = EligibilityTrace:calculate(temporalDifferenceErrorTensor)
-
-	end
-
-	return temporalDifferenceErrorTensor, temporalDifferenceError
-
-end
-
-return RecurrentDeepDoubleQLearningModel
+return RecurrentDeepQLearningModel
