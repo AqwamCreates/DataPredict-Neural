@@ -158,7 +158,7 @@ function RecurrentDeepDoubleExpectedStateActionRewardStateActionModel:generateLo
 
 	for i = 1, numberOfClasses, 1 do
 
-		if (targetTensor[1][i] ~= maxQValue) then
+		if (targetTensor[1][i] == maxQValue) then
 			
 			numberOfGreedyActions = numberOfGreedyActions + 1
 			
