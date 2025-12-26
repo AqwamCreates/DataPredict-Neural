@@ -4,7 +4,8 @@
 |-------------------------------------------------------------------|-------------------------------------------------|-------|
 | [Deep Reinforcement Learning](#deep-reinforcement-learning)       | State-Action Optimization Using Neural Networks | 26    |
 | [Generative](#generative)                                         | Feature To Novel Value                          | 4     |
-| Total                                                             |                                                 | 30    |
+| [Others](#others)                                                 |                                                 | 1     |
+| Total                                                             |                                                 | 31    |
 
 ### Legend
 
