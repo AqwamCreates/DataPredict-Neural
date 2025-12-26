@@ -162,7 +162,7 @@ function RecurrentAdvantageActorCriticModel.new(parameterDictionary)
 
 		table.insert(advantageValueHistory, advantageValue)
 		
-		NewRecurrentAdvantageActorCriticModel.actorHiddenStateTensor = actionTensor
+		NewRecurrentAdvantageActorCriticModel.actorHiddenStateTensor = previousActionMeanTensor
 
 		NewRecurrentAdvantageActorCriticModel.criticHiddenStateValue = previousCriticValue
 
