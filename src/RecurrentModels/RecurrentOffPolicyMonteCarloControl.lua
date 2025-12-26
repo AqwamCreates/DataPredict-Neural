@@ -114,7 +114,7 @@ function RecurrentOffPolicyMonteCarloControlModel.new(parameterDictionary)
 
 	local rewardValueHistory = {}
 
-	NewRecurrentOffPolicyMonteCarloControlModel:setCategoricalUpdateFunction(function(previousFeatureTensor, action, rewardValue, currentFeatureTensor, terminalStateValue)
+	NewRecurrentOffPolicyMonteCarloControlModel:setCategoricalUpdateFunction(function(previousFeatureTensor, previousAction, rewardValue, currentFeatureTensor, currentAction, terminalStateValue)
 		
 		local Model = NewRecurrentOffPolicyMonteCarloControlModel.Model
 
