@@ -124,33 +124,13 @@ end
 
 function DualRecurrentReinforcementLearningActorCriticBaseModel:categoricalUpdate(previousFeatureTensor, previousAction, rewardValue, currentFeatureTensor, currentAction, terminalStateValue)
 
-	local categoricalUpdateFunction = self.categoricalUpdateFunction
-
-	if (categoricalUpdateFunction) then
-
-		return categoricalUpdateFunction(previousFeatureTensor, previousAction, rewardValue, currentFeatureTensor, currentAction, terminalStateValue)
-
-	else
-
-		error("The categorical update function is not implemented!")
-
-	end
+	return self.categoricalUpdateFunction(previousFeatureTensor, previousAction, rewardValue, currentFeatureTensor, currentAction, terminalStateValue)
 
 end
 
 function DualRecurrentReinforcementLearningActorCriticBaseModel:diagonalGaussianUpdate(previousFeatureTensor, previousActionMeanTensor, previousActionStandardDeviationTensor, previousActionNoiseTensor, rewardValue, currentFeatureTensor, currentActionMeanTensor, terminalStateValue)
 
-	local diagonalGaussianUpdateFunction = self.diagonalGaussianUpdateFunction
-
-	if (diagonalGaussianUpdateFunction) then
-
-		return diagonalGaussianUpdateFunction(previousFeatureTensor, previousActionMeanTensor, previousActionStandardDeviationTensor, previousActionNoiseTensor, rewardValue, currentFeatureTensor, currentActionMeanTensor, terminalStateValue)
-
-	else
-
-		error("The diagonal Gaussian update function is not implemented!")
-
-	end
+	return self.diagonalGaussianUpdateFunction(previousFeatureTensor, previousActionMeanTensor, previousActionStandardDeviationTensor, previousActionNoiseTensor, rewardValue, currentFeatureTensor, currentActionMeanTensor, terminalStateValue)
 
 end
 
@@ -162,21 +142,11 @@ end
 
 function DualRecurrentReinforcementLearningActorCriticBaseModel:episodeUpdate(terminalStateValue)
 
-	local episodeUpdateFunction = self.episodeUpdateFunction
-
 	self.actorHiddenStateTensorArray = {}
 
 	self.criticHiddenStateValueArray = {}
 
-	if (episodeUpdateFunction) then
-
-		return episodeUpdateFunction(terminalStateValue)
-
-	else
-
-		error("The episode update function is not implemented!")
-
-	end
+	return self.episodeUpdateFunction(terminalStateValue)
 
 end
 
@@ -188,21 +158,11 @@ end
 
 function DualRecurrentReinforcementLearningActorCriticBaseModel:reset()
 
-	local resetFunction = self.resetFunction
-
 	self.actorHiddenStateTensorArray = {}
 
 	self.criticHiddenStateValueArray = {}
 
-	if (resetFunction) then 
-
-		return resetFunction() 
-
-	else
-
-		error("The reset function is not implemented!")
-
-	end
+	return self.resetFunction() 
 
 end
 
