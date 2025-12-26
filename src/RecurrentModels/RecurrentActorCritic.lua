@@ -80,13 +80,13 @@ function RecurrentActorCriticModel.new(parameterDictionary)
 
 	local featureTensorHistory = {}
 
-	local actionProbabilityTensorHistory = {}
+	local actionProbabilityGradientTensorHistory = {}
 
 	local rewardValueHistory = {}
 
 	local criticValueHistory = {}
 
-	NewRecurrentActorCriticModel:setCategoricalUpdateFunction(function(previousFeatureTensor, action, rewardValue, currentFeatureTensor, terminalStateValue)
+	NewRecurrentActorCriticModel:setCategoricalUpdateFunction(function(previousFeatureTensor, previousAction, rewardValue, currentFeatureTensor, currentAction, terminalStateValue)
 		
 		local ActorModel = NewRecurrentActorCriticModel.ActorModel
 		
@@ -108,65 +108,67 @@ function RecurrentActorCriticModel.new(parameterDictionary)
 
 		local actionProbabilityTensor = calculateProbability(actionTensor)
 
-		local logActionProbabilityTensor = AqwamTensorLibrary:logarithm(actionProbabilityTensor)
+		local ClassesList = ActorModel:getClassesList()
+
+		local classIndex = table.find(ClassesList, previousAction)
+
+		local actionProbabilityGradientTensor = {}
+
+		for i, _ in ipairs(ClassesList) do
+
+			actionProbabilityGradientTensor[i] = (((i == classIndex) and 1) or 0) - actionProbabilityTensor[1][i]
+
+		end
+
+		actionProbabilityGradientTensor = {actionProbabilityGradientTensor}
 
 		table.insert(featureTensorHistory, previousFeatureTensor)
 
-		table.insert(actionProbabilityTensorHistory, logActionProbabilityTensor)
+		table.insert(actionProbabilityGradientTensorHistory, actionProbabilityGradientTensor)
 
 		table.insert(rewardValueHistory, rewardValue)
 
 		table.insert(criticValueHistory, criticValue)
 		
-		NewRecurrentActorCriticModel.actorHiddenStateTensor = logActionProbabilityTensor
+		NewRecurrentActorCriticModel.actorHiddenStateTensor = actionTensor
 
 		NewRecurrentActorCriticModel.criticHiddenStateValue = criticValue
 
 	end)
 
-	NewRecurrentActorCriticModel:setDiagonalGaussianUpdateFunction(function(previousFeatureTensor, actionMeanTensor, actionStandardDeviationTensor, actionNoiseTensor, rewardValue, currentFeatureTensor, terminalStateValue)
+	NewRecurrentActorCriticModel:setDiagonalGaussianUpdateFunction(function(previousFeatureTensor, previousActionMeanTensor, previousActionStandardDeviationTensor, previousActionNoiseTensor, rewardValue, currentFeatureTensor, terminalStateValue)
 		
-		if (not actionNoiseTensor) then
+		if (not previousActionNoiseTensor) then
 
-			local actionTensorDimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(actionMeanTensor)
+			local actionTensorDimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(previousActionMeanTensor)
 
-			actionNoiseTensor = AqwamTensorLibrary:createRandomUniformTensor(actionTensorDimensionSizeArray) 
+			previousActionNoiseTensor = AqwamTensorLibrary:createRandomUniformTensor(actionTensorDimensionSizeArray) 
 
 		end
 		
 		local criticHiddenStateValue = NewRecurrentActorCriticModel.criticHiddenStateValue or 0
 
-		local actionTensorPart1 = AqwamTensorLibrary:multiply(actionStandardDeviationTensor, actionNoiseTensor)
+		local actionTensorPart1 = AqwamTensorLibrary:multiply(previousActionStandardDeviationTensor, previousActionNoiseTensor)
 
-		local actionTensor = AqwamTensorLibrary:add(actionMeanTensor, actionTensorPart1)
+		local actionTensor = AqwamTensorLibrary:add(previousActionMeanTensor, actionTensorPart1)
 
-		local zScoreTensorPart1 = AqwamTensorLibrary:subtract(actionTensor, actionMeanTensor)
+		local actionProbabilityGradientTensorPart1 = AqwamTensorLibrary:subtract(actionTensor, previousActionMeanTensor)
 
-		local zScoreTensor = AqwamTensorLibrary:divide(zScoreTensorPart1, actionStandardDeviationTensor)
+		local actionProbabilityGradientTensorPart2 = AqwamTensorLibrary:power(previousActionStandardDeviationTensor, 2)
 
-		local squaredZScoreTensor = AqwamTensorLibrary:power(zScoreTensor, 2)
-
-		local logActionProbabilityTensorPart1 = AqwamTensorLibrary:logarithm(actionStandardDeviationTensor)
-
-		local logActionProbabilityTensorPart2 = AqwamTensorLibrary:multiply(2, logActionProbabilityTensorPart1)
-
-		local logActionProbabilityTensorPart3 = AqwamTensorLibrary:add(squaredZScoreTensor, logActionProbabilityTensorPart2)
-
-		local logActionProbabilityTensorPart4 = AqwamTensorLibrary:add(logActionProbabilityTensorPart3, math.log(2 * math.pi))
-
-		local logActionProbabilityTensor = AqwamTensorLibrary:multiply(-0.5, logActionProbabilityTensorPart4)
+		local actionProbabilityGradientTensor = AqwamTensorLibrary:divide(actionProbabilityGradientTensorPart1, actionProbabilityGradientTensorPart2)
 
 		local criticValue = NewRecurrentActorCriticModel.CriticModel:forwardPropagate(previousFeatureTensor, criticHiddenStateValue)[1][1]
 
 		table.insert(featureTensorHistory, previousFeatureTensor)
 
-		table.insert(actionProbabilityTensorHistory, logActionProbabilityTensor)
+		table.insert(actionProbabilityGradientTensorHistory, actionProbabilityGradientTensor)
 
 		table.insert(rewardValueHistory, rewardValue)
 
 		table.insert(criticValueHistory, criticValue)
 		
-		NewRecurrentActorCriticModel.actorHiddenStateTensor = logActionProbabilityTensor
+		NewRecurrentActorCriticModel.actorHiddenStateTensor = actionTensor
 
 		NewRecurrentActorCriticModel.criticHiddenStateValue = criticValue
 
@@ -180,7 +182,7 @@ function RecurrentActorCriticModel.new(parameterDictionary)
 
 		local rewardToGoHistory = calculateRewardToGo(rewardValueHistory, NewRecurrentActorCriticModel.discountFactor)
 		
-		local outputDimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(actionProbabilityTensorHistory[1])
+		local outputDimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(actionProbabilityGradientTensorHistory[1])
 
 		local actorHiddenStateTensor = AqwamTensorLibrary:createTensor(outputDimensionSizeArray)
 
@@ -190,7 +192,7 @@ function RecurrentActorCriticModel.new(parameterDictionary)
 
 			local criticLoss = rewardToGoHistory[h] - criticValueHistory[h]
 
-			local actorLossTensor = AqwamTensorLibrary:multiply(actionProbabilityTensorHistory[h], criticLoss)
+			local actorLossTensor = AqwamTensorLibrary:multiply(actionProbabilityGradientTensorHistory[h], criticLoss)
 
 			actorLossTensor = AqwamTensorLibrary:unaryMinus(actorLossTensor)
 			
@@ -206,7 +208,7 @@ function RecurrentActorCriticModel.new(parameterDictionary)
 
 		table.clear(featureTensorHistory)
 
-		table.clear(actionProbabilityTensorHistory)
+		table.clear(actionProbabilityGradientTensorHistory)
 
 		table.clear(rewardValueHistory)
 
@@ -218,7 +220,7 @@ function RecurrentActorCriticModel.new(parameterDictionary)
 
 		table.clear(featureTensorHistory)
 
-		table.clear(actionProbabilityTensorHistory)
+		table.clear(actionProbabilityGradientTensorHistory)
 
 		table.clear(rewardValueHistory)
 
