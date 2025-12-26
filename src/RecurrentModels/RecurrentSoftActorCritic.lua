@@ -116,7 +116,7 @@ function RecurrentSoftActorCriticModel.new(parameterDictionary)
 
 	NewRecurrentSoftActorCritic.CriticWeightTensorArrayArray = parameterDictionary.CriticWeightTensorArrayArray or {}
 
-	NewRecurrentSoftActorCritic:setCategoricalUpdateFunction(function(previousFeatureTensor, action, rewardValue, currentFeatureTensor, terminalStateValue)
+	NewRecurrentSoftActorCritic:setCategoricalUpdateFunction(function(previousFeatureTensor, action, rewardValue, currentFeatureTensor, currentAction, terminalStateValue)
 		
 		local ActorModel = NewRecurrentSoftActorCritic.ActorModel
 		
@@ -148,27 +148,27 @@ function RecurrentSoftActorCriticModel.new(parameterDictionary)
 
 	end)
 
-	NewRecurrentSoftActorCritic:setDiagonalGaussianUpdateFunction(function(previousFeatureTensor, actionMeanTensor, actionStandardDeviationTensor, actionNoiseTensor, rewardValue, currentFeatureTensor, terminalStateValue)
+	NewRecurrentSoftActorCritic:setDiagonalGaussianUpdateFunction(function(previousFeatureTensor, previousActionMeanTensor, previousActionStandardDeviationTensor, previousActionNoiseTensor, rewardValue, currentFeatureTensor, currentActionMeanTensor, terminalStateValue)
 
-		if (not actionNoiseTensor) then
+		if (not previousActionNoiseTensor) then
 
-			local actionTensordimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(actionMeanTensor)
+			local actionTensordimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(previousActionMeanTensor)
 
-			actionNoiseTensor = AqwamTensorLibrary:createRandomUniformTensor(actionTensordimensionSizeArray)
+			previousActionNoiseTensor = AqwamTensorLibrary:createRandomUniformTensor(actionTensordimensionSizeArray)
 
 		end
 
-		local currentActionMeanTensor = NewRecurrentSoftActorCritic.ActorModel:forwardPropagate(currentFeatureTensor, actionMeanTensor)
+		local currentActionMeanTensor = NewRecurrentSoftActorCritic.ActorModel:forwardPropagate(currentFeatureTensor, previousActionMeanTensor)
 
-		local dimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(actionNoiseTensor)
+		local dimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(previousActionNoiseTensor)
 
 		local currentActionNoiseTensor = AqwamTensorLibrary:createRandomUniformTensor(dimensionSizeArray)
 
-		local previousLogActionProbabilityTensor = calculateLogActionProbabilityTensor(actionMeanTensor, actionStandardDeviationTensor, actionNoiseTensor)
+		local previousLogActionProbabilityTensor = calculateLogActionProbabilityTensor(previousActionMeanTensor, previousActionStandardDeviationTensor, previousActionNoiseTensor)
 
-		local currentLogActionProbabilityTensor = calculateLogActionProbabilityTensor(currentActionMeanTensor, actionStandardDeviationTensor, currentActionNoiseTensor)
+		local currentLogActionProbabilityTensor = calculateLogActionProbabilityTensor(currentActionMeanTensor, previousActionStandardDeviationTensor, currentActionNoiseTensor)
 		
-		NewRecurrentSoftActorCritic.actorHiddenStateTensorArray[1] = actionMeanTensor
+		NewRecurrentSoftActorCritic.actorHiddenStateTensorArray[1] = previousActionMeanTensor
 
 		return NewRecurrentSoftActorCritic:backwardPropagate(previousFeatureTensor, previousLogActionProbabilityTensor, currentLogActionProbabilityTensor, nil, rewardValue, currentFeatureTensor, terminalStateValue)
 
