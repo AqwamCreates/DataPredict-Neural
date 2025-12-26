@@ -66,7 +66,7 @@ function RecurrentMonteCarloControlModel.new(parameterDictionary)
 
 	local rewardValueHistory = {}
 
-	NewRecurrentMonteCarloControlModel:setCategoricalUpdateFunction(function(previousFeatureTensor, action, rewardValue, currentFeatureTensor)
+	NewRecurrentMonteCarloControlModel:setCategoricalUpdateFunction(function(previousFeatureTensor, previousAction, rewardValue, currentFeatureTensor, currentAction, terminalStateValue)
 
 		table.insert(featureTensorHistory, previousFeatureTensor)
 
