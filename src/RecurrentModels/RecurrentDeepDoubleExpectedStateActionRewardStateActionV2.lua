@@ -111,12 +111,16 @@ function RecurrentDeepDoubleExpectedStateActionRewardStateActionModel.new(parame
 		local targetTensor = Model:forwardPropagate(currentFeatureTensor, previousTensor)
 
 		local maxQValue = targetTensor[1][actionIndex]
+		
+		local unwrappedTargetTensor = targetTensor[1]
 
 		for i = 1, numberOfClasses, 1 do
 
-			if (targetTensor[1][i] ~= maxQValue) then continue end
-
-			numberOfGreedyActions = numberOfGreedyActions + 1
+			if (unwrappedTargetTensor[i] == maxQValue) then
+				
+				numberOfGreedyActions = numberOfGreedyActions + 1
+				
+			end
 
 		end
 
@@ -126,7 +130,7 @@ function RecurrentDeepDoubleExpectedStateActionRewardStateActionModel.new(parame
 
 		local actionProbability
 
-		for _, qValue in ipairs(targetTensor[1]) do
+		for _, qValue in ipairs(unwrappedTargetTensor) do
 
 			actionProbability = ((qValue == maxQValue) and greedyActionProbability) or nonGreedyActionProbability
 
