@@ -72,7 +72,7 @@ function RecurrentAdvantageActorCriticModel.new(parameterDictionary)
 
 	local actionProbabilityGradientTensorHistory = {}
 
-	NewRecurrentAdvantageActorCriticModel:setCategoricalUpdateFunction(function(previousFeatureTensor, previousAction, rewardValue, currentFeatureTensor, terminalStateValue)
+	NewRecurrentAdvantageActorCriticModel:setCategoricalUpdateFunction(function(previousFeatureTensor, previousAction, rewardValue, currentFeatureTensor, currentAction, terminalStateValue)
 		
 		local ActorModel = NewRecurrentAdvantageActorCriticModel.ActorModel
 		
@@ -126,7 +126,7 @@ function RecurrentAdvantageActorCriticModel.new(parameterDictionary)
 
 	end)
 
-	NewRecurrentAdvantageActorCriticModel:setDiagonalGaussianUpdateFunction(function(previousFeatureTensor, previousActionMeanTensor, previousActionStandardDeviationTensor, previousActionNoiseTensor, rewardValue, currentFeatureTensor, terminalStateValue)
+	NewRecurrentAdvantageActorCriticModel:setDiagonalGaussianUpdateFunction(function(previousFeatureTensor, previousActionMeanTensor, previousActionStandardDeviationTensor, previousActionNoiseTensor, rewardValue, currentFeatureTensor, currentActionMeanTensor, terminalStateValue)
 
 		if (not previousActionNoiseTensor) then
 
