@@ -38,46 +38,6 @@ setmetatable(RecurrentDeepDoubleExpectedStateActionRewardStateActionModel, DualR
 
 local defaultEpsilon = 0.5
 
-local function deepCopyTable(original, copies)
-
-	copies = copies or {}
-
-	local originalType = type(original)
-
-	local copy
-
-	if (originalType == 'table') then
-
-		if copies[original] then
-
-			copy = copies[original]
-
-		else
-
-			copy = {}
-
-			copies[original] = copy
-
-			for originalKey, originalValue in next, original, nil do
-
-				copy[deepCopyTable(originalKey, copies)] = deepCopyTable(originalValue, copies)
-
-			end
-
-			setmetatable(copy, deepCopyTable(getmetatable(original), copies))
-
-		end
-
-	else
-
-		copy = original
-
-	end
-
-	return copy
-
-end
-
 function RecurrentDeepDoubleExpectedStateActionRewardStateActionModel.new(parameterDictionary)
 
 	parameterDictionary = parameterDictionary or {}
@@ -94,7 +54,7 @@ function RecurrentDeepDoubleExpectedStateActionRewardStateActionModel.new(parame
 
 	NewRecurrentDeepDoubleExpectedStateActionRewardStateActionModel.WeightTensorArrayArray = parameterDictionary.WeightTensorArrayArray or {}
 
-	NewRecurrentDeepDoubleExpectedStateActionRewardStateActionModel:setCategoricalUpdateFunction(function(previousFeatureTensor, action, rewardValue, currentFeatureTensor, terminalStateValue)
+	NewRecurrentDeepDoubleExpectedStateActionRewardStateActionModel:setCategoricalUpdateFunction(function(previousFeatureTensor, previousAction, rewardValue, currentFeatureTensor, currentAction, terminalStateValue)
 
 		local Model = NewRecurrentDeepDoubleExpectedStateActionRewardStateActionModel.Model
 		
@@ -110,7 +70,7 @@ function RecurrentDeepDoubleExpectedStateActionRewardStateActionModel.new(parame
 
 		local selectedModelNumberForUpdate = (updateSecondModel and 2) or 1
 
-		local temporalDifferenceErrorTensor, temporalDifferenceError = NewRecurrentDeepDoubleExpectedStateActionRewardStateActionModel:generateLossTensor(previousFeatureTensor, action, rewardValue, currentFeatureTensor, terminalStateValue, selectedModelNumberForTargetTensor, selectedModelNumberForUpdate)
+		local temporalDifferenceErrorTensor, temporalDifferenceError = NewRecurrentDeepDoubleExpectedStateActionRewardStateActionModel:generateLossTensor(previousFeatureTensor, previousAction, rewardValue, currentFeatureTensor, terminalStateValue, selectedModelNumberForTargetTensor, selectedModelNumberForUpdate)
 
 		local negatedTemporalDifferenceErrorTensor = AqwamTensorLibrary:unaryMinus(temporalDifferenceErrorTensor) -- The original non-deep expected SARSA version performs gradient ascent. But the neural network performs gradient descent. So, we need to negate the error tensor to make the neural network to perform gradient ascent.
 
@@ -150,7 +110,7 @@ function RecurrentDeepDoubleExpectedStateActionRewardStateActionModel.new(parame
 
 end
 
-function RecurrentDeepDoubleExpectedStateActionRewardStateActionModel:generateLossTensor(previousFeatureTensor, action, rewardValue, currentFeatureTensor, terminalStateValue, selectedModelNumberForTargetTensor, selectedModelNumberForUpdate)
+function RecurrentDeepDoubleExpectedStateActionRewardStateActionModel:generateLossTensor(previousFeatureTensor, previousAction, rewardValue, currentFeatureTensor, terminalStateValue, selectedModelNumberForTargetTensor, selectedModelNumberForUpdate)
 
 	local Model = self.Model
 
@@ -182,7 +142,7 @@ function RecurrentDeepDoubleExpectedStateActionRewardStateActionModel:generateLo
 
 	local numberOfGreedyActions = 0
 
-	local actionIndex = table.find(ClassesList, action)
+	local actionIndex = table.find(ClassesList, previousAction)
 
 	Model:setWeightTensorArray(WeightTensorArrayArray[selectedModelNumberForUpdate], true)
 	
@@ -198,27 +158,25 @@ function RecurrentDeepDoubleExpectedStateActionRewardStateActionModel:generateLo
 
 	for i = 1, numberOfClasses, 1 do
 
-		if (targetTensor[1][i] ~= maxQValue) then continue end
-
-		numberOfGreedyActions = numberOfGreedyActions + 1
+		if (targetTensor[1][i] ~= maxQValue) then
+			
+			numberOfGreedyActions = numberOfGreedyActions + 1
+			
+		end
 
 	end
 
 	local nonGreedyActionProbability = epsilon / numberOfClasses
 
 	local greedyActionProbability = ((1 - epsilon) / numberOfGreedyActions) + nonGreedyActionProbability
+	
+	local actionProbability
 
 	for _, qValue in ipairs(targetTensor[1]) do
+		
+		actionProbability = ((qValue == maxQValue) and greedyActionProbability) or nonGreedyActionProbability
 
-		if (qValue == maxQValue) then
-
-			expectedQValue = expectedQValue + (qValue * greedyActionProbability)
-
-		else
-
-			expectedQValue = expectedQValue + (qValue * nonGreedyActionProbability)
-
-		end
+		expectedQValue = expectedQValue + (qValue * actionProbability)
 
 	end
 
@@ -252,7 +210,7 @@ function RecurrentDeepDoubleExpectedStateActionRewardStateActionModel:setWeightT
 
 	else
 
-		self.WeightTensorArrayArray[1] = deepCopyTable(WeightTensorArray1)
+		self.WeightTensorArrayArray[1] = self:deepCopyTable(WeightTensorArray1)
 
 	end
 
@@ -266,7 +224,7 @@ function RecurrentDeepDoubleExpectedStateActionRewardStateActionModel:setWeightT
 
 	else
 
-		self.WeightTensorArrayArray[2] = deepCopyTable(WeightTensorArray2)
+		self.WeightTensorArrayArray[2] = self:deepCopyTable(WeightTensorArray2)
 
 	end
 
@@ -280,7 +238,7 @@ function RecurrentDeepDoubleExpectedStateActionRewardStateActionModel:getWeightT
 
 	else
 
-		return deepCopyTable(self.WeightTensorArrayArray[1])
+		return self:deepCopyTable(self.WeightTensorArrayArray[1])
 
 	end
 
@@ -294,7 +252,7 @@ function RecurrentDeepDoubleExpectedStateActionRewardStateActionModel:getWeightT
 
 	else
 
-		return deepCopyTable(self.WeightTensorArrayArray[2])
+		return self:deepCopyTable(self.WeightTensorArrayArray[2])
 
 	end
 
