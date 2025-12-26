@@ -308,7 +308,7 @@ function RecurrentProximalPolicyOptimizationModel.new(parameterDictionary)
 
 				generalizedAdvantageEstimationValue = advantageValueHistory[t] + (discountFactor * lambda * generalizedAdvantageEstimationValue)
 
-				table.insert(generalizedAdvantageEstimationHistory, 1, generalizedAdvantageEstimationValue) -- Insert at the beginning to maintain order
+				table.insert(generalizedAdvantageEstimationHistory, 1, generalizedAdvantageEstimationValue)
 
 			end
 
