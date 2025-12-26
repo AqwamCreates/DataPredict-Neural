@@ -78,13 +78,13 @@ function DeepDeterministicPolicyGradientModel.new(parameterDictionary)
 
 		local averagingRate = NewDeepDeterministicPolicyGradientModel.averagingRate
 
-		local ActorModelParameters = ActorModel:getModelParameters(true)
+		local ActorModelParameters = ActorModel:getWeightTensorArray(true)
 
 		local targetCriticActionMeanInputTensor = AqwamTensorLibrary:concatenate(currentFeatureTensor, currentActionMeanTensor, 2)
 
 		local targetQValue = CriticModel:forwardPropagate(targetCriticActionMeanInputTensor, true)[1][1]
 
-		local CriticModelParameters = CriticModel:getModelParameters(true)
+		local CriticModelParameters = CriticModel:getWeightTensorArray(true)
 
 		local yValue = rewardValue + (NewDeepDeterministicPolicyGradientModel.discountFactor * (1 - terminalStateValue) * targetQValue)
 
@@ -110,17 +110,17 @@ function DeepDeterministicPolicyGradientModel.new(parameterDictionary)
 
 		CriticModel:update(temporalDifferenceError, true)
 
-		local TargetActorModelParameters = ActorModel:getModelParameters(true)
+		local TargetActorModelParameters = ActorModel:getWeightTensorArray(true)
 
-		local TargetCriticModelParameters = CriticModel:getModelParameters(true)
+		local TargetCriticModelParameters = CriticModel:getWeightTensorArray(true)
 
 		TargetActorModelParameters = rateAverageModelParameters(averagingRate, TargetActorModelParameters, ActorModelParameters)
 
 		TargetCriticModelParameters = rateAverageModelParameters(averagingRate, TargetCriticModelParameters, CriticModelParameters)
 
-		ActorModel:setModelParameters(TargetActorModelParameters, true)
+		ActorModel:setWeightTensorArray(TargetActorModelParameters, true)
 
-		CriticModel:setModelParameters(TargetCriticModelParameters, true)
+		CriticModel:setWeightTensorArray(TargetCriticModelParameters, true)
 
 		return temporalDifferenceError
 
