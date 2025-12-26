@@ -196,11 +196,11 @@ function SoftActorCriticModel:update(previousFeatureTensor, previousLogActionPro
 
 	for i = 1, 2, 1 do 
 
-		CriticModel:setModelParameters(CriticModelParametersArray[i])
+		CriticModel:setWeightTensorArray(CriticModelParametersArray[i])
 
 		currentCriticValueArray[i] = CriticModel:forwardPropagate(currentFeatureTensor)[1][1] 
 
-		local CriticModelParameters = CriticModel:getModelParameters(true)
+		local CriticModelParameters = CriticModel:getWeightTensorArray(true)
 
 		PreviousCriticModelParametersArray[i] = CriticModelParameters
 
@@ -218,7 +218,7 @@ function SoftActorCriticModel:update(previousFeatureTensor, previousLogActionPro
 
 	for i = 1, 2, 1 do 
 
-		CriticModel:setModelParameters(PreviousCriticModelParametersArray[i], true)
+		CriticModel:setWeightTensorArray(PreviousCriticModelParametersArray[i], true)
 
 		local previousCriticValue = CriticModel:forwardPropagate(previousFeatureTensor, true)[1][1] 
 
@@ -230,7 +230,7 @@ function SoftActorCriticModel:update(previousFeatureTensor, previousLogActionPro
 
 		CriticModel:update(criticLoss, true)
 
-		local TargetModelParameters = CriticModel:getModelParameters(true)
+		local TargetModelParameters = CriticModel:getWeightTensorArray(true)
 
 		CriticModelParametersArray[i] = rateAverageModelParameters(averagingRate, TargetModelParameters, PreviousCriticModelParametersArray[i])
 
