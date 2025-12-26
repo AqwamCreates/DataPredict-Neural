@@ -22,8 +22,6 @@
 
 ## Deep Reinforcement Learning
 
-## Deep Reinforcement Learning
-
 > ❗Implementation Issue 🔰 Beginner Algorithm 💾 Data Efficient ⚡ Computationally Efficient 🛡️ Noise Resistant 🟢 Online 🟡 Session-Adaptive / Offline ⚠️ Assumption-Heavy ⚙️ Configuration-Heavy
 
 | Model                                                                                                          | Alternate Names               | Properties  | Use Cases                                                                 |
