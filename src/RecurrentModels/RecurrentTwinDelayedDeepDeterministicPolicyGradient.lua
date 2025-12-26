@@ -88,19 +88,19 @@ function RecurrentTwinDelayedDeepDeterministicPolicyGradientModel.new(parameterD
 	
 	local previousQValue
 
-	NewRecurrentTwinDelayedDeepDeterministicPolicyGradient:setDiagonalGaussianUpdateFunction(function(previousFeatureTensor, actionMeanTensor, actionStandardDeviationTensor, actionNoiseTensor, rewardValue, currentFeatureTensor, terminalStateValue)
+	NewRecurrentTwinDelayedDeepDeterministicPolicyGradient:setDiagonalGaussianUpdateFunction(function(previousFeatureTensor, previousActionMeanTensor, previousActionStandardDeviationTensor, previousActionNoiseTensor, rewardValue, currentFeatureTensor, currentActionMeanTensor, terminalStateValue)
 
-		if (not actionNoiseTensor) then
+		if (not previousActionNoiseTensor) then
 
-			local actionTensordimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(actionMeanTensor)
+			local actionTensordimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(previousActionMeanTensor)
 
-			actionNoiseTensor = AqwamTensorLibrary:createRandomUniformTensor(actionTensordimensionSizeArray) 
+			previousActionNoiseTensor = AqwamTensorLibrary:createRandomUniformTensor(actionTensordimensionSizeArray) 
 
 		end
 
 		local criticHiddenStateValueArray = NewRecurrentTwinDelayedDeepDeterministicPolicyGradient.criticHiddenStateValueArray
 
-		local outputDimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(actionMeanTensor)
+		local outputDimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(previousActionMeanTensor)
 
 		criticHiddenStateValueArray[1] = criticHiddenStateValueArray[1] or 0
 
@@ -122,15 +122,15 @@ function RecurrentTwinDelayedDeepDeterministicPolicyGradientModel.new(parameterD
 
 		local noiseClipFunction = function(value) return math.clamp(value, -noiseClippingFactor, noiseClippingFactor) end
 		
-		local clippedPreviousActionNoiseTensor = AqwamTensorLibrary:applyFunction(noiseClipFunction, actionNoiseTensor)
+		local clippedPreviousActionNoiseTensor = AqwamTensorLibrary:applyFunction(noiseClipFunction, previousActionNoiseTensor)
 
-		local currentActionNoiseTensor = AqwamTensorLibrary:createRandomNormalTensor({1, #actionMeanTensor[1]})
+		local currentActionNoiseTensor = AqwamTensorLibrary:createRandomNormalTensor({1, #previousActionMeanTensor[1]})
 
 		local clippedCurrentActionNoiseTensor = AqwamTensorLibrary:applyFunction(noiseClipFunction, currentActionNoiseTensor)
 
-		local previousActionTensor = AqwamTensorLibrary:multiply(actionStandardDeviationTensor, actionNoiseTensor)
+		local previousActionTensor = AqwamTensorLibrary:multiply(previousActionStandardDeviationTensor, previousActionNoiseTensor)
 
-		previousActionTensor = AqwamTensorLibrary:add(previousActionTensor, actionMeanTensor)
+		previousActionTensor = AqwamTensorLibrary:add(previousActionTensor, previousActionMeanTensor)
 
 		local previousActionArray = previousActionTensor[1] 
 		
@@ -150,11 +150,11 @@ function RecurrentTwinDelayedDeepDeterministicPolicyGradientModel.new(parameterD
 
 		local highestActionValue = math.max(table.unpack(previousActionArray))
 
-		local currentActionMeanTensor = ActorModel:forwardPropagate(currentFeatureTensor, actionMeanTensor)
+		local currentActionMeanTensor = ActorModel:forwardPropagate(currentFeatureTensor, previousActionMeanTensor)
 
 		local ActorWeightTensorArray = ActorModel:getWeightTensorArray(true)
 		
-		local previousTargetActionTensorPart1 = AqwamTensorLibrary:add(actionMeanTensor, clippedPreviousActionNoiseTensor)
+		local previousTargetActionTensorPart1 = AqwamTensorLibrary:add(previousActionMeanTensor, clippedPreviousActionNoiseTensor)
 
 		local targetActionTensorPart1 = AqwamTensorLibrary:add(currentActionMeanTensor, clippedCurrentActionNoiseTensor)
 		
@@ -236,7 +236,7 @@ function RecurrentTwinDelayedDeepDeterministicPolicyGradientModel.new(parameterD
 
 		local temporalDifferenceErrorTensor = AqwamTensorLibrary:createTensor({1, 2}, 0)
 
-		local previousCriticActionMeanInputTensor = AqwamTensorLibrary:concatenate(previousFeatureTensor, actionMeanTensor, 2)
+		local previousCriticActionMeanInputTensor = AqwamTensorLibrary:concatenate(previousFeatureTensor, previousActionMeanTensor, 2)
 
 		for i = 1, 2, 1 do 
 
@@ -264,9 +264,9 @@ function RecurrentTwinDelayedDeepDeterministicPolicyGradientModel.new(parameterD
 			
 			actorHiddenStateTensorArray[1] = actorHiddenStateTensorArray[1] or AqwamTensorLibrary:createTensor(outputDimensionSizeArray)
 
-			local actionTensor = AqwamTensorLibrary:multiply(actionStandardDeviationTensor, actionNoiseTensor)
+			local actionTensor = AqwamTensorLibrary:multiply(previousActionStandardDeviationTensor, previousActionNoiseTensor)
 
-			actionTensor = AqwamTensorLibrary:add(actionTensor, actionMeanTensor)
+			actionTensor = AqwamTensorLibrary:add(actionTensor, previousActionMeanTensor)
 
 			local previousCriticActionInputTensor = AqwamTensorLibrary:concatenate(previousFeatureTensor, actionTensor, 2)
 			
