@@ -84,71 +84,73 @@ function RecurrentREINFORCEModel.new(parameterDictionary)
 
 	local rewardValueArray = {}
 
-	NewRecurrentREINFORCEModel:setCategoricalUpdateFunction(function(previousFeatureTensor, action, rewardValue, currentFeatureTensor, terminalStateValue)
+	NewRecurrentREINFORCEModel:setCategoricalUpdateFunction(function(previousFeatureTensor, previousAction, rewardValue, currentFeatureTensor, currentAction, terminalStateValue)
 		
 		local Model = NewRecurrentREINFORCEModel.Model
 		
 		local hiddenStateTensor = NewRecurrentREINFORCEModel.hiddenStateTensor
 		
+		local ClassesList = Model:getClassesList()
+		
 		if (not hiddenStateTensor) then
 			
-			local ClassesList = Model:getClassesList()
-
 			hiddenStateTensor = AqwamTensorLibrary:createTensor({1, #ClassesList})
 			
 		end
 
 		local actionTensor = Model:forwardPropagate(previousFeatureTensor, hiddenStateTensor)
-
+		
 		local actionProbabilityTensor = calculateProbability(actionTensor)
 
-		local logActionProbabilityTensor = AqwamTensorLibrary:logarithm(actionProbabilityTensor)
+		local classIndex = table.find(ClassesList, previousAction)
+
+		local actionProbabilityGradientTensor = {}
+
+		for i, _ in ipairs(ClassesList) do
+
+			actionProbabilityGradientTensor[i] = (((i == classIndex) and 1) or 0) - actionProbabilityTensor[1][i]
+
+		end
+		
+		actionProbabilityGradientTensor = {actionProbabilityGradientTensor}
 
 		table.insert(featureTensorArray, previousFeatureTensor)
 
-		table.insert(actionProbabilityTensorArray, logActionProbabilityTensor)
+		table.insert(actionProbabilityTensorArray, actionProbabilityGradientTensor)
 
 		table.insert(rewardValueArray, rewardValue)
 		
-		NewRecurrentREINFORCEModel.hiddenStateTensor = logActionProbabilityTensor
+		NewRecurrentREINFORCEModel.hiddenStateTensor = actionTensor
 
 	end)
 
-	NewRecurrentREINFORCEModel:setDiagonalGaussianUpdateFunction(function(previousFeatureTensor, actionMeanTensor, actionStandardDeviationTensor, actionNoiseTensor, rewardValue, currentFeatureTensor, terminalStateValue)
+	NewRecurrentREINFORCEModel:setDiagonalGaussianUpdateFunction(function(previousFeatureTensor, previousActionMeanTensor, previousActionStandardDeviationTensor, previousActionNoiseTensor, rewardValue, currentFeatureTensor, currentActionMeanTensor, terminalStateValue)
 
-		if (not actionNoiseTensor) then
+		if (not previousActionNoiseTensor) then
 
-			local actionTensordimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(actionMeanTensor)
+			local actionTensorDimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(previousActionMeanTensor)
 
-			actionNoiseTensor = AqwamTensorLibrary:createRandomUniformTensor(actionTensordimensionSizeArray) 
+			previousActionNoiseTensor = AqwamTensorLibrary:createRandomUniformTensor(actionTensorDimensionSizeArray) 
 
 		end
 
-		local actionTensorPart1 = AqwamTensorLibrary:multiply(actionStandardDeviationTensor, actionNoiseTensor)
+		local actionTensorPart1 = AqwamTensorLibrary:multiply(previousActionStandardDeviationTensor, previousActionNoiseTensor)
 
-		local actionTensor = AqwamTensorLibrary:add(actionMeanTensor, actionTensorPart1)
+		local actionTensor = AqwamTensorLibrary:add(previousActionMeanTensor, actionTensorPart1)
 
-		local zScoreTensorPart1 = AqwamTensorLibrary:subtract(actionTensor, actionMeanTensor)
+		local actionProbabilityGradientTensorPart1 = AqwamTensorLibrary:subtract(actionTensor, previousActionMeanTensor)
 
-		local zScoreTensor = AqwamTensorLibrary:divide(zScoreTensorPart1, actionStandardDeviationTensor)
+		local actionProbabilityGradientTensorPart2 = AqwamTensorLibrary:power(previousActionStandardDeviationTensor, 2)
 
-		local squaredZScoreTensor = AqwamTensorLibrary:power(zScoreTensor, 2)
-
-		local logActionProbabilityTensorPart1 = AqwamTensorLibrary:logarithm(actionStandardDeviationTensor)
-
-		local logActionProbabilityTensorPart2 = AqwamTensorLibrary:multiply(2, logActionProbabilityTensorPart1)
-
-		local logActionProbabilityTensorPart3 = AqwamTensorLibrary:add(squaredZScoreTensor, logActionProbabilityTensorPart2)
-
-		local logActionProbabilityTensor = AqwamTensorLibrary:add(logActionProbabilityTensorPart3, math.log(2 * math.pi))
+		local actionProbabilityGradientTensor = AqwamTensorLibrary:divide(actionProbabilityGradientTensorPart1, actionProbabilityGradientTensorPart2)
 		
 		table.insert(featureTensorArray, previousFeatureTensor)
 
-		table.insert(actionProbabilityTensorArray, logActionProbabilityTensor)
+		table.insert(actionProbabilityTensorArray, actionProbabilityGradientTensor)
 
 		table.insert(rewardValueArray, rewardValue)
 		
-		NewRecurrentREINFORCEModel.hiddenStateTensor = logActionProbabilityTensor
+		NewRecurrentREINFORCEModel.hiddenStateTensor = actionTensor
 
 	end)
 
