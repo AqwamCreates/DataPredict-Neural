@@ -70,7 +70,7 @@ function RecurrentDeepDoubleQLearningModel.new(parameterDictionary)
 
 	NewRecurrentDeepDoubleQLearningModel.EligibilityTrace = parameterDictionary.EligibilityTrace
 
-	NewRecurrentDeepDoubleQLearningModel:setCategoricalUpdateFunction(function(previousFeatureTensor, action, rewardValue, currentFeatureTensor, terminalStateValue)
+	NewRecurrentDeepDoubleQLearningModel:setCategoricalUpdateFunction(function(previousFeatureTensor, previousAction, rewardValue, currentFeatureTensor, currentAction, terminalStateValue)
 
 		local Model = NewRecurrentDeepDoubleQLearningModel.Model
 
@@ -98,7 +98,7 @@ function RecurrentDeepDoubleQLearningModel.new(parameterDictionary)
 
 		local ClassesList = Model:getClassesList()
 
-		local actionIndex = table.find(ClassesList, action)
+		local actionIndex = table.find(ClassesList, previousAction)
 
 		local lastValue = previousQTensor[1][actionIndex]
 
