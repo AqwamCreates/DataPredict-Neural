@@ -30,13 +30,11 @@ local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker
 
 local RecurrentReinforcementLearningBaseModel = require(script.Parent.RecurrentReinforcementLearningBaseModel)
 
-RecurrentDeepDoubleExpectedStateActionRewardStateActionModel = {}
+RecurrentDeepDoubleQLearningModel = {}
 
-RecurrentDeepDoubleExpectedStateActionRewardStateActionModel.__index = RecurrentDeepDoubleExpectedStateActionRewardStateActionModel
+RecurrentDeepDoubleQLearningModel.__index = RecurrentDeepDoubleQLearningModel
 
-setmetatable(RecurrentDeepDoubleExpectedStateActionRewardStateActionModel, RecurrentReinforcementLearningBaseModel)
-
-local defaultEpsilon = 0.5
+setmetatable(RecurrentDeepDoubleQLearningModel, RecurrentReinforcementLearningBaseModel)
 
 local defaultAveragingRate = 0.995
 
@@ -58,34 +56,30 @@ local function rateAverageWeightTensorArray(averagingRate, TargetWeightTensorArr
 
 end
 
-function RecurrentDeepDoubleExpectedStateActionRewardStateActionModel.new(parameterDictionary)
+function RecurrentDeepDoubleQLearningModel.new(parameterDictionary)
 
 	parameterDictionary = parameterDictionary or {}
 
-	local NewRecurrentDeepDoubleExpectedStateActionRewardStateActionModel = RecurrentReinforcementLearningBaseModel.new(parameterDictionary)
+	local NewRecurrentDeepDoubleQLearningModel = RecurrentReinforcementLearningBaseModel.new(parameterDictionary)
 
-	setmetatable(NewRecurrentDeepDoubleExpectedStateActionRewardStateActionModel, RecurrentDeepDoubleExpectedStateActionRewardStateActionModel)
+	setmetatable(NewRecurrentDeepDoubleQLearningModel, RecurrentDeepDoubleQLearningModel)
 
-	NewRecurrentDeepDoubleExpectedStateActionRewardStateActionModel:setName("RecurrentDeepDoubleExpectedStateActionRewardStateAction")
+	NewRecurrentDeepDoubleQLearningModel:setName("RecurrentDeepDoubleQLearning")
 
-	NewRecurrentDeepDoubleExpectedStateActionRewardStateActionModel.epsilon = parameterDictionary.epsilon or defaultEpsilon
+	NewRecurrentDeepDoubleQLearningModel.averagingRate = parameterDictionary.averagingRate or defaultAveragingRate
 
-	NewRecurrentDeepDoubleExpectedStateActionRewardStateActionModel.averagingRate = parameterDictionary.averagingRate or defaultAveragingRate
+	NewRecurrentDeepDoubleQLearningModel.EligibilityTrace = parameterDictionary.EligibilityTrace
 
-	NewRecurrentDeepDoubleExpectedStateActionRewardStateActionModel.EligibilityTrace = parameterDictionary.EligibilityTrace
+	NewRecurrentDeepDoubleQLearningModel:setCategoricalUpdateFunction(function(previousFeatureTensor, previousAction, rewardValue, currentFeatureTensor, currentAction, terminalStateValue)
 
-	NewRecurrentDeepDoubleExpectedStateActionRewardStateActionModel:setCategoricalUpdateFunction(function(previousFeatureTensor, previousAction, rewardValue, currentFeatureTensor, currentAction, terminalStateValue)
+		local Model = NewRecurrentDeepDoubleQLearningModel.Model
 
-		local Model = NewRecurrentDeepDoubleExpectedStateActionRewardStateActionModel.Model
-
-		local epsilon = NewRecurrentDeepDoubleExpectedStateActionRewardStateActionModel.epsilon
-
-		local EligibilityTrace = NewRecurrentDeepDoubleExpectedStateActionRewardStateActionModel.EligibilityTrace
-
-		local discountFactor = NewRecurrentDeepDoubleExpectedStateActionRewardStateActionModel.discountFactor
+		local discountFactor = NewRecurrentDeepDoubleQLearningModel.discountFactor
 		
-		local hiddenStateTensor = NewRecurrentDeepDoubleExpectedStateActionRewardStateActionModel.hiddenStateTensor
+		local EligibilityTrace = NewRecurrentDeepDoubleQLearningModel.EligibilityTrace
 		
+		local hiddenStateTensor = NewRecurrentDeepDoubleQLearningModel.hiddenStateTensor
+
 		local ClassesList = Model:getClassesList()
 
 		local numberOfClasses = #ClassesList
@@ -93,54 +87,26 @@ function RecurrentDeepDoubleExpectedStateActionRewardStateActionModel.new(parame
 		local outputDimensionSizeArray = {1, numberOfClasses}
 
 		if (not hiddenStateTensor) then hiddenStateTensor = AqwamTensorLibrary:createTensor(outputDimensionSizeArray) end
+		
+		local previousQTensor = Model:forwardPropagate(previousFeatureTensor, hiddenStateTensor)
 
-		local expectedQValue = 0
-
-		local numberOfGreedyActions = 0
-
-		local ClassesList = Model:getClassesList()
-
-		local numberOfClasses = #ClassesList
-
-		local actionIndex = table.find(ClassesList, previousAction)
-
-		local previousTensor = Model:forwardPropagate(previousFeatureTensor, hiddenStateTensor)
+		local _, maxQValue = Model:predict(currentFeatureTensor, previousQTensor)
 
 		local PrimaryWeightTensorArray = Model:getWeightTensorArray(true)
 
-		local targetTensor = Model:forwardPropagate(currentFeatureTensor, previousTensor)
+		local targetValue = rewardValue + (discountFactor * (1 - terminalStateValue) * maxQValue[1][1])
 
-		local maxQValue = targetTensor[1][actionIndex]
+		local ClassesList = Model:getClassesList()
 
-		for i = 1, numberOfClasses, 1 do
+		local actionIndex = table.find(ClassesList, previousAction)
 
-			if (targetTensor[1][i] == maxQValue) then
-				
-				numberOfGreedyActions = numberOfGreedyActions + 1
-				
-			end
-
-		end
-
-		local nonGreedyActionProbability = epsilon / numberOfClasses
-
-		local greedyActionProbability = ((1 - epsilon) / numberOfGreedyActions) + nonGreedyActionProbability
-
-		local actionProbability
-
-		for _, qValue in ipairs(targetTensor[1]) do
-
-			actionProbability = ((qValue == maxQValue) and greedyActionProbability) or nonGreedyActionProbability
-
-			expectedQValue = expectedQValue + (qValue * actionProbability)
-
-		end
-
-		local targetValue = rewardValue + (discountFactor * (1 - terminalStateValue) * expectedQValue)
-
-		local lastValue = previousTensor[1][actionIndex]
+		local lastValue = previousQTensor[1][actionIndex]
 
 		local temporalDifferenceError = targetValue - lastValue
+
+		local numberOfClasses = #ClassesList
+
+		local outputDimensionSizeArray = {1, numberOfClasses}
 
 		local temporalDifferenceErrorTensor = AqwamTensorLibrary:createTensor(outputDimensionSizeArray, 0)
 
@@ -154,7 +120,7 @@ function RecurrentDeepDoubleExpectedStateActionRewardStateActionModel.new(parame
 
 		end
 
-		local negatedTemporalDifferenceErrorTensor = AqwamTensorLibrary:unaryMinus(temporalDifferenceErrorTensor) -- The original non-deep expected SARSA version performs gradient ascent. But the neural network performs gradient descent. So, we need to negate the error tensor to make the neural network to perform gradient ascent.
+		local negatedTemporalDifferenceErrorTensor = AqwamTensorLibrary:unaryMinus(temporalDifferenceErrorTensor) -- The original non-deep Q-Learning version performs gradient ascent. But the neural network performs gradient descent. So, we need to negate the error tensor to make the neural network to perform gradient ascent.
 
 		Model:forwardPropagate(previousFeatureTensor, hiddenStateTensor)
 
@@ -162,30 +128,34 @@ function RecurrentDeepDoubleExpectedStateActionRewardStateActionModel.new(parame
 
 		local TargetWeightTensorArray = Model:getWeightTensorArray(true)
 
-		TargetWeightTensorArray = rateAverageWeightTensorArray(NewRecurrentDeepDoubleExpectedStateActionRewardStateActionModel.averagingRate, TargetWeightTensorArray, PrimaryWeightTensorArray)
+		TargetWeightTensorArray = rateAverageWeightTensorArray(NewRecurrentDeepDoubleQLearningModel.averagingRate, TargetWeightTensorArray, PrimaryWeightTensorArray)
 
 		Model:setWeightTensorArray(TargetWeightTensorArray, true)
-
-		NewRecurrentDeepDoubleExpectedStateActionRewardStateActionModel.hiddenStateTensor = previousTensor
+		
+		NewRecurrentDeepDoubleQLearningModel.hiddenStateTensor = previousQTensor
 
 		return temporalDifferenceError
 
 	end)
 
-	NewRecurrentDeepDoubleExpectedStateActionRewardStateActionModel:setEpisodeUpdateFunction(function(terminalStateValue) 
+	NewRecurrentDeepDoubleQLearningModel:setEpisodeUpdateFunction(function(terminalStateValue) 
 
-		NewRecurrentDeepDoubleExpectedStateActionRewardStateActionModel.EligibilityTrace:reset()
+		local EligibilityTrace = NewRecurrentDeepDoubleQLearningModel.EligibilityTrace
 
-	end)
-
-	NewRecurrentDeepDoubleExpectedStateActionRewardStateActionModel:setResetFunction(function() 
-
-		NewRecurrentDeepDoubleExpectedStateActionRewardStateActionModel.EligibilityTrace:reset()
+		if (EligibilityTrace) then EligibilityTrace:reset() end
 
 	end)
 
-	return NewRecurrentDeepDoubleExpectedStateActionRewardStateActionModel
+	NewRecurrentDeepDoubleQLearningModel:setResetFunction(function() 
+
+		local EligibilityTrace = NewRecurrentDeepDoubleQLearningModel.EligibilityTrace
+
+		if (EligibilityTrace) then EligibilityTrace:reset() end
+
+	end)
+
+	return NewRecurrentDeepDoubleQLearningModel
 
 end
 
-return RecurrentDeepDoubleExpectedStateActionRewardStateActionModel
+return RecurrentDeepDoubleQLearningModel
