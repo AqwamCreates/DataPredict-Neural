@@ -93,10 +93,10 @@ function RecurrentActorCriticModel.new(parameterDictionary)
 		local actorHiddenStateTensor = NewRecurrentActorCriticModel.actorHiddenStateTensor
 
 		local criticHiddenStateValue = NewRecurrentActorCriticModel.criticHiddenStateValue or 0
+		
+		local ClassesList = ActorModel:getClassesList()
 
 		if (not actorHiddenStateTensor) then
-
-			local ClassesList = ActorModel:getClassesList()
 
 			actorHiddenStateTensor = AqwamTensorLibrary:createTensor({1, #ClassesList})
 
@@ -107,8 +107,6 @@ function RecurrentActorCriticModel.new(parameterDictionary)
 		local criticValue = NewRecurrentActorCriticModel.CriticModel:forwardPropagate(previousFeatureTensor, criticHiddenStateValue)[1][1]
 
 		local actionProbabilityTensor = calculateProbability(actionTensor)
-
-		local ClassesList = ActorModel:getClassesList()
 
 		local classIndex = table.find(ClassesList, previousAction)
 
