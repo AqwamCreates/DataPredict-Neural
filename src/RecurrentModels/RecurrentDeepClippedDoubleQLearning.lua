@@ -50,7 +50,7 @@ function DeepClippedDoubleQLearningModel.new(parameterDictionary)
 
 	NewDeepClippedDoubleQLearningModel.WeightTensorArrayArray = {}
 
-	NewDeepClippedDoubleQLearningModel:setCategoricalUpdateFunction(function(previousFeatureTensor, action, rewardValue, currentFeatureTensor, terminalStateValue)
+	NewDeepClippedDoubleQLearningModel:setCategoricalUpdateFunction(function(previousFeatureTensor, previousAction, rewardValue, currentFeatureTensor, currentAction, terminalStateValue)
 
 		local Model = NewDeepClippedDoubleQLearningModel.Model
 		
@@ -92,7 +92,7 @@ function DeepClippedDoubleQLearningModel.new(parameterDictionary)
 
 		local targetValue = rewardValue + (discountFactor * (1 - terminalStateValue) * maxQValue)
 
-		local actionIndex = table.find(ClassesList, action)
+		local actionIndex = table.find(ClassesList, previousAction)
 		
 		local eligibilityTraceTensor = NewDeepClippedDoubleQLearningModel.eligibilityTraceTensor
 
