@@ -68,13 +68,13 @@ function RecurrentDeepDeterministicPolicyGradientModel.new(parameterDictionary)
 
 	NewRecurrentDeepDeterministicPolicyGradientModel.averagingRate = parameterDictionary.averagingRate or defaultAveragingRate
 
-	NewRecurrentDeepDeterministicPolicyGradientModel:setDiagonalGaussianUpdateFunction(function(previousFeatureTensor, actionMeanTensor, actionStandardDeviationTensor, actionNoiseTensor, rewardValue, currentFeatureTensor, terminalStateValue)
+	NewRecurrentDeepDeterministicPolicyGradientModel:setDiagonalGaussianUpdateFunction(function(previousFeatureTensor, previousActionMeanTensor, previousActionStandardDeviationTensor, previousActionNoiseTensor, rewardValue, currentFeatureTensor, currentActionMeanTensor, terminalStateValue)
 
-		if (not actionNoiseTensor) then
+		if (not previousActionNoiseTensor) then
 
-			local actionTensordimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(actionMeanTensor)
+			local actionTensordimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(previousActionMeanTensor)
 
-			actionNoiseTensor = AqwamTensorLibrary:createRandomUniformTensor(actionTensordimensionSizeArray) 
+			previousActionNoiseTensor = AqwamTensorLibrary:createRandomUniformTensor(actionTensordimensionSizeArray) 
 
 		end
 
@@ -88,7 +88,7 @@ function RecurrentDeepDeterministicPolicyGradientModel.new(parameterDictionary)
 
 		local criticHiddenStateValueArray = NewRecurrentDeepDeterministicPolicyGradientModel.criticHiddenStateValueArray
 
-		local outputDimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(actionMeanTensor)
+		local outputDimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(previousActionMeanTensor)
 
 		local currentActorHiddenStateTensor = actorHiddenStateTensorArray[1] or AqwamTensorLibrary:createTensor(outputDimensionSizeArray)
 
@@ -98,9 +98,9 @@ function RecurrentDeepDeterministicPolicyGradientModel.new(parameterDictionary)
 		
 		local targetCriticHiddenStateTensor = criticHiddenStateValueArray[2] or {{0}}
 		
-		local previousActionMeanTensor = AqwamTensorLibrary:forwardPropagate(previousFeatureTensor, targetActorHiddenStateTensor)
+		local previousActionMeanTensor = ActorModel:forwardPropagate(previousFeatureTensor, targetActorHiddenStateTensor)
 
-		local currentActionMeanTensor = ActorModel:forwardPropagate(currentFeatureTensor, previousActionMeanTensor)
+		local currentActionMeanTensor = ActorModel:forwardPropagate(currentFeatureTensor, currentActorHiddenStateTensor)
 
 		local ActorWeightTensorArray = ActorModel:getWeightTensorArray(true)
 		
@@ -108,7 +108,7 @@ function RecurrentDeepDeterministicPolicyGradientModel.new(parameterDictionary)
 
 		local targetCriticActionMeanInputTensor = AqwamTensorLibrary:concatenate(currentFeatureTensor, currentActionMeanTensor, 2)
 		
-		local previousTargetQTensor = AqwamTensorLibrary:forwardPropagate(previousTargetCriticActionMeanInputTensor, targetCriticHiddenStateTensor)
+		local previousTargetQTensor = CriticModel:forwardPropagate(previousTargetCriticActionMeanInputTensor, targetCriticHiddenStateTensor)
 
 		local targetQValue = CriticModel:forwardPropagate(targetCriticActionMeanInputTensor, previousTargetQTensor)[1][1]
 
@@ -116,9 +116,9 @@ function RecurrentDeepDeterministicPolicyGradientModel.new(parameterDictionary)
 
 		local yValue = rewardValue + (NewRecurrentDeepDeterministicPolicyGradientModel.discountFactor * (1 - terminalStateValue) * targetQValue)
 
-		local actionTensor = AqwamTensorLibrary:multiply(actionStandardDeviationTensor, actionNoiseTensor)
+		local actionTensor = AqwamTensorLibrary:multiply(previousActionStandardDeviationTensor, previousActionNoiseTensor)
 
-		actionTensor = AqwamTensorLibrary:add(actionTensor, actionMeanTensor)
+		actionTensor = AqwamTensorLibrary:add(actionTensor, previousActionMeanTensor)
 
 		local previousCriticActionInputTensor = AqwamTensorLibrary:concatenate(previousFeatureTensor, actionTensor, 2)
 
@@ -132,7 +132,7 @@ function RecurrentDeepDeterministicPolicyGradientModel.new(parameterDictionary)
 
 		ActorModel:update(negatedtemporalDifferenceError)
 
-		local previousCriticActionMeanInputTensor = AqwamTensorLibrary:concatenate(previousFeatureTensor, actionMeanTensor, 2)
+		local previousCriticActionMeanInputTensor = AqwamTensorLibrary:concatenate(previousFeatureTensor, previousActionMeanTensor, 2)
 
 		local previousCriticHiddenStateValue = CriticModel:forwardPropagate(previousCriticActionMeanInputTensor, currentCriticHiddenStateTensor)
 
