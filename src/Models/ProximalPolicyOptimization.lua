@@ -134,13 +134,13 @@ function ProximalPolicyOptimizationModel.new(parameterDictionary)
 
 		local CriticModel = NewProximalPolicyOptimizationModel.CriticModel
 
-		NewProximalPolicyOptimizationModel.CurrentActorModelParameters = ActorModel:getModelParameters(true)
+		NewProximalPolicyOptimizationModel.CurrentActorModelParameters = ActorModel:getWeightTensorArray(true)
 
-		ActorModel:setModelParameters(NewProximalPolicyOptimizationModel.OldActorModelParameters, true)
+		ActorModel:setWeightTensorArray(NewProximalPolicyOptimizationModel.OldActorModelParameters, true)
 
 		local oldPolicyActionTensor = ActorModel:forwardPropagate(previousFeatureTensor)
 
-		NewProximalPolicyOptimizationModel.OldActorModelParameters = ActorModel:getModelParameters(true)
+		NewProximalPolicyOptimizationModel.OldActorModelParameters = ActorModel:getWeightTensorArray(true)
 
 		local oldPolicyActionProbabilityTensor = calculateCategoricalProbability(oldPolicyActionTensor)
 
@@ -148,7 +148,7 @@ function ProximalPolicyOptimizationModel.new(parameterDictionary)
 
 		local currentPolicyActionProbabilityTensor = calculateCategoricalProbability(currentPolicyActionTensor)
 
-		ActorModel:setModelParameters(NewProximalPolicyOptimizationModel.CurrentActorModelParameters, true)
+		ActorModel:setWeightTensorArray(NewProximalPolicyOptimizationModel.CurrentActorModelParameters, true)
 
 		local ClassesList = ActorModel:getClassesList()
 
@@ -200,13 +200,13 @@ function ProximalPolicyOptimizationModel.new(parameterDictionary)
 
 		local CriticModel = NewProximalPolicyOptimizationModel.CriticModel
 
-		NewProximalPolicyOptimizationModel.CurrentActorModelParameters = ActorModel:getModelParameters(true)
+		NewProximalPolicyOptimizationModel.CurrentActorModelParameters = ActorModel:getWeightTensorArray(true)
 
-		ActorModel:setModelParameters(NewProximalPolicyOptimizationModel.OldActorModelParameters, true)
+		ActorModel:setWeightTensorArray(NewProximalPolicyOptimizationModel.OldActorModelParameters, true)
 
 		local oldPolicyActionMeanTensor = ActorModel:forwardPropagate(previousFeatureTensor)
 
-		NewProximalPolicyOptimizationModel.OldActorModelParameters = ActorModel:getModelParameters(true)
+		NewProximalPolicyOptimizationModel.OldActorModelParameters = ActorModel:getWeightTensorArray(true)
 
 		local oldPolicyActionProbabilityTensor = calculateDiagonalGaussianProbability(oldPolicyActionMeanTensor, actionStandardDeviationTensor, actionNoiseTensor)
 
@@ -280,7 +280,7 @@ function ProximalPolicyOptimizationModel.new(parameterDictionary)
 
 		NewProximalPolicyOptimizationModel.OldActorModelParameters = NewProximalPolicyOptimizationModel.CurrentActorModelParameters
 
-		ActorModel:setModelParameters(NewProximalPolicyOptimizationModel.CurrentActorModelParameters, true)
+		ActorModel:setWeightTensorArray(NewProximalPolicyOptimizationModel.CurrentActorModelParameters, true)
 
 		for h, featureTensor in ipairs(featureTensorHistory) do
 
@@ -304,7 +304,7 @@ function ProximalPolicyOptimizationModel.new(parameterDictionary)
 
 		end
 
-		NewProximalPolicyOptimizationModel.CurrentActorModelParameters = ActorModel:getModelParameters(true)
+		NewProximalPolicyOptimizationModel.CurrentActorModelParameters = ActorModel:getWeightTensorArray(true)
 
 		table.clear(featureTensorHistory)
 
