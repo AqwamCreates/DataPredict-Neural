@@ -74,7 +74,7 @@ function RecurrentDeepDoubleExpectedStateActionRewardStateActionModel.new(parame
 
 	NewRecurrentDeepDoubleExpectedStateActionRewardStateActionModel.EligibilityTrace = parameterDictionary.EligibilityTrace
 
-	NewRecurrentDeepDoubleExpectedStateActionRewardStateActionModel:setCategoricalUpdateFunction(function(previousFeatureTensor, action, rewardValue, currentFeatureTensor, terminalStateValue)
+	NewRecurrentDeepDoubleExpectedStateActionRewardStateActionModel:setCategoricalUpdateFunction(function(previousFeatureTensor, previousAction, rewardValue, currentFeatureTensor, currentAction, terminalStateValue)
 
 		local Model = NewRecurrentDeepDoubleExpectedStateActionRewardStateActionModel.Model
 
@@ -102,7 +102,7 @@ function RecurrentDeepDoubleExpectedStateActionRewardStateActionModel.new(parame
 
 		local numberOfClasses = #ClassesList
 
-		local actionIndex = table.find(ClassesList, action)
+		local actionIndex = table.find(ClassesList, previousAction)
 
 		local previousTensor = Model:forwardPropagate(previousFeatureTensor, hiddenStateTensor)
 
@@ -124,17 +124,13 @@ function RecurrentDeepDoubleExpectedStateActionRewardStateActionModel.new(parame
 
 		local greedyActionProbability = ((1 - epsilon) / numberOfGreedyActions) + nonGreedyActionProbability
 
+		local actionProbability
+
 		for _, qValue in ipairs(targetTensor[1]) do
 
-			if (qValue == maxQValue) then
+			actionProbability = ((qValue == maxQValue) and greedyActionProbability) or nonGreedyActionProbability
 
-				expectedQValue = expectedQValue + (qValue * greedyActionProbability)
-
-			else
-
-				expectedQValue = expectedQValue + (qValue * nonGreedyActionProbability)
-
-			end
+			expectedQValue = expectedQValue + (qValue * actionProbability)
 
 		end
 
