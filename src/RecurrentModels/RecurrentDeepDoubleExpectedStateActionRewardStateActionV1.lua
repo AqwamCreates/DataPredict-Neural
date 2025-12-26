@@ -94,15 +94,19 @@ function RecurrentDeepDoubleExpectedStateActionRewardStateActionModel.new(parame
 
 	end)
 
-	NewRecurrentDeepDoubleExpectedStateActionRewardStateActionModel:setEpisodeUpdateFunction(function(terminalStateValue) 
-
-		NewRecurrentDeepDoubleExpectedStateActionRewardStateActionModel.EligibilityTrace:reset()
+	NewRecurrentDeepDoubleExpectedStateActionRewardStateActionModel:setEpisodeUpdateFunction(function(terminalStateValue)
+		
+		local EligibilityTrace = NewRecurrentDeepDoubleExpectedStateActionRewardStateActionModel.EligibilityTrace
+			
+		if (EligibilityTrace) then EligibilityTrace:reset() end
 
 	end)
 
 	NewRecurrentDeepDoubleExpectedStateActionRewardStateActionModel:setResetFunction(function() 
 
-		NewRecurrentDeepDoubleExpectedStateActionRewardStateActionModel.EligibilityTrace:reset()
+		local EligibilityTrace = NewRecurrentDeepDoubleExpectedStateActionRewardStateActionModel.EligibilityTrace
+
+		if (EligibilityTrace) then EligibilityTrace:reset() end
 
 	end)
 
