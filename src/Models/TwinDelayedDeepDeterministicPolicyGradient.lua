@@ -112,7 +112,7 @@ function TwinDelayedDeepDeterministicPolicyGradientModel.new(parameterDictionary
 
 		local highestActionValue = math.max(table.unpack(previousActionArray))
 
-		local ActorModelParameters = ActorModel:getModelParameters(true)
+		local ActorModelParameters = ActorModel:getWeightTensorArray(true)
 
 		local targetActionTensorPart1 = AqwamTensorLibrary:add(currentActionMeanTensor, clippedCurrentActionNoiseTensor)
 
@@ -146,11 +146,11 @@ function TwinDelayedDeepDeterministicPolicyGradientModel.new(parameterDictionary
 
 		for i = 1, 2, 1 do 
 
-			CriticModel:setModelParameters(TargetCriticModelParametersArray[i])
+			CriticModel:setWeightTensorArray(TargetCriticModelParametersArray[i])
 
 			currentCriticValueArray[i] = CriticModel:forwardPropagate(targetCriticActionInputTensor)[1][1] 
 
-			local CriticModelParameters = CriticModel:getModelParameters(true)
+			local CriticModelParameters = CriticModel:getWeightTensorArray(true)
 
 			TargetCriticModelParametersArray[i] = CriticModelParameters
 
@@ -168,7 +168,7 @@ function TwinDelayedDeepDeterministicPolicyGradientModel.new(parameterDictionary
 
 		for i = 1, 2, 1 do
 
-			CriticModel:setModelParameters(CriticModelParametersArray[i], true)
+			CriticModel:setWeightTensorArray(CriticModelParametersArray[i], true)
 
 			local previousCriticValue = CriticModel:forwardPropagate(previousCriticActionMeanInputTensor, true)[1][1] 
 
@@ -178,7 +178,7 @@ function TwinDelayedDeepDeterministicPolicyGradientModel.new(parameterDictionary
 
 			CriticModel:update(criticLoss, true)
 
-			CriticModelParametersArray[i] = CriticModel:getModelParameters(true)
+			CriticModelParametersArray[i] = CriticModel:getWeightTensorArray(true)
 
 		end
 
@@ -192,7 +192,7 @@ function TwinDelayedDeepDeterministicPolicyGradientModel.new(parameterDictionary
 
 			local previousCriticActionInputTensor = AqwamTensorLibrary:concatenate(previousFeatureTensor, previousActionTensor, 2)
 
-			CriticModel:setModelParameters(CriticModelParametersArray[1], true)
+			CriticModel:setWeightTensorArray(CriticModelParametersArray[1], true)
 
 			local currentQValue = CriticModel:forwardPropagate(previousCriticActionInputTensor, true)[1][1]
 
@@ -202,11 +202,11 @@ function TwinDelayedDeepDeterministicPolicyGradientModel.new(parameterDictionary
 
 			for i = 1, 2, 1 do TargetCriticModelParametersArray[i] = rateAverageModelParameters(averagingRate, TargetCriticModelParametersArray[i], CriticModelParametersArray[i]) end
 
-			local TargetActorModelParameters = ActorModel:getModelParameters(true)
+			local TargetActorModelParameters = ActorModel:getWeightTensorArray(true)
 
 			TargetActorModelParameters = rateAverageModelParameters(averagingRate, TargetActorModelParameters, ActorModelParameters)
 
-			ActorModel:setModelParameters(TargetActorModelParameters, true)
+			ActorModel:setWeightTensorArray(TargetActorModelParameters, true)
 
 		end
 
