@@ -28,194 +28,356 @@
 
 local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
 
-local RecurrentReinforcementLearningBaseModel = require(script.Parent.RecurrentReinforcementLearningBaseModel)
+local DualRecurrentReinforcementLearningActorCriticBaseModel = require(script.Parent.DualRecurrentReinforcementLearningActorCriticBaseModel)
 
-RecurrentOffPolicyMonteCarloControlModel = {}
+RecurrentProximalPolicyOptimizationModel = {}
 
-RecurrentOffPolicyMonteCarloControlModel.__index = RecurrentOffPolicyMonteCarloControlModel
+RecurrentProximalPolicyOptimizationModel.__index = RecurrentProximalPolicyOptimizationModel
 
-setmetatable(RecurrentOffPolicyMonteCarloControlModel, RecurrentReinforcementLearningBaseModel)
+setmetatable(RecurrentProximalPolicyOptimizationModel, DualRecurrentReinforcementLearningActorCriticBaseModel)
 
-local defaultTargetPolicyFunction = "StableSoftmax"
+local defaultLambda = 0
 
-local targetPolicyFunctionList = {
+local defaultUseLogProbabilities = true
 
-	["Greedy"] = function (actionVector)
+local function calculateCategoricalProbability(valueTensor)
 
-		local dimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(actionVector)
+	local highestActionValue = AqwamTensorLibrary:findMaximumValue(valueTensor)
 
-		local targetActionTensor = AqwamTensorLibrary:createTensor(dimensionSizeArray, 0)
+	local subtractedZTensor = AqwamTensorLibrary:subtract(valueTensor, highestActionValue)
 
-		local highestActionValue = -math.huge
+	local exponentValueTensor = AqwamTensorLibrary:applyFunction(math.exp, subtractedZTensor)
 
-		local indexWithHighestActionValue
+	local exponentValueSumTensor = AqwamTensorLibrary:sum(exponentValueTensor, 2)
 
-		for i, actionValue in ipairs(actionVector[1]) do
+	local targetActionTensor = AqwamTensorLibrary:divide(exponentValueTensor, exponentValueSumTensor)
 
-			if (actionValue > highestActionValue) then
+	return targetActionTensor
 
-				highestActionValue = actionValue
+end
 
-				indexWithHighestActionValue = i
+local function calculateDiagonalGaussianProbability(meanTensor, standardDeviationTensor, noiseTensor)
 
-			end
+	local valueTensorPart1 = AqwamTensorLibrary:multiply(standardDeviationTensor, noiseTensor)
 
-		end
+	local valueTensor = AqwamTensorLibrary:add(meanTensor, valueTensorPart1)
 
-		targetActionTensor[1][indexWithHighestActionValue] = highestActionValue
+	local zScoreTensorPart1 = AqwamTensorLibrary:subtract(valueTensor, meanTensor)
 
-		return targetActionTensor
+	local zScoreTensor = AqwamTensorLibrary:divide(zScoreTensorPart1, standardDeviationTensor)
 
-	end,
+	local squaredZScoreTensor = AqwamTensorLibrary:power(zScoreTensor, 2)
 
-	["Softmax"] = function (actionVector) -- apparently roblox doesn't really handle very small values such as math.exp(-1000), so I added a more stable computation exp(a) / exp(b) -> exp (a - b)
+	local logValueTensorPart1 = AqwamTensorLibrary:logarithm(standardDeviationTensor)
 
-		local exponentActionTensor = AqwamTensorLibrary:applyFunction(math.exp, actionVector)
+	local logValueTensorPart2 = AqwamTensorLibrary:multiply(2, logValueTensorPart1)
 
-		local exponentActionSumTensor = AqwamTensorLibrary:sum(exponentActionTensor, 2)
+	local logValueTensorPart3 = AqwamTensorLibrary:add(squaredZScoreTensor, logValueTensorPart2)
 
-		local targetActionTensor = AqwamTensorLibrary:divide(exponentActionTensor, exponentActionSumTensor)
+	local logValueTensor = AqwamTensorLibrary:add(logValueTensorPart3, math.log(2 * math.pi))
 
-		return targetActionTensor
+	return logValueTensor
 
-	end,
+end
 
-	["StableSoftmax"] = function (actionVector)
+local function calculateRewardToGo(rewardHistory, discountFactor)
 
-		local highestActionValue = AqwamTensorLibrary:findMaximumValue(actionVector)
+	local rewardToGoArray = {}
 
-		local subtractedZVector = AqwamTensorLibrary:subtract(actionVector, highestActionValue)
+	local discountedReward = 0
 
-		local exponentActionVector = AqwamTensorLibrary:applyFunction(math.exp, subtractedZVector)
+	for h = #rewardHistory, 1, -1 do
 
-		local exponentActionSumVector = AqwamTensorLibrary:sum(exponentActionVector, 2)
+		discountedReward = rewardHistory[h] + (discountFactor * discountedReward)
 
-		local targetActionVector = AqwamTensorLibrary:divide(exponentActionVector, exponentActionSumVector)
+		table.insert(rewardToGoArray, 1, discountedReward)
 
-		return targetActionVector
+	end
 
-	end,
+	return rewardToGoArray
 
-}
+end
 
-function RecurrentOffPolicyMonteCarloControlModel.new(parameterDictionary)
+function RecurrentProximalPolicyOptimizationModel.new(parameterDictionary)
 
-	local NewRecurrentOffPolicyMonteCarloControlModel = RecurrentReinforcementLearningBaseModel.new(parameterDictionary)
+	parameterDictionary = parameterDictionary or {}
 
-	setmetatable(NewRecurrentOffPolicyMonteCarloControlModel, RecurrentOffPolicyMonteCarloControlModel)
+	local NewRecurrentProximalPolicyOptimizationModel = DualRecurrentReinforcementLearningActorCriticBaseModel.new(parameterDictionary)
 
-	NewRecurrentOffPolicyMonteCarloControlModel:setName("RecurrentOffPolicyMonteCarloControl")
+	setmetatable(NewRecurrentProximalPolicyOptimizationModel, RecurrentProximalPolicyOptimizationModel)
 
-	NewRecurrentOffPolicyMonteCarloControlModel.targetPolicyFunction = parameterDictionary.targetPolicyFunction or defaultTargetPolicyFunction
+	NewRecurrentProximalPolicyOptimizationModel:setName("RecurrentProximalPolicyOptimization")
+
+	NewRecurrentProximalPolicyOptimizationModel.lambda = parameterDictionary.lambda or defaultLambda
+	
+	NewRecurrentProximalPolicyOptimizationModel.useLogProbabilities = NewRecurrentProximalPolicyOptimizationModel:getValueOrDefaultValue(parameterDictionary.useLogProbabilities, defaultUseLogProbabilities)
+
+	NewRecurrentProximalPolicyOptimizationModel.CurrentActorWeightTensorArray = parameterDictionary.CurrentActorWeightTensorArray
+
+	NewRecurrentProximalPolicyOptimizationModel.OldActorWeightTensorArray = parameterDictionary.OldActorWeightTensorArray
 
 	local featureTensorHistory = {}
 
-	local actionTensorHistory = {}
+	local ratioActionProbabiltyTensorHistory = {}
 
 	local rewardValueHistory = {}
 
-	NewRecurrentOffPolicyMonteCarloControlModel:setCategoricalUpdateFunction(function(previousFeatureTensor, action, rewardValue, currentFeatureTensor, terminalStateValue)
+	local criticValueHistory = {}
+
+	local advantageValueHistory = {}
+
+	NewRecurrentProximalPolicyOptimizationModel:setCategoricalUpdateFunction(function(previousFeatureTensor, previousAction, rewardValue, currentFeatureTensor, currentAction, terminalStateValue)
+
+		local ActorModel = NewRecurrentProximalPolicyOptimizationModel.ActorModel
+
+		local CriticModel = NewRecurrentProximalPolicyOptimizationModel.CriticModel
 		
-		local Model = NewRecurrentOffPolicyMonteCarloControlModel.Model
+		local actorHiddenStateTensorArray = NewRecurrentProximalPolicyOptimizationModel.actorHiddenStateTensorArray
 
-		local hiddenStateTensor = NewRecurrentOffPolicyMonteCarloControlModel.hiddenStateTensor
+		local criticHiddenStateValueArray = NewRecurrentProximalPolicyOptimizationModel.criticHiddenStateValueArray
 
-		if (not hiddenStateTensor) then
+		local ClassesList = ActorModel:getClassesList()
 
-			local ClassesList = Model:getClassesList()
+		local outputDimensionSizeArray = {1, #ClassesList}
 
-			hiddenStateTensor = AqwamTensorLibrary:createTensor({1, #ClassesList})
+		local newActorHiddenStateTensor = actorHiddenStateTensorArray[1] or AqwamTensorLibrary:createTensor(outputDimensionSizeArray)
+
+		local oldActorHiddenStateTensor = actorHiddenStateTensorArray[2] or AqwamTensorLibrary:createTensor(outputDimensionSizeArray)
+		
+		local criticHiddenStateValue = criticHiddenStateValueArray[1] or 0
+
+		NewRecurrentProximalPolicyOptimizationModel.CurrentActorWeightTensorArray = ActorModel:getWeightTensorArray(true)
+
+		ActorModel:setWeightTensorArray(NewRecurrentProximalPolicyOptimizationModel.OldActorWeightTensorArray, true)
+
+		local oldPolicyActionTensor = ActorModel:forwardPropagate(previousFeatureTensor, oldActorHiddenStateTensor)
+
+		NewRecurrentProximalPolicyOptimizationModel.OldActorWeightTensorArray = ActorModel:getWeightTensorArray(true)
+
+		local oldPolicyActionProbabilityTensor = calculateCategoricalProbability(oldPolicyActionTensor)
+
+		ActorModel:setWeightTensorArray(NewRecurrentProximalPolicyOptimizationModel.CurrentActorWeightTensorArray, true)
+
+		local currentPolicyActionTensor = ActorModel:forwardPropagate(previousFeatureTensor, newActorHiddenStateTensor)
+
+		local currentPolicyActionProbabilityTensor = calculateCategoricalProbability(currentPolicyActionTensor)
+
+		local classIndex = table.find(ClassesList, previousAction)
+
+		local ratioActionProbabiltyTensor = table.create(#ClassesList, 0)
+
+		local ratioActionProbability
+
+		if (NewRecurrentProximalPolicyOptimizationModel.useLogProbabilities) then
+
+			ratioActionProbability = math.exp(math.log(currentPolicyActionProbabilityTensor[1][classIndex]) - math.log(oldPolicyActionProbabilityTensor[1][classIndex]))
+
+		else
+
+			ratioActionProbability = currentPolicyActionProbabilityTensor[1][classIndex] / oldPolicyActionProbabilityTensor[1][classIndex]
 
 		end
 
-		local actionTensor = Model:forwardPropagate(previousFeatureTensor, hiddenStateTensor)
+		ratioActionProbabiltyTensor[classIndex] = ratioActionProbability
+
+		ratioActionProbabiltyTensor = {ratioActionProbabiltyTensor}
+
+		local previousCriticValue = CriticModel:forwardPropagate(previousFeatureTensor, criticHiddenStateValue)[1][1]
+
+		local currentCriticValue = CriticModel:forwardPropagate(currentFeatureTensor, previousCriticValue)[1][1]
+
+		local advantageValue = rewardValue + (NewRecurrentProximalPolicyOptimizationModel.discountFactor * (1 - terminalStateValue) * currentCriticValue) - previousCriticValue
 
 		table.insert(featureTensorHistory, previousFeatureTensor)
 
-		table.insert(actionTensorHistory, actionTensor)
+		table.insert(ratioActionProbabiltyTensorHistory, ratioActionProbabiltyTensor)
 
 		table.insert(rewardValueHistory, rewardValue)
+
+		table.insert(criticValueHistory, previousCriticValue)
+
+		table.insert(advantageValueHistory, advantageValue)
 		
-		NewRecurrentOffPolicyMonteCarloControlModel.hiddenStateTensor = actionTensor
+		actorHiddenStateTensorArray[1] = currentPolicyActionTensor
+
+		actorHiddenStateTensorArray[2] = oldPolicyActionTensor
+		
+		criticHiddenStateValueArray[1] = previousCriticValue
+
+		return advantageValue
 
 	end)
 
-	NewRecurrentOffPolicyMonteCarloControlModel:setEpisodeUpdateFunction(function(terminalStateValue)
+	NewRecurrentProximalPolicyOptimizationModel:setDiagonalGaussianUpdateFunction(function(previousFeatureTensor, previousActionMeanTensor, previousActionStandardDeviationTensor, previousActionNoiseTensor, rewardValue, currentFeatureTensor, currentActionMeanTensor, terminalStateValue)
 
-		local Model = NewRecurrentOffPolicyMonteCarloControlModel.Model
+		if (not previousActionNoiseTensor) then
 
-		local targetPolicyFunction = targetPolicyFunctionList[NewRecurrentOffPolicyMonteCarloControlModel.targetPolicyFunction]
+			local actionTensorDimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(previousActionMeanTensor)
 
-		local discountFactor = NewRecurrentOffPolicyMonteCarloControlModel.discountFactor
-
-		local actionTensorDimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(actionTensorHistory[1])
-
-		local cTensor = AqwamTensorLibrary:createTensor(actionTensorDimensionSizeArray, 0) 
-
-		local weightTensor = AqwamTensorLibrary:createTensor(actionTensorDimensionSizeArray, 1)
-		
-		local hiddenStateTensor = AqwamTensorLibrary:createTensor(actionTensorDimensionSizeArray)
-
-		local discountedReward = 0
-
-		for h = #actionTensorHistory, 1, -1 do
-
-			discountedReward = rewardValueHistory[h] + (discountFactor * discountedReward)
-
-			cTensor = AqwamTensorLibrary:add(cTensor, weightTensor)
-			
-			local featureTensor = featureTensorHistory[h]
-
-			local actionTensor = actionTensorHistory[h]
-
-			local lossTensorPart1 = AqwamTensorLibrary:divide(weightTensor, cTensor)
-
-			local lossTensorPart2 = AqwamTensorLibrary:subtract(discountedReward, actionTensor)
-
-			local lossTensor = AqwamTensorLibrary:multiply(lossTensorPart1, lossTensorPart2, -1) -- The original non-deep off-policy Monte-Carlo Control version performs gradient ascent. But the neural network performs gradient descent. So, we need to negate the loss vector by multiplying it with -1 to make the neural network to perform gradient ascent.
-
-			local targetActionTensor = targetPolicyFunction(actionTensor)
-
-			local actionRatioTensor = AqwamTensorLibrary:divide(targetActionTensor, actionTensor)
-
-			weightTensor = AqwamTensorLibrary:multiply(weightTensor, actionRatioTensor)
-
-			Model:forwardPropagate(featureTensor, hiddenStateTensor)
-
-			Model:update(lossTensor)
-			
-			hiddenStateTensor = actionTensor
+			previousActionNoiseTensor = AqwamTensorLibrary:createRandomUniformTensor(actionTensorDimensionSizeArray) 
 
 		end
 
-		table.clear(featureTensorHistory)
+		local ActorModel = NewRecurrentProximalPolicyOptimizationModel.ActorModel
 
-		table.clear(actionTensorHistory)
+		local CriticModel = NewRecurrentProximalPolicyOptimizationModel.CriticModel
+		
+		local actorHiddenStateTensorArray = NewRecurrentProximalPolicyOptimizationModel.actorHiddenStateTensorArray
+		
+		local criticHiddenStateValueArray = NewRecurrentProximalPolicyOptimizationModel.criticHiddenStateValueArray
+	
+		local outputDimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(previousActionMeanTensor)
+		
+		local newActorHiddenStateTensor = actorHiddenStateTensorArray[1] or AqwamTensorLibrary:createTensor(outputDimensionSizeArray)
+		
+		local oldActorHiddenStateTensor = actorHiddenStateTensorArray[2] or AqwamTensorLibrary:createTensor(outputDimensionSizeArray)
+		
+		local criticHiddenStateValue = criticHiddenStateValueArray[1] or 0
 
-		table.clear(rewardValueHistory)
+		NewRecurrentProximalPolicyOptimizationModel.CurrentActorWeightTensorArray = ActorModel:getWeightTensorArray(true)
+
+		ActorModel:setWeightTensorArray(NewRecurrentProximalPolicyOptimizationModel.OldActorWeightTensorArray, true)
+
+		local oldPolicyActionMeanTensor = ActorModel:forwardPropagate(previousFeatureTensor, oldActorHiddenStateTensor)
+
+		NewRecurrentProximalPolicyOptimizationModel.OldActorWeightTensorArray = ActorModel:getWeightTensorArray(true)
+
+		local oldPolicyActionProbabilityTensor = calculateDiagonalGaussianProbability(oldPolicyActionMeanTensor, previousActionStandardDeviationTensor, previousActionNoiseTensor)
+
+		local currentPolicyActionProbabilityTensor = calculateDiagonalGaussianProbability(previousActionMeanTensor, previousActionStandardDeviationTensor, previousActionNoiseTensor)
+
+		local ratioActionProbabiltyTensor
+
+		if (NewRecurrentProximalPolicyOptimizationModel.useLogProbabilities) then
+
+			ratioActionProbabiltyTensor = AqwamTensorLibrary:applyFunction(math.exp, AqwamTensorLibrary:subtract(currentPolicyActionProbabilityTensor, oldPolicyActionProbabilityTensor))
+
+		else
+
+			currentPolicyActionProbabilityTensor = AqwamTensorLibrary:applyFunction(math.exp, currentPolicyActionProbabilityTensor)
+
+			oldPolicyActionProbabilityTensor = AqwamTensorLibrary:applyFunction(math.exp, oldPolicyActionProbabilityTensor)
+
+			ratioActionProbabiltyTensor = AqwamTensorLibrary:divide(currentPolicyActionProbabilityTensor, oldPolicyActionProbabilityTensor)
+
+		end
+
+		local previousCriticValue = CriticModel:forwardPropagate(previousFeatureTensor, criticHiddenStateValue)[1][1]
+
+		local currentCriticValue = CriticModel:forwardPropagate(currentFeatureTensor, previousCriticValue)[1][1]
+
+		local advantageValue = rewardValue + (NewRecurrentProximalPolicyOptimizationModel.discountFactor * (1 - terminalStateValue) * currentCriticValue) - previousCriticValue
+
+		table.insert(featureTensorHistory, previousFeatureTensor)
+
+		table.insert(ratioActionProbabiltyTensorHistory, ratioActionProbabiltyTensor)
+
+		table.insert(rewardValueHistory, rewardValue)
+
+		table.insert(criticValueHistory, previousCriticValue)
+
+		table.insert(advantageValueHistory, advantageValue)
+		
+		actorHiddenStateTensorArray[1] = previousActionMeanTensor
+		
+		actorHiddenStateTensorArray[2] = oldPolicyActionMeanTensor
+		
+		criticHiddenStateValueArray[1] = previousCriticValue
+
+		return advantageValue
 
 	end)
 
-	NewRecurrentOffPolicyMonteCarloControlModel:setResetFunction(function()
+	NewRecurrentProximalPolicyOptimizationModel:setEpisodeUpdateFunction(function(terminalStateValue)
+
+		local ActorModel = NewRecurrentProximalPolicyOptimizationModel.ActorModel
+
+		local CriticModel = NewRecurrentProximalPolicyOptimizationModel.CriticModel
+
+		local discountFactor = NewRecurrentProximalPolicyOptimizationModel.discountFactor
+
+		local lambda = NewRecurrentProximalPolicyOptimizationModel.lambda
+
+		if (lambda ~= 0) then
+
+			local generalizedAdvantageEstimationValue = 0
+
+			local generalizedAdvantageEstimationHistory = {}
+
+			for t = #advantageValueHistory, 1, -1 do
+
+				generalizedAdvantageEstimationValue = advantageValueHistory[t] + (discountFactor * lambda * generalizedAdvantageEstimationValue)
+
+				table.insert(generalizedAdvantageEstimationHistory, 1, generalizedAdvantageEstimationValue) -- Insert at the beginning to maintain order
+
+			end
+
+			advantageValueHistory = generalizedAdvantageEstimationHistory
+
+		end
+
+		local rewardToGoArray = calculateRewardToGo(rewardValueHistory, discountFactor)
+
+		NewRecurrentProximalPolicyOptimizationModel.OldActorWeightTensorArray = NewRecurrentProximalPolicyOptimizationModel.CurrentActorWeightTensorArray
+
+		ActorModel:setWeightTensorArray(NewRecurrentProximalPolicyOptimizationModel.CurrentActorWeightTensorArray, true)
+
+		local outputDimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(ratioActionProbabiltyTensorHistory[1])
+
+		local actorHiddenStateTensor = AqwamTensorLibrary:createTensor(outputDimensionSizeArray)
+		
+		local criticHiddenStateTensor = {{0}}
+
+		for h, featureTensor in ipairs(featureTensorHistory) do
+
+			local ratioActionProbabilityTensor = ratioActionProbabiltyTensorHistory[h]
+
+			local actorLossTensor = AqwamTensorLibrary:multiply(ratioActionProbabilityTensor, advantageValueHistory[h])
+
+			local criticLoss = criticValueHistory[h] - rewardToGoArray[h]
+
+			actorLossTensor = AqwamTensorLibrary:unaryMinus(actorLossTensor)
+
+			actorHiddenStateTensor = ActorModel:forwardPropagate(featureTensor, actorHiddenStateTensor)
+
+			criticHiddenStateTensor = CriticModel:forwardPropagate(featureTensor, criticHiddenStateTensor)
+
+			ActorModel:update(actorLossTensor)
+
+			CriticModel:update(criticLoss)
+
+		end
+
+		NewRecurrentProximalPolicyOptimizationModel.CurrentActorWeightTensorArray = ActorModel:getWeightTensorArray(true)
 
 		table.clear(featureTensorHistory)
 
-		table.clear(actionTensorHistory)
+		table.clear(ratioActionProbabiltyTensorHistory)
 
 		table.clear(rewardValueHistory)
 
+		table.clear(criticValueHistory)
+
+		table.clear(advantageValueHistory)
+
 	end)
 
-	return NewRecurrentOffPolicyMonteCarloControlModel
+	NewRecurrentProximalPolicyOptimizationModel:setResetFunction(function()
+
+		table.clear(featureTensorHistory)
+
+		table.clear(ratioActionProbabiltyTensorHistory)
+
+		table.clear(rewardValueHistory)
+
+		table.clear(criticValueHistory)
+
+		table.clear(advantageValueHistory)
+
+	end)
+
+	return NewRecurrentProximalPolicyOptimizationModel
 
 end
 
-function RecurrentOffPolicyMonteCarloControlModel:setParameters(parameterDictionary)
-
-	self.targetPolicyFunction = parameterDictionary.targetPolicyFunction or self.targetPolicyFunction
-
-	self.discountFactor = parameterDictionary.discountFactor or self.discountFactor
-
-end
-
-return RecurrentOffPolicyMonteCarloControlModel
+return RecurrentProximalPolicyOptimizationModel
