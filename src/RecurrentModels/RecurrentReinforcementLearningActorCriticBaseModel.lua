@@ -124,33 +124,13 @@ end
 
 function RecurrentReinforcementLearningActorCriticBaseModel:categoricalUpdate(previousFeatureTensor, previousAction, rewardValue, currentFeatureTensor, currentAction, terminalStateValue)
 
-	local categoricalUpdateFunction = self.categoricalUpdateFunction
-
-	if (categoricalUpdateFunction) then
-
-		return categoricalUpdateFunction(previousFeatureTensor, previousAction, rewardValue, currentFeatureTensor, currentAction, terminalStateValue)
-
-	else
-
-		error("The categorical update function is not implemented!")
-
-	end
+	return self.categoricalUpdateFunction(previousFeatureTensor, previousAction, rewardValue, currentFeatureTensor, currentAction, terminalStateValue)
 
 end
 
 function RecurrentReinforcementLearningActorCriticBaseModel:diagonalGaussianUpdate(previousFeatureTensor, previousActionMeanTensor, previousActionStandardDeviationTensor, previousActionNoiseTensor, rewardValue, currentFeatureTensor, currentActionMeanTensor, terminalStateValue)
 
-	local diagonalGaussianUpdateFunction = self.diagonalGaussianUpdateFunction
-
-	if (diagonalGaussianUpdateFunction) then
-
-		return diagonalGaussianUpdateFunction(previousFeatureTensor, previousActionMeanTensor, previousActionStandardDeviationTensor, previousActionNoiseTensor, rewardValue, currentFeatureTensor, currentActionMeanTensor, terminalStateValue)
-
-	else
-
-		error("The diagonal Gaussian update function is not implemented!")
-
-	end
+	return self.diagonalGaussianUpdateFunction(previousFeatureTensor, previousActionMeanTensor, previousActionStandardDeviationTensor, previousActionNoiseTensor, rewardValue, currentFeatureTensor, currentActionMeanTensor, terminalStateValue)
 
 end
 
@@ -161,22 +141,12 @@ function RecurrentReinforcementLearningActorCriticBaseModel:setEpisodeUpdateFunc
 end
 
 function RecurrentReinforcementLearningActorCriticBaseModel:episodeUpdate(terminalStateValue)
-
-	local episodeUpdateFunction = self.episodeUpdateFunction
 	
 	self.actorHiddenStateTensor = nil
 
 	self.criticHiddenStateValue = nil
 
-	if (episodeUpdateFunction) then
-
-		return episodeUpdateFunction(terminalStateValue)
-
-	else
-
-		error("The episode update function is not implemented!")
-
-	end
+	return self.episodeUpdateFunction(terminalStateValue)
 
 end
 
@@ -187,22 +157,12 @@ function RecurrentReinforcementLearningActorCriticBaseModel:setResetFunction(res
 end
 
 function RecurrentReinforcementLearningActorCriticBaseModel:reset()
-
-	local resetFunction = self.resetFunction
 	
 	self.actorHiddenStateTensor = nil
 	
 	self.criticHiddenStateValue = nil
 
-	if (resetFunction) then 
-
-		return resetFunction() 
-
-	else
-
-		error("The reset function is not implemented!")
-
-	end
+	return self.resetFunction() 
 
 end
 
