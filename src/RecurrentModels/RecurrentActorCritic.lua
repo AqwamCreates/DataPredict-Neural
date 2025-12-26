@@ -134,7 +134,7 @@ function RecurrentActorCriticModel.new(parameterDictionary)
 
 	end)
 
-	NewRecurrentActorCriticModel:setDiagonalGaussianUpdateFunction(function(previousFeatureTensor, previousActionMeanTensor, previousActionStandardDeviationTensor, previousActionNoiseTensor, rewardValue, currentFeatureTensor, terminalStateValue)
+	NewRecurrentActorCriticModel:setDiagonalGaussianUpdateFunction(function(previousFeatureTensor, previousActionMeanTensor, previousActionStandardDeviationTensor, previousActionNoiseTensor, rewardValue, currentFeatureTensor, currentActionMeanTensor, terminalStateValue)
 		
 		if (not previousActionNoiseTensor) then
 
