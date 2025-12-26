@@ -40,6 +40,8 @@ local defaultClipRatio = 0.3
 
 local defaultLambda = 0
 
+local defaultUseLogProbabilities = true
+
 local function calculateCategoricalProbability(valueTensor)
 
 	local highestActionValue = AqwamTensorLibrary:findMaximumValue(valueTensor)
@@ -107,10 +109,12 @@ function RecurrentProximalPolicyOptimizationClipModel.new(parameterDictionary)
 	setmetatable(NewRecurrentProximalPolicyOptimizationClipModel, RecurrentProximalPolicyOptimizationClipModel)
 
 	NewRecurrentProximalPolicyOptimizationClipModel:setName("RecurrentProximalPolicyOptimizationClip")
-
+	
 	NewRecurrentProximalPolicyOptimizationClipModel.clipRatio = parameterDictionary.clipRatio or defaultClipRatio
 
 	NewRecurrentProximalPolicyOptimizationClipModel.lambda = parameterDictionary.lambda or defaultLambda
+
+	NewRecurrentProximalPolicyOptimizationClipModel.useLogProbabilities = NewRecurrentProximalPolicyOptimizationClipModel:getValueOrDefaultValue(parameterDictionary.useLogProbabilities, defaultUseLogProbabilities)
 
 	NewRecurrentProximalPolicyOptimizationClipModel.CurrentActorWeightTensorArray = parameterDictionary.CurrentActorWeightTensorArray
 
@@ -126,12 +130,12 @@ function RecurrentProximalPolicyOptimizationClipModel.new(parameterDictionary)
 
 	local advantageValueHistory = {}
 
-	NewRecurrentProximalPolicyOptimizationClipModel:setCategoricalUpdateFunction(function(previousFeatureTensor, action, rewardValue, currentFeatureTensor, terminalStateValue)
+	NewRecurrentProximalPolicyOptimizationClipModel:setCategoricalUpdateFunction(function(previousFeatureTensor, previousAction, rewardValue, currentFeatureTensor, currentAction, terminalStateValue)
 
 		local ActorModel = NewRecurrentProximalPolicyOptimizationClipModel.ActorModel
 
 		local CriticModel = NewRecurrentProximalPolicyOptimizationClipModel.CriticModel
-		
+
 		local actorHiddenStateTensorArray = NewRecurrentProximalPolicyOptimizationClipModel.actorHiddenStateTensorArray
 
 		local criticHiddenStateValueArray = NewRecurrentProximalPolicyOptimizationClipModel.criticHiddenStateValueArray
@@ -162,7 +166,25 @@ function RecurrentProximalPolicyOptimizationClipModel.new(parameterDictionary)
 
 		local currentPolicyActionProbabilityTensor = calculateCategoricalProbability(currentPolicyActionTensor)
 
-		local ratioActionProbabiltyTensor = AqwamTensorLibrary:divide(currentPolicyActionProbabilityTensor, oldPolicyActionProbabilityTensor)
+		local classIndex = table.find(ClassesList, previousAction)
+
+		local ratioActionProbabiltyTensor = table.create(#ClassesList, 0)
+
+		local ratioActionProbability
+
+		if (NewRecurrentProximalPolicyOptimizationClipModel.useLogProbabilities) then
+
+			ratioActionProbability = math.exp(math.log(currentPolicyActionProbabilityTensor[1][classIndex]) - math.log(oldPolicyActionProbabilityTensor[1][classIndex]))
+
+		else
+
+			ratioActionProbability = currentPolicyActionProbabilityTensor[1][classIndex] / oldPolicyActionProbabilityTensor[1][classIndex]
+
+		end
+
+		ratioActionProbabiltyTensor[classIndex] = ratioActionProbability
+
+		ratioActionProbabiltyTensor = {ratioActionProbabiltyTensor}
 
 		local previousCriticValue = CriticModel:forwardPropagate(previousFeatureTensor, criticHiddenStateValue)[1][1]
 
@@ -179,7 +201,7 @@ function RecurrentProximalPolicyOptimizationClipModel.new(parameterDictionary)
 		table.insert(criticValueHistory, previousCriticValue)
 
 		table.insert(advantageValueHistory, advantageValue)
-		
+
 		actorHiddenStateTensorArray[1] = currentPolicyActionTensor
 
 		actorHiddenStateTensorArray[2] = oldPolicyActionTensor
@@ -190,25 +212,25 @@ function RecurrentProximalPolicyOptimizationClipModel.new(parameterDictionary)
 
 	end)
 
-	NewRecurrentProximalPolicyOptimizationClipModel:setDiagonalGaussianUpdateFunction(function(previousFeatureTensor, actionMeanTensor, actionStandardDeviationTensor, actionNoiseTensor, rewardValue, currentFeatureTensor, terminalStateValue)
+	NewRecurrentProximalPolicyOptimizationClipModel:setDiagonalGaussianUpdateFunction(function(previousFeatureTensor, previousActionMeanTensor, previousActionStandardDeviationTensor, previousActionNoiseTensor, rewardValue, currentFeatureTensor, currentActionMeanTensor, terminalStateValue)
 
-		if (not actionNoiseTensor) then
+		if (not previousActionNoiseTensor) then
 
-			local actionTensorDimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(actionMeanTensor)
+			local actionTensorDimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(previousActionMeanTensor)
 
-			actionNoiseTensor = AqwamTensorLibrary:createRandomUniformTensor(actionTensorDimensionSizeArray) 
+			previousActionNoiseTensor = AqwamTensorLibrary:createRandomUniformTensor(actionTensorDimensionSizeArray) 
 
 		end
 
 		local ActorModel = NewRecurrentProximalPolicyOptimizationClipModel.ActorModel
 
 		local CriticModel = NewRecurrentProximalPolicyOptimizationClipModel.CriticModel
-		
+
 		local actorHiddenStateTensorArray = NewRecurrentProximalPolicyOptimizationClipModel.actorHiddenStateTensorArray
 
 		local criticHiddenStateValueArray = NewRecurrentProximalPolicyOptimizationClipModel.criticHiddenStateValueArray
 
-		local outputDimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(actionMeanTensor)
+		local outputDimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(previousActionMeanTensor)
 
 		local newActorHiddenStateTensor = actorHiddenStateTensorArray[1] or AqwamTensorLibrary:createTensor(outputDimensionSizeArray)
 
@@ -224,15 +246,29 @@ function RecurrentProximalPolicyOptimizationClipModel.new(parameterDictionary)
 
 		NewRecurrentProximalPolicyOptimizationClipModel.OldActorWeightTensorArray = ActorModel:getWeightTensorArray(true)
 
-		local oldPolicyActionProbabilityTensor = calculateDiagonalGaussianProbability(oldPolicyActionMeanTensor, actionStandardDeviationTensor, actionNoiseTensor)
+		local oldPolicyActionProbabilityTensor = calculateDiagonalGaussianProbability(oldPolicyActionMeanTensor, previousActionStandardDeviationTensor, previousActionNoiseTensor)
 
-		local currentPolicyActionProbabilityTensor = calculateDiagonalGaussianProbability(actionMeanTensor, actionStandardDeviationTensor, actionNoiseTensor)
+		local currentPolicyActionProbabilityTensor = calculateDiagonalGaussianProbability(previousActionMeanTensor, previousActionStandardDeviationTensor, previousActionNoiseTensor)
 
-		local ratioActionProbabiltyTensor = AqwamTensorLibrary:divide(currentPolicyActionProbabilityTensor, oldPolicyActionProbabilityTensor)
+		local ratioActionProbabiltyTensor
 
-		local previousCriticValue = CriticModel:forwardPropagate(previousFeatureTensor, {{criticHiddenStateValue}})[1][1]
+		if (NewRecurrentProximalPolicyOptimizationClipModel.useLogProbabilities) then
 
-		local currentCriticValue = CriticModel:forwardPropagate(currentFeatureTensor, {{previousCriticValue}})[1][1]
+			ratioActionProbabiltyTensor = AqwamTensorLibrary:applyFunction(math.exp, AqwamTensorLibrary:subtract(currentPolicyActionProbabilityTensor, oldPolicyActionProbabilityTensor))
+
+		else
+
+			currentPolicyActionProbabilityTensor = AqwamTensorLibrary:applyFunction(math.exp, currentPolicyActionProbabilityTensor)
+
+			oldPolicyActionProbabilityTensor = AqwamTensorLibrary:applyFunction(math.exp, oldPolicyActionProbabilityTensor)
+
+			ratioActionProbabiltyTensor = AqwamTensorLibrary:divide(currentPolicyActionProbabilityTensor, oldPolicyActionProbabilityTensor)
+
+		end
+
+		local previousCriticValue = CriticModel:forwardPropagate(previousFeatureTensor, criticHiddenStateValue)[1][1]
+
+		local currentCriticValue = CriticModel:forwardPropagate(currentFeatureTensor, previousCriticValue)[1][1]
 
 		local advantageValue = rewardValue + (NewRecurrentProximalPolicyOptimizationClipModel.discountFactor * (1 - terminalStateValue) * currentCriticValue) - previousCriticValue
 
@@ -245,8 +281,8 @@ function RecurrentProximalPolicyOptimizationClipModel.new(parameterDictionary)
 		table.insert(criticValueHistory, previousCriticValue)
 
 		table.insert(advantageValueHistory, advantageValue)
-		
-		actorHiddenStateTensorArray[1] = actionMeanTensor
+
+		actorHiddenStateTensorArray[1] = previousActionMeanTensor
 
 		actorHiddenStateTensorArray[2] = oldPolicyActionMeanTensor
 
@@ -276,7 +312,7 @@ function RecurrentProximalPolicyOptimizationClipModel.new(parameterDictionary)
 
 				generalizedAdvantageEstimationValue = advantageValueHistory[t] + (discountFactor * lambda * generalizedAdvantageEstimationValue)
 
-				table.insert(generalizedAdvantageEstimationHistory, 1, generalizedAdvantageEstimationValue) -- Insert at the beginning to maintain order
+				table.insert(generalizedAdvantageEstimationHistory, 1, generalizedAdvantageEstimationValue)
 
 			end
 
@@ -290,12 +326,6 @@ function RecurrentProximalPolicyOptimizationClipModel.new(parameterDictionary)
 
 		ActorModel:setWeightTensorArray(NewRecurrentProximalPolicyOptimizationClipModel.CurrentActorWeightTensorArray, true)
 		
-		local outputDimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(ratioActionProbabiltyTensorHistory[1])
-
-		local actorHiddenStateTensor = AqwamTensorLibrary:createTensor(outputDimensionSizeArray)
-
-		local criticHiddenStateTensor = {{0}}
-		
 		local clipRatio = NewRecurrentProximalPolicyOptimizationClipModel.clipRatio 
 
 		local lowerClipRatioValue = 1 - clipRatio
@@ -304,15 +334,21 @@ function RecurrentProximalPolicyOptimizationClipModel.new(parameterDictionary)
 
 		local ratioValueModifierFunction = function(ratioValue) -- This is for the gradient of Proximal Policy Optimization clipped loss.
 
-			return ((ratioValue >= lowerClipRatioValue) and (ratioValue <= upperClipRatioValue) and ratioValue) or 0
+			return ((ratioValue == 0) and 0) or ((ratioValue >= lowerClipRatioValue) and (ratioValue <= upperClipRatioValue) and ratioValue) or 0
 
 		end
 
+		local outputDimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(ratioActionProbabiltyTensorHistory[1])
+
+		local actorHiddenStateTensor = AqwamTensorLibrary:createTensor(outputDimensionSizeArray)
+
+		local criticHiddenStateTensor = {{0}}
+
 		for h, featureTensor in ipairs(featureTensorHistory) do
 
-			local ratioActionProbabilityTensor = AqwamTensorLibrary:applyFunction(ratioValueModifierFunction, ratioActionProbabiltyTensorHistory[h])
+			local ratioActionProbabilityTensor = ratioActionProbabiltyTensorHistory[h]
 
-			local actorLossTensor = AqwamTensorLibrary:multiply(advantageValueHistory[h], ratioActionProbabilityTensor)
+			local actorLossTensor = AqwamTensorLibrary:multiply(ratioActionProbabilityTensor, advantageValueHistory[h])
 
 			local criticLoss = criticValueHistory[h] - rewardToGoArray[h]
 
