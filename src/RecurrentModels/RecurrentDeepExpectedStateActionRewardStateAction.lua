@@ -52,7 +52,7 @@ function RecurrentDeepExpectedStateActionRewardStateActionModel.new(parameterDic
 
 	NewRecurrentDeepExpectedStateActionRewardStateActionModel.EligibilityTrace = parameterDictionary.EligibilityTrace
 
-	NewRecurrentDeepExpectedStateActionRewardStateActionModel:setCategoricalUpdateFunction(function(previousFeatureTensor, action, rewardValue, currentFeatureTensor, terminalStateValue)
+	NewRecurrentDeepExpectedStateActionRewardStateActionModel:setCategoricalUpdateFunction(function(previousFeatureTensor, previousAction, rewardValue, currentFeatureTensor, currentAction, terminalStateValue)
 
 		local Model = NewRecurrentDeepExpectedStateActionRewardStateActionModel.Model
 
@@ -76,7 +76,7 @@ function RecurrentDeepExpectedStateActionRewardStateActionModel.new(parameterDic
 
 		local numberOfGreedyActions = 0
 
-		local actionIndex = table.find(ClassesList, action)
+		local actionIndex = table.find(ClassesList, previousAction)
 
 		local previousQTensor = Model:forwardPropagate(previousFeatureTensor, hiddenStateTensor)
 
@@ -84,11 +84,15 @@ function RecurrentDeepExpectedStateActionRewardStateActionModel.new(parameterDic
 
 		local maxQValue = targetTensor[1][actionIndex]
 
+		local unwrappedTargetTensor = targetTensor[1]
+
 		for i = 1, numberOfClasses, 1 do
 
-			if (targetTensor[1][i] ~= maxQValue) then continue end
+			if (unwrappedTargetTensor[i] == maxQValue) then
 
-			numberOfGreedyActions = numberOfGreedyActions + 1
+				numberOfGreedyActions = numberOfGreedyActions + 1
+
+			end
 
 		end
 
@@ -96,17 +100,13 @@ function RecurrentDeepExpectedStateActionRewardStateActionModel.new(parameterDic
 
 		local greedyActionProbability = ((1 - epsilon) / numberOfGreedyActions) + nonGreedyActionProbability
 
-		for _, qValue in ipairs(targetTensor[1]) do
+		local actionProbability
 
-			if (qValue == maxQValue) then
+		for _, qValue in ipairs(unwrappedTargetTensor) do
 
-				expectedQValue = expectedQValue + (qValue * greedyActionProbability)
+			actionProbability = ((qValue == maxQValue) and greedyActionProbability) or nonGreedyActionProbability
 
-			else
-
-				expectedQValue = expectedQValue + (qValue * nonGreedyActionProbability)
-
-			end
+			expectedQValue = expectedQValue + (qValue * actionProbability)
 
 		end
 
