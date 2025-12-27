@@ -206,7 +206,7 @@ function RecurrentAdvantageActorCriticModel.new(parameterDictionary)
 
 		for h, featureTensor in ipairs(featureTensorHistory) do
 
-			local advantageValue = advantageValueHistory[h]
+			local advantageValue = -advantageValueHistory[h]
 
 			local actorLossTensor = AqwamTensorLibrary:multiply(actionProbabilityGradientTensorHistory[h], advantageValue)
 
