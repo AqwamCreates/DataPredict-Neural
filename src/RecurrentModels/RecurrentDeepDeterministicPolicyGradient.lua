@@ -134,7 +134,7 @@ function RecurrentDeepDeterministicPolicyGradientModel.new(parameterDictionary)
 
 		local previousCriticActionMeanInputTensor = AqwamTensorLibrary:concatenate(previousFeatureTensor, previousActionMeanTensor, 2)
 
-		local previousCriticHiddenStateValue = CriticModel:forwardPropagate(previousCriticActionMeanInputTensor, currentCriticHiddenStateTensor)
+		local previousCriticHiddenStateTensor = CriticModel:forwardPropagate(previousCriticActionMeanInputTensor, currentCriticHiddenStateTensor)
 
 		CriticModel:update(temporalDifferenceError, true)
 
@@ -154,7 +154,7 @@ function RecurrentDeepDeterministicPolicyGradientModel.new(parameterDictionary)
 		
 		actorHiddenStateTensorArray[2] = previousActionMeanTensor
 		
-		criticHiddenStateValueArray[1] = previousCriticHiddenStateValue
+		criticHiddenStateValueArray[1] = previousCriticHiddenStateTensor
 		
 		criticHiddenStateValueArray[2] = previousTargetQTensor
 
