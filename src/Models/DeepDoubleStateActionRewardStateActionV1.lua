@@ -182,7 +182,7 @@ function DeepDoubleStateActionRewardStateActionModel:generateLossTensor(previous
 
 	if (EligibilityTrace) then
 
-		EligibilityTrace:increment(1, previousActionIndex, discountFactor, outputDimensionSizeArray)
+		EligibilityTrace:increment(previousActionIndex, discountFactor, outputDimensionSizeArray)
 
 		temporalDifferenceErrorTensor = EligibilityTrace:calculate(temporalDifferenceErrorTensor)
 
