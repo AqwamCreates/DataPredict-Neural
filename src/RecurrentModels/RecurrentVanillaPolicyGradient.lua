@@ -208,11 +208,9 @@ function RecurrentVanillaPolicyGradientModel.new(parameterDictionary)
 
 		for h, featureTensor in ipairs(featureTensorHistory) do
 
-			local advantageValue = advantageValueHistory[h]
+			local advantageValue = -advantageValueHistory[h]
 
 			local actorLossTensor = AqwamTensorLibrary:multiply(actionProbabilityGradientTensorHistory[h], advantageValue)
-
-			actorLossTensor = AqwamTensorLibrary:unaryMinus(actorLossTensor)
 			
 			actorHiddenStateTensor = ActorModel:forwardPropagate(featureTensor, actorHiddenStateTensor)
 
