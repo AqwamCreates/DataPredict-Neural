@@ -138,7 +138,7 @@ function RecurrentTwinDelayedDeepDeterministicPolicyGradientModel.new(parameterD
 		
 		local previousHighestActionValue = math.huge
 		
-		if (previousPreviousActionArray) then
+		if (previousPreviousActionArray[1]) and (previousPreviousActionArray[2]) then
 			
 			previousLowestActionValue = math.min(table.unpack(previousPreviousActionArray))
 			
@@ -278,7 +278,7 @@ function RecurrentTwinDelayedDeepDeterministicPolicyGradientModel.new(parameterD
 
 			local previousActionTensor = ActorModel:forwardPropagate(previousFeatureTensor, actorHiddenStateTensorArray[1])
 
-			ActorModel:update(-currentQValue)
+			ActorModel:update({{-currentQValue}})
 
 			for i = 1, 2, 1 do TargetCriticWeightTensorArrayArray[i] = rateAverageWeightTensorArray(averagingRate, TargetCriticWeightTensorArrayArray[i], CriticWeightTensorArrayArray[i]) end
 
