@@ -170,7 +170,7 @@ function RecurrentAdvantageActorCriticModel.new(parameterDictionary)
 
 	end)
 
-	NewRecurrentAdvantageActorCriticModel:setEpisodeUpdateFunction(function()
+	NewRecurrentAdvantageActorCriticModel:setEpisodeUpdateFunction(function(terminalStateValue)
 
 		local ActorModel = NewRecurrentAdvantageActorCriticModel.ActorModel
 
