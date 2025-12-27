@@ -70,9 +70,15 @@ function RecurrentTemporalDifferenceActorCriticModel.new(parameterDictionary)
 		
 		local CriticModel = NewRecurrentTemporalDifferenceActorCriticModel.CriticModel
 		
+		local discountFactor = NewRecurrentTemporalDifferenceActorCriticModel.discountFactor
+		
+		local EligibilityTrace = NewRecurrentTemporalDifferenceActorCriticModel.EligibilityTrace
+		
 		local ClassesList = ActorModel:getClassesList()
 		
-		local actorHiddenStateTensor = NewRecurrentTemporalDifferenceActorCriticModel.actorHiddenStateTensor or AqwamTensorLibrary:createTensor({1, #ClassesList})
+		local outputDimensionSizeArray = {1, #ClassesList}
+		
+		local actorHiddenStateTensor = NewRecurrentTemporalDifferenceActorCriticModel.actorHiddenStateTensor or AqwamTensorLibrary:createTensor(outputDimensionSizeArray)
 
 		local criticHiddenStateValue = NewRecurrentTemporalDifferenceActorCriticModel.criticHiddenStateValue or 0
 		
@@ -86,7 +92,7 @@ function RecurrentTemporalDifferenceActorCriticModel.new(parameterDictionary)
 
 		local previousCriticValue = previousCriticTensor[1][1]
 
-		local temporalDifferenceError = rewardValue + (NewRecurrentTemporalDifferenceActorCriticModel.discountFactor * (1 - terminalStateValue) * currentCriticTensor[1][1]) - previousCriticValue
+		local temporalDifferenceError = rewardValue + (discountFactor * (1 - terminalStateValue) * currentCriticTensor[1][1]) - previousCriticValue
 
 		local actionProbabilityTensor = calculateProbability(actionTensor)
 
@@ -105,6 +111,20 @@ function RecurrentTemporalDifferenceActorCriticModel.new(parameterDictionary)
 		local previousActionTensor = ActorModel:forwardPropagate(previousFeatureTensor, actorHiddenStateTensor)
 		
 		CriticModel:forwardPropagate(previousFeatureTensor, criticHiddenStateTensor)
+		
+		if (EligibilityTrace) then
+
+			local temporalDifferenceErrorVector = AqwamTensorLibrary:createTensor(outputDimensionSizeArray, 0)
+
+			temporalDifferenceErrorVector[1][classIndex] = temporalDifferenceError
+
+			EligibilityTrace:increment(1, classIndex, discountFactor, outputDimensionSizeArray)
+
+			temporalDifferenceErrorVector = EligibilityTrace:calculate(temporalDifferenceErrorVector)
+
+			temporalDifferenceError = temporalDifferenceErrorVector[1][classIndex]
+
+		end
 		
 		local criticLoss = {{-temporalDifferenceError}}
 		
