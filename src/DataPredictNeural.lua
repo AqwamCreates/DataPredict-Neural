@@ -179,6 +179,8 @@ AqwamDeepLearningLibrary.RecurrentModels = {
 	
 	RecurrentActorCritic = require(RecurrentModels.RecurrentActorCritic),
 	
+	RecurrentTemporalDifferenceActorCritic = require(RecurrentModels.RecurrentTemporalDifferenceActorCritic),
+	
 	RecurrentAdvantageActorCritic = require(RecurrentModels.RecurrentAdvantageActorCritic),
 	
 	RecurrentSoftActorCritic = require(RecurrentModels.RecurrentSoftActorCritic),
@@ -196,6 +198,8 @@ AqwamDeepLearningLibrary.RecurrentModels = {
 	RecurrentMonteCarloControl = require(RecurrentModels.RecurrentMonteCarloControl),
 
 	RecurrentOffPolicyMonteCarloControl = require(RecurrentModels.RecurrentOffPolicyMonteCarloControl),
+	
+	RecurrentTemporalDifference = require(RecurrentModels.RecurrentTemporalDifference),
 	
 	RecurrentDeepQLearning = require(RecurrentModels.RecurrentDeepQLearning),
 	
