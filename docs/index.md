@@ -20,8 +20,8 @@
 
 | Version | Current Version Number |
 |---------|------------------------|
-| Release | 1.19                   |
-| Beta    | 1.15.0                 |
+| Release | 1.20                   |
+| Beta    | 1.16.0                 |
 
 DataPredict™ Neural is an advanced deep learning library for Roblox and Pure Lua.
 
