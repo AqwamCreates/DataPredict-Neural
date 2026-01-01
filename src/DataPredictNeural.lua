@@ -147,6 +147,15 @@ AqwamDeepLearningLibrary.Models = {
 	DeepExpectedSARSA = require(Models.DeepExpectedStateActionRewardStateAction),
 	DeepExpectedStateActionRewardStateAction = require(Models.DeepExpectedStateActionRewardStateAction),
 	
+	NStepDQN = require(Models.DeepNStepQLearning),
+	DeepNStepQLearning = require(Models.DeepNStepQLearning),
+	
+	NStepDeepSARSA = require(Models.DeepNStepStateActionRewardStateAction),
+	DeepNStepStateActionRewardStateAction = require(Models.DeepNStepStateActionRewardStateAction),
+	
+	NStepDeepExpectedSARSA = require(Models.DeepNStepExpectedStateActionRewardStateAction),
+	DeepNStepExpectedStateActionRewardStateAction = require(Models.DeepNStepExpectedStateActionRewardStateAction),
+	
 	DeepClippedDoubleQLearning = require(Models.DeepClippedDoubleQLearning),
 	
 	DDQNV1 = require(Models.DeepDoubleQLearningV1),
