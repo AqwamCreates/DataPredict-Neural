@@ -178,7 +178,7 @@ AqwamDeepLearningLibrary.Models = {
 	
 	RandomNetworkDistillation = require(Models.RandomNetworkDistillation),
 	
-	Diffusion = require(Models.Diffusion)
+	Diffusion = require(Models.Diffusion),
 	
 }
 
