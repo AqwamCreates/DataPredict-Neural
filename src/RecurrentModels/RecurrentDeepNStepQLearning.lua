@@ -162,9 +162,9 @@ function RecurrentDeepNStepQLearningModel.new(parameterDictionary)
 
 		temporalDifferenceErrorTensor[1][actionIndex] = temporalDifferenceError
 		
-		Model:forwardPropagate(firstExperience[1], hiddenTensor, true)
-		
 		local negatedTemporalDifferenceErrorTensor = AqwamTensorLibrary:unaryMinus(temporalDifferenceErrorTensor) -- The original non-deep Q-Learning version performs gradient ascent. But the neural network performs gradient descent. So, we need to negate the error Tensor to make the neural network to perform gradient ascent.
+		
+		Model:forwardPropagate(firstExperience[1], hiddenTensor, true)
 
 		Model:update(negatedTemporalDifferenceErrorTensor, true)
 		
