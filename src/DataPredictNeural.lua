@@ -216,6 +216,12 @@ AqwamDeepLearningLibrary.RecurrentModels = {
 	
 	RecurrentDeepExpectedStateActionRewardStateAction = require(RecurrentModels.RecurrentDeepExpectedStateActionRewardStateAction),
 	
+	RecurrentDeepNStepQLearning = require(RecurrentModels.RecurrentDeepNStepQLearning),
+	
+	RecurrentDeepNStepStateActionRewardStateAction = require(RecurrentModels.RecurrentDeepNStepStateActionRewardStateAction),
+	
+	RecurrentDeepNStepExpectedStateActionRewardStateAction = require(RecurrentModels.RecurrentDeepNStepExpectedStateActionRewardStateAction),
+	
 	RecurrentDeepClippedDoubleQLearning = require(RecurrentModels.RecurrentDeepClippedDoubleQLearning),
 	
 	RecurrentDeepDoubleQLearningV1 = require(RecurrentModels.RecurrentDeepDoubleQLearningV1),
