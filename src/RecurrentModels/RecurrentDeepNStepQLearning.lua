@@ -122,8 +122,6 @@ function RecurrentDeepNStepQLearningModel.new(parameterDictionary)
 		
 		local currentMaxQValue
 		
-		local currentHiddenTensor
-		
 		for i, experience in ipairs(replayBufferArray) do
 			
 			previousFeatureTensor = experience[1]
@@ -139,8 +137,6 @@ function RecurrentDeepNStepQLearningModel.new(parameterDictionary)
 			elseif (i == nStep) then
 				
 				currentQTensor = qTensor
-				
-				currentHiddenTensor = hiddenTensor
 				
 				currentMaxQValue = AqwamTensorLibrary:findMaximumValue(currentQTensor)
 				
