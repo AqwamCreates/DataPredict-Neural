@@ -130,6 +130,8 @@ function RecurrentDeepNStepQLearningModel.new(parameterDictionary)
 			
 			qTensor = Model:forwardPropagate(previousFeatureTensor, hiddenTensor, true)
 			
+			hiddenTensor = qTensor
+			
 			if (i == 1) then
 				
 				lastQTensor = qTensor
