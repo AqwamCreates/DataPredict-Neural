@@ -64,17 +64,7 @@ function DeepNStepQLearningModel.new(parameterDictionary)
 
 		if (currentNStep < nStep) and (terminalStateValue == 0) then return 0 end
 
-		if (currentNStep > nStep) then 
-
-			table.remove(replayBufferArray, 1)
-
-			currentNStep = currentNStep - 1
-
-		end
-		
-		if (currentNStep < nStep) and (terminalStateValue == 0) then return 0 end
-
-		if (currentNStep > nStep) then 
+		if (currentNStep > nStep) then
 
 			table.remove(replayBufferArray, 1)
 
