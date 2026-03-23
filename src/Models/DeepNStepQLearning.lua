@@ -2,7 +2,7 @@
 
 	--------------------------------------------------------------------
 
-	Aqwam's Machine, Deep And Reinforcement Learning Library (DataPredict)
+	Aqwam's Deep Learning Library (DataPredict Neural)
 
 	Author: Aqwam Harish Aiman
 	
@@ -16,7 +16,7 @@
 		
 	By using this library, you agree to comply with our Terms and Conditions in the link below:
 	
-	https://github.com/AqwamCreates/DataPredict/blob/main/docs/TermsAndConditions.md
+	https://github.com/AqwamCreates/DataPredict-Neural/blob/main/docs/TermsAndConditions.md
 	
 	--------------------------------------------------------------------
 	
@@ -110,19 +110,19 @@ function DeepNStepQLearningModel.new(parameterDictionary)
 
 		local firstExperience = replayBufferArray[1]
 
-		local _, maxQValue = Model:predict(currentFeatureTensor)
+		local _, maximumCurrentQValue = Model:predict(currentFeatureTensor)
 
 		local lastQTensor = Model:forwardPropagate(firstExperience[1], true)
 
-		local bootstrapValue = math.pow(discountFactor, currentNStep) * maxQValue[1][1]	
+		local bootstrapValue = math.pow(discountFactor, currentNStep) * maximumCurrentQValue[1][1]	
 
-		local nStepTarget = returnValue + bootstrapValue
+		local nStepTargetValue = returnValue + bootstrapValue
 
 		local actionIndex = table.find(ClassesList, firstExperience[2])
 
-		local lastValue = lastQTensor[1][actionIndex]
+		local lastQValue = lastQTensor[1][actionIndex]
 
-		local temporalDifferenceError = nStepTarget - lastValue
+		local temporalDifferenceError = nStepTargetValue - lastQValue
 		
 		local outputDimensionSizeArray = {1, #ClassesList}
 
