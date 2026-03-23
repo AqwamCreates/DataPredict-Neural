@@ -106,11 +106,7 @@ end
 
 function DeepDoubleQLearningModel:loadWeightTensorArrayFromWeightTensorArrayArray(index)
 
-	local Model = self.Model
-	
-	local CurrentWeightTensorArray = self.WeightTensorArrayArray[index] or Model:generateLayers()
-
-	Model:setWeightTensorArray(CurrentWeightTensorArray, true)
+	self.Model:setWeightTensorArray(self.WeightTensorArrayArray[index], true)
 
 end
 
