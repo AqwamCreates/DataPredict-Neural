@@ -41,7 +41,7 @@ function DeepClippedDoubleQLearningModel.new(parameterDictionary)
 	parameterDictionary = parameterDictionary or {}
 
 	local NewDeepClippedDoubleQLearningModel = ReinforcementLearningBaseModel.new(parameterDictionary)
-
+	
 	setmetatable(NewDeepClippedDoubleQLearningModel, DeepClippedDoubleQLearningModel)
 	
 	NewDeepClippedDoubleQLearningModel:setName("DeepClippedDoubleQLearning")
@@ -49,9 +49,9 @@ function DeepClippedDoubleQLearningModel.new(parameterDictionary)
 	NewDeepClippedDoubleQLearningModel.EligibilityTrace = parameterDictionary.EligibilityTrace
 
 	NewDeepClippedDoubleQLearningModel.WeightTensorArrayArray = {}
-
+	
 	NewDeepClippedDoubleQLearningModel:setCategoricalUpdateFunction(function(previousFeatureTensor, previousAction, rewardValue, currentFeatureTensor, currentAction, terminalStateValue)
-
+		
 		local Model = NewDeepClippedDoubleQLearningModel.Model
 		
 		local discountFactor = NewDeepClippedDoubleQLearningModel.discountFactor
@@ -59,38 +59,38 @@ function DeepClippedDoubleQLearningModel.new(parameterDictionary)
 		local EligibilityTrace = NewDeepClippedDoubleQLearningModel.EligibilityTrace
 		
 		local WeightTensorArrayArray = NewDeepClippedDoubleQLearningModel.WeightTensorArrayArray
-		
-		local maxQValueArray = {}
+
+		local maximumCurrentQValueArray = {}
 
 		for i = 1, 2, 1 do
 
 			Model:setWeightTensorArray(WeightTensorArrayArray[i], true)
 
-			local _, maxQValue = Model:predict(currentFeatureTensor)
+			local _, maximumCurrentQTensor = Model:predict(currentFeatureTensor)
 
-			table.insert(maxQValueArray, maxQValue[1][1])
+			table.insert(maximumCurrentQValueArray, maximumCurrentQTensor[1][1])
 			
 			WeightTensorArrayArray[i] = Model:getWeightTensorArray(true)
 
 		end
 
-		local maxQValue = math.min(table.unpack(maxQValueArray))
+		local minimumMaximumCurrentQValue = math.min(table.unpack(maximumCurrentQValueArray))
 
-		local targetValue = rewardValue + (discountFactor * (1 - terminalStateValue) * maxQValue)
-
+		local targetQValue = rewardValue + (discountFactor * (1 - terminalStateValue) * minimumMaximumCurrentQValue)
+		
 		local ClassesList = Model:getClassesList()
 
 		local actionIndex = table.find(ClassesList, previousAction)
-
+		
 		local numberOfClasses = #ClassesList
 		
 		local outputDimensionSizeArray = {1, numberOfClasses}
-
+		
 		local temporalDifferenceErrorTensor = AqwamTensorLibrary:createTensor({1, 2})
 		
 		if (EligibilityTrace) then
-
-			EligibilityTrace:increment(actionIndex, discountFactor, outputDimensionSizeArray)
+			
+			EligibilityTrace:increment(1, actionIndex, discountFactor, outputDimensionSizeArray)
 
 		end
 
@@ -98,33 +98,33 @@ function DeepClippedDoubleQLearningModel.new(parameterDictionary)
 
 			Model:setWeightTensorArray(WeightTensorArrayArray[i], true)
 
-			local previousTensor = Model:forwardPropagate(previousFeatureTensor, true)
+			local previousQTensor = Model:forwardPropagate(previousFeatureTensor, true)
 
-			local lastValue = previousTensor[1][actionIndex]
-
-			local temporalDifferenceError = targetValue - lastValue
-
-			local lossTensor = AqwamTensorLibrary:createTensor(outputDimensionSizeArray)
+			local previousQTensor = previousQTensor[1][actionIndex]
+			
+			local temporalDifferenceError = targetQValue - previousQTensor
+			
+			local lossTensor = AqwamTensorLibrary:createTensor(outputDimensionSizeArray, 0)
 
 			lossTensor[1][actionIndex] = temporalDifferenceError
-
+			
 			temporalDifferenceErrorTensor[1][i] = temporalDifferenceError
 			
 			if (EligibilityTrace) then lossTensor = EligibilityTrace:calculate(lossTensor) end
 			
-			local negatedLossTensor = AqwamTensorLibrary:unaryMinus(lossTensor) -- The original non-deep Q-Learning version performs gradient ascent. But the neural network performs gradient descent. So, we need to negate the error tensor to make the neural network to perform gradient ascent.
-
+			local negatedLossTensor = AqwamTensorLibrary:unaryMinus(lossTensor) -- The original non-deep Q-Learning version performs gradient ascent. But the neural network performs gradient descent. So, we need to negate the error Tensor to make the neural network to perform gradient ascent.
+			
 			Model:update(negatedLossTensor, true)
 			
 			WeightTensorArrayArray[i] = Model:getWeightTensorArray(true)
 
 		end
-
+		
 		return temporalDifferenceErrorTensor
 
 	end)
-
-	NewDeepClippedDoubleQLearningModel:setEpisodeUpdateFunction(function(terminalStateValue) 
+	
+	NewDeepClippedDoubleQLearningModel:setEpisodeUpdateFunction(function(terminalStateValue)
 		
 		local EligibilityTrace = NewDeepClippedDoubleQLearningModel.EligibilityTrace
 		
@@ -144,27 +144,59 @@ function DeepClippedDoubleQLearningModel.new(parameterDictionary)
 
 end
 
-function DeepClippedDoubleQLearningModel:setWeightTensorArray1(WeightTensorArray1)
+function DeepClippedDoubleQLearningModel:setWeightTensorArray1(WeightTensorArray1, doNotDeepCopy)
 
-	self.WeightTensorArrayArray[1] = WeightTensorArray1
+	if (doNotDeepCopy) then
 
-end
+		self.WeightTensorArrayArray[1] = WeightTensorArray1
 
-function DeepClippedDoubleQLearningModel:setWeightTensorArray2(WeightTensorArray2)
+	else
 
-	self.WeightTensorArrayArray[2] = WeightTensorArray2
+		self.WeightTensorArrayArray[1] = self:deepCopyTable(WeightTensorArray1)
 
-end
-
-function DeepClippedDoubleQLearningModel:getWeightTensorArray1(WeightTensorArray1)
-
-	return self.WeightTensorArrayArray[1]
+	end
 
 end
 
-function DeepClippedDoubleQLearningModel:getWeightTensorArray2(WeightTensorArray2)
+function DeepClippedDoubleQLearningModel:setWeightTensorArray2(WeightTensorArray2, doNotDeepCopy)
 
-	return self.WeightTensorArrayArray[2]
+	if (doNotDeepCopy) then
+
+		self.WeightTensorArrayArray[2] = WeightTensorArray2
+
+	else
+
+		self.WeightTensorArrayArray[2] = self:deepCopyTable(WeightTensorArray2)
+
+	end
+
+end
+
+function DeepClippedDoubleQLearningModel:getWeightTensorArray1(doNotDeepCopy)
+
+	if (doNotDeepCopy) then
+
+		return self.WeightTensorArrayArray[1]
+
+	else
+
+		return self:deepCopyTable(self.WeightTensorArrayArray[1])
+
+	end
+
+end
+
+function DeepClippedDoubleQLearningModel:getWeightTensorArray2(doNotDeepCopy)
+
+	if (doNotDeepCopy) then
+
+		return self.WeightTensorArrayArray[2]
+
+	else
+
+		return self:deepCopyTable(self.WeightTensorArrayArray[2])
+
+	end
 
 end
 
