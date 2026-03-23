@@ -44,18 +44,16 @@ function DeepDoubleQLearningModel.new(parameterDictionary)
 
 	setmetatable(NewDeepDoubleQLearningModel, DeepDoubleQLearningModel)
 	
-	NewDeepDoubleQLearningModel:setName("DeepDoubleQLearning")
+	NewDeepDoubleQLearningModel:setName("DeepDoubleQLearningV1")
 	
 	NewDeepDoubleQLearningModel.EligibilityTrace = parameterDictionary.EligibilityTrace
-
+	
 	NewDeepDoubleQLearningModel.WeightTensorArrayArray = parameterDictionary.WeightTensorArrayArray or {}
-
+	
 	NewDeepDoubleQLearningModel:setCategoricalUpdateFunction(function(previousFeatureTensor, previousAction, rewardValue, currentFeatureTensor, currentAction, terminalStateValue)
-
+		
 		local Model = NewDeepDoubleQLearningModel.Model
 		
-		local WeightTensorArrayArray = NewDeepDoubleQLearningModel.WeightTensorArrayArray
-
 		local randomProbability = math.random()
 
 		local updateSecondModel = (randomProbability >= 0.5)
@@ -64,30 +62,30 @@ function DeepDoubleQLearningModel.new(parameterDictionary)
 
 		local selectedModelNumberForUpdate = (updateSecondModel and 2) or 1
 
-		local temporalDifferenceErrorTensor, temporalDifferenceError = NewDeepDoubleQLearningModel:generateLossTensor(previousFeatureTensor, previousAction, rewardValue, currentFeatureTensor, terminalStateValue, selectedModelNumberForTargetTensor, selectedModelNumberForUpdate)
+		local temporalDifferenceErrorTensor, temporalDifferenceError = NewDeepDoubleQLearningModel:generateTemporalDifferenceErrorTensor(previousFeatureTensor, previousAction, rewardValue, currentFeatureTensor, terminalStateValue, selectedModelNumberForTargetTensor, selectedModelNumberForUpdate)
 		
-		local negatedTemporalDifferenceErrorTensor = AqwamTensorLibrary:unaryMinus(temporalDifferenceErrorTensor) -- The original non-deep Q-Learning version performs gradient ascent. But the neural network performs gradient descent. So, we need to negate the error tensor to make the neural network to perform gradient ascent.
+		local negatedTemporalDifferenceErrorTensor = AqwamTensorLibrary:unaryMinus(temporalDifferenceErrorTensor) -- The original non-deep Q-Learning version performs gradient ascent. But the neural network performs gradient descent. So, we need to negate the error Tensor to make the neural network to perform gradient ascent.
 		
-		Model:setWeightTensorArray(WeightTensorArrayArray[selectedModelNumberForUpdate], true)
+		NewDeepDoubleQLearningModel:loadWeightTensorArrayFromWeightTensorArrayArray(selectedModelNumberForUpdate)
 		
 		Model:forwardPropagate(previousFeatureTensor, true)
-
+		
 		Model:update(negatedTemporalDifferenceErrorTensor, true)
 
-		WeightTensorArrayArray[selectedModelNumberForUpdate] = Model:getWeightTensorArray(true)
-
+		NewDeepDoubleQLearningModel:saveWeightTensorArrayFromWeightTensorArrayArray(selectedModelNumberForUpdate)
+		
 		return temporalDifferenceError
-
+		
 	end)
-
-	NewDeepDoubleQLearningModel:setEpisodeUpdateFunction(function(terminalStateValue)
+	
+	NewDeepDoubleQLearningModel:setEpisodeUpdateFunction(function(terminalStateValue) 
 		
 		local EligibilityTrace = NewDeepDoubleQLearningModel.EligibilityTrace
 
 		if (EligibilityTrace) then EligibilityTrace:reset() end
 		
 	end)
-
+	
 	NewDeepDoubleQLearningModel:setResetFunction(function() 
 		
 		local EligibilityTrace = NewDeepDoubleQLearningModel.EligibilityTrace
@@ -100,68 +98,74 @@ function DeepDoubleQLearningModel.new(parameterDictionary)
 
 end
 
-function DeepDoubleQLearningModel:generateLossTensor(previousFeatureTensor, previousAction, rewardValue, currentFeatureTensor, terminalStateValue, selectedModelNumberForTargetTensor, selectedModelNumberForUpdate)
+function DeepDoubleQLearningModel:saveWeightTensorArrayFromWeightTensorArrayArray(index)
 
+	self.WeightTensorArrayArray[index] = self.Model:getWeightTensorArray()
+
+end
+
+function DeepDoubleQLearningModel:loadWeightTensorArrayFromWeightTensorArrayArray(index)
+
+	self.Model:setWeightTensorArray(self.WeightTensorArrayArray[index], true)
+
+end
+
+function DeepDoubleQLearningModel:generateTemporalDifferenceErrorTensor(previousFeatureTensor, previousAction, rewardValue, currentFeatureTensor, terminalStateValue, selectedModelNumberForTargetTensor, selectedModelNumberForUpdate)
+	
 	local Model = self.Model
 	
 	local discountFactor = self.discountFactor
 	
 	local EligibilityTrace = self.EligibilityTrace
 	
-	local WeightTensorArrayArray = self.WeightTensorArrayArray
-
-	if (not WeightTensorArrayArray[1]) then WeightTensorArrayArray[1] = Model:getWeightTensorArray(true) end
-
-	if (not WeightTensorArrayArray[2]) then WeightTensorArrayArray[2] = Model:getWeightTensorArray(true) end
+	self:loadWeightTensorArrayFromWeightTensorArrayArray(selectedModelNumberForUpdate)
 	
-	Model:setWeightTensorArray(WeightTensorArrayArray[selectedModelNumberForUpdate], true)
-
 	local previousQTensor = Model:forwardPropagate(previousFeatureTensor)
+	
+	self:loadWeightTensorArrayFromWeightTensorArrayArray(selectedModelNumberForTargetTensor)
 
-	Model:setWeightTensorArray(WeightTensorArrayArray[selectedModelNumberForTargetTensor], true)
+	local _, currentMaximumQValue = Model:predict(currentFeatureTensor)
 
-	local _, maxQValue = Model:predict(currentFeatureTensor)
-
-	local targetValue = rewardValue + (discountFactor * (1 - terminalStateValue) * maxQValue[1][1])
-
+	local targetQValue = rewardValue + (discountFactor * (1 - terminalStateValue) * currentMaximumQValue[1][1])
+	
 	local ClassesList = Model:getClassesList()
-
+	
 	local numberOfClasses = #ClassesList
 
 	local actionIndex = table.find(ClassesList, previousAction)
-
-	local lastValue = previousQTensor[1][actionIndex]
-
-	local temporalDifferenceError = targetValue - lastValue
+	
+	local previousQValue = previousQTensor[1][actionIndex]
+	
+	local temporalDifferenceError = targetQValue - previousQValue
 	
 	local outputDimensionSizeArray = {1, numberOfClasses}
-
+		
 	local temporalDifferenceErrorTensor = AqwamTensorLibrary:createTensor(outputDimensionSizeArray, 0)
 
 	temporalDifferenceErrorTensor[1][actionIndex] = temporalDifferenceError
 	
 	if (EligibilityTrace) then
 
-		EligibilityTrace:increment(actionIndex, discountFactor, outputDimensionSizeArray)
-
+		EligibilityTrace:increment(1, actionIndex, discountFactor, outputDimensionSizeArray)
+		
 		temporalDifferenceErrorTensor = EligibilityTrace:calculate(temporalDifferenceErrorTensor)
 
 	end
-
+	
 	return temporalDifferenceErrorTensor, temporalDifferenceError
-
+	
 end
 
 function DeepDoubleQLearningModel:setWeightTensorArray1(WeightTensorArray1, doNotDeepCopy)
-
+	
 	if (doNotDeepCopy) then
-
+		
 		self.WeightTensorArrayArray[1] = WeightTensorArray1
-
+		
 	else
-
+		
 		self.WeightTensorArrayArray[1] = self:deepCopyTable(WeightTensorArray1)
-
+		
 	end
 
 end
@@ -181,15 +185,15 @@ function DeepDoubleQLearningModel:setWeightTensorArray2(WeightTensorArray2, doNo
 end
 
 function DeepDoubleQLearningModel:getWeightTensorArray1(doNotDeepCopy)
-
+	
 	if (doNotDeepCopy) then
-
+		
 		return self.WeightTensorArrayArray[1]
-
+		
 	else
-
+		
 		return self:deepCopyTable(self.WeightTensorArrayArray[1])
-
+		
 	end
 
 end
