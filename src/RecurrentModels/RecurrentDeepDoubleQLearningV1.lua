@@ -196,9 +196,9 @@ function RecurrentDeepDoubleQLearningModel:generateLossTensor(previousFeatureTen
 
 	local previousQTensor = Model:forwardPropagate(previousFeatureTensor, hiddenStateTensorArray[selectedModelNumberForTargetTensor])
 
-	local _, maxQValue = Model:predict(currentFeatureTensor, previousQTensor)
+	local _, maximumCurrentQTensor = Model:predict(currentFeatureTensor, previousQTensor)
 
-	local targetQValue = rewardValue + (discountFactor * (1 - terminalStateValue) * maxQValue[1][1])
+	local targetQValue = rewardValue + (discountFactor * (1 - terminalStateValue) * maximumCurrentQTensor[1][1])
 
 	local previousActionIndex = table.find(ClassesList, previousAction)
 
