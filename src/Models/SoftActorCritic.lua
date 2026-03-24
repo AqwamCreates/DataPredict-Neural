@@ -222,14 +222,6 @@ function SoftActorCriticModel:update(previousFeatureTensor, previousActionTensor
 
 	local TargetCriticWeightTensorArrayArray = self.TargetCriticWeightTensorArrayArray
 	
-	PrimaryCriticWeightTensorArrayArray[1] = PrimaryCriticWeightTensorArrayArray[1] or CriticModel:generateLayers()
-	
-	PrimaryCriticWeightTensorArrayArray[2] = PrimaryCriticWeightTensorArrayArray[2] or CriticModel:generateLayers()
-	
-	TargetCriticWeightTensorArrayArray[1] = TargetCriticWeightTensorArrayArray[1] or PrimaryCriticWeightTensorArrayArray[1]
-	
-	TargetCriticWeightTensorArrayArray[2] = TargetCriticWeightTensorArrayArray[2] or PrimaryCriticWeightTensorArrayArray[2]
-	
 	local currentLogActionProbabilityValue
 	
 	if (currentAction) then
@@ -255,6 +247,8 @@ function SoftActorCriticModel:update(previousFeatureTensor, previousActionTensor
 		CriticModel:setWeightTensorArray(TargetCriticWeightTensorArrayArray[i])
 
 		targetCurrentCriticValueArray[i] = CriticModel:forwardPropagate(concatenatedCurrentFeatureAndActionTensor)[1][1]
+		
+		TargetCriticWeightTensorArrayArray[i] = TargetCriticWeightTensorArrayArray[i] or CriticModel:getWeightTensorArray(true)
 
 	end
 
