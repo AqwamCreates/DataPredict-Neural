@@ -47,6 +47,8 @@ function RecurrentDeepDoubleStateActionRewardStateActionModel.new(parameterDicti
 	NewRecurrentDeepDoubleStateActionRewardStateActionModel:setName("RecurrentDeepDoubleStateActionRewardStateAction")
 
 	NewRecurrentDeepDoubleStateActionRewardStateActionModel.EligibilityTrace = parameterDictionary.EligibilityTrace
+	
+	NewRecurrentDeepDoubleStateActionRewardStateActionModel.hiddenStateTensorArray = parameterDictionary.hiddenStateTensorArray or {}
 
 	NewRecurrentDeepDoubleStateActionRewardStateActionModel.WeightTensorArrayArray = parameterDictionary.WeightTensorArrayArray or {}
 
@@ -95,6 +97,10 @@ function RecurrentDeepDoubleStateActionRewardStateActionModel.new(parameterDicti
 		local EligibilityTrace = NewRecurrentDeepDoubleStateActionRewardStateActionModel.EligibilityTrace
 
 		if (EligibilityTrace) then EligibilityTrace:reset() end
+		
+		NewRecurrentDeepDoubleStateActionRewardStateActionModel.hiddenStateTensorArray = nil
+
+		NewRecurrentDeepDoubleStateActionRewardStateActionModel.WeightTensorArrayArray = nil
 
 	end)
 
@@ -103,6 +109,10 @@ function RecurrentDeepDoubleStateActionRewardStateActionModel.new(parameterDicti
 		local EligibilityTrace = NewRecurrentDeepDoubleStateActionRewardStateActionModel.EligibilityTrace
 
 		if (EligibilityTrace) then EligibilityTrace:reset() end
+		
+		NewRecurrentDeepDoubleStateActionRewardStateActionModel.hiddenStateTensorArray = nil
+
+		NewRecurrentDeepDoubleStateActionRewardStateActionModel.WeightTensorArrayArray = nil
 
 	end)
 
@@ -150,9 +160,11 @@ function RecurrentDeepDoubleStateActionRewardStateActionModel:generateLossTensor
 
 	local currentActionIndex = table.find(ClassesList, currentAction)
 
-	local targetValue = rewardValue + (discountFactor * currentQTensor[1][currentActionIndex] * (1 - terminalStateValue))
+	local targetQValue = rewardValue + (discountFactor * currentQTensor[1][currentActionIndex] * (1 - terminalStateValue))
+	
+	local previousQValue = previousQTensor[1][previousActionIndex] 
 
-	local temporalDifferenceError = targetValue - previousQTensor[1][previousActionIndex] 
+	local temporalDifferenceError = targetQValue - previousQValue
 
 	local temporalDifferenceErrorTensor = AqwamTensorLibrary:createTensor(outputDimensionSizeArray, 0)
 
