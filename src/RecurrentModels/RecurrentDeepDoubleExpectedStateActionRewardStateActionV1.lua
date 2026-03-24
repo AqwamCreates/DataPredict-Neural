@@ -164,17 +164,17 @@ function RecurrentDeepDoubleExpectedStateActionRewardStateActionModel:generateLo
 
 	Model:setWeightTensorArray(WeightTensorArrayArray[selectedModelNumberForTargetTensor], true)
 	
-	local previousTargetQTensor = Model:forwardPropagate(previousFeatureTensor, hiddenStateTensorArray[selectedModelNumberForTargetTensor])
+	local currentHiddenStateTensor = Model:forwardPropagate(previousFeatureTensor, hiddenStateTensorArray[selectedModelNumberForTargetTensor])
 
-	local currentTargetQTensor = Model:forwardPropagate(currentFeatureTensor, previousTargetQTensor)
-
-	local currentMaximumQValue = currentTargetQTensor[1][previousActionIndex]
+	local currentQTensor = Model:forwardPropagate(currentFeatureTensor, currentHiddenStateTensor)
 	
-	local unwrappedTargetTensor = currentTargetQTensor[1]
+	local unwrappedPreviousQTensor = currentQTensor[1]
+
+	local currentMaximumQValue = unwrappedPreviousQTensor[previousActionIndex]
 
 	for i = 1, numberOfClasses, 1 do
 
-		if (unwrappedTargetTensor[i] == currentMaximumQValue) then
+		if (currentQTensor[i] == currentMaximumQValue) then
 			
 			numberOfGreedyActions = numberOfGreedyActions + 1
 			
@@ -188,7 +188,7 @@ function RecurrentDeepDoubleExpectedStateActionRewardStateActionModel:generateLo
 	
 	local actionProbability
 
-	for _, qValue in ipairs(unwrappedTargetTensor) do
+	for _, qValue in ipairs(currentQTensor) do
 		
 		actionProbability = ((qValue == currentMaximumQValue) and greedyActionProbability) or nonGreedyActionProbability
 
