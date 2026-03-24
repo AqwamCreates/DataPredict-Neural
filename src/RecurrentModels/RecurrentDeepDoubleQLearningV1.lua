@@ -89,6 +89,8 @@ function RecurrentDeepDoubleQLearningModel.new(parameterDictionary)
 	NewRecurrentDeepDoubleQLearningModel:setName("RecurrentDeepDoubleQLearning")
 
 	NewRecurrentDeepDoubleQLearningModel.EligibilityTrace = parameterDictionary.EligibilityTrace
+	
+	NewRecurrentDeepDoubleQLearningModel.hiddenStateTensorArray = parameterDictionary.hiddenStateTensorArray or {}
 
 	NewRecurrentDeepDoubleQLearningModel.WeightTensorArrayArray = parameterDictionary.WeightTensorArrayArray or {}
 
@@ -137,6 +139,10 @@ function RecurrentDeepDoubleQLearningModel.new(parameterDictionary)
 		local EligibilityTrace = NewRecurrentDeepDoubleQLearningModel.EligibilityTrace
 
 		if (EligibilityTrace) then EligibilityTrace:reset() end
+		
+		NewRecurrentDeepDoubleQLearningModel.hiddenStateTensorArray = nil
+
+		NewRecurrentDeepDoubleQLearningModel.WeightTensorArrayArray = nil
 
 	end)
 
@@ -145,6 +151,10 @@ function RecurrentDeepDoubleQLearningModel.new(parameterDictionary)
 		local EligibilityTrace = NewRecurrentDeepDoubleQLearningModel.EligibilityTrace
 
 		if (EligibilityTrace) then EligibilityTrace:reset() end
+		
+		NewRecurrentDeepDoubleQLearningModel.hiddenStateTensorArray = nil
+
+		NewRecurrentDeepDoubleQLearningModel.WeightTensorArrayArray = nil
 
 	end)
 
@@ -152,7 +162,7 @@ function RecurrentDeepDoubleQLearningModel.new(parameterDictionary)
 
 end
 
-function RecurrentDeepDoubleQLearningModel:generateLossTensor(previousFeatureTensor, action, rewardValue, currentFeatureTensor, terminalStateValue, selectedModelNumberForTargetTensor, selectedModelNumberForUpdate)
+function RecurrentDeepDoubleQLearningModel:generateLossTensor(previousFeatureTensor, previousAction, rewardValue, currentFeatureTensor, terminalStateValue, selectedModelNumberForTargetTensor, selectedModelNumberForUpdate)
 
 	local Model = self.Model
 
@@ -188,21 +198,21 @@ function RecurrentDeepDoubleQLearningModel:generateLossTensor(previousFeatureTen
 
 	local _, maxQValue = Model:predict(currentFeatureTensor, previousQTensor)
 
-	local targetValue = rewardValue + (discountFactor * (1 - terminalStateValue) * maxQValue[1][1])
+	local targetQValue = rewardValue + (discountFactor * (1 - terminalStateValue) * maxQValue[1][1])
 
-	local actionIndex = table.find(ClassesList, action)
+	local previousActionIndex = table.find(ClassesList, previousAction)
 
-	local lastValue = previousQTensor[1][actionIndex]
+	local previousQValue = previousQTensor[1][previousActionIndex]
 
-	local temporalDifferenceError = targetValue - lastValue
+	local temporalDifferenceError = targetQValue - previousQValue
 
 	local temporalDifferenceErrorTensor = AqwamTensorLibrary:createTensor(outputDimensionSizeArray, 0)
 
-	temporalDifferenceErrorTensor[1][actionIndex] = temporalDifferenceError
+	temporalDifferenceErrorTensor[1][previousActionIndex] = temporalDifferenceError
 
 	if (EligibilityTrace) then
 
-		EligibilityTrace:increment(actionIndex, discountFactor, outputDimensionSizeArray)
+		EligibilityTrace:increment(previousActionIndex, discountFactor, outputDimensionSizeArray)
 
 		temporalDifferenceErrorTensor = EligibilityTrace:calculate(temporalDifferenceErrorTensor)
 
