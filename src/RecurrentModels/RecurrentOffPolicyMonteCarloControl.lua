@@ -193,6 +193,8 @@ function RecurrentOffPolicyMonteCarloControlModel.new(parameterDictionary)
 		table.clear(actionTensorHistory)
 
 		table.clear(rewardValueHistory)
+		
+		NewRecurrentOffPolicyMonteCarloControlModel.hiddenStateTensor = nil
 
 	end)
 
@@ -203,6 +205,8 @@ function RecurrentOffPolicyMonteCarloControlModel.new(parameterDictionary)
 		table.clear(actionTensorHistory)
 
 		table.clear(rewardValueHistory)
+		
+		NewRecurrentOffPolicyMonteCarloControlModel.hiddenStateTensor = nil
 
 	end)
 
