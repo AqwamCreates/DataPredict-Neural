@@ -51,6 +51,8 @@ function RecurrentDeepDoubleExpectedStateActionRewardStateActionModel.new(parame
 	NewRecurrentDeepDoubleExpectedStateActionRewardStateActionModel.epsilon = parameterDictionary.epsilon or defaultEpsilon
 
 	NewRecurrentDeepDoubleExpectedStateActionRewardStateActionModel.EligibilityTrace = parameterDictionary.EligibilityTrace
+	
+	NewRecurrentDeepDoubleExpectedStateActionRewardStateActionModel.hiddenStateTensorArray = parameterDictionary.hiddenStateTensorArray or {}
 
 	NewRecurrentDeepDoubleExpectedStateActionRewardStateActionModel.WeightTensorArrayArray = parameterDictionary.WeightTensorArrayArray or {}
 
@@ -99,6 +101,10 @@ function RecurrentDeepDoubleExpectedStateActionRewardStateActionModel.new(parame
 		local EligibilityTrace = NewRecurrentDeepDoubleExpectedStateActionRewardStateActionModel.EligibilityTrace
 			
 		if (EligibilityTrace) then EligibilityTrace:reset() end
+		
+		NewRecurrentDeepDoubleExpectedStateActionRewardStateActionModel.hiddenStateTensorArray = nil
+
+		NewRecurrentDeepDoubleExpectedStateActionRewardStateActionModel.WeightTensorArrayArray = nil
 
 	end)
 
@@ -107,6 +113,10 @@ function RecurrentDeepDoubleExpectedStateActionRewardStateActionModel.new(parame
 		local EligibilityTrace = NewRecurrentDeepDoubleExpectedStateActionRewardStateActionModel.EligibilityTrace
 
 		if (EligibilityTrace) then EligibilityTrace:reset() end
+		
+		NewRecurrentDeepDoubleExpectedStateActionRewardStateActionModel.hiddenStateTensorArray = nil
+
+		NewRecurrentDeepDoubleExpectedStateActionRewardStateActionModel.WeightTensorArrayArray = nil
 
 	end)
 
