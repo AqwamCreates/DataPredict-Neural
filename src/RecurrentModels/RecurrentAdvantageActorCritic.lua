@@ -30,11 +30,13 @@ local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker
 
 local RecurrentReinforcementLearningActorCriticBaseModel = require(script.Parent.RecurrentReinforcementLearningActorCriticBaseModel)
 
-RecurrentTemporalDifferenceActorCriticModel = {}
+RecurrentAdvantageActorCriticModel = {}
 
-RecurrentTemporalDifferenceActorCriticModel.__index = RecurrentTemporalDifferenceActorCriticModel
+RecurrentAdvantageActorCriticModel.__index = RecurrentAdvantageActorCriticModel
 
-setmetatable(RecurrentTemporalDifferenceActorCriticModel, RecurrentReinforcementLearningActorCriticBaseModel)
+setmetatable(RecurrentAdvantageActorCriticModel, RecurrentReinforcementLearningActorCriticBaseModel)
+
+local defaultLambda = 0
 
 local function calculateProbability(valueTensor)
 
@@ -52,49 +54,51 @@ local function calculateProbability(valueTensor)
 
 end
 
-function RecurrentTemporalDifferenceActorCriticModel.new(parameterDictionary)
+function RecurrentAdvantageActorCriticModel.new(parameterDictionary)
 
 	parameterDictionary = parameterDictionary or {}
 
-	local NewRecurrentTemporalDifferenceActorCriticModel = RecurrentReinforcementLearningActorCriticBaseModel.new(parameterDictionary)
+	local NewRecurrentAdvantageActorCriticModel = RecurrentReinforcementLearningActorCriticBaseModel.new(parameterDictionary)
 
-	setmetatable(NewRecurrentTemporalDifferenceActorCriticModel, RecurrentTemporalDifferenceActorCriticModel)
+	setmetatable(NewRecurrentAdvantageActorCriticModel, RecurrentAdvantageActorCriticModel)
 
-	RecurrentTemporalDifferenceActorCriticModel:setName("RecurrentAdvantageActorCritic")
+	RecurrentAdvantageActorCriticModel:setName("RecurrentAdvantageActorCritic")
 
-	NewRecurrentTemporalDifferenceActorCriticModel.EligibilityTrace = parameterDictionary.EligibilityTrace
+	NewRecurrentAdvantageActorCriticModel.lambda = parameterDictionary.lambda or defaultLambda
 
-	NewRecurrentTemporalDifferenceActorCriticModel:setCategoricalUpdateFunction(function(previousFeatureTensor, previousAction, rewardValue, currentFeatureTensor, currentAction, terminalStateValue)
+	local featureTensorHistory = {}
+
+	local advantageValueHistory = {}
+
+	local actionProbabilityGradientTensorHistory = {}
+
+	NewRecurrentAdvantageActorCriticModel:setCategoricalUpdateFunction(function(previousFeatureTensor, previousAction, rewardValue, currentFeatureTensor, currentAction, terminalStateValue)
 		
-		local ActorModel = NewRecurrentTemporalDifferenceActorCriticModel.ActorModel
+		local ActorModel = NewRecurrentAdvantageActorCriticModel.ActorModel
 		
-		local CriticModel = NewRecurrentTemporalDifferenceActorCriticModel.CriticModel
+		local CriticModel = NewRecurrentAdvantageActorCriticModel.CriticModel
 		
-		local discountFactor = NewRecurrentTemporalDifferenceActorCriticModel.discountFactor
-		
-		local EligibilityTrace = NewRecurrentTemporalDifferenceActorCriticModel.EligibilityTrace
+		local actorHiddenStateTensor = NewRecurrentAdvantageActorCriticModel.actorHiddenStateTensor
+
+		local criticHiddenStateValue = NewRecurrentAdvantageActorCriticModel.criticHiddenStateValue or 0
 		
 		local ClassesList = ActorModel:getClassesList()
-		
-		local outputDimensionSizeArray = {1, #ClassesList}
-		
-		local actorHiddenStateTensor = NewRecurrentTemporalDifferenceActorCriticModel.actorHiddenStateTensor or AqwamTensorLibrary:createTensor(outputDimensionSizeArray)
 
-		local criticHiddenStateValue = NewRecurrentTemporalDifferenceActorCriticModel.criticHiddenStateValue or 0
-		
-		local criticHiddenStateTensor = {{criticHiddenStateValue}}
+		if (not actorHiddenStateTensor) then
+
+			actorHiddenStateTensor = AqwamTensorLibrary:createTensor({1, #ClassesList})
+
+		end
 
 		local actionTensor = ActorModel:forwardPropagate(previousFeatureTensor, actorHiddenStateTensor)
 
-		local previousCriticTensor = CriticModel:forwardPropagate(previousFeatureTensor, criticHiddenStateTensor)
+		local previousCriticValue = CriticModel:forwardPropagate(previousFeatureTensor, criticHiddenStateValue)[1][1]
 
-		local currentCriticTensor = CriticModel:forwardPropagate(currentFeatureTensor, previousCriticTensor)
-
-		local previousCriticValue = previousCriticTensor[1][1]
-
-		local temporalDifferenceError = rewardValue + (discountFactor * (1 - terminalStateValue) * currentCriticTensor[1][1]) - previousCriticValue
+		local currentCriticValue = CriticModel:forwardPropagate(currentFeatureTensor, previousCriticValue)[1][1]
 
 		local actionProbabilityTensor = calculateProbability(actionTensor)
+
+		local advantageValue = rewardValue + (NewRecurrentAdvantageActorCriticModel.discountFactor * (1 - terminalStateValue) * currentCriticValue) - previousCriticValue
 
 		local classIndex = table.find(ClassesList, previousAction)
 
@@ -107,60 +111,34 @@ function RecurrentTemporalDifferenceActorCriticModel.new(parameterDictionary)
 		end
 
 		actionProbabilityGradientTensor = {actionProbabilityGradientTensor}
+
+		table.insert(featureTensorHistory, previousFeatureTensor)
+
+		table.insert(actionProbabilityGradientTensorHistory, actionProbabilityGradientTensor)
+
+		table.insert(advantageValueHistory, advantageValue)
 		
-		local previousActionTensor = ActorModel:forwardPropagate(previousFeatureTensor, actorHiddenStateTensor)
-		
-		CriticModel:forwardPropagate(previousFeatureTensor, criticHiddenStateTensor)
-		
-		if (EligibilityTrace) then
+		NewRecurrentAdvantageActorCriticModel.actorHiddenStateTensor = actionTensor
 
-			local temporalDifferenceErrorVector = AqwamTensorLibrary:createTensor(outputDimensionSizeArray, 0)
+		NewRecurrentAdvantageActorCriticModel.criticHiddenStateValue = previousCriticValue
 
-			temporalDifferenceErrorVector[1][classIndex] = temporalDifferenceError
-
-			EligibilityTrace:increment(1, classIndex, discountFactor, outputDimensionSizeArray)
-
-			temporalDifferenceErrorVector = EligibilityTrace:calculate(temporalDifferenceErrorVector)
-
-			temporalDifferenceError = temporalDifferenceErrorVector[1][classIndex]
-
-		end
-		
-		local criticLoss = {{-temporalDifferenceError}}
-		
-		local actorLossTensor = AqwamTensorLibrary:multiply(actionProbabilityGradientTensor, criticLoss)
-
-		ActorModel:update(actorLossTensor)
-
-		CriticModel:update(criticLoss)
-		
-		NewRecurrentTemporalDifferenceActorCriticModel.actorHiddenStateTensor = previousActionTensor
-
-		NewRecurrentTemporalDifferenceActorCriticModel.criticHiddenStateValue = previousCriticValue
-
-		return temporalDifferenceError
+		return advantageValue
 
 	end)
 
-	NewRecurrentTemporalDifferenceActorCriticModel:setDiagonalGaussianUpdateFunction(function(previousFeatureTensor, previousActionMeanTensor, previousActionStandardDeviationTensor, previousActionNoiseTensor, rewardValue, currentFeatureTensor, currentActionMeanTensor, terminalStateValue)
-		
-		local actionTensorDimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(previousActionMeanTensor)
-		
+	NewRecurrentAdvantageActorCriticModel:setDiagonalGaussianUpdateFunction(function(previousFeatureTensor, previousActionMeanTensor, previousActionStandardDeviationTensor, previousActionNoiseTensor, rewardValue, currentFeatureTensor, currentActionMeanTensor, terminalStateValue)
+
 		if (not previousActionNoiseTensor) then
+
+			local actionTensorDimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(previousActionMeanTensor)
 
 			previousActionNoiseTensor = AqwamTensorLibrary:createRandomUniformTensor(actionTensorDimensionSizeArray) 
 
 		end
-		
-		local ActorModel = NewRecurrentTemporalDifferenceActorCriticModel.ActorModel
 
-		local CriticModel = NewRecurrentTemporalDifferenceActorCriticModel.CriticModel
+		local CriticModel = NewRecurrentAdvantageActorCriticModel.CriticModel
 		
-		local actorHiddenStateTensor = NewRecurrentTemporalDifferenceActorCriticModel.actorHiddenStateTensor or AqwamTensorLibrary:createTensor(actionTensorDimensionSizeArray, 0)
-		
-		local criticHiddenStateValue = NewRecurrentTemporalDifferenceActorCriticModel.criticHiddenStateValue or 0
-		
-		local criticHiddenStateTensor = {{criticHiddenStateValue}}
+		local criticHiddenStateValue = NewRecurrentAdvantageActorCriticModel.criticHiddenStateValue or 0
 
 		local actionTensorPart1 = AqwamTensorLibrary:multiply(previousActionStandardDeviationTensor, previousActionNoiseTensor)
 
@@ -172,52 +150,106 @@ function RecurrentTemporalDifferenceActorCriticModel.new(parameterDictionary)
 
 		local actionProbabilityGradientTensor = AqwamTensorLibrary:divide(actionProbabilityGradientTensorPart1, actionProbabilityGradientTensorPart2)
 
-		local previousCriticTensor = CriticModel:forwardPropagate(previousFeatureTensor, criticHiddenStateTensor)
+		local previousCriticValue = CriticModel:forwardPropagate(previousFeatureTensor, criticHiddenStateValue)[1][1]
 
-		local currentCriticTensor = CriticModel:forwardPropagate(currentFeatureTensor, previousCriticTensor)
-		
-		local previousCriticValue = previousCriticTensor[1][1]
+		local currentCriticValue = CriticModel:forwardPropagate(currentFeatureTensor, previousCriticValue)[1][1]
 
-		local temporalDifferenceError = rewardValue + (NewRecurrentTemporalDifferenceActorCriticModel.discountFactor * (1 - terminalStateValue) * currentCriticTensor[1][1]) - previousCriticValue
-		
-		local criticLoss = {{-temporalDifferenceError}}
-		
-		local actorLossTensor = AqwamTensorLibrary:multiply(actionProbabilityGradientTensor, criticLoss)
-		
-		ActorModel:forwardPropagate(previousFeatureTensor, actorHiddenStateTensor)
-		
-		CriticModel:forwardPropagate(previousFeatureTensor, criticHiddenStateTensor)
+		local advantageValue = rewardValue + (NewRecurrentAdvantageActorCriticModel.discountFactor * (1 - terminalStateValue) * currentCriticValue) - previousCriticValue
 
-		ActorModel:update(actorLossTensor)
+		table.insert(featureTensorHistory, previousFeatureTensor)
 
-		CriticModel:update(criticLoss)
+		table.insert(actionProbabilityGradientTensorHistory, actionProbabilityGradientTensor)
+
+		table.insert(advantageValueHistory, advantageValue)
 		
-		NewRecurrentTemporalDifferenceActorCriticModel.actorHiddenStateTensor = previousActionMeanTensor
+		NewRecurrentAdvantageActorCriticModel.actorHiddenStateTensor = previousActionMeanTensor
 
-		NewRecurrentTemporalDifferenceActorCriticModel.criticHiddenStateValue = previousCriticValue
+		NewRecurrentAdvantageActorCriticModel.criticHiddenStateValue = previousCriticValue
 
-		return temporalDifferenceError
+		return advantageValue
 
 	end)
 
-	NewRecurrentTemporalDifferenceActorCriticModel:setEpisodeUpdateFunction(function(terminalStateValue)
+	NewRecurrentAdvantageActorCriticModel:setEpisodeUpdateFunction(function(terminalStateValue)
 
-		local EligibilityTrace = NewRecurrentTemporalDifferenceActorCriticModel.EligibilityTrace
+		local ActorModel = NewRecurrentAdvantageActorCriticModel.ActorModel
 
-		if (EligibilityTrace) then EligibilityTrace:reset() end
+		local CriticModel = NewRecurrentAdvantageActorCriticModel.CriticModel
+
+		local lambda = NewRecurrentAdvantageActorCriticModel.lambda
+
+		if (lambda ~= 0) then
+
+			local generalizedAdvantageEstimationValue = 0
+
+			local generalizedAdvantageEstimationHistory = {}
+
+			local discountFactor = NewRecurrentAdvantageActorCriticModel.discountFactor
+
+			for t = #advantageValueHistory, 1, -1 do
+
+				generalizedAdvantageEstimationValue = advantageValueHistory[t] + (discountFactor * lambda * generalizedAdvantageEstimationValue)
+
+				table.insert(generalizedAdvantageEstimationHistory, 1, generalizedAdvantageEstimationValue)
+
+			end
+
+			advantageValueHistory = generalizedAdvantageEstimationHistory
+
+		end
+		
+		local outputDimensionSizeArray = AqwamTensorLibrary:getDimensionSizeArray(actionProbabilityGradientTensorHistory[1])
+		
+		local actorHiddenStateTensor = AqwamTensorLibrary:createTensor(outputDimensionSizeArray)
+
+		local criticHiddenTensor = {{0}}
+
+		for h, featureTensor in ipairs(featureTensorHistory) do
+
+			local advantageValue = -advantageValueHistory[h]
+
+			local actorLossTensor = AqwamTensorLibrary:multiply(actionProbabilityGradientTensorHistory[h], advantageValue)
+
+			actorLossTensor = AqwamTensorLibrary:unaryMinus(actorLossTensor)
+			
+			actorHiddenStateTensor = ActorModel:forwardPropagate(featureTensor, actorHiddenStateTensor)
+
+			criticHiddenTensor = CriticModel:forwardPropagate(featureTensor, criticHiddenTensor)
+			
+			ActorModel:update(actorLossTensor)
+			
+			CriticModel:update(advantageValue)
+
+		end
+
+		table.clear(featureTensorHistory)
+
+		table.clear(actionProbabilityGradientTensorHistory)
+
+		table.clear(advantageValueHistory)
+		
+		NewRecurrentAdvantageActorCriticModel.actorHiddenStateTensor = nil
+
+		NewRecurrentAdvantageActorCriticModel.criticHiddenStateValue = nil
 
 	end)
 
-	NewRecurrentTemporalDifferenceActorCriticModel:setResetFunction(function()
+	NewRecurrentAdvantageActorCriticModel:setResetFunction(function()
+
+		table.clear(featureTensorHistory)
+
+		table.clear(actionProbabilityGradientTensorHistory)
+
+		table.clear(advantageValueHistory)
 		
-		local EligibilityTrace = NewRecurrentTemporalDifferenceActorCriticModel.EligibilityTrace
-		
-		if (EligibilityTrace) then EligibilityTrace:reset() end
+		NewRecurrentAdvantageActorCriticModel.actorHiddenStateTensor = nil
+
+		NewRecurrentAdvantageActorCriticModel.criticHiddenStateValue = nil
 
 	end)
 
-	return NewRecurrentTemporalDifferenceActorCriticModel
+	return NewRecurrentAdvantageActorCriticModel
 
 end
 
-return RecurrentTemporalDifferenceActorCriticModel
+return RecurrentAdvantageActorCriticModel
