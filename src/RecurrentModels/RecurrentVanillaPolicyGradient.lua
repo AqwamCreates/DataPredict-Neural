@@ -229,6 +229,10 @@ function RecurrentVanillaPolicyGradientModel.new(parameterDictionary)
 		table.clear(rewardValueHistory)
 
 		table.clear(advantageValueHistory)
+		
+		NewRecurrentVanillaPolicyGradientModel.actorHiddenStateTensor = nil
+
+		NewRecurrentVanillaPolicyGradientModel.criticHiddenStateValue = nil
 
 	end)
 
@@ -241,6 +245,10 @@ function RecurrentVanillaPolicyGradientModel.new(parameterDictionary)
 		table.clear(rewardValueHistory)
 
 		table.clear(advantageValueHistory)
+		
+		NewRecurrentVanillaPolicyGradientModel.actorHiddenStateTensor = nil
+
+		NewRecurrentVanillaPolicyGradientModel.criticHiddenStateValue = nil
 
 	end)
 
