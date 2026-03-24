@@ -110,7 +110,7 @@ function TemporalDifferenceActorCriticModel.new(parameterDictionary)
 
 			temporalDifferenceErrorVector[1][classIndex] = temporalDifferenceError
 
-			EligibilityTrace:increment(1, classIndex, discountFactor, outputDimensionSizeArray)
+			EligibilityTrace:increment(classIndex, discountFactor, outputDimensionSizeArray)
 
 			temporalDifferenceErrorVector = EligibilityTrace:calculate(temporalDifferenceErrorVector)
 			
