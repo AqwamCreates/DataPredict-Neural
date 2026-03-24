@@ -205,6 +205,10 @@ function RecurrentTemporalDifferenceActorCriticModel.new(parameterDictionary)
 		local EligibilityTrace = NewRecurrentTemporalDifferenceActorCriticModel.EligibilityTrace
 
 		if (EligibilityTrace) then EligibilityTrace:reset() end
+		
+		NewRecurrentTemporalDifferenceActorCriticModel.actorHiddenStateTensor = nil
+
+		NewRecurrentTemporalDifferenceActorCriticModel.criticHiddenStateValue = nil
 
 	end)
 
@@ -213,6 +217,10 @@ function RecurrentTemporalDifferenceActorCriticModel.new(parameterDictionary)
 		local EligibilityTrace = NewRecurrentTemporalDifferenceActorCriticModel.EligibilityTrace
 		
 		if (EligibilityTrace) then EligibilityTrace:reset() end
+		
+		NewRecurrentTemporalDifferenceActorCriticModel.actorHiddenStateTensor = nil
+
+		NewRecurrentTemporalDifferenceActorCriticModel.criticHiddenStateValue = nil
 
 	end)
 
