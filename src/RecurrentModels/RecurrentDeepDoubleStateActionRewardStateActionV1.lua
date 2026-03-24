@@ -2,7 +2,7 @@
 
 	--------------------------------------------------------------------
 
-	Aqwam's RecurrentDeep Learning Library (DataPredict Neural)
+	Aqwam's Deep Learning Library (DataPredict Neural)
 
 	Author: Aqwam Harish Aiman
 	
@@ -30,39 +30,35 @@ local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker
 
 local DualRecurrentReinforcementLearningBaseModel = require(script.Parent.DualRecurrentReinforcementLearningBaseModel)
 
-RecurrentDeepDoubleExpectedStateActionRewardStateActionModel = {}
+RecurrentDeepDoubleStateActionRewardStateActionModel = {}
 
-RecurrentDeepDoubleExpectedStateActionRewardStateActionModel.__index = RecurrentDeepDoubleExpectedStateActionRewardStateActionModel
+RecurrentDeepDoubleStateActionRewardStateActionModel.__index = RecurrentDeepDoubleStateActionRewardStateActionModel
 
-setmetatable(RecurrentDeepDoubleExpectedStateActionRewardStateActionModel, DualRecurrentReinforcementLearningBaseModel)
+setmetatable(RecurrentDeepDoubleStateActionRewardStateActionModel, DualRecurrentReinforcementLearningBaseModel)
 
-local defaultEpsilon = 0.5
-
-function RecurrentDeepDoubleExpectedStateActionRewardStateActionModel.new(parameterDictionary)
+function RecurrentDeepDoubleStateActionRewardStateActionModel.new(parameterDictionary)
 
 	parameterDictionary = parameterDictionary or {}
 
-	local NewRecurrentDeepDoubleExpectedStateActionRewardStateActionModel = DualRecurrentReinforcementLearningBaseModel.new(parameterDictionary)
+	local NewRecurrentDeepDoubleStateActionRewardStateActionModel = DualRecurrentReinforcementLearningBaseModel.new(parameterDictionary)
 
-	setmetatable(NewRecurrentDeepDoubleExpectedStateActionRewardStateActionModel, RecurrentDeepDoubleExpectedStateActionRewardStateActionModel)
+	setmetatable(NewRecurrentDeepDoubleStateActionRewardStateActionModel, RecurrentDeepDoubleStateActionRewardStateActionModel)
 
-	NewRecurrentDeepDoubleExpectedStateActionRewardStateActionModel:setName("RecurrentDeepDoubleExpectedStateActionRewardStateAction")
+	NewRecurrentDeepDoubleStateActionRewardStateActionModel:setName("RecurrentDeepDoubleStateActionRewardStateAction")
 
-	NewRecurrentDeepDoubleExpectedStateActionRewardStateActionModel.epsilon = parameterDictionary.epsilon or defaultEpsilon
-
-	NewRecurrentDeepDoubleExpectedStateActionRewardStateActionModel.EligibilityTrace = parameterDictionary.EligibilityTrace
+	NewRecurrentDeepDoubleStateActionRewardStateActionModel.EligibilityTrace = parameterDictionary.EligibilityTrace
 	
-	NewRecurrentDeepDoubleExpectedStateActionRewardStateActionModel.hiddenStateTensorArray = parameterDictionary.hiddenStateTensorArray or {}
+	NewRecurrentDeepDoubleStateActionRewardStateActionModel.hiddenStateTensorArray = parameterDictionary.hiddenStateTensorArray or {}
 
-	NewRecurrentDeepDoubleExpectedStateActionRewardStateActionModel.WeightTensorArrayArray = parameterDictionary.WeightTensorArrayArray or {}
+	NewRecurrentDeepDoubleStateActionRewardStateActionModel.WeightTensorArrayArray = parameterDictionary.WeightTensorArrayArray or {}
 
-	NewRecurrentDeepDoubleExpectedStateActionRewardStateActionModel:setCategoricalUpdateFunction(function(previousFeatureTensor, previousAction, rewardValue, currentFeatureTensor, currentAction, terminalStateValue)
+	NewRecurrentDeepDoubleStateActionRewardStateActionModel:setCategoricalUpdateFunction(function(previousFeatureTensor, previousAction, rewardValue, currentFeatureTensor, currentAction, terminalStateValue)
 
-		local Model = NewRecurrentDeepDoubleExpectedStateActionRewardStateActionModel.Model
+		local Model = NewRecurrentDeepDoubleStateActionRewardStateActionModel.Model
+
+		local hiddenStateTensorArray =  NewRecurrentDeepDoubleStateActionRewardStateActionModel.hiddenStateTensorArray
 		
-		local hiddenStateTensorArray =  NewRecurrentDeepDoubleExpectedStateActionRewardStateActionModel.hiddenStateTensorArray
-
-		local WeightTensorArrayArray = NewRecurrentDeepDoubleExpectedStateActionRewardStateActionModel.WeightTensorArrayArray
+		local WeightTensorArrayArray = NewRecurrentDeepDoubleStateActionRewardStateActionModel.WeightTensorArrayArray
 
 		local randomProbability = math.random()
 
@@ -72,9 +68,9 @@ function RecurrentDeepDoubleExpectedStateActionRewardStateActionModel.new(parame
 
 		local selectedModelNumberForUpdate = (updateSecondModel and 2) or 1
 
-		local temporalDifferenceErrorTensor, temporalDifferenceError = NewRecurrentDeepDoubleExpectedStateActionRewardStateActionModel:generateLossTensor(previousFeatureTensor, previousAction, rewardValue, currentFeatureTensor, terminalStateValue, selectedModelNumberForTargetTensor, selectedModelNumberForUpdate)
+		local temporalDifferenceErrorTensor = NewRecurrentDeepDoubleStateActionRewardStateActionModel:generateLossTensor(previousFeatureTensor, previousAction, rewardValue, currentFeatureTensor, currentAction, terminalStateValue, selectedModelNumberForTargetTensor, selectedModelNumberForUpdate)
 
-		local negatedTemporalDifferenceErrorTensor = AqwamTensorLibrary:unaryMinus(temporalDifferenceErrorTensor) -- The original non-deep expected SARSA version performs gradient ascent. But the neural network performs gradient descent. So, we need to negate the error tensor to make the neural network to perform gradient ascent.
+		local negatedTemporalDifferenceErrorTensor, temporalDifferenceError = AqwamTensorLibrary:unaryMinus(temporalDifferenceErrorTensor) -- The original non-deep SARSA version performs gradient ascent. But the neural network performs gradient descent. So, we need to negate the error tensor to make the neural network to perform gradient ascent.
 
 		Model:setWeightTensorArray(WeightTensorArrayArray[selectedModelNumberForUpdate], true)
 
@@ -96,54 +92,52 @@ function RecurrentDeepDoubleExpectedStateActionRewardStateActionModel.new(parame
 
 	end)
 
-	NewRecurrentDeepDoubleExpectedStateActionRewardStateActionModel:setEpisodeUpdateFunction(function(terminalStateValue)
-		
-		local EligibilityTrace = NewRecurrentDeepDoubleExpectedStateActionRewardStateActionModel.EligibilityTrace
-			
-		if (EligibilityTrace) then EligibilityTrace:reset() end
-		
-		NewRecurrentDeepDoubleExpectedStateActionRewardStateActionModel.hiddenStateTensorArray = nil
+	NewRecurrentDeepDoubleStateActionRewardStateActionModel:setEpisodeUpdateFunction(function(terminalStateValue) 
 
-		NewRecurrentDeepDoubleExpectedStateActionRewardStateActionModel.WeightTensorArrayArray = nil
-
-	end)
-
-	NewRecurrentDeepDoubleExpectedStateActionRewardStateActionModel:setResetFunction(function() 
-
-		local EligibilityTrace = NewRecurrentDeepDoubleExpectedStateActionRewardStateActionModel.EligibilityTrace
+		local EligibilityTrace = NewRecurrentDeepDoubleStateActionRewardStateActionModel.EligibilityTrace
 
 		if (EligibilityTrace) then EligibilityTrace:reset() end
 		
-		NewRecurrentDeepDoubleExpectedStateActionRewardStateActionModel.hiddenStateTensorArray = nil
+		NewRecurrentDeepDoubleStateActionRewardStateActionModel.hiddenStateTensorArray = nil
 
-		NewRecurrentDeepDoubleExpectedStateActionRewardStateActionModel.WeightTensorArrayArray = nil
+		NewRecurrentDeepDoubleStateActionRewardStateActionModel.WeightTensorArrayArray = nil
 
 	end)
 
-	return NewRecurrentDeepDoubleExpectedStateActionRewardStateActionModel
+	NewRecurrentDeepDoubleStateActionRewardStateActionModel:setResetFunction(function()
+
+		local EligibilityTrace = NewRecurrentDeepDoubleStateActionRewardStateActionModel.EligibilityTrace
+
+		if (EligibilityTrace) then EligibilityTrace:reset() end
+		
+		NewRecurrentDeepDoubleStateActionRewardStateActionModel.hiddenStateTensorArray = nil
+
+		NewRecurrentDeepDoubleStateActionRewardStateActionModel.WeightTensorArrayArray = nil
+
+	end)
+
+	return NewRecurrentDeepDoubleStateActionRewardStateActionModel
 
 end
 
-function RecurrentDeepDoubleExpectedStateActionRewardStateActionModel:generateLossTensor(previousFeatureTensor, previousAction, rewardValue, currentFeatureTensor, terminalStateValue, selectedModelNumberForTargetTensor, selectedModelNumberForUpdate)
+function RecurrentDeepDoubleStateActionRewardStateActionModel:generateLossTensor(previousFeatureTensor, previousAction, rewardValue, currentFeatureTensor, currentAction, terminalStateValue, selectedModelNumberForTargetTensor, selectedModelNumberForUpdate)
 
 	local Model = self.Model
 
 	local discountFactor = self.discountFactor
-
-	local epsilon = self.epsilon
-
+	
 	local EligibilityTrace = self.EligibilityTrace
 	
 	local hiddenStateTensorArray = self.hiddenStateTensorArray
 
 	local WeightTensorArrayArray = self.WeightTensorArrayArray
-	
+
 	local ClassesList = Model:getClassesList()
 
 	local numberOfClasses = #ClassesList
 
 	local outputDimensionSizeArray = {1, numberOfClasses}
-	
+
 	if (not hiddenStateTensorArray[1]) then hiddenStateTensorArray[1] = AqwamTensorLibrary:createTensor(outputDimensionSizeArray) end
 
 	if (not hiddenStateTensorArray[2]) then hiddenStateTensorArray[2] = AqwamTensorLibrary:createTensor(outputDimensionSizeArray) end
@@ -151,15 +145,9 @@ function RecurrentDeepDoubleExpectedStateActionRewardStateActionModel:generateLo
 	if (not WeightTensorArrayArray[1]) then WeightTensorArrayArray[1] = Model:getWeightTensorArray(true) end
 
 	if (not WeightTensorArrayArray[2]) then WeightTensorArrayArray[2] = Model:getWeightTensorArray(true) end
-
-	local expectedQValue = 0
-
-	local numberOfGreedyActions = 0
-
-	local previousActionIndex = table.find(ClassesList, previousAction)
-
-	Model:setWeightTensorArray(WeightTensorArrayArray[selectedModelNumberForUpdate], true)
 	
+	Model:setWeightTensorArray(WeightTensorArrayArray[selectedModelNumberForUpdate], true)
+
 	local previousQTensor = Model:forwardPropagate(previousFeatureTensor, hiddenStateTensorArray[selectedModelNumberForUpdate])
 
 	Model:setWeightTensorArray(WeightTensorArrayArray[selectedModelNumberForTargetTensor], true)
@@ -167,38 +155,14 @@ function RecurrentDeepDoubleExpectedStateActionRewardStateActionModel:generateLo
 	local currentHiddenStateTensor = Model:forwardPropagate(previousFeatureTensor, hiddenStateTensorArray[selectedModelNumberForTargetTensor])
 
 	local currentQTensor = Model:forwardPropagate(currentFeatureTensor, currentHiddenStateTensor)
+
+	local previousActionIndex = table.find(ClassesList, previousAction)
+
+	local currentActionIndex = table.find(ClassesList, currentAction)
+
+	local targetQValue = rewardValue + (discountFactor * currentQTensor[1][currentActionIndex] * (1 - terminalStateValue))
 	
-	local unwrappedPreviousQTensor = currentQTensor[1]
-
-	local currentMaximumQValue = unwrappedPreviousQTensor[previousActionIndex]
-
-	for i = 1, numberOfClasses, 1 do
-
-		if (currentQTensor[i] == currentMaximumQValue) then
-			
-			numberOfGreedyActions = numberOfGreedyActions + 1
-			
-		end
-
-	end
-
-	local nonGreedyActionProbability = epsilon / numberOfClasses
-
-	local greedyActionProbability = ((1 - epsilon) / numberOfGreedyActions) + nonGreedyActionProbability
-	
-	local actionProbability
-
-	for _, qValue in ipairs(currentQTensor) do
-		
-		actionProbability = ((qValue == currentMaximumQValue) and greedyActionProbability) or nonGreedyActionProbability
-
-		expectedQValue = expectedQValue + (qValue * actionProbability)
-
-	end
-
-	local targetQValue = rewardValue + (discountFactor * (1 - terminalStateValue) * expectedQValue)
-
-	local previousQValue = previousQTensor[1][previousActionIndex]
+	local previousQValue = previousQTensor[1][previousActionIndex] 
 
 	local temporalDifferenceError = targetQValue - previousQValue
 
@@ -218,7 +182,7 @@ function RecurrentDeepDoubleExpectedStateActionRewardStateActionModel:generateLo
 
 end
 
-function RecurrentDeepDoubleExpectedStateActionRewardStateActionModel:setWeightTensorArray1(WeightTensorArray1, doNotRecurrentDeepCopy)
+function RecurrentDeepDoubleStateActionRewardStateActionModel:setWeightTensorArray1(WeightTensorArray1, doNotRecurrentDeepCopy)
 
 	if (doNotRecurrentDeepCopy) then
 
@@ -232,7 +196,7 @@ function RecurrentDeepDoubleExpectedStateActionRewardStateActionModel:setWeightT
 
 end
 
-function RecurrentDeepDoubleExpectedStateActionRewardStateActionModel:setWeightTensorArray2(WeightTensorArray2, doNotRecurrentDeepCopy)
+function RecurrentDeepDoubleStateActionRewardStateActionModel:setWeightTensorArray2(WeightTensorArray2, doNotRecurrentDeepCopy)
 
 	if (doNotRecurrentDeepCopy) then
 
@@ -246,7 +210,7 @@ function RecurrentDeepDoubleExpectedStateActionRewardStateActionModel:setWeightT
 
 end
 
-function RecurrentDeepDoubleExpectedStateActionRewardStateActionModel:getWeightTensorArray1(doNotRecurrentDeepCopy)
+function RecurrentDeepDoubleStateActionRewardStateActionModel:getWeightTensorArray1(doNotRecurrentDeepCopy)
 
 	if (doNotRecurrentDeepCopy) then
 
@@ -260,7 +224,7 @@ function RecurrentDeepDoubleExpectedStateActionRewardStateActionModel:getWeightT
 
 end
 
-function RecurrentDeepDoubleExpectedStateActionRewardStateActionModel:getWeightTensorArray2(doNotRecurrentDeepCopy)
+function RecurrentDeepDoubleStateActionRewardStateActionModel:getWeightTensorArray2(doNotRecurrentDeepCopy)
 
 	if (doNotRecurrentDeepCopy) then
 
@@ -274,4 +238,4 @@ function RecurrentDeepDoubleExpectedStateActionRewardStateActionModel:getWeightT
 
 end
 
-return RecurrentDeepDoubleExpectedStateActionRewardStateActionModel
+return RecurrentDeepDoubleStateActionRewardStateActionModel
