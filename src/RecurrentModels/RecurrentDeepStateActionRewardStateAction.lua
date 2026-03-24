@@ -74,9 +74,11 @@ function RecurrentDeepStateActionRewardStateActionModel.new(parameterDictionary)
 
 		local currentActionIndex = table.find(ClassesList, currentAction)
 
-		local targetValue = rewardValue + (discountFactor * currentQTensor[1][currentActionIndex] * (1 - terminalStateValue))
+		local targetQValue = rewardValue + (discountFactor * currentQTensor[1][currentActionIndex] * (1 - terminalStateValue))
+		
+		local previousQValue = previousQTensor[1][previousActionIndex]
 
-		local temporalDifferenceError = targetValue - previousQTensor[1][previousActionIndex] 
+		local temporalDifferenceError = targetQValue - previousQValue
 
 		local temporalDifferenceErrorTensor = AqwamTensorLibrary:createTensor(outputDimensionSizeArray, 0)
 
@@ -108,6 +110,8 @@ function RecurrentDeepStateActionRewardStateActionModel.new(parameterDictionary)
 
 		if (EligibilityTrace) then EligibilityTrace:reset() end
 		
+		NewRecurrentDeepStateActionRewardStateActionModel.hiddenStateTensor = nil
+		
 	end)
 
 	NewRecurrentDeepStateActionRewardStateActionModel:setResetFunction(function() 
@@ -115,6 +119,8 @@ function RecurrentDeepStateActionRewardStateActionModel.new(parameterDictionary)
 		local EligibilityTrace = NewRecurrentDeepStateActionRewardStateActionModel.EligibilityTrace
 
 		if (EligibilityTrace) then EligibilityTrace:reset() end
+		
+		NewRecurrentDeepStateActionRewardStateActionModel.hiddenStateTensor = nil
 
 	end)
 
