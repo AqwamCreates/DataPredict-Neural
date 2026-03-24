@@ -28,165 +28,66 @@
 
 local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
 
-local ReinforcementLearningActorCriticBaseModel = require(script.Parent.ReinforcementLearningActorCriticBaseModel)
+local ReinforcementLearningBaseModel = require(script.Parent.ReinforcementLearningBaseModel)
 
-local TemporalDifferenceActorCriticModel = {}
+local TemporalDifferenceModel = {}
 
-TemporalDifferenceActorCriticModel.__index = TemporalDifferenceActorCriticModel
+TemporalDifferenceModel.__index = TemporalDifferenceModel
 
-setmetatable(TemporalDifferenceActorCriticModel, ReinforcementLearningActorCriticBaseModel)
+setmetatable(TemporalDifferenceModel, ReinforcementLearningBaseModel)
 
-local defaultLambda = 0
-
-local function calculateProbability(valueVector)
-
-	local maximumValue = AqwamTensorLibrary:findMaximumValue(valueVector)
-
-	local zValueVector = AqwamTensorLibrary:subtract(valueVector, maximumValue)
-
-	local exponentVector = AqwamTensorLibrary:exponent(zValueVector)
-
-	local sumExponentValue = AqwamTensorLibrary:sum(exponentVector)
-
-	local probabilityVector = AqwamTensorLibrary:divide(exponentVector, sumExponentValue)
-
-	return probabilityVector
-
-end
-
-function TemporalDifferenceActorCriticModel.new(parameterDictionary)
-
+function TemporalDifferenceModel.new(parameterDictionary)
+	
 	parameterDictionary = parameterDictionary or {}
 
-	local NewTemporalDifferenceActorCriticModel = ReinforcementLearningActorCriticBaseModel.new(parameterDictionary)
+	local NewTemporalDifferenceModel = ReinforcementLearningBaseModel.new(parameterDictionary)
 
-	setmetatable(NewTemporalDifferenceActorCriticModel, TemporalDifferenceActorCriticModel)
-
-	TemporalDifferenceActorCriticModel:setName("TemporalDifferenceActorCritic")
-
-	NewTemporalDifferenceActorCriticModel.EligibilityTrace = parameterDictionary.EligibilityTrace
-
-	NewTemporalDifferenceActorCriticModel:setCategoricalUpdateFunction(function(previousFeatureVector, previousAction, rewardValue, currentFeatureVector, currentAction, terminalStateValue)
+	setmetatable(NewTemporalDifferenceModel, TemporalDifferenceModel)
+	
+	NewTemporalDifferenceModel:setName("DeepTemporalDifference")
+	
+	NewTemporalDifferenceModel:setCategoricalUpdateFunction(function(previousFeatureTensor, previousAction, rewardValue, currentFeatureTensor, currentAction, terminalStateValue)
 		
-		local ActorModel = NewTemporalDifferenceActorCriticModel.ActorModel
+		local Model = NewTemporalDifferenceModel.Model
 		
-		local CriticModel = NewTemporalDifferenceActorCriticModel.CriticModel
+		local discountFactor = NewTemporalDifferenceModel.discountFactor
+
+		local currentQTensor = Model:forwardPropagate(currentFeatureTensor)
+
+		local previousQTensor = Model:forwardPropagate(previousFeatureTensor)
 		
-		local discountFactor = NewTemporalDifferenceActorCriticModel.discountFactor
-
-		local EligibilityTrace = NewTemporalDifferenceActorCriticModel.EligibilityTrace
-
-		local actionVector = ActorModel:forwardPropagate(previousFeatureVector, true)
-
-		local currentCriticValue = CriticModel:forwardPropagate(currentFeatureVector)[1][1]
+		local targetQValue = rewardValue + (discountFactor * currentQTensor[1][1] * (1 - terminalStateValue))
 		
-		local previousCriticValue = CriticModel:forwardPropagate(previousFeatureVector, true)[1][1]
-
-		local actionProbabilityVector = calculateProbability(actionVector)
-
-		local temporalDifferenceError = rewardValue + (discountFactor * (1 - terminalStateValue) * currentCriticValue) - previousCriticValue
-
-		local ClassesList = ActorModel:getClassesList()
+		local previousQValue = previousQTensor[1][1]
 		
-		local numberOfClasses = #ClassesList
-
-		local classIndex = table.find(ClassesList, previousAction)
-
-		local actionProbabilityGradientVector = {}
-
-		for i, _ in ipairs(ClassesList) do
-
-			actionProbabilityGradientVector[i] = (((i == classIndex) and 1) or 0) - actionProbabilityVector[1][i]
-
-		end
-
-		actionProbabilityGradientVector = {actionProbabilityGradientVector}
-
-		if (EligibilityTrace) then
-			
-			local outputDimensionSizeArray = {1, numberOfClasses}
-
-			local temporalDifferenceErrorVector = AqwamTensorLibrary:createTensor(outputDimensionSizeArray, 0)
-
-			temporalDifferenceErrorVector[1][classIndex] = temporalDifferenceError
-
-			EligibilityTrace:increment(classIndex, discountFactor, outputDimensionSizeArray)
-
-			temporalDifferenceErrorVector = EligibilityTrace:calculate(temporalDifferenceErrorVector)
-			
-			temporalDifferenceError = temporalDifferenceErrorVector[1][classIndex]
-
-		end
+		local temporalDifferenceError = targetQValue - previousQValue
 		
-		local criticLoss = -temporalDifferenceError
-
-		local actorLossVector = AqwamTensorLibrary:multiply(criticLoss, actionProbabilityGradientVector)
-
-		ActorModel:backwardPropagate(actorLossVector, true)
-
-		CriticModel:backwardPropagate(criticLoss, true)
-
-		return temporalDifferenceError
-
-	end)
-
-	NewTemporalDifferenceActorCriticModel:setDiagonalGaussianUpdateFunction(function(previousFeatureVector, previousActionMeanVector, previousActionStandardDeviationVector, previousActionNoiseVector, rewardValue, currentFeatureVector, currentActionMeanVector, terminalStateValue)
-
-		if (not previousActionNoiseVector) then previousActionNoiseVector = AqwamTensorLibrary:createRandomNormalTensor({1, #previousActionMeanVector[1]}) end
+		local negatedTemporalDifferenceErrorTensor = {{-temporalDifferenceError}}
 		
-		local ActorModel = NewTemporalDifferenceActorCriticModel.ActorModel
-		
-		local CriticModel = NewTemporalDifferenceActorCriticModel.CriticModel
+		Model:forwardPropagate(previousFeatureTensor, true)
 
-		local actionVectorPart1 = AqwamTensorLibrary:multiply(previousActionStandardDeviationVector, previousActionNoiseVector)
-
-		local actionVector = AqwamTensorLibrary:add(previousActionMeanVector, actionVectorPart1)
-
-		local actionProbabilityGradientVectorPart1 = AqwamTensorLibrary:subtract(actionVector, previousActionMeanVector)
-
-		local actionProbabilityGradientVectorPart2 = AqwamTensorLibrary:power(previousActionStandardDeviationVector, 2)
-
-		local actionProbabilityGradientVector = AqwamTensorLibrary:divide(actionProbabilityGradientVectorPart1, actionProbabilityGradientVectorPart2)
-
-		local currentCriticValue = CriticModel:forwardPropagate(currentFeatureVector)[1][1]
-		
-		local previousCriticValue = CriticModel:forwardPropagate(previousFeatureVector, true)[1][1]
-
-		local temporalDifferenceError = rewardValue + (NewTemporalDifferenceActorCriticModel.discountFactor * (1 - terminalStateValue) * currentCriticValue) - previousCriticValue
-		
-		local criticLoss = -temporalDifferenceError
-		
-		local actorLossVector = AqwamTensorLibrary:multiply(criticLoss, actionProbabilityGradientVector)
-		
-		ActorModel:forwardPropagate(previousFeatureVector, true)
-		
-		ActorModel:backwardPropagate(actorLossVector, true)
-		
-		CriticModel:backwardPropagate(criticLoss, true)
+		Model:update(negatedTemporalDifferenceErrorTensor, true)
 		
 		return temporalDifferenceError
 
 	end)
-
-	NewTemporalDifferenceActorCriticModel:setEpisodeUpdateFunction(function()
+	
+	NewTemporalDifferenceModel:setEpisodeUpdateFunction(function(terminalStateValue) 
 		
-		local EligibilityTrace = NewTemporalDifferenceActorCriticModel.EligibilityTrace
-
-		if (EligibilityTrace) then EligibilityTrace:reset() end
-
 	end)
-
-	NewTemporalDifferenceActorCriticModel:setResetFunction(function()
-		
-		local EligibilityTrace = NewTemporalDifferenceActorCriticModel.EligibilityTrace
-
-		if (EligibilityTrace) then EligibilityTrace:reset() end
-		
+	
+	NewTemporalDifferenceModel:setResetFunction(function() 
 		
 	end)
 
-	return NewTemporalDifferenceActorCriticModel
+	return NewTemporalDifferenceModel
 
 end
 
-return TemporalDifferenceActorCriticModel
+function TemporalDifferenceModel:setParameters(discountFactor)
+
+	self.discountFactor = discountFactor or self.discountFactor
+
+end
+
+return TemporalDifferenceModel
