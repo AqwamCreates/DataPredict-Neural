@@ -142,7 +142,7 @@ function RecurrentDeepDoubleQLearningModel.new(parameterDictionary)
 		
 		NewRecurrentDeepDoubleQLearningModel.hiddenStateTensorArray = nil
 
-		NewRecurrentDeepDoubleQLearningModel.WeightTensorArrayArray = nil
+		NewRecurrentDeepDoubleQLearningModel.WeightTensorArrayArray = {}
 
 	end)
 
@@ -154,7 +154,7 @@ function RecurrentDeepDoubleQLearningModel.new(parameterDictionary)
 		
 		NewRecurrentDeepDoubleQLearningModel.hiddenStateTensorArray = nil
 
-		NewRecurrentDeepDoubleQLearningModel.WeightTensorArrayArray = nil
+		NewRecurrentDeepDoubleQLearningModel.WeightTensorArrayArray = {}
 
 	end)
 
