@@ -116,7 +116,7 @@ function RecurrentDeepDoubleQLearningModel.new(parameterDictionary)
 		
 		Model:setWeightTensorArray(WeightTensorArrayArray[selectedModelNumberForUpdate], true)
 		
-		local selectedActionTensor = Model:forwardPropagate(previousFeatureTensor, hiddenStateTensorArray[selectedModelNumberForUpdate])
+		local selectedPreviousQTensor = Model:forwardPropagate(previousFeatureTensor, hiddenStateTensorArray[selectedModelNumberForUpdate])
 
 		Model:update(negatedTemporalDifferenceErrorTensor)
 
@@ -124,11 +124,11 @@ function RecurrentDeepDoubleQLearningModel.new(parameterDictionary)
 
 		Model:setWeightTensorArray(WeightTensorArrayArray[selectedModelNumberForTargetTensor], true)
 
-		local targetActionTensor = Model:forwardPropagate(previousFeatureTensor, hiddenStateTensorArray[selectedModelNumberForTargetTensor])
+		local targetPreviousQTensor = Model:forwardPropagate(previousFeatureTensor, hiddenStateTensorArray[selectedModelNumberForTargetTensor])
 
-		hiddenStateTensorArray[selectedModelNumberForUpdate] = selectedActionTensor
+		hiddenStateTensorArray[selectedModelNumberForUpdate] = selectedPreviousQTensor
 
-		hiddenStateTensorArray[selectedModelNumberForTargetTensor] = targetActionTensor
+		hiddenStateTensorArray[selectedModelNumberForTargetTensor] = targetPreviousQTensor
 
 		return temporalDifferenceErrorTensor
 
