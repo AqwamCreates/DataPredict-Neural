@@ -211,10 +211,6 @@ function RecurrentActorCriticModel.new(parameterDictionary)
 		table.clear(rewardValueHistory)
 
 		table.clear(criticValueHistory)
-		
-		NewRecurrentActorCriticModel.actorHiddenStateTensor = nil
-
-		NewRecurrentActorCriticModel.criticHiddenStateValue = nil
 
 	end)
 
@@ -227,10 +223,6 @@ function RecurrentActorCriticModel.new(parameterDictionary)
 		table.clear(rewardValueHistory)
 
 		table.clear(criticValueHistory)
-		
-		NewRecurrentActorCriticModel.actorHiddenStateTensor = nil
-
-		NewRecurrentActorCriticModel.criticHiddenStateValue = nil
 
 	end)
 
