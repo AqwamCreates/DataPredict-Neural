@@ -97,10 +97,6 @@ function RecurrentDeepDoubleStateActionRewardStateActionModel.new(parameterDicti
 		local EligibilityTrace = NewRecurrentDeepDoubleStateActionRewardStateActionModel.EligibilityTrace
 
 		if (EligibilityTrace) then EligibilityTrace:reset() end
-		
-		NewRecurrentDeepDoubleStateActionRewardStateActionModel.hiddenStateTensorArray = {}
-
-		NewRecurrentDeepDoubleStateActionRewardStateActionModel.WeightTensorArrayArray = {}
 
 	end)
 
@@ -109,10 +105,6 @@ function RecurrentDeepDoubleStateActionRewardStateActionModel.new(parameterDicti
 		local EligibilityTrace = NewRecurrentDeepDoubleStateActionRewardStateActionModel.EligibilityTrace
 
 		if (EligibilityTrace) then EligibilityTrace:reset() end
-		
-		NewRecurrentDeepDoubleStateActionRewardStateActionModel.hiddenStateTensorArray = {}
-
-		NewRecurrentDeepDoubleStateActionRewardStateActionModel.WeightTensorArrayArray = {}
 
 	end)
 
