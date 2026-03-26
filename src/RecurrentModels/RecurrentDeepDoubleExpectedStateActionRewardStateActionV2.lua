@@ -200,7 +200,7 @@ function RecurrentDeepDoubleExpectedStateActionRewardStateActionModel.new(parame
 
 	end)
 
-	NewRecurrentDeepDoubleExpectedStateActionRewardStateActionModel:setEpisodeUpdateFunction(function(terminalStateValue) 
+	NewRecurrentDeepDoubleExpectedStateActionRewardStateActionModel:setEpisodeUpdateFunction(function(terminalStateValue)
 
 		local EligibilityTrace = NewRecurrentDeepDoubleExpectedStateActionRewardStateActionModel.EligibilityTrace
 
