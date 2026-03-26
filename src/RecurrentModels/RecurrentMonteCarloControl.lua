@@ -99,8 +99,6 @@ function RecurrentMonteCarloControlModel.new(parameterDictionary)
 		table.clear(featureTensorHistory)
 
 		table.clear(rewardValueHistory)
-		
-		NewRecurrentMonteCarloControlModel.hiddenStateTensor = nil
 
 	end)
 
@@ -109,8 +107,6 @@ function RecurrentMonteCarloControlModel.new(parameterDictionary)
 		table.clear(featureTensorHistory)
 
 		table.clear(rewardValueHistory)
-		
-		NewRecurrentMonteCarloControlModel.hiddenStateTensor = nil
 
 	end)
 
