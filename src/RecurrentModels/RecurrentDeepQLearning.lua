@@ -107,8 +107,6 @@ function RecurrentDeepQLearningModel.new(parameterDictionary)
 		local EligibilityTrace = NewRecurrentDeepQLearningModel.EligibilityTrace
 
 		if (EligibilityTrace) then EligibilityTrace:reset() end
-		
-		NewRecurrentDeepQLearningModel.hiddenStateTensor = nil
 
 	end)
 
@@ -117,8 +115,6 @@ function RecurrentDeepQLearningModel.new(parameterDictionary)
 		local EligibilityTrace = NewRecurrentDeepQLearningModel.EligibilityTrace
 
 		if (EligibilityTrace) then EligibilityTrace:reset() end
-		
-		NewRecurrentDeepQLearningModel.hiddenStateTensor = nil
 
 	end)
 
