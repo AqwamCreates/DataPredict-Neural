@@ -140,9 +140,9 @@ function RecurrentDoubleStateActionRewardStateActionModel.new(parameterDictionar
 		
 		Model:setWeightTensorArray(PrimaryWeightTensorArray, true)
 		
-		Model:forwardPropagate(previousFeatureTensor, true)
+		Model:forwardPropagate(previousFeatureTensor, primaryHiddenStateTensor)
 
-		Model:update(negatedTemporalDifferenceErrorTensor, true)
+		Model:update(negatedTemporalDifferenceErrorTensor)
 		
 		PrimaryWeightTensorArray = Model:getWeightTensorArray(true)
 
