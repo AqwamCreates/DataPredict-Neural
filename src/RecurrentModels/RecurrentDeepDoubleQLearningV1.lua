@@ -139,22 +139,14 @@ function RecurrentDeepDoubleQLearningModel.new(parameterDictionary)
 		local EligibilityTrace = NewRecurrentDeepDoubleQLearningModel.EligibilityTrace
 
 		if (EligibilityTrace) then EligibilityTrace:reset() end
-		
-		NewRecurrentDeepDoubleQLearningModel.hiddenStateTensorArray = {}
-
-		NewRecurrentDeepDoubleQLearningModel.WeightTensorArrayArray = {}
 
 	end)
 
-	NewRecurrentDeepDoubleQLearningModel:setResetFunction(function() 
+	NewRecurrentDeepDoubleQLearningModel:setResetFunction(function()
 
 		local EligibilityTrace = NewRecurrentDeepDoubleQLearningModel.EligibilityTrace
 
 		if (EligibilityTrace) then EligibilityTrace:reset() end
-		
-		NewRecurrentDeepDoubleQLearningModel.hiddenStateTensorArray = {}
-
-		NewRecurrentDeepDoubleQLearningModel.WeightTensorArrayArray = {}
 
 	end)
 
