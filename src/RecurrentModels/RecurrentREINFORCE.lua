@@ -185,8 +185,6 @@ function RecurrentREINFORCEModel.new(parameterDictionary)
 		table.clear(actionProbabilityTensorArray)
 
 		table.clear(rewardValueArray)
-		
-		NewRecurrentREINFORCEModel.hiddenStateTensor = nil
 
 	end)
 
@@ -197,8 +195,6 @@ function RecurrentREINFORCEModel.new(parameterDictionary)
 		table.clear(actionProbabilityTensorArray)
 
 		table.clear(rewardValueArray)
-		
-		NewRecurrentREINFORCEModel.hiddenStateTensor = nil
 
 	end)
 
