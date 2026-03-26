@@ -80,15 +80,11 @@ function RecurrentTemporalDifferenceModel.new(parameterDictionary)
 
 	end)
 
-	NewRecurrentTemporalDifferenceModel:setEpisodeUpdateFunction(function(terminalStateValue) 
-		
-		NewRecurrentTemporalDifferenceModel.hiddenStateTensor = nil
-		
+	NewRecurrentTemporalDifferenceModel:setEpisodeUpdateFunction(function(terminalStateValue)
+	
 	end)
 
-	NewRecurrentTemporalDifferenceModel:setResetFunction(function() 
-		
-		NewRecurrentTemporalDifferenceModel.hiddenStateTensor = nil
+	NewRecurrentTemporalDifferenceModel:setResetFunction(function()
 		
 	end)
 
