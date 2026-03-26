@@ -101,22 +101,14 @@ function RecurrentDeepDoubleExpectedStateActionRewardStateActionModel.new(parame
 		local EligibilityTrace = NewRecurrentDeepDoubleExpectedStateActionRewardStateActionModel.EligibilityTrace
 			
 		if (EligibilityTrace) then EligibilityTrace:reset() end
-		
-		NewRecurrentDeepDoubleExpectedStateActionRewardStateActionModel.hiddenStateTensorArray = {}
-
-		NewRecurrentDeepDoubleExpectedStateActionRewardStateActionModel.WeightTensorArrayArray = {}
 
 	end)
 
-	NewRecurrentDeepDoubleExpectedStateActionRewardStateActionModel:setResetFunction(function() 
+	NewRecurrentDeepDoubleExpectedStateActionRewardStateActionModel:setResetFunction(function()
 
 		local EligibilityTrace = NewRecurrentDeepDoubleExpectedStateActionRewardStateActionModel.EligibilityTrace
 
 		if (EligibilityTrace) then EligibilityTrace:reset() end
-		
-		NewRecurrentDeepDoubleExpectedStateActionRewardStateActionModel.hiddenStateTensorArray = {}
-
-		NewRecurrentDeepDoubleExpectedStateActionRewardStateActionModel.WeightTensorArrayArray = {}
 
 	end)
 
