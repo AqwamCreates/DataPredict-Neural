@@ -227,10 +227,6 @@ function RecurrentAdvantageActorCriticModel.new(parameterDictionary)
 		table.clear(actionProbabilityGradientTensorHistory)
 
 		table.clear(advantageValueHistory)
-		
-		NewRecurrentAdvantageActorCriticModel.actorHiddenStateTensor = nil
-
-		NewRecurrentAdvantageActorCriticModel.criticHiddenStateValue = nil
 
 	end)
 
@@ -241,10 +237,6 @@ function RecurrentAdvantageActorCriticModel.new(parameterDictionary)
 		table.clear(actionProbabilityGradientTensorHistory)
 
 		table.clear(advantageValueHistory)
-		
-		NewRecurrentAdvantageActorCriticModel.actorHiddenStateTensor = nil
-
-		NewRecurrentAdvantageActorCriticModel.criticHiddenStateValue = nil
 
 	end)
 
