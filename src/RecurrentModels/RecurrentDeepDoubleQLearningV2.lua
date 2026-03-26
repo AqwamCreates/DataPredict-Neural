@@ -158,7 +158,7 @@ function RecurrentDeepDoubleQLearningModel.new(parameterDictionary)
 
 	end)
 
-	NewRecurrentDeepDoubleQLearningModel:setEpisodeUpdateFunction(function(terminalStateValue) 
+	NewRecurrentDeepDoubleQLearningModel:setEpisodeUpdateFunction(function(terminalStateValue)
 
 		local EligibilityTrace = NewRecurrentDeepDoubleQLearningModel.EligibilityTrace
 
@@ -170,7 +170,7 @@ function RecurrentDeepDoubleQLearningModel.new(parameterDictionary)
 
 	end)
 
-	NewRecurrentDeepDoubleQLearningModel:setResetFunction(function() 
+	NewRecurrentDeepDoubleQLearningModel:setResetFunction(function()
 
 		local EligibilityTrace = NewRecurrentDeepDoubleQLearningModel.EligibilityTrace
 
