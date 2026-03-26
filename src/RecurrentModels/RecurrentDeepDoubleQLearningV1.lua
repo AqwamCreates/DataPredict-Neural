@@ -140,7 +140,7 @@ function RecurrentDeepDoubleQLearningModel.new(parameterDictionary)
 
 		if (EligibilityTrace) then EligibilityTrace:reset() end
 		
-		NewRecurrentDeepDoubleQLearningModel.hiddenStateTensorArray = nil
+		NewRecurrentDeepDoubleQLearningModel.hiddenStateTensorArray = {}
 
 		NewRecurrentDeepDoubleQLearningModel.WeightTensorArrayArray = {}
 
@@ -152,7 +152,7 @@ function RecurrentDeepDoubleQLearningModel.new(parameterDictionary)
 
 		if (EligibilityTrace) then EligibilityTrace:reset() end
 		
-		NewRecurrentDeepDoubleQLearningModel.hiddenStateTensorArray = nil
+		NewRecurrentDeepDoubleQLearningModel.hiddenStateTensorArray = {}
 
 		NewRecurrentDeepDoubleQLearningModel.WeightTensorArrayArray = {}
 
