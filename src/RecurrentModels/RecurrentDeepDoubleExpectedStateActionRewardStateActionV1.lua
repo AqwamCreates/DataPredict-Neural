@@ -102,9 +102,9 @@ function RecurrentDeepDoubleExpectedStateActionRewardStateActionModel.new(parame
 			
 		if (EligibilityTrace) then EligibilityTrace:reset() end
 		
-		NewRecurrentDeepDoubleExpectedStateActionRewardStateActionModel.hiddenStateTensorArray = nil
+		NewRecurrentDeepDoubleExpectedStateActionRewardStateActionModel.hiddenStateTensorArray = {}
 
-		NewRecurrentDeepDoubleExpectedStateActionRewardStateActionModel.WeightTensorArrayArray = nil
+		NewRecurrentDeepDoubleExpectedStateActionRewardStateActionModel.WeightTensorArrayArray = {}
 
 	end)
 
@@ -114,9 +114,9 @@ function RecurrentDeepDoubleExpectedStateActionRewardStateActionModel.new(parame
 
 		if (EligibilityTrace) then EligibilityTrace:reset() end
 		
-		NewRecurrentDeepDoubleExpectedStateActionRewardStateActionModel.hiddenStateTensorArray = nil
+		NewRecurrentDeepDoubleExpectedStateActionRewardStateActionModel.hiddenStateTensorArray = {}
 
-		NewRecurrentDeepDoubleExpectedStateActionRewardStateActionModel.WeightTensorArrayArray = nil
+		NewRecurrentDeepDoubleExpectedStateActionRewardStateActionModel.WeightTensorArrayArray = {}
 
 	end)
 
