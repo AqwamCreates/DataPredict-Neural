@@ -110,8 +110,6 @@ function RecurrentDeepStateActionRewardStateActionModel.new(parameterDictionary)
 
 		if (EligibilityTrace) then EligibilityTrace:reset() end
 		
-		NewRecurrentDeepStateActionRewardStateActionModel.hiddenStateTensor = nil
-		
 	end)
 
 	NewRecurrentDeepStateActionRewardStateActionModel:setResetFunction(function() 
@@ -119,8 +117,6 @@ function RecurrentDeepStateActionRewardStateActionModel.new(parameterDictionary)
 		local EligibilityTrace = NewRecurrentDeepStateActionRewardStateActionModel.EligibilityTrace
 
 		if (EligibilityTrace) then EligibilityTrace:reset() end
-		
-		NewRecurrentDeepStateActionRewardStateActionModel.hiddenStateTensor = nil
 
 	end)
 
