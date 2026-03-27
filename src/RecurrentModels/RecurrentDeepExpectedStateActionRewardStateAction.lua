@@ -28,67 +28,61 @@
 
 local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
 
-local RecurrentReinforcementLearningBaseModel = require(script.Parent.RecurrentReinforcementLearningBaseModel)
+local ReinforcementLearningBaseModel = require(script.Parent.ReinforcementLearningBaseModel)
 
-RecurrentDeepExpectedStateActionRewardStateActionModel = {}
+local DeepExpectedStateActionRewardStateActionModel = {}
 
-RecurrentDeepExpectedStateActionRewardStateActionModel.__index = RecurrentDeepExpectedStateActionRewardStateActionModel
+DeepExpectedStateActionRewardStateActionModel.__index = DeepExpectedStateActionRewardStateActionModel
 
-setmetatable(RecurrentDeepExpectedStateActionRewardStateActionModel, RecurrentReinforcementLearningBaseModel)
+setmetatable(DeepExpectedStateActionRewardStateActionModel, ReinforcementLearningBaseModel)
 
 local defaultEpsilon = 0.5
 
-function RecurrentDeepExpectedStateActionRewardStateActionModel.new(parameterDictionary)
-
+function DeepExpectedStateActionRewardStateActionModel.new(parameterDictionary)
+	
 	parameterDictionary = parameterDictionary or {}
 
-	local NewRecurrentDeepExpectedStateActionRewardStateActionModel = RecurrentReinforcementLearningBaseModel.new(parameterDictionary)
+	local NewDeepExpectedStateActionRewardStateActionModel = ReinforcementLearningBaseModel.new(parameterDictionary)
 
-	setmetatable(NewRecurrentDeepExpectedStateActionRewardStateActionModel, RecurrentDeepExpectedStateActionRewardStateActionModel)
+	setmetatable(NewDeepExpectedStateActionRewardStateActionModel, DeepExpectedStateActionRewardStateActionModel)
+	
+	NewDeepExpectedStateActionRewardStateActionModel:setName("DeepExpectedStateActionRewardStateAction")
+	
+	NewDeepExpectedStateActionRewardStateActionModel.epsilon = parameterDictionary.epsilon or defaultEpsilon
+	
+	NewDeepExpectedStateActionRewardStateActionModel.EligibilityTrace = parameterDictionary.EligibilityTrace
 
-	NewRecurrentDeepExpectedStateActionRewardStateActionModel:setName("RecurrentDeepExpectedStateActionRewardStateAction")
-
-	NewRecurrentDeepExpectedStateActionRewardStateActionModel.epsilon = parameterDictionary.epsilon or defaultEpsilon
-
-	NewRecurrentDeepExpectedStateActionRewardStateActionModel.EligibilityTrace = parameterDictionary.EligibilityTrace
-
-	NewRecurrentDeepExpectedStateActionRewardStateActionModel:setCategoricalUpdateFunction(function(previousFeatureTensor, previousAction, rewardValue, currentFeatureTensor, currentAction, terminalStateValue)
-
-		local Model = NewRecurrentDeepExpectedStateActionRewardStateActionModel.Model
-
-		local epsilon = NewRecurrentDeepExpectedStateActionRewardStateActionModel.epsilon
-
-		local discountFactor = NewRecurrentDeepExpectedStateActionRewardStateActionModel.discountFactor
+	NewDeepExpectedStateActionRewardStateActionModel:setCategoricalUpdateFunction(function(previousFeatureTensor, previousAction, rewardValue, currentFeatureTensor, currentAction, terminalStateValue)
 		
-		local EligibilityTrace = NewRecurrentDeepExpectedStateActionRewardStateActionModel.EligibilityTrace
+		local Model = NewDeepExpectedStateActionRewardStateActionModel.Model
 		
-		local hiddenStateTensor = NewRecurrentDeepExpectedStateActionRewardStateActionModel.hiddenStateTensor
+		local discountFactor = NewDeepExpectedStateActionRewardStateActionModel.discountFactor
 		
-		local ClassesList = Model:getClassesList()
+		local epsilon = NewDeepExpectedStateActionRewardStateActionModel.epsilon
 		
-		local numberOfClasses = #ClassesList
-		
-		local outputDimensionSizeArray = {1, numberOfClasses}
-		
-		if (not hiddenStateTensor) then hiddenStateTensor = AqwamTensorLibrary:createTensor(outputDimensionSizeArray) end
+		local EligibilityTrace = NewDeepExpectedStateActionRewardStateActionModel.EligibilityTrace
 
 		local expectedQValue = 0
 
 		local numberOfGreedyActions = 0
+		
+		local ClassesList = Model:getClassesList()
+
+		local numberOfClasses = #ClassesList
 
 		local actionIndex = table.find(ClassesList, previousAction)
+		
+		local currentQTensor = Model:forwardPropagate(currentFeatureTensor)
 
-		local previousQTensor = Model:forwardPropagate(previousFeatureTensor, hiddenStateTensor)
+		local previousQTensor = Model:forwardPropagate(previousFeatureTensor, true)
 
-		local targetTensor = Model:forwardPropagate(currentFeatureTensor, previousQTensor)
+		local maximumCurrentQValue = AqwamTensorLibrary:findMaximumValue(currentQTensor)
 
-		local maxQValue = targetTensor[1][actionIndex]
-
-		local unwrappedTargetTensor = targetTensor[1]
+		local unwrappedTargetTensor = currentQTensor[1]
 
 		for i = 1, numberOfClasses, 1 do
 
-			if (unwrappedTargetTensor[i] == maxQValue) then
+			if (unwrappedTargetTensor[i] == maximumCurrentQValue) then
 
 				numberOfGreedyActions = numberOfGreedyActions + 1
 
@@ -104,22 +98,24 @@ function RecurrentDeepExpectedStateActionRewardStateActionModel.new(parameterDic
 
 		for _, qValue in ipairs(unwrappedTargetTensor) do
 
-			actionProbability = ((qValue == maxQValue) and greedyActionProbability) or nonGreedyActionProbability
+			actionProbability = ((qValue == maximumCurrentQValue) and greedyActionProbability) or nonGreedyActionProbability
 
 			expectedQValue = expectedQValue + (qValue * actionProbability)
 
 		end
+		
+		local targetQValue = rewardValue + (discountFactor * (1 - terminalStateValue) * expectedQValue)
 
-		local targetValue = rewardValue + (discountFactor * (1 - terminalStateValue) * expectedQValue)
+		local previousQValue = previousQTensor[1][actionIndex]
 
-		local lastValue = previousQTensor[1][actionIndex]
-
-		local temporalDifferenceError = targetValue - lastValue
+		local temporalDifferenceError = targetQValue - previousQValue
+		
+		local outputDimensionSizeArray = {1, numberOfClasses}
 
 		local temporalDifferenceErrorTensor = AqwamTensorLibrary:createTensor(outputDimensionSizeArray, 0)
-
+		
 		temporalDifferenceErrorTensor[1][actionIndex] = temporalDifferenceError
-
+		
 		if (EligibilityTrace) then
 
 			EligibilityTrace:increment(actionIndex, discountFactor, outputDimensionSizeArray)
@@ -127,37 +123,37 @@ function RecurrentDeepExpectedStateActionRewardStateActionModel.new(parameterDic
 			temporalDifferenceErrorTensor = EligibilityTrace:calculate(temporalDifferenceErrorTensor)
 
 		end
-
-		local negatedTemporalDifferenceErrorTensor = AqwamTensorLibrary:unaryMinus(temporalDifferenceErrorTensor) -- The original non-deep expected SARSA version performs gradient ascent. But the neural network performs gradient descent. So, we need to negate the error tensor to make the neural network to perform gradient ascent.
-
-		Model:forwardPropagate(previousFeatureTensor, hiddenStateTensor)
-
-		Model:update(negatedTemporalDifferenceErrorTensor)
 		
-		NewRecurrentDeepExpectedStateActionRewardStateActionModel.hiddenStateTensor = previousQTensor
-
+		local negatedTemporalDifferenceErrorTensor = AqwamTensorLibrary:unaryMinus(temporalDifferenceErrorTensor) -- The original non-deep expected SARSA version performs gradient ascent. But the neural network performs gradient descent. So, we need to negate the error Tensor to make the neural network to perform gradient ascent.
+		
+		Model:update(negatedTemporalDifferenceErrorTensor, true)
+		
 		return temporalDifferenceError
 
 	end)
-
-	NewRecurrentDeepExpectedStateActionRewardStateActionModel:setEpisodeUpdateFunction(function(terminalStateValue) 
-
-		local EligibilityTrace = NewRecurrentDeepExpectedStateActionRewardStateActionModel.EligibilityTrace
-
-		if (EligibilityTrace) then EligibilityTrace:reset() end
-
-	end)
-
-	NewRecurrentDeepExpectedStateActionRewardStateActionModel:setResetFunction(function() 
-
-		local EligibilityTrace = NewRecurrentDeepExpectedStateActionRewardStateActionModel.EligibilityTrace
+	
+	NewDeepExpectedStateActionRewardStateActionModel:setEpisodeUpdateFunction(function(terminalStateValue) 
+		
+		local EligibilityTrace = NewDeepExpectedStateActionRewardStateActionModel.EligibilityTrace
 
 		if (EligibilityTrace) then EligibilityTrace:reset() end
-
+		
+		NewDeepExpectedStateActionRewardStateActionModel.hiddenStateTensor = nil
+		
 	end)
 
-	return NewRecurrentDeepExpectedStateActionRewardStateActionModel
+	NewDeepExpectedStateActionRewardStateActionModel:setResetFunction(function() 
+		
+		local EligibilityTrace = NewDeepExpectedStateActionRewardStateActionModel.EligibilityTrace
+
+		if (EligibilityTrace) then EligibilityTrace:reset() end
+		
+		NewDeepExpectedStateActionRewardStateActionModel.hiddenStateTensor = nil
+		
+	end)
+
+	return NewDeepExpectedStateActionRewardStateActionModel
 
 end
 
-return RecurrentDeepExpectedStateActionRewardStateActionModel
+return DeepExpectedStateActionRewardStateActionModel

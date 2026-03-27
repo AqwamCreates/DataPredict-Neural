@@ -66,25 +66,25 @@ function RecurrentDeepQLearningModel.new(parameterDictionary)
 
 		if (not hiddenStateTensor) then hiddenStateTensor = AqwamTensorLibrary:createTensor(outputDimensionSizeArray) end
 
-		local previousTensor = Model:forwardPropagate(previousFeatureTensor, hiddenStateTensor)
+		local previousQTensor = Model:forwardPropagate(previousFeatureTensor, hiddenStateTensor)
 		
-		local _, maxQValue = Model:predict(currentFeatureTensor, previousTensor)
+		local _, maxQValue = Model:predict(currentFeatureTensor, previousQTensor)
 
-		local targetValue = rewardValue + (discountFactor * (1 - terminalStateValue) * maxQValue[1][1])
+		local targetQValue = rewardValue + (discountFactor * (1 - terminalStateValue) * maxQValue[1][1])
 
-		local actionIndex = table.find(ClassesList, previousAction)
+		local previousActionIndex = table.find(ClassesList, previousAction)
 
-		local lastValue = previousTensor[1][actionIndex]
+		local previousQValue = previousQTensor[1][previousActionIndex]
 
-		local temporalDifferenceError = targetValue - lastValue
+		local temporalDifferenceError = targetQValue - previousQValue
 
 		local temporalDifferenceErrorTensor = AqwamTensorLibrary:createTensor(outputDimensionSizeArray, 0)
 
-		temporalDifferenceErrorTensor[1][actionIndex] = temporalDifferenceError
+		temporalDifferenceErrorTensor[1][previousActionIndex] = temporalDifferenceError
 
 		if (EligibilityTrace) then
 
-			EligibilityTrace:increment(actionIndex, discountFactor, outputDimensionSizeArray)
+			EligibilityTrace:increment(previousActionIndex, discountFactor, outputDimensionSizeArray)
 
 			temporalDifferenceErrorTensor = EligibilityTrace:calculate(temporalDifferenceErrorTensor)
 
@@ -96,7 +96,7 @@ function RecurrentDeepQLearningModel.new(parameterDictionary)
 
 		Model:update(negatedTemporalDifferenceErrorTensor)
 
-		NewRecurrentDeepQLearningModel.hiddenStateTensor = previousTensor
+		NewRecurrentDeepQLearningModel.hiddenStateTensor = previousQTensor
 
 		return temporalDifferenceError
 

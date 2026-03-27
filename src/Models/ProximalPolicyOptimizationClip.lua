@@ -2,7 +2,7 @@
 
 	--------------------------------------------------------------------
 
-	Aqwam's Machine, Deep And Reinforcement Learning Library (DataPredict)
+	Aqwam's Deep Learning Library (DataPredict Neural)
 
 	Author: Aqwam Harish Aiman
 	
@@ -16,7 +16,7 @@
 		
 	By using this library, you agree to comply with our Terms and Conditions in the link below:
 	
-	https://github.com/AqwamCreates/DataPredict/blob/main/docs/TermsAndConditions.md
+	https://github.com/AqwamCreates/DataPredict-Neural/blob/main/docs/TermsAndConditions.md
 	
 	--------------------------------------------------------------------
 	
@@ -77,7 +77,7 @@ local function calculateDiagonalGaussianProbability(meanTensor, standardDeviatio
 	local logValueTensorPart3 = AqwamTensorLibrary:add(squaredZScoreTensor, logValueTensorPart2)
 
 	local logValueTensor = AqwamTensorLibrary:add(logValueTensorPart3, math.log(2 * math.pi))
-
+	
 	logValueTensor = AqwamTensorLibrary:multiply(-0.5, logValueTensor)
 
 	return logValueTensor
@@ -115,12 +115,12 @@ function ProximalPolicyOptimizationClipModel.new(parameterDictionary)
 	NewProximalPolicyOptimizationClipModel.clipRatio = parameterDictionary.clipRatio or defaultClipRatio
 
 	NewProximalPolicyOptimizationClipModel.lambda = parameterDictionary.lambda or defaultLambda
-
+	
 	NewProximalPolicyOptimizationClipModel.useLogProbabilities = NewProximalPolicyOptimizationClipModel:getValueOrDefaultValue(parameterDictionary.useLogProbabilities, defaultUseLogProbabilities)
 
-	NewProximalPolicyOptimizationClipModel.CurrentActorModelParameters = parameterDictionary.CurrentActorModelParameters
+	NewProximalPolicyOptimizationClipModel.CurrentActorWeightTensorArray = parameterDictionary.CurrentActorWeightTensorArray
 
-	NewProximalPolicyOptimizationClipModel.OldActorModelParameters = parameterDictionary.OldActorModelParameters
+	NewProximalPolicyOptimizationClipModel.OldActorWeightTensorArray = parameterDictionary.OldActorWeightTensorArray
 
 	local featureTensorHistory = {}
 
@@ -138,13 +138,13 @@ function ProximalPolicyOptimizationClipModel.new(parameterDictionary)
 
 		local CriticModel = NewProximalPolicyOptimizationClipModel.CriticModel
 
-		NewProximalPolicyOptimizationClipModel.CurrentActorModelParameters = ActorModel:getWeightTensorArray(true)
+		NewProximalPolicyOptimizationClipModel.CurrentActorWeightTensorArray = ActorModel:getWeightTensorArray(true)
 
-		ActorModel:setModelParameters(NewProximalPolicyOptimizationClipModel.OldActorModelParameters, true)
+		ActorModel:setWeightTensorArray(NewProximalPolicyOptimizationClipModel.OldActorWeightTensorArray, true)
 
 		local oldPolicyActionTensor = ActorModel:forwardPropagate(previousFeatureTensor)
 
-		NewProximalPolicyOptimizationClipModel.OldActorModelParameters = ActorModel:getWeightTensorArray(true)
+		NewProximalPolicyOptimizationClipModel.OldActorWeightTensorArray = ActorModel:getWeightTensorArray(true)
 
 		local oldPolicyActionProbabilityTensor = calculateCategoricalProbability(oldPolicyActionTensor)
 
@@ -152,7 +152,7 @@ function ProximalPolicyOptimizationClipModel.new(parameterDictionary)
 
 		local currentPolicyActionProbabilityTensor = calculateCategoricalProbability(currentPolicyActionTensor)
 
-		ActorModel:setWeightTensorArray(NewProximalPolicyOptimizationClipModel.CurrentActorModelParameters, true)
+		ActorModel:setWeightTensorArray(NewProximalPolicyOptimizationClipModel.CurrentActorWeightTensorArray, true)
 
 		local ClassesList = ActorModel:getClassesList()
 
@@ -196,25 +196,25 @@ function ProximalPolicyOptimizationClipModel.new(parameterDictionary)
 
 	end)
 
-	NewProximalPolicyOptimizationClipModel:setDiagonalGaussianUpdateFunction(function(previousFeatureTensor, previousActionMeanTensor, previousActionStandardDeviationTensor, previousActionNoiseTensor, rewardValue, currentFeatureTensor, currentActionMeanTensor, terminalStateValue)
+	NewProximalPolicyOptimizationClipModel:setDiagonalGaussianUpdateFunction(function(previousFeatureTensor, actionMeanTensor, actionStandardDeviationTensor, actionNoiseTensor, rewardValue, currentFeatureTensor, currentActionMeanTensor, terminalStateValue)
 
-		if (not previousActionNoiseTensor) then previousActionNoiseTensor = AqwamTensorLibrary:createRandomNormalTensor({1, #previousActionMeanTensor[1]}) end
+		if (not actionNoiseTensor) then actionNoiseTensor = AqwamTensorLibrary:createRandomNormalTensor({1, #actionMeanTensor[1]}) end
 
 		local ActorModel = NewProximalPolicyOptimizationClipModel.ActorModel
 
 		local CriticModel = NewProximalPolicyOptimizationClipModel.CriticModel
 
-		NewProximalPolicyOptimizationClipModel.CurrentActorModelParameters = ActorModel:getWeightTensorArray(true)
+		NewProximalPolicyOptimizationClipModel.CurrentActorWeightTensorArray = ActorModel:getWeightTensorArray(true)
 
-		ActorModel:setWeightTensorArray(NewProximalPolicyOptimizationClipModel.OldActorModelParameters, true)
+		ActorModel:setWeightTensorArray(NewProximalPolicyOptimizationClipModel.OldActorWeightTensorArray, true)
 
 		local oldPolicyActionMeanTensor = ActorModel:forwardPropagate(previousFeatureTensor)
 
-		NewProximalPolicyOptimizationClipModel.OldActorModelParameters = ActorModel:getWeightTensorArray(true)
+		NewProximalPolicyOptimizationClipModel.OldActorWeightTensorArray = ActorModel:getWeightTensorArray(true)
 
-		local oldPolicyActionProbabilityTensor = calculateDiagonalGaussianProbability(oldPolicyActionMeanTensor, previousActionStandardDeviationTensor, previousActionNoiseTensor)
+		local oldPolicyActionProbabilityTensor = calculateDiagonalGaussianProbability(oldPolicyActionMeanTensor, actionStandardDeviationTensor, actionNoiseTensor)
 
-		local currentPolicyActionProbabilityTensor = calculateDiagonalGaussianProbability(previousActionMeanTensor, previousActionStandardDeviationTensor, previousActionNoiseTensor)
+		local currentPolicyActionProbabilityTensor = calculateDiagonalGaussianProbability(actionMeanTensor, actionStandardDeviationTensor, actionNoiseTensor)
 
 		local ratioActionProbabiltyTensor
 
@@ -282,9 +282,9 @@ function ProximalPolicyOptimizationClipModel.new(parameterDictionary)
 
 		local rewardToGoArray = calculateRewardToGo(rewardValueHistory, discountFactor)
 
-		NewProximalPolicyOptimizationClipModel.OldActorModelParameters = NewProximalPolicyOptimizationClipModel.CurrentActorModelParameters
+		NewProximalPolicyOptimizationClipModel.OldActorWeightTensorArray = NewProximalPolicyOptimizationClipModel.CurrentActorWeightTensorArray
 
-		ActorModel:setWeightTensorArray(NewProximalPolicyOptimizationClipModel.CurrentActorModelParameters, true)
+		ActorModel:setWeightTensorArray(NewProximalPolicyOptimizationClipModel.CurrentActorWeightTensorArray, true)
 
 		local clipRatio = NewProximalPolicyOptimizationClipModel.clipRatio 
 
@@ -318,7 +318,7 @@ function ProximalPolicyOptimizationClipModel.new(parameterDictionary)
 
 		end
 
-		NewProximalPolicyOptimizationClipModel.CurrentActorModelParameters = ActorModel:getWeightTensorArray(true)
+		NewProximalPolicyOptimizationClipModel.CurrentActorWeightTensorArray = ActorModel:getWeightTensorArray(true)
 
 		table.clear(featureTensorHistory)
 

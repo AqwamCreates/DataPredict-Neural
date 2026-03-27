@@ -30,7 +30,7 @@ local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker
 
 local ReinforcementLearningBaseModel = require(script.Parent.ReinforcementLearningBaseModel)
 
-DeepStateActionRewardStateActionModel = {}
+local DeepStateActionRewardStateActionModel = {}
 
 DeepStateActionRewardStateActionModel.__index = DeepStateActionRewardStateActionModel
 
@@ -49,7 +49,7 @@ function DeepStateActionRewardStateActionModel.new(parameterDictionary)
 	NewDeepStateActionRewardStateActionModel.EligibilityTrace = parameterDictionary.EligibilityTrace
 
 	NewDeepStateActionRewardStateActionModel:setCategoricalUpdateFunction(function(previousFeatureTensor, previousAction, rewardValue, currentFeatureTensor, currentAction, terminalStateValue)
-
+		
 		local Model = NewDeepStateActionRewardStateActionModel.Model
 		
 		local discountFactor = NewDeepStateActionRewardStateActionModel.discountFactor
@@ -58,26 +58,28 @@ function DeepStateActionRewardStateActionModel.new(parameterDictionary)
 
 		local currentQTensor = Model:forwardPropagate(currentFeatureTensor)
 
-		local previousQTensor = Model:forwardPropagate(previousFeatureTensor)
-
+		local previousQTensor = Model:forwardPropagate(previousFeatureTensor, true)
+		
 		local ClassesList = Model:getClassesList()
 
 		local numberOfClasses = #ClassesList
-
+		
 		local previousActionIndex = table.find(ClassesList, previousAction)
-
+		
 		local currentActionIndex = table.find(ClassesList, currentAction)
-
-		local targetValue = rewardValue + (discountFactor * currentQTensor[1][currentActionIndex] * (1 - terminalStateValue))
-
-		local temporalDifferenceError = targetValue - previousQTensor[1][previousActionIndex] 
-
+		
+		local targetQValue = rewardValue + (discountFactor * currentQTensor[1][currentActionIndex] * (1 - terminalStateValue))
+		
+		local previousQValue = previousQTensor[1][previousActionIndex] 
+		
+		local temporalDifferenceError = targetQValue - previousQValue
+		
 		local outputDimensionSizeArray = {1, numberOfClasses}
 
 		local temporalDifferenceErrorTensor = AqwamTensorLibrary:createTensor(outputDimensionSizeArray, 0)
 
 		temporalDifferenceErrorTensor[1][previousActionIndex] = temporalDifferenceError
-
+		
 		if (EligibilityTrace) then
 
 			EligibilityTrace:increment(previousActionIndex, discountFactor, outputDimensionSizeArray)
@@ -85,17 +87,15 @@ function DeepStateActionRewardStateActionModel.new(parameterDictionary)
 			temporalDifferenceErrorTensor = EligibilityTrace:calculate(temporalDifferenceErrorTensor)
 
 		end
+		
+		local negatedTemporalDifferenceErrorTensor = AqwamTensorLibrary:unaryMinus(temporalDifferenceErrorTensor) -- The original non-deep SARSA version performs gradient ascent. But the neural network performs gradient descent. So, we need to negate the error Tensor to make the neural network to perform gradient ascent.
 
-		local negatedTemporalDifferenceErrorTensor = AqwamTensorLibrary:unaryMinus(temporalDifferenceErrorTensor) -- The original non-deep SARSA version performs gradient ascent. But the neural network performs gradient descent. So, we need to negate the error tensor to make the neural network to perform gradient ascent.
-
-		Model:forwardPropagate(previousFeatureTensor)
-
-		Model:update(negatedTemporalDifferenceErrorTensor)
-
-		return temporalDifferenceError
+		Model:update(negatedTemporalDifferenceErrorTensor, true)
+		
+		return temporalDifferenceErrorTensor
 
 	end)
-
+	
 	NewDeepStateActionRewardStateActionModel:setEpisodeUpdateFunction(function(terminalStateValue) 
 		
 		local EligibilityTrace = NewDeepStateActionRewardStateActionModel.EligibilityTrace
@@ -103,7 +103,7 @@ function DeepStateActionRewardStateActionModel.new(parameterDictionary)
 		if (EligibilityTrace) then EligibilityTrace:reset() end
 		
 	end)
-
+	
 	NewDeepStateActionRewardStateActionModel:setResetFunction(function() 
 		
 		local EligibilityTrace = NewDeepStateActionRewardStateActionModel.EligibilityTrace
@@ -113,6 +113,12 @@ function DeepStateActionRewardStateActionModel.new(parameterDictionary)
 	end)
 
 	return NewDeepStateActionRewardStateActionModel
+
+end
+
+function DeepStateActionRewardStateActionModel:setParameters(discountFactor)
+
+	self.discountFactor = discountFactor or self.discountFactor
 
 end
 

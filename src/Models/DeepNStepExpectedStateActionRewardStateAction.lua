@@ -2,7 +2,7 @@
 
 	--------------------------------------------------------------------
 
-	Aqwam's Machine, Deep And Reinforcement Learning Library (DataPredict)
+	Aqwam's Deep Learning Library (DataPredict Neural)
 
 	Author: Aqwam Harish Aiman
 	
@@ -16,7 +16,7 @@
 		
 	By using this library, you agree to comply with our Terms and Conditions in the link below:
 	
-	https://github.com/AqwamCreates/DataPredict/blob/main/docs/TermsAndConditions.md
+	https://github.com/AqwamCreates/DataPredict-Neural/blob/main/docs/TermsAndConditions.md
 	
 	--------------------------------------------------------------------
 	
@@ -75,16 +75,6 @@ function DeepNStepExpectedStateActionRewardStateActionModel.new(parameterDiction
 			currentNStep = currentNStep - 1
 
 		end
-		
-		if (currentNStep < nStep) and (terminalStateValue == 0) then return 0 end
-
-		if (currentNStep > nStep) then 
-
-			table.remove(replayBufferArray, 1)
-
-			currentNStep = currentNStep - 1
-
-		end
 
 		local Model = NewDeepNStepExpectedStateActionRewardStateActionModel.Model
 
@@ -122,19 +112,19 @@ function DeepNStepExpectedStateActionRewardStateActionModel.new(parameterDiction
 
 		local firstExperience = replayBufferArray[1]
 
-		local targetTensor = Model:forwardPropagate(currentFeatureTensor)
+		local currentQTensor = Model:forwardPropagate(currentFeatureTensor)
 
-		local previousTensor = Model:forwardPropagate(previousFeatureTensor, true)
+		local previousQTensor = Model:forwardPropagate(previousFeatureTensor, true)
 
-		local maxQValue = AqwamTensorLibrary:findMaximumValue(targetTensor)
+		local maximumCurrentQValue = AqwamTensorLibrary:findMaximumValue(currentQTensor)
 
 		local actionIndex = table.find(ClassesList, previousAction)
 
-		local unwrappedTargetTensor = targetTensor[1]
+		local unwrappedQTensor = currentQTensor[1]
 
 		for i = 1, numberOfClasses, 1 do
 
-			if (unwrappedTargetTensor[i] == maxQValue) then
+			if (unwrappedQTensor[i] == maximumCurrentQValue) then
 
 				numberOfGreedyActions = numberOfGreedyActions + 1
 
@@ -148,9 +138,9 @@ function DeepNStepExpectedStateActionRewardStateActionModel.new(parameterDiction
 
 		local actionProbability
 
-		for _, qValue in ipairs(unwrappedTargetTensor) do
+		for _, qValue in ipairs(unwrappedQTensor) do
 
-			actionProbability = ((qValue == maxQValue) and greedyActionProbability) or nonGreedyActionProbability
+			actionProbability = ((qValue == maximumCurrentQValue) and greedyActionProbability) or nonGreedyActionProbability
 
 			expectedQValue = expectedQValue + (qValue * actionProbability)
 
@@ -158,11 +148,11 @@ function DeepNStepExpectedStateActionRewardStateActionModel.new(parameterDiction
 
 		local bootstrapValue = math.pow(discountFactor, currentNStep) * expectedQValue
 
-		local nStepTarget = returnValue + bootstrapValue
+		local nStepTargetValue = returnValue + bootstrapValue
 
-		local lastValue = previousTensor[1][actionIndex]
+		local previousQValue = previousQTensor[1][actionIndex]
 
-		local temporalDifferenceError = nStepTarget - lastValue
+		local temporalDifferenceError = nStepTargetValue - previousQValue
 		
 		local outputDimensionSizeArray = {1, numberOfClasses}
 

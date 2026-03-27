@@ -2,7 +2,7 @@
 
 	--------------------------------------------------------------------
 
-	Aqwam's Machine, Deep And Reinforcement Learning Library (DataPredict)
+	Aqwam's Deep Learning Library (DataPredict Neural)
 
 	Author: Aqwam Harish Aiman
 	
@@ -16,7 +16,7 @@
 		
 	By using this library, you agree to comply with our Terms and Conditions in the link below:
 	
-	https://github.com/AqwamCreates/DataPredict/blob/main/docs/TermsAndConditions.md
+	https://github.com/AqwamCreates/DataPredict-Neural/blob/main/docs/TermsAndConditions.md
 	
 	--------------------------------------------------------------------
 	
@@ -30,35 +30,37 @@ local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker
 
 local ReinforcementLearningBaseModel = require(script.Parent.ReinforcementLearningBaseModel)
 
-local DeepTemporalDifferenceModel = {}
+local TemporalDifferenceModel = {}
 
-DeepTemporalDifferenceModel.__index = DeepTemporalDifferenceModel
+TemporalDifferenceModel.__index = TemporalDifferenceModel
 
-setmetatable(DeepTemporalDifferenceModel, ReinforcementLearningBaseModel)
+setmetatable(TemporalDifferenceModel, ReinforcementLearningBaseModel)
 
-function DeepTemporalDifferenceModel.new(parameterDictionary)
+function TemporalDifferenceModel.new(parameterDictionary)
 	
 	parameterDictionary = parameterDictionary or {}
 
-	local NewDeepTemporalDifferenceModel = ReinforcementLearningBaseModel.new(parameterDictionary)
+	local NewTemporalDifferenceModel = ReinforcementLearningBaseModel.new(parameterDictionary)
 
-	setmetatable(NewDeepTemporalDifferenceModel, DeepTemporalDifferenceModel)
+	setmetatable(NewTemporalDifferenceModel, TemporalDifferenceModel)
 	
-	NewDeepTemporalDifferenceModel:setName("DeepTemporalDifference")
+	NewTemporalDifferenceModel:setName("DeepTemporalDifference")
 	
-	NewDeepTemporalDifferenceModel:setCategoricalUpdateFunction(function(previousFeatureTensor, previousAction, rewardValue, currentFeatureTensor, currentAction, terminalStateValue)
+	NewTemporalDifferenceModel:setCategoricalUpdateFunction(function(previousFeatureTensor, previousAction, rewardValue, currentFeatureTensor, currentAction, terminalStateValue)
 		
-		local Model = NewDeepTemporalDifferenceModel.Model
+		local Model = NewTemporalDifferenceModel.Model
 		
-		local discountFactor = NewDeepTemporalDifferenceModel.discountFactor
+		local discountFactor = NewTemporalDifferenceModel.discountFactor
 
 		local currentQTensor = Model:forwardPropagate(currentFeatureTensor)
 
 		local previousQTensor = Model:forwardPropagate(previousFeatureTensor)
 		
-		local targetValue = rewardValue + (discountFactor * currentQTensor[1][1] * (1 - terminalStateValue))
+		local targetQValue = rewardValue + (discountFactor * currentQTensor[1][1] * (1 - terminalStateValue))
 		
-		local temporalDifferenceError = targetValue - previousQTensor[1][1]
+		local previousQValue = previousQTensor[1][1]
+		
+		local temporalDifferenceError = targetQValue - previousQValue
 		
 		local negatedTemporalDifferenceErrorTensor = {{-temporalDifferenceError}}
 		
@@ -70,22 +72,22 @@ function DeepTemporalDifferenceModel.new(parameterDictionary)
 
 	end)
 	
-	NewDeepTemporalDifferenceModel:setEpisodeUpdateFunction(function(terminalStateValue) 
+	NewTemporalDifferenceModel:setEpisodeUpdateFunction(function(terminalStateValue) 
 		
 	end)
 	
-	NewDeepTemporalDifferenceModel:setResetFunction(function() 
+	NewTemporalDifferenceModel:setResetFunction(function() 
 		
 	end)
 
-	return NewDeepTemporalDifferenceModel
+	return NewTemporalDifferenceModel
 
 end
 
-function DeepTemporalDifferenceModel:setParameters(discountFactor)
+function TemporalDifferenceModel:setParameters(discountFactor)
 
 	self.discountFactor = discountFactor or self.discountFactor
 
 end
 
-return DeepTemporalDifferenceModel
+return TemporalDifferenceModel

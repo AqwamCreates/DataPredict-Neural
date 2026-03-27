@@ -2,7 +2,7 @@
 
 	--------------------------------------------------------------------
 
-	Aqwam's Machine, Deep And Reinforcement Learning Library (DataPredict)
+	Aqwam's Deep Learning Library (DataPredict Neural)
 
 	Author: Aqwam Harish Aiman
 	
@@ -16,7 +16,7 @@
 		
 	By using this library, you agree to comply with our Terms and Conditions in the link below:
 	
-	https://github.com/AqwamCreates/DataPredict/blob/main/docs/TermsAndConditions.md
+	https://github.com/AqwamCreates/DataPredict-Neural/blob/main/docs/TermsAndConditions.md
 	
 	--------------------------------------------------------------------
 	
@@ -71,16 +71,6 @@ function DeepNStepStateActionRewardStateActionModel.new(parameterDictionary)
 			currentNStep = currentNStep - 1
 
 		end
-		
-		if (currentNStep < nStep) and (terminalStateValue == 0) then return 0 end
-
-		if (currentNStep > nStep) then 
-
-			table.remove(replayBufferArray, 1)
-
-			currentNStep = currentNStep - 1
-
-		end
 
 		local Model = NewDeepNStepStateActionRewardStateActionModel.Model
 
@@ -120,11 +110,11 @@ function DeepNStepStateActionRewardStateActionModel.new(parameterDictionary)
 
 		local bootstrapValue = math.pow(discountFactor, currentNStep) * currentQTensor[1][currentActionIndex]	
 
-		local nStepTarget = returnValue + bootstrapValue
+		local nStepTargetValue = returnValue + bootstrapValue
 
-		local lastValue = lastQTensor[1][previousActionIndex]
+		local lastQValue = lastQTensor[1][previousActionIndex]
 
-		local temporalDifferenceError = nStepTarget - lastValue
+		local temporalDifferenceError = nStepTargetValue - lastQValue
 		
 		local outputDimensionSizeArray = {1, #ClassesList}
 

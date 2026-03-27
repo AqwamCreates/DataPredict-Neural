@@ -39,26 +39,22 @@ setmetatable(DeepDoubleExpectedStateActionRewardStateActionModel, ReinforcementL
 local defaultEpsilon = 0.5
 
 function DeepDoubleExpectedStateActionRewardStateActionModel.new(parameterDictionary)
-	
-	parameterDictionary = parameterDictionary or {}
 
 	local NewDeepDoubleExpectedStateActionRewardStateActionModel = ReinforcementLearningBaseModel.new(parameterDictionary)
-
+	
 	setmetatable(NewDeepDoubleExpectedStateActionRewardStateActionModel, DeepDoubleExpectedStateActionRewardStateActionModel)
 	
-	NewDeepDoubleExpectedStateActionRewardStateActionModel:setName("DeepDoubleExpectedStateActionRewardStateAction")
+	NewDeepDoubleExpectedStateActionRewardStateActionModel:setName("DeepExpectedStateActionRewardStateActionV1")
 	
 	NewDeepDoubleExpectedStateActionRewardStateActionModel.epsilon = parameterDictionary.epsilon or defaultEpsilon
-	
-	NewDeepDoubleExpectedStateActionRewardStateActionModel.EligibilityTrace = parameterDictionary.EligibilityTrace
 
+	NewDeepDoubleExpectedStateActionRewardStateActionModel.EligibilityTrace = parameterDictionary.EligibilityTrace
+	
 	NewDeepDoubleExpectedStateActionRewardStateActionModel.WeightTensorArrayArray = parameterDictionary.WeightTensorArrayArray or {}
 
 	NewDeepDoubleExpectedStateActionRewardStateActionModel:setCategoricalUpdateFunction(function(previousFeatureTensor, previousAction, rewardValue, currentFeatureTensor, currentAction, terminalStateValue)
-
-		local Model = NewDeepDoubleExpectedStateActionRewardStateActionModel.Model
 		
-		local WeightTensorArrayArray = NewDeepDoubleExpectedStateActionRewardStateActionModel.WeightTensorArrayArray
+		local Model = NewDeepDoubleExpectedStateActionRewardStateActionModel.Model
 
 		local randomProbability = math.random()
 
@@ -68,22 +64,20 @@ function DeepDoubleExpectedStateActionRewardStateActionModel.new(parameterDictio
 
 		local selectedModelNumberForUpdate = (updateSecondModel and 2) or 1
 
-		local temporalDifferenceErrorTensor, temporalDifferenceError = NewDeepDoubleExpectedStateActionRewardStateActionModel:generateLossTensor(previousFeatureTensor, previousAction, rewardValue, currentFeatureTensor, terminalStateValue, selectedModelNumberForTargetTensor, selectedModelNumberForUpdate)
+		local temporalDifferenceErrorTensor, temporalDifferenceError = NewDeepDoubleExpectedStateActionRewardStateActionModel:generateTemporalDifferenceErrorTensor(previousFeatureTensor, previousAction, rewardValue, currentFeatureTensor, terminalStateValue, selectedModelNumberForTargetTensor, selectedModelNumberForUpdate)
 		
-		local negatedTemporalDifferenceErrorTensor = AqwamTensorLibrary:unaryMinus(temporalDifferenceErrorTensor) -- The original non-deep expected SARSA version performs gradient ascent. But the neural network performs gradient descent. So, we need to negate the error tensor to make the neural network to perform gradient ascent.
+		local negatedTemporalDifferenceErrorTensor = AqwamTensorLibrary:unaryMinus(temporalDifferenceErrorTensor) -- The original non-deep expected SARSA version performs gradient ascent. But the neural network performs gradient descent. So, we need to negate the error Tensor to make the neural network to perform gradient ascent.
 		
-		Model:setWeightTensorArray(WeightTensorArrayArray[selectedModelNumberForUpdate], true)
-
 		Model:forwardPropagate(previousFeatureTensor, true)
 
 		Model:update(negatedTemporalDifferenceErrorTensor, true)
 
-		WeightTensorArrayArray[selectedModelNumberForUpdate] = Model:getWeightTensorArray(true)
-
-		return temporalDifferenceErrorTensor
+		NewDeepDoubleExpectedStateActionRewardStateActionModel:saveWeightTensorArrayFromWeightTensorArrayArray(selectedModelNumberForUpdate)
+		
+		return temporalDifferenceError
 
 	end)
-
+	
 	NewDeepDoubleExpectedStateActionRewardStateActionModel:setEpisodeUpdateFunction(function(terminalStateValue) 
 		
 		local EligibilityTrace = NewDeepDoubleExpectedStateActionRewardStateActionModel.EligibilityTrace
@@ -104,47 +98,53 @@ function DeepDoubleExpectedStateActionRewardStateActionModel.new(parameterDictio
 
 end
 
-function DeepDoubleExpectedStateActionRewardStateActionModel:generateLossTensor(previousFeatureTensor, previousAction, rewardValue, currentFeatureTensor, terminalStateValue, selectedModelNumberForTargetTensor, selectedModelNumberForUpdate)
+function DeepDoubleExpectedStateActionRewardStateActionModel:saveWeightTensorArrayFromWeightTensorArrayArray(index)
 
+	self.WeightTensorArrayArray[index] = self.Model:getWeightTensorArray()
+
+end
+
+function DeepDoubleExpectedStateActionRewardStateActionModel:loadWeightTensorArrayFromWeightTensorArrayArray(index)
+
+	self.Model:setWeightTensorArray(self.WeightTensorArrayArray[index], true)
+
+end
+
+function DeepDoubleExpectedStateActionRewardStateActionModel:generateTemporalDifferenceErrorTensor(previousFeatureTensor, previousAction, rewardValue, currentFeatureTensor, terminalStateValue, selectedModelNumberForTargetTensor, selectedModelNumberForUpdate)
+	
 	local Model = self.Model
 	
 	local discountFactor = self.discountFactor
 	
 	local epsilon = self.epsilon
-
-	local EligibilityTrace = self.EligibilityTrace
 	
-	local WeightTensorArrayArray = self.WeightTensorArrayArray
-
-	if (not WeightTensorArrayArray[1]) then WeightTensorArrayArray[1] = Model:getWeightTensorArray(true) end
-
-	if (not WeightTensorArrayArray[2]) then WeightTensorArrayArray[2] = Model:getWeightTensorArray(true) end
+	local EligibilityTrace = self.EligibilityTrace
 
 	local expectedQValue = 0
 
 	local numberOfGreedyActions = 0
-
+	
 	local ClassesList = Model:getClassesList()
 
 	local numberOfClasses = #ClassesList
 
 	local actionIndex = table.find(ClassesList, previousAction)
-
-	Model:setWeightTensorArray(WeightTensorArrayArray[selectedModelNumberForUpdate], true)
 	
-	local previousTensor = Model:forwardPropagate(previousFeatureTensor)
+	self:loadWeightTensorArrayFromWeightTensorArrayArray(selectedModelNumberForUpdate)
 
-	Model:setWeightTensorArray(WeightTensorArrayArray[selectedModelNumberForTargetTensor], true)
+	local previousQTensor = Model:forwardPropagate(previousFeatureTensor)
+	
+	self:loadWeightTensorArrayFromWeightTensorArrayArray(selectedModelNumberForTargetTensor)
 
-	local targetTensor = Model:forwardPropagate(currentFeatureTensor)
+	local currentQTensor = Model:forwardPropagate(currentFeatureTensor)
 
-	local maxQValue = AqwamTensorLibrary:findMaximumValue(targetTensor)
+	local maximumCurrentQValue = AqwamTensorLibrary:findMaximumValue(currentQTensor)
 
-	local unwrappedTargetTensor = targetTensor[1]
+	local unwrappedCurrentQTensor = currentQTensor[1]
 
 	for i = 1, numberOfClasses, 1 do
 
-		if (unwrappedTargetTensor[i] == maxQValue) then
+		if (unwrappedCurrentQTensor[i] == maximumCurrentQValue) then
 
 			numberOfGreedyActions = numberOfGreedyActions + 1
 
@@ -158,29 +158,29 @@ function DeepDoubleExpectedStateActionRewardStateActionModel:generateLossTensor(
 	
 	local actionProbability
 
-	for _, qValue in ipairs(unwrappedTargetTensor) do
+	for _, qValue in ipairs(unwrappedCurrentQTensor) do
 		
-		actionProbability = ((qValue == maxQValue) and greedyActionProbability) or nonGreedyActionProbability
+		actionProbability = ((qValue == maximumCurrentQValue) and greedyActionProbability) or nonGreedyActionProbability
 
 		expectedQValue = expectedQValue + (qValue * actionProbability)
 
 	end
 
-	local targetValue = rewardValue + (discountFactor * (1 - terminalStateValue) * expectedQValue)
+	local targetQValue = rewardValue + (discountFactor * (1 - terminalStateValue) * expectedQValue)
+	
+	local previousQValue = previousQTensor[1][actionIndex]
 
-	local lastValue = previousTensor[1][actionIndex]
-
-	local temporalDifferenceError = targetValue - lastValue
-
+	local temporalDifferenceError = targetQValue - previousQValue
+	
 	local outputDimensionSizeArray = {1, numberOfClasses}
 
 	local temporalDifferenceErrorTensor = AqwamTensorLibrary:createTensor(outputDimensionSizeArray, 0)
-
+	
 	temporalDifferenceErrorTensor[1][actionIndex] = temporalDifferenceError
 	
 	if (EligibilityTrace) then
 
-		EligibilityTrace:increment(actionIndex, discountFactor, outputDimensionSizeArray)
+		EligibilityTrace:increment(1, actionIndex, discountFactor, outputDimensionSizeArray)
 
 		temporalDifferenceErrorTensor = EligibilityTrace:calculate(temporalDifferenceErrorTensor)
 

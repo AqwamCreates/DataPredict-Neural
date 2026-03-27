@@ -80,9 +80,13 @@ function RecurrentTemporalDifferenceModel.new(parameterDictionary)
 
 	end)
 
-	NewRecurrentTemporalDifferenceModel:setEpisodeUpdateFunction(function(terminalStateValue) end)
+	NewRecurrentTemporalDifferenceModel:setEpisodeUpdateFunction(function(terminalStateValue)
+	
+	end)
 
-	NewRecurrentTemporalDifferenceModel:setResetFunction(function() end)
+	NewRecurrentTemporalDifferenceModel:setResetFunction(function()
+		
+	end)
 
 	return NewRecurrentTemporalDifferenceModel
 

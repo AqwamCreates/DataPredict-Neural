@@ -47,6 +47,8 @@ function RecurrentDeepDoubleStateActionRewardStateActionModel.new(parameterDicti
 	NewRecurrentDeepDoubleStateActionRewardStateActionModel:setName("RecurrentDeepDoubleStateActionRewardStateAction")
 
 	NewRecurrentDeepDoubleStateActionRewardStateActionModel.EligibilityTrace = parameterDictionary.EligibilityTrace
+	
+	NewRecurrentDeepDoubleStateActionRewardStateActionModel.hiddenStateTensorArray = parameterDictionary.hiddenStateTensorArray or {}
 
 	NewRecurrentDeepDoubleStateActionRewardStateActionModel.WeightTensorArrayArray = parameterDictionary.WeightTensorArrayArray or {}
 
@@ -72,7 +74,7 @@ function RecurrentDeepDoubleStateActionRewardStateActionModel.new(parameterDicti
 
 		Model:setWeightTensorArray(WeightTensorArrayArray[selectedModelNumberForUpdate], true)
 
-		local selectedActionTensor = Model:forwardPropagate(previousFeatureTensor, hiddenStateTensorArray[selectedModelNumberForUpdate])
+		local selectedPreviousQTensor = Model:forwardPropagate(previousFeatureTensor, hiddenStateTensorArray[selectedModelNumberForUpdate])
 
 		Model:update(negatedTemporalDifferenceErrorTensor)
 
@@ -80,11 +82,11 @@ function RecurrentDeepDoubleStateActionRewardStateActionModel.new(parameterDicti
 
 		Model:setWeightTensorArray(WeightTensorArrayArray[selectedModelNumberForTargetTensor], true)
 
-		local targetActionTensor = Model:forwardPropagate(previousFeatureTensor, hiddenStateTensorArray[selectedModelNumberForTargetTensor])
+		local targetPreviousQTensor = Model:forwardPropagate(previousFeatureTensor, hiddenStateTensorArray[selectedModelNumberForTargetTensor])
 
-		hiddenStateTensorArray[selectedModelNumberForUpdate] = selectedActionTensor
+		hiddenStateTensorArray[selectedModelNumberForUpdate] = selectedPreviousQTensor
 
-		hiddenStateTensorArray[selectedModelNumberForTargetTensor] = targetActionTensor
+		hiddenStateTensorArray[selectedModelNumberForTargetTensor] = targetPreviousQTensor
 
 		return temporalDifferenceError
 
@@ -138,21 +140,23 @@ function RecurrentDeepDoubleStateActionRewardStateActionModel:generateLossTensor
 	
 	Model:setWeightTensorArray(WeightTensorArrayArray[selectedModelNumberForUpdate], true)
 
-	local previousTensor = Model:forwardPropagate(previousFeatureTensor, hiddenStateTensorArray[selectedModelNumberForUpdate])
+	local previousQTensor = Model:forwardPropagate(previousFeatureTensor, hiddenStateTensorArray[selectedModelNumberForUpdate])
 
 	Model:setWeightTensorArray(WeightTensorArrayArray[selectedModelNumberForTargetTensor], true)
 	
-	local previousQTensor = Model:forwardPropagate(previousFeatureTensor, hiddenStateTensorArray[selectedModelNumberForTargetTensor])
+	local currentHiddenStateTensor = Model:forwardPropagate(previousFeatureTensor, hiddenStateTensorArray[selectedModelNumberForTargetTensor])
 
-	local currentQTensor = Model:forwardPropagate(currentFeatureTensor, previousQTensor)
+	local currentQTensor = Model:forwardPropagate(currentFeatureTensor, currentHiddenStateTensor)
 
 	local previousActionIndex = table.find(ClassesList, previousAction)
 
 	local currentActionIndex = table.find(ClassesList, currentAction)
 
-	local targetValue = rewardValue + (discountFactor * currentQTensor[1][currentActionIndex] * (1 - terminalStateValue))
+	local targetQValue = rewardValue + (discountFactor * currentQTensor[1][currentActionIndex] * (1 - terminalStateValue))
+	
+	local previousQValue = previousQTensor[1][previousActionIndex] 
 
-	local temporalDifferenceError = targetValue - previousQTensor[1][previousActionIndex] 
+	local temporalDifferenceError = targetQValue - previousQValue
 
 	local temporalDifferenceErrorTensor = AqwamTensorLibrary:createTensor(outputDimensionSizeArray, 0)
 

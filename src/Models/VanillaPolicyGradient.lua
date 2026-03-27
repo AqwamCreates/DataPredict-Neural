@@ -2,7 +2,7 @@
 
 	--------------------------------------------------------------------
 
-	Aqwam's Machine, Deep And Reinforcement Learning Library (DataPredict)
+	Aqwam's Deep Learning Library (DataPredict Neural)
 
 	Author: Aqwam Harish Aiman
 	
@@ -16,7 +16,7 @@
 		
 	By using this library, you agree to comply with our Terms and Conditions in the link below:
 	
-	https://github.com/AqwamCreates/DataPredict/blob/main/docs/TermsAndConditions.md
+	https://github.com/AqwamCreates/DataPredict-Neural/blob/main/docs/TermsAndConditions.md
 	
 	--------------------------------------------------------------------
 	
@@ -28,13 +28,13 @@
 
 local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker.Value)
 
-local DeepReinforcementLearningActorCriticBaseModel = require(script.Parent.DeepReinforcementLearningActorCriticBaseModel)
+local ReinforcementLearningActorCriticBaseModel = require(script.Parent.ReinforcementLearningActorCriticBaseModel)
 
 local VanillaPolicyGradientModel = {}
 
 VanillaPolicyGradientModel.__index = VanillaPolicyGradientModel
 
-setmetatable(VanillaPolicyGradientModel, DeepReinforcementLearningActorCriticBaseModel)
+setmetatable(VanillaPolicyGradientModel, ReinforcementLearningActorCriticBaseModel)
 
 local function calculateProbability(valueTensor)
 
@@ -72,7 +72,7 @@ end
 
 function VanillaPolicyGradientModel.new(parameterDictionary)
 
-	local NewVanillaPolicyGradientModel = DeepReinforcementLearningActorCriticBaseModel.new(parameterDictionary)
+	local NewVanillaPolicyGradientModel = ReinforcementLearningActorCriticBaseModel.new(parameterDictionary)
 
 	setmetatable(NewVanillaPolicyGradientModel, VanillaPolicyGradientModel)
 

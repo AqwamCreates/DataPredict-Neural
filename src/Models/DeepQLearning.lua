@@ -30,7 +30,7 @@ local AqwamTensorLibrary = require(script.Parent.Parent.AqwamTensorLibraryLinker
 
 local ReinforcementLearningBaseModel = require(script.Parent.ReinforcementLearningBaseModel)
 
-DeepQLearningModel = {}
+local DeepQLearningModel = {}
 
 DeepQLearningModel.__index = DeepQLearningModel
 
@@ -41,36 +41,36 @@ function DeepQLearningModel.new(parameterDictionary)
 	parameterDictionary = parameterDictionary or {}
 
 	local NewDeepQLearningModel = ReinforcementLearningBaseModel.new(parameterDictionary)
-
+	
 	setmetatable(NewDeepQLearningModel, DeepQLearningModel)
 	
 	NewDeepQLearningModel:setName("DeepQLearning")
 	
 	NewDeepQLearningModel.EligibilityTrace = parameterDictionary.EligibilityTrace
-
+	
 	NewDeepQLearningModel:setCategoricalUpdateFunction(function(previousFeatureTensor, previousAction, rewardValue, currentFeatureTensor, currentAction, terminalStateValue)
-
+		
 		local Model = NewDeepQLearningModel.Model
 		
 		local discountFactor = NewDeepQLearningModel.discountFactor
 		
 		local EligibilityTrace = NewDeepQLearningModel.EligibilityTrace
 
-		local predictedValue, maxQValue = Model:predict(currentFeatureTensor)
+		local _, maximumCurrentQValue = Model:predict(currentFeatureTensor)
 
-		local targetValue = rewardValue + (discountFactor * (1 - terminalStateValue) * maxQValue[1][1])
-
+		local targetQValue = rewardValue + (discountFactor * (1 - terminalStateValue) * maximumCurrentQValue[1][1])
+		
 		local ClassesList = Model:getClassesList()
 
 		local numberOfClasses = #ClassesList
 
-		local previousTensor = Model:forwardPropagate(previousFeatureTensor)
+		local previousQTensor = Model:forwardPropagate(previousFeatureTensor, true)
 
 		local actionIndex = table.find(ClassesList, previousAction)
 
-		local lastValue = previousTensor[1][actionIndex]
+		local previousQValue = previousQTensor[1][actionIndex]
 
-		local temporalDifferenceError = targetValue - lastValue
+		local temporalDifferenceError = targetQValue - previousQValue
 		
 		local outputDimensionSizeArray = {1, numberOfClasses}
 
@@ -86,17 +86,15 @@ function DeepQLearningModel.new(parameterDictionary)
 
 		end
 		
-		local negatedTemporalDifferenceErrorTensor = AqwamTensorLibrary:unaryMinus(temporalDifferenceErrorTensor) -- The original non-deep Q-Learning version performs gradient ascent. But the neural network performs gradient descent. So, we need to negate the error tensor to make the neural network to perform gradient ascent.
-
-		Model:forwardPropagate(previousFeatureTensor, true)
+		local negatedTemporalDifferenceErrorTensor = AqwamTensorLibrary:unaryMinus(temporalDifferenceErrorTensor) -- The original non-deep Q-Learning version performs gradient ascent. But the neural network performs gradient descent. So, we need to negate the error Tensor to make the neural network to perform gradient ascent.
 
 		Model:update(negatedTemporalDifferenceErrorTensor, true)
-
+		
 		return temporalDifferenceErrorTensor
 
 	end)
-
-	NewDeepQLearningModel:setEpisodeUpdateFunction(function(terminalStateValue) 
+	
+	NewDeepQLearningModel:setEpisodeUpdateFunction(function(terminalStateValue)
 		
 		local EligibilityTrace = NewDeepQLearningModel.EligibilityTrace
 
@@ -104,7 +102,7 @@ function DeepQLearningModel.new(parameterDictionary)
 		
 	end)
 
-	NewDeepQLearningModel:setResetFunction(function() 
+	NewDeepQLearningModel:setResetFunction(function()
 		
 		local EligibilityTrace = NewDeepQLearningModel.EligibilityTrace
 

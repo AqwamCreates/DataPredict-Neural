@@ -89,6 +89,8 @@ function RecurrentDeepDoubleQLearningModel.new(parameterDictionary)
 	NewRecurrentDeepDoubleQLearningModel:setName("RecurrentDeepDoubleQLearning")
 
 	NewRecurrentDeepDoubleQLearningModel.EligibilityTrace = parameterDictionary.EligibilityTrace
+	
+	NewRecurrentDeepDoubleQLearningModel.hiddenStateTensorArray = parameterDictionary.hiddenStateTensorArray or {}
 
 	NewRecurrentDeepDoubleQLearningModel.WeightTensorArrayArray = parameterDictionary.WeightTensorArrayArray or {}
 
@@ -114,7 +116,7 @@ function RecurrentDeepDoubleQLearningModel.new(parameterDictionary)
 		
 		Model:setWeightTensorArray(WeightTensorArrayArray[selectedModelNumberForUpdate], true)
 		
-		local selectedActionTensor = Model:forwardPropagate(previousFeatureTensor, hiddenStateTensorArray[selectedModelNumberForUpdate])
+		local selectedPreviousQTensor = Model:forwardPropagate(previousFeatureTensor, hiddenStateTensorArray[selectedModelNumberForUpdate])
 
 		Model:update(negatedTemporalDifferenceErrorTensor)
 
@@ -122,11 +124,11 @@ function RecurrentDeepDoubleQLearningModel.new(parameterDictionary)
 
 		Model:setWeightTensorArray(WeightTensorArrayArray[selectedModelNumberForTargetTensor], true)
 
-		local targetActionTensor = Model:forwardPropagate(previousFeatureTensor, hiddenStateTensorArray[selectedModelNumberForTargetTensor])
+		local targetPreviousQTensor = Model:forwardPropagate(previousFeatureTensor, hiddenStateTensorArray[selectedModelNumberForTargetTensor])
 
-		hiddenStateTensorArray[selectedModelNumberForUpdate] = selectedActionTensor
+		hiddenStateTensorArray[selectedModelNumberForUpdate] = selectedPreviousQTensor
 
-		hiddenStateTensorArray[selectedModelNumberForTargetTensor] = targetActionTensor
+		hiddenStateTensorArray[selectedModelNumberForTargetTensor] = targetPreviousQTensor
 
 		return temporalDifferenceErrorTensor
 
@@ -140,7 +142,7 @@ function RecurrentDeepDoubleQLearningModel.new(parameterDictionary)
 
 	end)
 
-	NewRecurrentDeepDoubleQLearningModel:setResetFunction(function() 
+	NewRecurrentDeepDoubleQLearningModel:setResetFunction(function()
 
 		local EligibilityTrace = NewRecurrentDeepDoubleQLearningModel.EligibilityTrace
 
@@ -152,7 +154,7 @@ function RecurrentDeepDoubleQLearningModel.new(parameterDictionary)
 
 end
 
-function RecurrentDeepDoubleQLearningModel:generateLossTensor(previousFeatureTensor, action, rewardValue, currentFeatureTensor, terminalStateValue, selectedModelNumberForTargetTensor, selectedModelNumberForUpdate)
+function RecurrentDeepDoubleQLearningModel:generateLossTensor(previousFeatureTensor, previousAction, rewardValue, currentFeatureTensor, terminalStateValue, selectedModelNumberForTargetTensor, selectedModelNumberForUpdate)
 
 	local Model = self.Model
 
@@ -184,25 +186,25 @@ function RecurrentDeepDoubleQLearningModel:generateLossTensor(previousFeatureTen
 
 	Model:setWeightTensorArray(WeightTensorArrayArray[selectedModelNumberForTargetTensor], true)
 
-	local previousQTensor = Model:forwardPropagate(previousFeatureTensor, hiddenStateTensorArray[selectedModelNumberForTargetTensor])
+	local currentHiddenStateTensor = Model:forwardPropagate(previousFeatureTensor, hiddenStateTensorArray[selectedModelNumberForTargetTensor])
 
-	local _, maxQValue = Model:predict(currentFeatureTensor, previousQTensor)
+	local _, maximumCurrentQTensor = Model:predict(currentFeatureTensor, currentHiddenStateTensor)
 
-	local targetValue = rewardValue + (discountFactor * (1 - terminalStateValue) * maxQValue[1][1])
+	local targetQValue = rewardValue + (discountFactor * (1 - terminalStateValue) * maximumCurrentQTensor[1][1])
 
-	local actionIndex = table.find(ClassesList, action)
+	local previousActionIndex = table.find(ClassesList, previousAction)
 
-	local lastValue = previousQTensor[1][actionIndex]
+	local previousQValue = previousQTensor[1][previousActionIndex]
 
-	local temporalDifferenceError = targetValue - lastValue
+	local temporalDifferenceError = targetQValue - previousQValue
 
 	local temporalDifferenceErrorTensor = AqwamTensorLibrary:createTensor(outputDimensionSizeArray, 0)
 
-	temporalDifferenceErrorTensor[1][actionIndex] = temporalDifferenceError
+	temporalDifferenceErrorTensor[1][previousActionIndex] = temporalDifferenceError
 
 	if (EligibilityTrace) then
 
-		EligibilityTrace:increment(actionIndex, discountFactor, outputDimensionSizeArray)
+		EligibilityTrace:increment(previousActionIndex, discountFactor, outputDimensionSizeArray)
 
 		temporalDifferenceErrorTensor = EligibilityTrace:calculate(temporalDifferenceErrorTensor)
 

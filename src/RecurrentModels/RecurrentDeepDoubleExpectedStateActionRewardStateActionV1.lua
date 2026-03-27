@@ -51,6 +51,8 @@ function RecurrentDeepDoubleExpectedStateActionRewardStateActionModel.new(parame
 	NewRecurrentDeepDoubleExpectedStateActionRewardStateActionModel.epsilon = parameterDictionary.epsilon or defaultEpsilon
 
 	NewRecurrentDeepDoubleExpectedStateActionRewardStateActionModel.EligibilityTrace = parameterDictionary.EligibilityTrace
+	
+	NewRecurrentDeepDoubleExpectedStateActionRewardStateActionModel.hiddenStateTensorArray = parameterDictionary.hiddenStateTensorArray or {}
 
 	NewRecurrentDeepDoubleExpectedStateActionRewardStateActionModel.WeightTensorArrayArray = parameterDictionary.WeightTensorArrayArray or {}
 
@@ -76,7 +78,7 @@ function RecurrentDeepDoubleExpectedStateActionRewardStateActionModel.new(parame
 
 		Model:setWeightTensorArray(WeightTensorArrayArray[selectedModelNumberForUpdate], true)
 
-		local selectedActionTensor = Model:forwardPropagate(previousFeatureTensor, hiddenStateTensorArray[selectedModelNumberForUpdate])
+		local selectedPreviousQTensor = Model:forwardPropagate(previousFeatureTensor, hiddenStateTensorArray[selectedModelNumberForUpdate])
 
 		Model:update(negatedTemporalDifferenceErrorTensor)
 
@@ -84,11 +86,11 @@ function RecurrentDeepDoubleExpectedStateActionRewardStateActionModel.new(parame
 
 		Model:setWeightTensorArray(WeightTensorArrayArray[selectedModelNumberForTargetTensor], true)
 
-		local targetActionTensor = Model:forwardPropagate(previousFeatureTensor, hiddenStateTensorArray[selectedModelNumberForTargetTensor])
+		local targetPreviousQTensor = Model:forwardPropagate(previousFeatureTensor, hiddenStateTensorArray[selectedModelNumberForTargetTensor])
 
-		hiddenStateTensorArray[selectedModelNumberForUpdate] = selectedActionTensor
+		hiddenStateTensorArray[selectedModelNumberForUpdate] = selectedPreviousQTensor
 
-		hiddenStateTensorArray[selectedModelNumberForTargetTensor] = targetActionTensor
+		hiddenStateTensorArray[selectedModelNumberForTargetTensor] = targetPreviousQTensor
 
 		return temporalDifferenceError
 
@@ -102,7 +104,7 @@ function RecurrentDeepDoubleExpectedStateActionRewardStateActionModel.new(parame
 
 	end)
 
-	NewRecurrentDeepDoubleExpectedStateActionRewardStateActionModel:setResetFunction(function() 
+	NewRecurrentDeepDoubleExpectedStateActionRewardStateActionModel:setResetFunction(function()
 
 		local EligibilityTrace = NewRecurrentDeepDoubleExpectedStateActionRewardStateActionModel.EligibilityTrace
 
@@ -146,25 +148,25 @@ function RecurrentDeepDoubleExpectedStateActionRewardStateActionModel:generateLo
 
 	local numberOfGreedyActions = 0
 
-	local actionIndex = table.find(ClassesList, previousAction)
+	local previousActionIndex = table.find(ClassesList, previousAction)
 
 	Model:setWeightTensorArray(WeightTensorArrayArray[selectedModelNumberForUpdate], true)
 	
-	local previousTensor = Model:forwardPropagate(previousFeatureTensor, hiddenStateTensorArray[selectedModelNumberForUpdate])
+	local previousQTensor = Model:forwardPropagate(previousFeatureTensor, hiddenStateTensorArray[selectedModelNumberForUpdate])
 
 	Model:setWeightTensorArray(WeightTensorArrayArray[selectedModelNumberForTargetTensor], true)
 	
-	local previousTargetQTensor = Model:forwardPropagate(previousFeatureTensor, hiddenStateTensorArray[selectedModelNumberForTargetTensor])
+	local currentHiddenStateTensor = Model:forwardPropagate(previousFeatureTensor, hiddenStateTensorArray[selectedModelNumberForTargetTensor])
 
-	local targetTensor = Model:forwardPropagate(currentFeatureTensor, previousTargetQTensor)
-
-	local maxQValue = targetTensor[1][actionIndex]
+	local currentQTensor = Model:forwardPropagate(currentFeatureTensor, currentHiddenStateTensor)
 	
-	local unwrappedTargetTensor = targetTensor[1]
+	local unwrappedPreviousQTensor = currentQTensor[1]
+
+	local currentMaximumQValue = unwrappedPreviousQTensor[previousActionIndex]
 
 	for i = 1, numberOfClasses, 1 do
 
-		if (unwrappedTargetTensor[i] == maxQValue) then
+		if (currentQTensor[i] == currentMaximumQValue) then
 			
 			numberOfGreedyActions = numberOfGreedyActions + 1
 			
@@ -178,27 +180,27 @@ function RecurrentDeepDoubleExpectedStateActionRewardStateActionModel:generateLo
 	
 	local actionProbability
 
-	for _, qValue in ipairs(unwrappedTargetTensor) do
+	for _, qValue in ipairs(currentQTensor) do
 		
-		actionProbability = ((qValue == maxQValue) and greedyActionProbability) or nonGreedyActionProbability
+		actionProbability = ((qValue == currentMaximumQValue) and greedyActionProbability) or nonGreedyActionProbability
 
 		expectedQValue = expectedQValue + (qValue * actionProbability)
 
 	end
 
-	local targetValue = rewardValue + (discountFactor * (1 - terminalStateValue) * expectedQValue)
+	local targetQValue = rewardValue + (discountFactor * (1 - terminalStateValue) * expectedQValue)
 
-	local lastValue = previousTensor[1][actionIndex]
+	local previousQValue = previousQTensor[1][previousActionIndex]
 
-	local temporalDifferenceError = targetValue - lastValue
+	local temporalDifferenceError = targetQValue - previousQValue
 
 	local temporalDifferenceErrorTensor = AqwamTensorLibrary:createTensor(outputDimensionSizeArray, 0)
 
-	temporalDifferenceErrorTensor[1][actionIndex] = temporalDifferenceError
+	temporalDifferenceErrorTensor[1][previousActionIndex] = temporalDifferenceError
 
 	if (EligibilityTrace) then
 
-		EligibilityTrace:increment(actionIndex, discountFactor, outputDimensionSizeArray)
+		EligibilityTrace:increment(previousActionIndex, discountFactor, outputDimensionSizeArray)
 
 		temporalDifferenceErrorTensor = EligibilityTrace:calculate(temporalDifferenceErrorTensor)
 
