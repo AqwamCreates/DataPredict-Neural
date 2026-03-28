@@ -207,8 +207,6 @@ function ProximalPolicyOptimizationModel.new(parameterDictionary)
 		local oldPolicyActionProbabilityTensor = calculateCategoricalProbability(oldPolicyActionTensor)
 		
 		local currentPolicyActionProbabilityTensor = calculateCategoricalProbability(currentPolicyActionTensor)
-		
-		local ClassesList = ActorModel:getClassesList()
 
 		local previousActionIndex = table.find(ClassesList, previousAction)
 		
