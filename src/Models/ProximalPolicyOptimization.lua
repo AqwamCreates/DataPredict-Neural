@@ -40,17 +40,35 @@ local defaultLambda = 0
 
 local defaultUseLogProbabilities = true
 
+local function rateAverageModelParameters(averagingRate, TargetModelParameters, PrimaryModelParameters)
+
+	local averagingRateComplement = 1 - averagingRate
+
+	for layer = 1, #TargetModelParameters, 1 do
+
+		local TargetModelParametersPart = AqwamTensorLibrary:multiply(averagingRate, TargetModelParameters[layer])
+
+		local PrimaryModelParametersPart = AqwamTensorLibrary:multiply(averagingRateComplement, PrimaryModelParameters[layer])
+
+		TargetModelParameters[layer] = AqwamTensorLibrary:add(TargetModelParametersPart, PrimaryModelParametersPart)
+
+	end
+
+	return TargetModelParameters
+
+end
+
 local function calculateCategoricalProbability(valueTensor)
 
 	local highestActionValue = AqwamTensorLibrary:findMaximumValue(valueTensor)
 
 	local subtractedZTensor = AqwamTensorLibrary:subtract(valueTensor, highestActionValue)
 
-	local exponentValueTensor = AqwamTensorLibrary:applyFunction(math.exp, subtractedZTensor)
+	local exponentActionTensor = AqwamTensorLibrary:applyFunction(math.exp, subtractedZTensor)
 
-	local exponentValueSumTensor = AqwamTensorLibrary:sum(exponentValueTensor, 2)
+	local exponentActionSumTensor = AqwamTensorLibrary:sum(exponentActionTensor, 2)
 
-	local targetActionTensor = AqwamTensorLibrary:divide(exponentValueTensor, exponentValueSumTensor)
+	local targetActionTensor = AqwamTensorLibrary:divide(exponentActionTensor, exponentActionSumTensor)
 
 	return targetActionTensor
 
@@ -75,10 +93,26 @@ local function calculateDiagonalGaussianProbability(meanTensor, standardDeviatio
 	local logValueTensorPart3 = AqwamTensorLibrary:add(squaredZScoreTensor, logValueTensorPart2)
 
 	local logValueTensor = AqwamTensorLibrary:add(logValueTensorPart3, math.log(2 * math.pi))
-	
+
 	logValueTensor = AqwamTensorLibrary:multiply(-0.5, logValueTensor)
 
 	return logValueTensor
+
+end
+
+local function calculateDiagonalGaussianProbabilityGradient(meanTensor, standardDeviationTensor, noiseTensor)
+
+	local actionTensorPart1 = AqwamTensorLibrary:multiply(standardDeviationTensor, noiseTensor)
+
+	local actionTensor = AqwamTensorLibrary:add(meanTensor, actionTensorPart1)
+
+	local actionProbabilityGradientTensorPart1 = AqwamTensorLibrary:subtract(actionTensor, meanTensor)
+
+	local actionProbabilityGradientTensorPart2 = AqwamTensorLibrary:power(standardDeviationTensor, 2)
+
+	local actionProbabilityGradientTensor = AqwamTensorLibrary:divide(actionProbabilityGradientTensorPart1, actionProbabilityGradientTensorPart2)
+
+	return actionProbabilityGradientTensor
 
 end
 
@@ -114,13 +148,11 @@ function ProximalPolicyOptimizationModel.new(parameterDictionary)
 	
 	NewProximalPolicyOptimizationModel.useLogProbabilities = NewProximalPolicyOptimizationModel:getValueOrDefaultValue(parameterDictionary.useLogProbabilities, defaultUseLogProbabilities)
 
-	NewProximalPolicyOptimizationModel.CurrentActorWeightTensorArray = parameterDictionary.CurrentActorWeightTensorArray
-
-	NewProximalPolicyOptimizationModel.OldActorWeightTensorArray = parameterDictionary.OldActorWeightTensorArray
+	NewProximalPolicyOptimizationModel.OldActorModelParameters = parameterDictionary.OldActorModelParameters
 
 	local featureTensorHistory = {}
 
-	local ratioActionProbabiltyTensorHistory = {}
+	local actorGradientTensorHistory = {}
 
 	local rewardValueHistory = {}
 
@@ -133,44 +165,54 @@ function ProximalPolicyOptimizationModel.new(parameterDictionary)
 		local ActorModel = NewProximalPolicyOptimizationModel.ActorModel
 
 		local CriticModel = NewProximalPolicyOptimizationModel.CriticModel
+		
+		local CurrentActorModelParameters = ActorModel:getModelParameters(true)
+		
+		local OldModelParameters = NewProximalPolicyOptimizationModel.OldActorModelParameters or CurrentActorModelParameters
 
-		NewProximalPolicyOptimizationModel.CurrentActorWeightTensorArray = ActorModel:getWeightTensorArray(true)
-
-		ActorModel:setWeightTensorArray(NewProximalPolicyOptimizationModel.OldActorWeightTensorArray, true)
+		ActorModel:setModelParameters(OldModelParameters, true)
 
 		local oldPolicyActionTensor = ActorModel:forwardPropagate(previousFeatureTensor)
-
-		NewProximalPolicyOptimizationModel.OldActorWeightTensorArray = ActorModel:getWeightTensorArray(true)
-
-		local oldPolicyActionProbabilityTensor = calculateCategoricalProbability(oldPolicyActionTensor)
+		
+		ActorModel:setModelParameters(CurrentActorModelParameters, true)
 		
 		local currentPolicyActionTensor = ActorModel:forwardPropagate(previousFeatureTensor)
 		
+		local oldPolicyActionProbabilityTensor = calculateCategoricalProbability(oldPolicyActionTensor)
+		
 		local currentPolicyActionProbabilityTensor = calculateCategoricalProbability(currentPolicyActionTensor)
-
-		ActorModel:setWeightTensorArray(NewProximalPolicyOptimizationModel.CurrentActorWeightTensorArray, true)
 		
 		local ClassesList = ActorModel:getClassesList()
 
-		local classIndex = table.find(ClassesList, previousAction)
-
-		local ratioActionProbabiltyTensor = table.create(#ClassesList, 0)
+		local previousActionIndex = table.find(ClassesList, previousAction)
+		
+		local unwrappedCurrentPolicyActionProbabilityTensor = currentPolicyActionProbabilityTensor[1]
+		
+		local currentPolicyActionProbability = unwrappedCurrentPolicyActionProbabilityTensor[previousActionIndex]
+		
+		local oldPolicyActionProbability = oldPolicyActionProbabilityTensor[1][previousActionIndex]
 		
 		local ratioActionProbability
 		
 		if (NewProximalPolicyOptimizationModel.useLogProbabilities) then
 			
-			ratioActionProbability = math.exp(math.log(currentPolicyActionProbabilityTensor[1][classIndex]) - math.log(oldPolicyActionProbabilityTensor[1][classIndex]))
+			ratioActionProbability = math.exp(math.log(currentPolicyActionProbability) - math.log(oldPolicyActionProbability))
 			
 		else
 			
-			ratioActionProbability = currentPolicyActionProbabilityTensor[1][classIndex] / oldPolicyActionProbabilityTensor[1][classIndex]
+			ratioActionProbability = currentPolicyActionProbability / oldPolicyActionProbability
 			
 		end
 		
-		ratioActionProbabiltyTensor[classIndex] = ratioActionProbability
+		local previousActionProbabilityGradientTensor = {}
 
-		ratioActionProbabiltyTensor = {ratioActionProbabiltyTensor}
+		for i, _ in ipairs(ClassesList) do
+
+			previousActionProbabilityGradientTensor[i] = (((i == previousActionIndex) and 1) or 0) - unwrappedCurrentPolicyActionProbabilityTensor[i]
+
+		end
+
+		previousActionProbabilityGradientTensor = {previousActionProbabilityGradientTensor}
 
 		local previousCriticValue = CriticModel:forwardPropagate(previousFeatureTensor)[1][1]
 
@@ -180,7 +222,7 @@ function ProximalPolicyOptimizationModel.new(parameterDictionary)
 
 		table.insert(featureTensorHistory, previousFeatureTensor)
 
-		table.insert(ratioActionProbabiltyTensorHistory, ratioActionProbabiltyTensor)
+		table.insert(actorGradientTensorHistory, previousActionProbabilityGradientTensor)
 
 		table.insert(rewardValueHistory, rewardValue)
 
@@ -192,25 +234,27 @@ function ProximalPolicyOptimizationModel.new(parameterDictionary)
 
 	end)
 
-	NewProximalPolicyOptimizationModel:setDiagonalGaussianUpdateFunction(function(previousFeatureTensor, actionMeanTensor, actionStandardDeviationTensor, actionNoiseTensor, rewardValue, currentFeatureTensor, currentActionMeanTensor, terminalStateValue)
+	NewProximalPolicyOptimizationModel:setDiagonalGaussianUpdateFunction(function(previousFeatureTensor, previousActionMeanTensor, previousActionStandardDeviationTensor, previousActionNoiseTensor, rewardValue, currentFeatureTensor, currentActionMeanTensor, terminalStateValue)
 
-		if (not actionNoiseTensor) then actionNoiseTensor = AqwamTensorLibrary:createRandomNormalTensor({1, #actionMeanTensor[1]}) end
+		if (not previousActionNoiseTensor) then previousActionNoiseTensor = AqwamTensorLibrary:createRandomNormalTensor({1, #previousActionMeanTensor[1]}) end
 
 		local ActorModel = NewProximalPolicyOptimizationModel.ActorModel
 
 		local CriticModel = NewProximalPolicyOptimizationModel.CriticModel
 
-		NewProximalPolicyOptimizationModel.CurrentActorWeightTensorArray = ActorModel:getWeightTensorArray(true)
+		local CurrentActorModelParameters = ActorModel:getModelParameters(true)
+		
+		local OldModelParameters = NewProximalPolicyOptimizationModel.OldActorModelParameters or CurrentActorModelParameters
 
-		ActorModel:setWeightTensorArray(NewProximalPolicyOptimizationModel.OldActorWeightTensorArray, true)
+		ActorModel:setModelParameters(OldModelParameters, true)
 
 		local oldPolicyActionMeanTensor = ActorModel:forwardPropagate(previousFeatureTensor)
+		
+		ActorModel:setModelParameters(CurrentActorModelParameters, true)
 
-		NewProximalPolicyOptimizationModel.OldActorWeightTensorArray = ActorModel:getWeightTensorArray(true)
+		local oldPolicyActionProbabilityTensor = calculateDiagonalGaussianProbability(oldPolicyActionMeanTensor, previousActionStandardDeviationTensor, previousActionNoiseTensor)
 
-		local oldPolicyActionProbabilityTensor = calculateDiagonalGaussianProbability(oldPolicyActionMeanTensor, actionStandardDeviationTensor, actionNoiseTensor)
-
-		local currentPolicyActionProbabilityTensor = calculateDiagonalGaussianProbability(actionMeanTensor, actionStandardDeviationTensor, actionNoiseTensor)
+		local currentPolicyActionProbabilityTensor = calculateDiagonalGaussianProbability(previousActionMeanTensor, previousActionStandardDeviationTensor, previousActionNoiseTensor)
 		
 		local ratioActionProbabiltyTensor
 		
@@ -227,7 +271,11 @@ function ProximalPolicyOptimizationModel.new(parameterDictionary)
 			ratioActionProbabiltyTensor = AqwamTensorLibrary:divide(currentPolicyActionProbabilityTensor, oldPolicyActionProbabilityTensor)
 
 		end
-
+		
+		local previousActionProbabilityGradientTensor = calculateDiagonalGaussianProbabilityGradient(previousActionMeanTensor, previousActionStandardDeviationTensor, previousActionNoiseTensor)
+		
+		previousActionProbabilityGradientTensor = AqwamTensorLibrary:multiply(previousActionProbabilityGradientTensor, ratioActionProbabiltyTensor)
+		
 		local previousCriticValue = CriticModel:forwardPropagate(previousFeatureTensor)[1][1]
 
 		local currentCriticValue = CriticModel:forwardPropagate(currentFeatureTensor)[1][1]
@@ -236,7 +284,7 @@ function ProximalPolicyOptimizationModel.new(parameterDictionary)
 
 		table.insert(featureTensorHistory, previousFeatureTensor)
 
-		table.insert(ratioActionProbabiltyTensorHistory, ratioActionProbabiltyTensor)
+		table.insert(actorGradientTensorHistory, previousActionProbabilityGradientTensor)
 
 		table.insert(rewardValueHistory, rewardValue)
 
@@ -257,6 +305,10 @@ function ProximalPolicyOptimizationModel.new(parameterDictionary)
 		local discountFactor = NewProximalPolicyOptimizationModel.discountFactor
 
 		local lambda = NewProximalPolicyOptimizationModel.lambda
+		
+		local CurrentActorModelParameters = ActorModel:getModelParameters(true)
+		
+		NewProximalPolicyOptimizationModel.OldActorModelParameters = CurrentActorModelParameters
 
 		if (lambda ~= 0) then
 
@@ -278,17 +330,13 @@ function ProximalPolicyOptimizationModel.new(parameterDictionary)
 
 		local rewardToGoArray = calculateRewardToGo(rewardValueHistory, discountFactor)
 
-		NewProximalPolicyOptimizationModel.OldActorWeightTensorArray = NewProximalPolicyOptimizationModel.CurrentActorWeightTensorArray
-
-		ActorModel:setWeightTensorArray(NewProximalPolicyOptimizationModel.CurrentActorWeightTensorArray, true)
-
 		for h, featureTensor in ipairs(featureTensorHistory) do
 
-			local ratioActionProbabilityTensor = ratioActionProbabiltyTensorHistory[h]
+			local actorGradientTensor = actorGradientTensorHistory[h]
 
 			local advantageValue = advantageValueHistory[h]
 
-			local actorLossTensor = AqwamTensorLibrary:multiply(ratioActionProbabilityTensor, advantageValue)
+			local actorLossTensor = AqwamTensorLibrary:multiply(actorGradientTensor, advantageValue)
 
 			local criticLoss = criticValueHistory[h] - rewardToGoArray[h]
 
@@ -304,11 +352,9 @@ function ProximalPolicyOptimizationModel.new(parameterDictionary)
 
 		end
 
-		NewProximalPolicyOptimizationModel.CurrentActorWeightTensorArray = ActorModel:getWeightTensorArray(true)
-
 		table.clear(featureTensorHistory)
 
-		table.clear(ratioActionProbabiltyTensorHistory)
+		table.clear(actorGradientTensorHistory)
 
 		table.clear(rewardValueHistory)
 
@@ -322,7 +368,7 @@ function ProximalPolicyOptimizationModel.new(parameterDictionary)
 
 		table.clear(featureTensorHistory)
 
-		table.clear(ratioActionProbabiltyTensorHistory)
+		table.clear(actorGradientTensorHistory)
 
 		table.clear(rewardValueHistory)
 
