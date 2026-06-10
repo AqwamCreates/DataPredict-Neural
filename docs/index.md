@@ -14,7 +14,7 @@
  
   * Standard and White-Label tiers available for commercial projects.
 
-* For information regarding potential license violations and eligibility for a bounty reward, please refer to the [Terms And Conditions Violation Bounty Reward Information](TermsAndConditionsViolationBountyRewardInformation.md).
+* For information regarding potential license violations and eligibility for a bounty reward, please refer to the [Terms And Conditions Violation Bounty Reward Information](TermsAndConditionsViolationBountyRewardInformation.md) and [Terms And Conditions Enforcement Information](TermsAndConditionsEnforcementInformation.md).
 
 ![DataPredictNeuralIconSmall](https://github.com/AqwamCreates/DataPredict-Neural/assets/67371914/cf4e61af-a7b6-4ba6-98cf-656a245e9960)
 
