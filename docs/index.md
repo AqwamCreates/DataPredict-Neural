@@ -114,3 +114,7 @@ In addition, if you are interested in Roblox tutorials and future projects by me
 * [Beta](VersionHistory/BetaVersionHistory.md)
 
 * [All](VersionHistory/AllVersionsHistory.md)
+
+## Just In Case
+
+* [Terms And Conditions On The Event Of The Original Creator's Death](TermsAndConditionsOnTheEventOfTheOriginalCreatorsDeath.md)
