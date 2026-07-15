@@ -103,6 +103,8 @@ In addition, if you are interested in Roblox tutorials and future projects by me
 
 * [DataPredict Library](https://github.com/AqwamCreates/DataPredict)
 
+* [DataPredict Zero Library](https://github.com/AqwamCreates/DataPredict-Zero)
+
 * [TensorL Library](https://github.com/AqwamCreates/TensorL)
 
 * [TensorL-3D Library](https://github.com/AqwamCreates/TensorL-3D)
