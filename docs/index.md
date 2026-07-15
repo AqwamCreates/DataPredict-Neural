@@ -10,11 +10,11 @@
 
 * By using or possessing any copies of this library or its assets (including the icons), you agree to our [Terms And Conditions](TermsAndConditions.md).
 
-  * Small developers and non-B2B organizations earning ≤3K USD within 365 days (not per 365 days) can use DataPredict™ for free!
+  * Small developers and non-B2B organizations earning ≤5K USD within 365 days (not per 365 days) can use DataPredict™ for free!
  
   * Standard and White-Label tiers available for commercial projects.
 
-* For information regarding potential license violations and eligibility for a bounty reward, please refer to the [Terms And Conditions Violation Bounty Reward Information](TermsAndConditionsViolationBountyRewardInformation.md).
+* For information regarding potential license violations and eligibility for a bounty reward, please refer to the [Terms And Conditions Violation Bounty Reward Information](TermsAndConditionsViolationBountyRewardInformation.md) and [Terms And Conditions Enforcement Information](TermsAndConditionsEnforcementInformation.md).
 
 ![DataPredictNeuralIconSmall](https://github.com/AqwamCreates/DataPredict-Neural/assets/67371914/cf4e61af-a7b6-4ba6-98cf-656a245e9960)
 
@@ -114,3 +114,7 @@ In addition, if you are interested in Roblox tutorials and future projects by me
 * [Beta](VersionHistory/BetaVersionHistory.md)
 
 * [All](VersionHistory/AllVersionsHistory.md)
+
+## Just In Case
+
+* [Terms And Conditions On The Event Of The Original Creator's Death](TermsAndConditionsOnTheEventOfTheOriginalCreatorsDeath.md)

@@ -30,13 +30,13 @@ These terms and conditions (“Agreement”) is a legal agreement between you (o
 
   * Supportive or Auxiliary Use: Any usage of the Library to aid in the development, testing, debugging, or execution of other projects, systems, or applications.
 
-* The definition of "Commercial Use" encompasses all forms of utilization and application, including integration, storing, and hosting from another computer, server, or machine. This applies to companies (or individuals, if none) whose combined gross revenue (including from subsidiaries or related entities) exceeds $3,000 within 365 days (not per 365 days) or those engaged in business-to-business activities.
+* The definition of "Commercial Use" encompasses all forms of utilization and application, including integration, storing, and hosting from another computer, server, or machine. This applies to companies (or individuals, if none) whose combined gross revenue (including from subsidiaries or related entities) exceeds $5,000 within 365 days (not per 365 days) or those engaged in business-to-business activities.
 
 * The definition of "User's Third Parties" shall include, but is not limited to:
 
   * Any individual or entity that receives, accesses, or benefits from the Library through User's actions;
 
-  * Clients, customers, contractors, subcontractors, partners, affiliates, or any entity to which User provides access to the Library.
+  * Clients, customers, employees, supervisors, contractors, subcontractors, partners, affiliates, or any entity to which User provides access to the Library.
 
 ## Commercial Use Conditions
 
@@ -118,7 +118,7 @@ The determination of compensatory damages shall be made by a court of competent 
 
 ## Waiver of Confidentiality Rights
 
-The User acknowledges and agrees that, in the event Licensor have a reasonable belief of a violation of this Agreement, Licensor may request User provide relevant assets for review. User may assert confidentiality, but the User's refusal may be considered in determining the violation. The User also agrees that the User will not interfere the Licensor's review from the User's Third Parties.
+The User acknowledges and agrees that, in the event Licensor have a reasonable belief of a violation of this Agreement, Licensor may request User provide relevant assets for review. User may assert confidentiality, but the User's refusal may be considered in determining the violation. The User also agrees that the User will not interfere the Licensor's review from the User's Third Parties. User also must not retaliate against, threaten, or take legal action against any Third Party for interacting with Licensor under this Agreement.
 
 ## In Relation Of User's Third Parties
 
