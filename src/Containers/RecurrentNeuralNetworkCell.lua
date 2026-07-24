@@ -32,6 +32,16 @@ local AqwamTensorLibrary = require(DataPredictNeural.AqwamTensorLibraryLinker.Va
 
 local BaseContainer = require(script.Parent.BaseContainer)
 
+local WeightBlocks = DataPredictNeural.WeightBlocks
+
+local Linear = require(WeightBlocks.Linear)
+
+local Bias = require(WeightBlocks.Bias)
+
+local Add = require(DataPredictNeural.OperatorBlocks.Add)
+
+local Tanh = require(DataPredictNeural.ActivationBlocks.Tanh)
+
 local RecurrentNeuralNetworkCellContainer = {}
 
 RecurrentNeuralNetworkCellContainer.__index = RecurrentNeuralNetworkCellContainer
@@ -66,35 +76,57 @@ function RecurrentNeuralNetworkCellContainer.new(parameterDictionary)
 	
 	local HiddenBias = parameterDictionary.HiddenBias
 	
-	local Add = parameterDictionary.Add
+	local OutputAdd = parameterDictionary.OutputAdd
 	
-	local Activation = parameterDictionary.Activation
+	local OutputActivation = parameterDictionary.OutputActivation
 	
-	if ((type(inputDimensionSize) ~= "number") and (not InputLinear)) then error("Invalid input dimension size") end
+	local InputLinearOptimizer = parameterDictionary.InputLinearOptimizer
 	
-	if ((type(hiddenDimensionSize) ~= "number") and (not (InputLinear and InputBias and HiddenLinear and HiddenBias))) then error("Invalid hidden dimension size") end
+	local InputBiasOptimizer = parameterDictionary.InputBiasOptimizer
 	
-	if (not InputLinear) then InputLinear = require(DataPredictNeural.WeightBlocks.Linear).new({dimensionSizeArray = {inputDimensionSize, hiddenDimensionSize}, learningRate = learningRate, weightInitializationMode = weightInitializationMode}) end
+	local HiddenLinearOptimizer = parameterDictionary.HiddenLinearOptimizer
 	
-	if (not InputBias) then InputBias = require(DataPredictNeural.WeightBlocks.Bias).new({dimensionSizeArray = {1, hiddenDimensionSize}, learningRate = learningRate, weightInitializationMode = weightInitializationMode}) end
+	local HiddenBiasOptimizer = parameterDictionary.HiddenBiasOptimizer
 	
-	if (not HiddenLinear) then HiddenLinear = require(DataPredictNeural.WeightBlocks.Linear).new({dimensionSizeArray = {hiddenDimensionSize, hiddenDimensionSize}, learningRate = learningRate, weightInitializationMode = weightInitializationMode}) end
+	local Regularizer = parameterDictionary.Regularizer
 	
-	if (not HiddenBias) then HiddenBias = require(DataPredictNeural.WeightBlocks.Bias).new({dimensionSizeArray = {1, hiddenDimensionSize}, learningRate = learningRate, weightInitializationMode = weightInitializationMode}) end
+	local BiasRegularizer = parameterDictionary.BiasRegularizer or Regularizer
 	
-	if (not Add) then Add = require(DataPredictNeural.OperatorBlocks.Add).new() end
+	local InputLinearRegularizer = parameterDictionary.InputLinearRegularizer or Regularizer
 	
-	if (not Activation) then Activation = require(DataPredictNeural.ActivationBlocks.Tanh).new() end
+	local InputBiasRegularizer = parameterDictionary.InputBiasRegularizer or Regularizer
+	
+	local HiddenLinearRegularizer = parameterDictionary.HiddenLinearRegularizer or BiasRegularizer
+	
+	local HiddenBiasRegularizer = parameterDictionary.HiddenBiasRegularizer or BiasRegularizer
+	
+	local inputHiddenDimensionSizeArray = {inputDimensionSize, hiddenDimensionSize}
+
+	local hiddenHiddenDimensionSizeArray = {hiddenDimensionSize, hiddenDimensionSize}
+
+	local biasDimensionSizeArray = {1, hiddenDimensionSize}
+	
+	if (not InputLinear) then InputLinear = Linear.new({dimensionSizeArray = inputHiddenDimensionSizeArray, learningRate = learningRate, weightInitializationMode = weightInitializationMode, Optimizer = InputLinearOptimizer, Regularizer = InputLinearRegularizer}) end
+	
+	if (not InputBias) then InputBias = Bias.new({dimensionSizeArray = biasDimensionSizeArray, learningRate = learningRate, weightInitializationMode = weightInitializationMode, Optimizer = InputBiasOptimizer, Regularizer = InputBiasRegularizer}) end
+	
+	if (not HiddenLinear) then HiddenLinear = Linear.new({dimensionSizeArray = hiddenHiddenDimensionSizeArray, learningRate = learningRate, weightInitializationMode = weightInitializationMode, Optimizer = HiddenLinearOptimizer, Regularizer = HiddenLinearRegularizer}) end
+	
+	if (not HiddenBias) then HiddenBias = Bias.new({dimensionSizeArray = biasDimensionSizeArray, learningRate = learningRate, weightInitializationMode = weightInitializationMode, Optimizer = HiddenBiasOptimizer, Regularizer = HiddenBiasRegularizer}) end
+	
+	if (not OutputAdd) then OutputAdd = Add.new() end
+	
+	if (not OutputActivation) then OutputActivation = Tanh.new() end
 	
 	InputLinear:linkForward(InputBias)
 	
 	HiddenLinear:linkForward(HiddenBias)
 	
-	InputBias:linkForward(Add)
+	InputBias:linkForward(OutputAdd)
 	
-	HiddenBias:linkForward(Add)
+	HiddenBias:linkForward(OutputAdd)
 	
-	Add:linkForward(Activation)
+	OutputAdd:linkForward(OutputActivation)
 	
 	NewRecurrentNeuralNetworkCellContainer.inputDimensionSize = inputDimensionSize
 	
@@ -110,11 +142,11 @@ function RecurrentNeuralNetworkCellContainer.new(parameterDictionary)
 	
 	NewRecurrentNeuralNetworkCellContainer.Add = Add
 	
-	NewRecurrentNeuralNetworkCellContainer.Activation = Activation
+	NewRecurrentNeuralNetworkCellContainer.OutputActivation = OutputActivation
 	
 	NewRecurrentNeuralNetworkCellContainer.WeightBlockArray = {InputLinear, InputBias, HiddenLinear, HiddenBias}
 	
-	NewRecurrentNeuralNetworkCellContainer.OutputBlockArray = {Activation}
+	NewRecurrentNeuralNetworkCellContainer.OutputBlockArray = {OutputActivation}
 	
 	NewRecurrentNeuralNetworkCellContainer.ClassesList = parameterDictionary.ClassesList or {}
 
@@ -122,15 +154,15 @@ function RecurrentNeuralNetworkCellContainer.new(parameterDictionary)
 	
 	NewRecurrentNeuralNetworkCellContainer:setForwardPropagateFunction(function(featureTensor, hiddenStateTensor)
 		
-		local Activation = NewRecurrentNeuralNetworkCellContainer.Activation
+		local OutputActivation = NewRecurrentNeuralNetworkCellContainer.OutputActivation
 
-		Activation:setTransformedTensor(nil, true) -- To ensure that we don't output old tensor values.
+		OutputActivation:setTransformedTensor(nil, true) -- To ensure that we don't output old tensor values.
 
 		NewRecurrentNeuralNetworkCellContainer.InputLinear:transform(featureTensor)
 
 		NewRecurrentNeuralNetworkCellContainer.HiddenLinear:transform(hiddenStateTensor)
 
-		local transformedTensor = Activation:waitForTransformedTensor()
+		local transformedTensor = OutputActivation:waitForTransformedTensor()
 
 		return transformedTensor
 		
@@ -148,7 +180,7 @@ end
 
 function RecurrentNeuralNetworkCellContainer:setCutOffValue(cutOffValue)
 
-	self.cutOffValue = cutOffValue or self.cutOffValue
+	self.cutOffValue = cutOffValue
 
 end
 
