@@ -206,16 +206,6 @@ function GatedRecurrentUnitCellContainer.new(parameterDictionary)
 	
 	if (not OutputAdd) then OutputAdd = require(DataPredictNeural.OperatorBlocks.Add).new() end
 	
-	--OutputInputHolder.name = "OutputInputHolder"
-	
-	--OutputNullaryFunctionHolder.name = "OutputNullaryFunctionHolder"
-	
-	--CandidateInputHolder.name = "CandidateInputHolder"
-	
-	--CandidateActivation.name = "CandidateActivation"
-	
-	--ResetGateActivation.name = "ResetGateActivation"
-	
 	InputResetGateLinear:linkForward(ResetGateAdd)
 	
 	HiddenResetGateLinear:linkForward(ResetGateAdd)
