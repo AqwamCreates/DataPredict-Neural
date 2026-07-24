@@ -344,6 +344,8 @@ function LongShortTermMemoryCellContainer.new(parameterDictionary)
 	
 	NewSequentialContainer.WeightBlockArray = {InputGateInputLinear, InputGateHiddenLinear, InputGateBias, ForgetGateInputLinear, ForgetGateHiddenLinear, ForgetGateBias, OutputGateInputLinear, OutputGateHiddenLinear, OutputGateBias, CellInputLinear, CellHiddenLinear, CellBias}
 	
+	NewSequentialContainer.OutputBlockArray = {OutputMultiply}
+	
 	NewSequentialContainer:setForwardPropagateFunction(function(featureTensor, hiddenStateTensor, cellStateTensor)
 		
 		local OutputMultiply = NewSequentialContainer.OutputMultiply
