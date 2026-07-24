@@ -146,6 +146,42 @@ function GatedRecurrentUnitCellContainer.new(parameterDictionary)
 	
 	local CandidateBiasRegularizer = parameterDictionary.CandidateBiasRegularizer
 	
+	local LinearRegularizer = parameterDictionary.LinearRegularizer
+	
+	local HiddenRegularizer = parameterDictionary.HiddenRegularizer
+	
+	local BiasRegularizer = parameterDictionary.BiasRegularizer
+	
+	if (LinearRegularizer) then
+		
+		InputResetGateRegularizer = LinearRegularizer
+		
+		InputUpdateGateRegularizer = LinearRegularizer
+		
+		InputCandidateRegularizer = LinearRegularizer
+		
+	end
+	
+	if (HiddenRegularizer) then
+		
+		HiddenResetGateRegularizer = HiddenRegularizer
+		
+		HiddenUpdateGateRegularizer = HiddenRegularizer
+		
+		HiddenCandidateRegularizer = HiddenRegularizer
+		
+	end
+	
+	if (BiasRegularizer) then
+		
+		ResetGateBiasRegularizer = BiasRegularizer
+		
+		UpdateGateBiasRegularizer = BiasRegularizer
+		
+		CandidateBiasRegularizer = BiasRegularizer
+		
+	end
+	
 	local inputHiddenDimensionSizeArray = {inputDimensionSize, hiddenDimensionSize}
 	
 	local hiddenHiddenDimensionSizeArray = {hiddenDimensionSize, hiddenDimensionSize}
