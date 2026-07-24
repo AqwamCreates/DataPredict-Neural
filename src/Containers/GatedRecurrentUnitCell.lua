@@ -104,33 +104,69 @@ function GatedRecurrentUnitCellContainer.new(parameterDictionary)
 	
 	local OutputAdd = parameterDictionary.OutputAdd
 	
-	if (not InputResetGateLinear) then InputResetGateLinear = require(DataPredictNeural.WeightBlocks.Linear).new({dimensionSizeArray = {inputDimensionSize, hiddenDimensionSize}, learningRate = learningRate, weightInitializationMode = weightInitializationMode}) end
+	local InputResetGateLinearOptimizer = parameterDictionary.InputResetGateLinearOptimizer
 	
-	if (not HiddenResetGateLinear) then HiddenResetGateLinear = require(DataPredictNeural.WeightBlocks.Linear).new({dimensionSizeArray = {hiddenDimensionSize, hiddenDimensionSize}, learningRate = learningRate, weightInitializationMode = weightInitializationMode}) end
+	local HiddenResetGateLinearOptimizer = parameterDictionary.HiddenResetGateLinearOptimizer
+	
+	local ResetGateBiasOptimizer = parameterDictionary.ResetGateBiasOptimizer
+	
+	local InputUpdateGateLinearOptimizer = parameterDictionary.InputUpdateGateLinearOptimizer
+	
+	local HiddenUpdateGateLinearOptimizer = parameterDictionary.HiddenUpdateGateLinearOptimizer
+	
+	local UpdateGateBiasOptimizer = parameterDictionary.UpdateGateBiasOptimizer
+	
+	local InputCandidateLinearOptimizer = parameterDictionary.InputCandidateLinearOptimizer
+	
+	local HiddenCandidateLinearOptimizer = parameterDictionary.HiddenCandidateLinearOptimizer
+	
+	local CandidateBiasOptimizer = parameterDictionary.CandidateBiasOptimizer
+	
+	local InputResetGateRegularizer = parameterDictionary.InputResetGateRegularizer
+	
+	local HiddenResetGateRegularizer = parameterDictionary.HiddenResetGateRegularizer
+	
+	local ResetGateBiasRegularizer = parameterDictionary.ResetGateBiasRegularizer
+	
+	local InputUpdateGateRegularizer = parameterDictionary.InputUpdateGateRegularizer
+	
+	local HiddenUpdateGateRegularizer = parameterDictionary.HiddenUpdateGateRegularizer
+	
+	local UpdateGateBiasRegularizer = parameterDictionary.UpdateGateBiasRegularizer
+	
+	local HiddenCandidateRegularizer = parameterDictionary.HiddenCandidateRegularizer
+	
+	local InputCandidateRegularizer = parameterDictionary.InputCandidateRegularizer
+	
+	local CandidateBiasRegularizer = parameterDictionary.CandidateBiasRegularizer
+	
+	if (not InputResetGateLinear) then InputResetGateLinear = require(DataPredictNeural.WeightBlocks.Linear).new({dimensionSizeArray = {inputDimensionSize, hiddenDimensionSize}, learningRate = learningRate, weightInitializationMode = weightInitializationMode, Optimizer = InputResetGateLinearOptimizer, Regularizer = InputResetGateRegularizer}) end
+	
+	if (not HiddenResetGateLinear) then HiddenResetGateLinear = require(DataPredictNeural.WeightBlocks.Linear).new({dimensionSizeArray = {hiddenDimensionSize, hiddenDimensionSize}, learningRate = learningRate, weightInitializationMode = weightInitializationMode, Optimizer = HiddenResetGateLinearOptimizer, Regularizer = HiddenResetGateRegularizer}) end
 	
 	if (not ResetGateAdd) then ResetGateAdd = require(DataPredictNeural.OperatorBlocks.Add).new() end
 	
-	if (not ResetGateBias) then ResetGateBias = require(DataPredictNeural.WeightBlocks.Bias).new({dimensionSizeArray = {1, hiddenDimensionSize}, learningRate = learningRate, weightInitializationMode = weightInitializationMode}) end
+	if (not ResetGateBias) then ResetGateBias = require(DataPredictNeural.WeightBlocks.Bias).new({dimensionSizeArray = {1, hiddenDimensionSize}, learningRate = learningRate, weightInitializationMode = weightInitializationMode, Optimizer = ResetGateBiasOptimizer, Regularizer = ResetGateBiasRegularizer}) end
 	
 	if (not ResetGateActivation) then ResetGateActivation = require(DataPredictNeural.ActivationBlocks.Sigmoid).new() end
 	
-	if (not InputUpdateGateLinear) then InputUpdateGateLinear = require(DataPredictNeural.WeightBlocks.Linear).new({dimensionSizeArray = {inputDimensionSize, hiddenDimensionSize}, learningRate = learningRate, weightInitializationMode = weightInitializationMode}) end
+	if (not InputUpdateGateLinear) then InputUpdateGateLinear = require(DataPredictNeural.WeightBlocks.Linear).new({dimensionSizeArray = {inputDimensionSize, hiddenDimensionSize}, learningRate = learningRate, weightInitializationMode = weightInitializationMode, Optimizer = InputUpdateGateLinearOptimizer, Regularizer = InputUpdateGateRegularizer}) end
 
-	if (not HiddenUpdateGateLinear) then HiddenUpdateGateLinear = require(DataPredictNeural.WeightBlocks.Linear).new({dimensionSizeArray = {hiddenDimensionSize, hiddenDimensionSize}, learningRate = learningRate, weightInitializationMode = weightInitializationMode}) end
+	if (not HiddenUpdateGateLinear) then HiddenUpdateGateLinear = require(DataPredictNeural.WeightBlocks.Linear).new({dimensionSizeArray = {hiddenDimensionSize, hiddenDimensionSize}, learningRate = learningRate, weightInitializationMode = weightInitializationMode, Optimizer = HiddenUpdateGateLinearOptimizer, Regularizer = HiddenUpdateGateRegularizer}) end
 	
 	if (not UpdateGateAdd) then UpdateGateAdd = require(DataPredictNeural.OperatorBlocks.Add).new() end
 	
-	if (not UpdateGateBias) then UpdateGateBias = require(DataPredictNeural.WeightBlocks.Bias).new({dimensionSizeArray = {1, hiddenDimensionSize}, learningRate = learningRate, weightInitializationMode = weightInitializationMode}) end
+	if (not UpdateGateBias) then UpdateGateBias = require(DataPredictNeural.WeightBlocks.Bias).new({dimensionSizeArray = {1, hiddenDimensionSize}, learningRate = learningRate, weightInitializationMode = weightInitializationMode, Regularizer = UpdateGateBiasRegularizer}) end
 	
 	if (not UpdateGateActivation) then UpdateGateActivation = require(DataPredictNeural.ActivationBlocks.Sigmoid).new() end
 	
-	if (not InputCandidateLinear) then InputCandidateLinear = require(DataPredictNeural.WeightBlocks.Linear).new({dimensionSizeArray = {inputDimensionSize, hiddenDimensionSize}, learningRate = learningRate, weightInitializationMode = weightInitializationMode}) end
+	if (not InputCandidateLinear) then InputCandidateLinear = require(DataPredictNeural.WeightBlocks.Linear).new({dimensionSizeArray = {inputDimensionSize, hiddenDimensionSize}, learningRate = learningRate, weightInitializationMode = weightInitializationMode, Optimizer = InputCandidateLinearOptimizer, Regularizer = InputCandidateRegularizer}) end
 
-	if (not HiddenCandidateLinear) then HiddenCandidateLinear = require(DataPredictNeural.WeightBlocks.Linear).new({dimensionSizeArray = {hiddenDimensionSize, hiddenDimensionSize}, learningRate = learningRate, weightInitializationMode = weightInitializationMode}) end
+	if (not HiddenCandidateLinear) then HiddenCandidateLinear = require(DataPredictNeural.WeightBlocks.Linear).new({dimensionSizeArray = {hiddenDimensionSize, hiddenDimensionSize}, learningRate = learningRate, weightInitializationMode = weightInitializationMode, Optimizer = HiddenCandidateLinearOptimizer, Regularizer = HiddenCandidateRegularizer}) end
 	
 	if (not CandidateAdd) then CandidateAdd = require(DataPredictNeural.OperatorBlocks.Add).new() end
 
-	if (not CandidateBias) then CandidateBias = require(DataPredictNeural.WeightBlocks.Bias).new({dimensionSizeArray = {1, hiddenDimensionSize}, learningRate = learningRate, weightInitializationMode = weightInitializationMode}) end
+	if (not CandidateBias) then CandidateBias = require(DataPredictNeural.WeightBlocks.Bias).new({dimensionSizeArray = {1, hiddenDimensionSize}, learningRate = learningRate, weightInitializationMode = weightInitializationMode, Optimizer = CandidateBiasOptimizer, CandidateBiasRegularizer = CandidateBiasRegularizer}) end
 	
 	if (not CandidateInputHolder) then CandidateInputHolder = require(DataPredictNeural.HolderBlocks.InputHolder).new() end
 	
@@ -310,7 +346,7 @@ end
 
 function GatedRecurrentUnitCellContainer:setCutOffValue(cutOffValue)
 
-	self.cutOffValue = cutOffValue or self.cutOffValue
+	self.cutOffValue = cutOffValue
 
 end
 
