@@ -347,6 +347,8 @@ function LongShortTermMemoryCellContainer.new(parameterDictionary)
 	NewSequentialContainer:setForwardPropagateFunction(function(featureTensor, hiddenStateTensor, cellStateTensor)
 		
 		local OutputMultiply = NewSequentialContainer.OutputMultiply
+		
+		local CellStateActivation = NewSequentialContainer.CellStateActivation
 
 		OutputMultiply:setTransformedTensor(nil, true) -- To ensure that we don't output old tensor values.
 		
@@ -377,10 +379,12 @@ function LongShortTermMemoryCellContainer.new(parameterDictionary)
 		NewSequentialContainer.CellHiddenLinear:transform(hiddenStateTensor)
 		
 		NewSequentialContainer.CellStateMultiply1:transform(cellStateTensor)
+		
+		local cellStateActivationTensor = CellStateActivation:waitForTransformedTensor()
+		
+		local outputTensor = OutputMultiply:waitForTransformedTensor()
 
-		local transformedTensor = OutputMultiply:waitForTransformedTensor()
-
-		return transformedTensor
+		return outputTensor, cellStateActivationTensor
 		
 	end)
 	
