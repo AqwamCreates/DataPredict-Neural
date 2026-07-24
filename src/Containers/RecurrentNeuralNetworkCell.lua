@@ -92,6 +92,16 @@ function RecurrentNeuralNetworkCellContainer.new(parameterDictionary)
 	
 	local HiddenBiasRegularizer = parameterDictionary.HiddenBiasRegularizer
 	
+	local BiasRegularizer = parameterDictionary.BiasRegularizer
+	
+	if (BiasRegularizer) then
+		
+		InputBiasRegularizer = BiasRegularizer
+		
+		HiddenBiasRegularizer = BiasRegularizer
+		
+	end
+	
 	local inputHiddenDimensionSizeArray = {inputDimensionSize, hiddenDimensionSize}
 
 	local hiddenHiddenDimensionSizeArray = {hiddenDimensionSize, hiddenDimensionSize}
