@@ -70,17 +70,33 @@ function RecurrentNeuralNetworkCellContainer.new(parameterDictionary)
 	
 	local Activation = parameterDictionary.Activation
 	
+	local InputLinearOptimizer = parameterDictionary.InputLinearOptimizer
+	
+	local InputBiasOptimizer = parameterDictionary.InputBiasOptimizer
+	
+	local HiddenLinearOptimizer = parameterDictionary.HiddenLinearOptimizer
+	
+	local HiddenBiasOptimizer = parameterDictionary.HiddenBiasOptimizer
+	
+	local InputLinearRegularizer = parameterDictionary.InputLinearRegularizer
+	
+	local InputBiasRegularizer = parameterDictionary.InputBiasRegularizer
+	
+	local HiddenLinearRegularizer = parameterDictionary.HiddenLinearRegularizer
+	
+	local HiddenBiasRegularizer = parameterDictionary.HiddenBiasRegularizer
+	
 	if ((type(inputDimensionSize) ~= "number") and (not InputLinear)) then error("Invalid input dimension size") end
 	
 	if ((type(hiddenDimensionSize) ~= "number") and (not (InputLinear and InputBias and HiddenLinear and HiddenBias))) then error("Invalid hidden dimension size") end
 	
-	if (not InputLinear) then InputLinear = require(DataPredictNeural.WeightBlocks.Linear).new({dimensionSizeArray = {inputDimensionSize, hiddenDimensionSize}, learningRate = learningRate, weightInitializationMode = weightInitializationMode}) end
+	if (not InputLinear) then InputLinear = require(DataPredictNeural.WeightBlocks.Linear).new({dimensionSizeArray = {inputDimensionSize, hiddenDimensionSize}, learningRate = learningRate, weightInitializationMode = weightInitializationMode, Optimizer = InputLinearOptimizer, Regularizer = InputLinearRegularizer}) end
 	
-	if (not InputBias) then InputBias = require(DataPredictNeural.WeightBlocks.Bias).new({dimensionSizeArray = {1, hiddenDimensionSize}, learningRate = learningRate, weightInitializationMode = weightInitializationMode}) end
+	if (not InputBias) then InputBias = require(DataPredictNeural.WeightBlocks.Bias).new({dimensionSizeArray = {1, hiddenDimensionSize}, learningRate = learningRate, weightInitializationMode = weightInitializationMode, Optimizer = InputBiasOptimizer, Regularizer = InputBiasRegularizer}) end
 	
-	if (not HiddenLinear) then HiddenLinear = require(DataPredictNeural.WeightBlocks.Linear).new({dimensionSizeArray = {hiddenDimensionSize, hiddenDimensionSize}, learningRate = learningRate, weightInitializationMode = weightInitializationMode}) end
+	if (not HiddenLinear) then HiddenLinear = require(DataPredictNeural.WeightBlocks.Linear).new({dimensionSizeArray = {hiddenDimensionSize, hiddenDimensionSize}, learningRate = learningRate, weightInitializationMode = weightInitializationMode, Optimizer = HiddenLinearOptimizer, Regularizer = HiddenLinearRegularizer}) end
 	
-	if (not HiddenBias) then HiddenBias = require(DataPredictNeural.WeightBlocks.Bias).new({dimensionSizeArray = {1, hiddenDimensionSize}, learningRate = learningRate, weightInitializationMode = weightInitializationMode}) end
+	if (not HiddenBias) then HiddenBias = require(DataPredictNeural.WeightBlocks.Bias).new({dimensionSizeArray = {1, hiddenDimensionSize}, learningRate = learningRate, weightInitializationMode = weightInitializationMode, Optimizer = HiddenBiasOptimizer, Regularizer = HiddenBiasRegularizer}) end
 	
 	if (not Add) then Add = require(DataPredictNeural.OperatorBlocks.Add).new() end
 	
@@ -148,7 +164,7 @@ end
 
 function RecurrentNeuralNetworkCellContainer:setCutOffValue(cutOffValue)
 
-	self.cutOffValue = cutOffValue or self.cutOffValue
+	self.cutOffValue = cutOffValue
 
 end
 
