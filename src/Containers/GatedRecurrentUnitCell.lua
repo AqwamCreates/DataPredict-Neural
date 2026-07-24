@@ -322,9 +322,9 @@ function GatedRecurrentUnitCellContainer.new(parameterDictionary)
 
 	NewGatedRecurrentUnitCellContainer.OutputAdd = OutputAdd
 	
-	NewGatedRecurrentUnitCellContainer.OutputBlockArray = {OutputAdd}
-	
 	NewGatedRecurrentUnitCellContainer.WeightBlockArray = {InputResetGateLinear, HiddenResetGateLinear, ResetGateBias, InputUpdateGateLinear, HiddenUpdateGateLinear, UpdateGateBias, InputCandidateLinear, HiddenCandidateLinear, CandidateBias}
+	
+	NewGatedRecurrentUnitCellContainer.OutputBlockArray = {OutputAdd}
 	
 	NewGatedRecurrentUnitCellContainer.ClassesList = parameterDictionary.ClassesList or {}
 
