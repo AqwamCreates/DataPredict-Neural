@@ -76,9 +76,9 @@ function RecurrentNeuralNetworkCellContainer.new(parameterDictionary)
 	
 	local HiddenBias = parameterDictionary.HiddenBias
 	
-	local Add = parameterDictionary.Add
+	local OutputAdd = parameterDictionary.OutputAdd
 	
-	local Activation = parameterDictionary.Activation
+	local OutputActivation = parameterDictionary.OutputActivation
 	
 	local InputLinearOptimizer = parameterDictionary.InputLinearOptimizer
 	
@@ -114,19 +114,19 @@ function RecurrentNeuralNetworkCellContainer.new(parameterDictionary)
 	
 	if (not HiddenBias) then HiddenBias = Bias.new({dimensionSizeArray = biasDimensionSizeArray, learningRate = learningRate, weightInitializationMode = weightInitializationMode, Optimizer = HiddenBiasOptimizer, Regularizer = HiddenBiasRegularizer}) end
 	
-	if (not Add) then Add = Add.new() end
+	if (not OutputAdd) then OutputAdd = Add.new() end
 	
-	if (not Activation) then Activation = Tanh.new() end
+	if (not OutputActivation) then OutputActivation = Tanh.new() end
 	
 	InputLinear:linkForward(InputBias)
 	
 	HiddenLinear:linkForward(HiddenBias)
 	
-	InputBias:linkForward(Add)
+	InputBias:linkForward(OutputAdd)
 	
-	HiddenBias:linkForward(Add)
+	HiddenBias:linkForward(OutputAdd)
 	
-	Add:linkForward(Activation)
+	OutputAdd:linkForward(OutputActivation)
 	
 	NewRecurrentNeuralNetworkCellContainer.inputDimensionSize = inputDimensionSize
 	
@@ -142,11 +142,11 @@ function RecurrentNeuralNetworkCellContainer.new(parameterDictionary)
 	
 	NewRecurrentNeuralNetworkCellContainer.Add = Add
 	
-	NewRecurrentNeuralNetworkCellContainer.Activation = Activation
+	NewRecurrentNeuralNetworkCellContainer.OutputActivation = OutputActivation
 	
 	NewRecurrentNeuralNetworkCellContainer.WeightBlockArray = {InputLinear, InputBias, HiddenLinear, HiddenBias}
 	
-	NewRecurrentNeuralNetworkCellContainer.OutputBlockArray = {Activation}
+	NewRecurrentNeuralNetworkCellContainer.OutputBlockArray = {OutputActivation}
 	
 	NewRecurrentNeuralNetworkCellContainer.ClassesList = parameterDictionary.ClassesList or {}
 
@@ -154,15 +154,15 @@ function RecurrentNeuralNetworkCellContainer.new(parameterDictionary)
 	
 	NewRecurrentNeuralNetworkCellContainer:setForwardPropagateFunction(function(featureTensor, hiddenStateTensor)
 		
-		local Activation = NewRecurrentNeuralNetworkCellContainer.Activation
+		local OutputActivation = NewRecurrentNeuralNetworkCellContainer.OutputActivation
 
-		Activation:setTransformedTensor(nil, true) -- To ensure that we don't output old tensor values.
+		OutputActivation:setTransformedTensor(nil, true) -- To ensure that we don't output old tensor values.
 
 		NewRecurrentNeuralNetworkCellContainer.InputLinear:transform(featureTensor)
 
 		NewRecurrentNeuralNetworkCellContainer.HiddenLinear:transform(hiddenStateTensor)
 
-		local transformedTensor = Activation:waitForTransformedTensor()
+		local transformedTensor = OutputActivation:waitForTransformedTensor()
 
 		return transformedTensor
 		
