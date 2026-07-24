@@ -128,59 +128,31 @@ function GatedRecurrentUnitCellContainer.new(parameterDictionary)
 	
 	local CandidateBiasOptimizer = parameterDictionary.CandidateBiasOptimizer
 	
-	local InputResetGateRegularizer = parameterDictionary.InputResetGateRegularizer
+	local Regularizer = parameterDictionary.Regularizer
 	
-	local HiddenResetGateRegularizer = parameterDictionary.HiddenResetGateRegularizer
+	local InputRegularizer = parameterDictionary.InputRegularizer or Regularizer
+
+	local HiddenRegularizer = parameterDictionary.HiddenRegularizer or Regularizer
+
+	local BiasRegularizer = parameterDictionary.BiasRegularizer or Regularizer
 	
-	local ResetGateBiasRegularizer = parameterDictionary.ResetGateBiasRegularizer
+	local InputResetGateRegularizer = parameterDictionary.InputResetGateRegularizer or InputRegularizer
 	
-	local InputUpdateGateRegularizer = parameterDictionary.InputUpdateGateRegularizer
+	local HiddenResetGateRegularizer = parameterDictionary.HiddenResetGateRegularizer or HiddenRegularizer
 	
-	local HiddenUpdateGateRegularizer = parameterDictionary.HiddenUpdateGateRegularizer
+	local ResetGateBiasRegularizer = parameterDictionary.ResetGateBiasRegularizer or BiasRegularizer
 	
-	local UpdateGateBiasRegularizer = parameterDictionary.UpdateGateBiasRegularizer
+	local InputUpdateGateRegularizer = parameterDictionary.InputUpdateGateRegularizer or InputRegularizer
 	
-	local HiddenCandidateRegularizer = parameterDictionary.HiddenCandidateRegularizer
+	local HiddenUpdateGateRegularizer = parameterDictionary.HiddenUpdateGateRegularizer or HiddenRegularizer
 	
-	local InputCandidateRegularizer = parameterDictionary.InputCandidateRegularizer
+	local UpdateGateBiasRegularizer = parameterDictionary.UpdateGateBiasRegularizer or BiasRegularizer
 	
-	local CandidateBiasRegularizer = parameterDictionary.CandidateBiasRegularizer
+	local HiddenCandidateRegularizer = parameterDictionary.HiddenCandidateRegularizer or HiddenRegularizer
 	
-	local InputRegularizer = parameterDictionary.InputRegularizer
+	local InputCandidateRegularizer = parameterDictionary.InputCandidateRegularizer or InputRegularizer
 	
-	local HiddenRegularizer = parameterDictionary.HiddenRegularizer
-	
-	local BiasRegularizer = parameterDictionary.BiasRegularizer
-	
-	if (InputRegularizer) then
-		
-		InputResetGateRegularizer = InputRegularizer
-		
-		InputUpdateGateRegularizer = InputRegularizer
-		
-		InputCandidateRegularizer = InputRegularizer
-		
-	end
-	
-	if (HiddenRegularizer) then
-		
-		HiddenResetGateRegularizer = HiddenRegularizer
-		
-		HiddenUpdateGateRegularizer = HiddenRegularizer
-		
-		HiddenCandidateRegularizer = HiddenRegularizer
-		
-	end
-	
-	if (BiasRegularizer) then
-		
-		ResetGateBiasRegularizer = BiasRegularizer
-		
-		UpdateGateBiasRegularizer = BiasRegularizer
-		
-		CandidateBiasRegularizer = BiasRegularizer
-		
-	end
+	local CandidateBiasRegularizer = parameterDictionary.CandidateBiasRegularizer or BiasRegularizer
 	
 	local inputHiddenDimensionSizeArray = {inputDimensionSize, hiddenDimensionSize}
 	
