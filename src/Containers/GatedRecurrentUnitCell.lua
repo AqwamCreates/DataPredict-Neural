@@ -38,6 +38,26 @@ local Linear = require(WeightBlocks.Linear)
 
 local Bias = require(WeightBlocks.Bias)
 
+local OperatorBlocks = DataPredictNeural.OperatorBlocks
+
+local Add = require(OperatorBlocks.Add)
+
+local Multiply = require(OperatorBlocks.Multiply)
+
+local Subtract = require(OperatorBlocks.Subtract)
+
+local ActivationBlocks = DataPredictNeural.ActivationBlocks
+
+local Sigmoid = require(ActivationBlocks.Sigmoid)
+
+local Tanh = require(ActivationBlocks.Tanh)
+
+local HolderBlocks = DataPredictNeural.HolderBlocks
+
+local InputHolder = require(HolderBlocks.InputHolder)
+
+local NullaryFunctionHolder = require(HolderBlocks.NullaryFunctionHolder)
+
 local GatedRecurrentUnitCellContainer = {}
 
 GatedRecurrentUnitCellContainer.__index = GatedRecurrentUnitCellContainer
@@ -164,47 +184,47 @@ function GatedRecurrentUnitCellContainer.new(parameterDictionary)
 	
 	if (not HiddenResetGateLinear) then HiddenResetGateLinear = Linear.new({dimensionSizeArray = hiddenHiddenDimensionSizeArray, learningRate = learningRate, weightInitializationMode = weightInitializationMode, Optimizer = HiddenResetGateLinearOptimizer, Regularizer = HiddenResetGateRegularizer}) end
 	
-	if (not ResetGateAdd) then ResetGateAdd = require(DataPredictNeural.OperatorBlocks.Add).new() end
+	if (not ResetGateAdd) then ResetGateAdd = Add.new() end
 	
 	if (not ResetGateBias) then ResetGateBias = Bias.new({dimensionSizeArray = biasDimensionSizeArray, learningRate = learningRate, weightInitializationMode = weightInitializationMode, Optimizer = ResetGateBiasOptimizer, Regularizer = ResetGateBiasRegularizer}) end
 	
-	if (not ResetGateActivation) then ResetGateActivation = require(DataPredictNeural.ActivationBlocks.Sigmoid).new() end
+	if (not ResetGateActivation) then ResetGateActivation = Sigmoid.new() end
 	
 	if (not InputUpdateGateLinear) then InputUpdateGateLinear = Linear.new({dimensionSizeArray = inputHiddenDimensionSizeArray, learningRate = learningRate, weightInitializationMode = weightInitializationMode, Optimizer = InputUpdateGateLinearOptimizer, Regularizer = InputUpdateGateRegularizer}) end
 
 	if (not HiddenUpdateGateLinear) then HiddenUpdateGateLinear = Linear.new({dimensionSizeArray = hiddenHiddenDimensionSizeArray, learningRate = learningRate, weightInitializationMode = weightInitializationMode, Optimizer = HiddenUpdateGateLinearOptimizer, Regularizer = HiddenUpdateGateRegularizer}) end
 	
-	if (not UpdateGateAdd) then UpdateGateAdd = require(DataPredictNeural.OperatorBlocks.Add).new() end
+	if (not UpdateGateAdd) then UpdateGateAdd = Add.new() end
 	
 	if (not UpdateGateBias) then UpdateGateBias = Bias.new({dimensionSizeArray = biasDimensionSizeArray, learningRate = learningRate, weightInitializationMode = weightInitializationMode, Regularizer = UpdateGateBiasRegularizer}) end
 	
-	if (not UpdateGateActivation) then UpdateGateActivation = require(DataPredictNeural.ActivationBlocks.Sigmoid).new() end
+	if (not UpdateGateActivation) then UpdateGateActivation = Sigmoid.new() end
 	
 	if (not InputCandidateLinear) then InputCandidateLinear = Linear.new({dimensionSizeArray = inputHiddenDimensionSizeArray, learningRate = learningRate, weightInitializationMode = weightInitializationMode, Optimizer = InputCandidateLinearOptimizer, Regularizer = InputCandidateRegularizer}) end
 
 	if (not HiddenCandidateLinear) then HiddenCandidateLinear = Linear.new({dimensionSizeArray = hiddenHiddenDimensionSizeArray, learningRate = learningRate, weightInitializationMode = weightInitializationMode, Optimizer = HiddenCandidateLinearOptimizer, Regularizer = HiddenCandidateRegularizer}) end
 	
-	if (not CandidateAdd) then CandidateAdd = require(DataPredictNeural.OperatorBlocks.Add).new() end
+	if (not CandidateAdd) then CandidateAdd = Add.new() end
 
 	if (not CandidateBias) then CandidateBias = Bias.new({dimensionSizeArray = biasDimensionSizeArray, learningRate = learningRate, weightInitializationMode = weightInitializationMode, Optimizer = CandidateBiasOptimizer, CandidateBiasRegularizer = CandidateBiasRegularizer}) end
 	
-	if (not CandidateInputHolder) then CandidateInputHolder = require(DataPredictNeural.HolderBlocks.InputHolder).new() end
+	if (not CandidateInputHolder) then CandidateInputHolder = InputHolder.new() end
 	
-	if (not CandidateMultiply) then CandidateMultiply = require(DataPredictNeural.OperatorBlocks.Multiply).new() end
+	if (not CandidateMultiply) then CandidateMultiply = Multiply.new() end
 	
-	if (not CandidateActivation) then CandidateActivation = require(DataPredictNeural.ActivationBlocks.Tanh).new() end
+	if (not CandidateActivation) then CandidateActivation = Tanh.new() end
 	
-	if (not OutputNullaryFunctionHolder) then OutputNullaryFunctionHolder = require(DataPredictNeural.HolderBlocks.NullaryFunctionHolder).new({Function = (function() return 1 end), ChainRuleFirstDerivativeFunction = (function() return end)}) end
+	if (not OutputNullaryFunctionHolder) then OutputNullaryFunctionHolder = NullaryFunctionHolder.new({Function = (function() return 1 end), ChainRuleFirstDerivativeFunction = (function() return end)}) end
 	
-	if (not OutputInputHolder) then OutputInputHolder = require(DataPredictNeural.HolderBlocks.InputHolder).new() end
+	if (not OutputInputHolder) then OutputInputHolder = InputHolder.new() end
 	
-	if (not OutputSubtract) then OutputSubtract = require(DataPredictNeural.OperatorBlocks.Subtract).new() end
+	if (not OutputSubtract) then OutputSubtract = Subtract.new() end
 	
-	if (not OutputMultiply1) then OutputMultiply1 = require(DataPredictNeural.OperatorBlocks.Multiply).new() end
+	if (not OutputMultiply1) then OutputMultiply1 = Multiply.new() end
 	
-	if (not OutputMultiply2) then OutputMultiply2 = require(DataPredictNeural.OperatorBlocks.Multiply).new() end
+	if (not OutputMultiply2) then OutputMultiply2 = Multiply.new() end
 	
-	if (not OutputAdd) then OutputAdd = require(DataPredictNeural.OperatorBlocks.Add).new() end
+	if (not OutputAdd) then OutputAdd = Add.new() end
 	
 	InputResetGateLinear:linkForward(ResetGateAdd)
 	
