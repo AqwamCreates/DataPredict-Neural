@@ -94,11 +94,23 @@ function RecurrentNeuralNetworkCellContainer.new(parameterDictionary)
 	
 	local BiasRegularizer = parameterDictionary.BiasRegularizer
 	
+	local Regularizer = parameterDictionary.Regularizer
+	
+	if (Regularizer) then
+		
+		InputLinearRegularizer = InputLinearRegularizer or Regularizer
+		
+		HiddenLinearRegularizer = HiddenLinearRegularizer or Regularizer
+		
+		BiasRegularizer = BiasRegularizer or Regularizer
+		
+	end
+	
 	if (BiasRegularizer) then
 		
-		InputBiasRegularizer = BiasRegularizer
+		InputBiasRegularizer = InputBiasRegularizer or BiasRegularizer
 		
-		HiddenBiasRegularizer = BiasRegularizer
+		HiddenBiasRegularizer = HiddenBiasRegularizer or BiasRegularizer
 		
 	end
 	
