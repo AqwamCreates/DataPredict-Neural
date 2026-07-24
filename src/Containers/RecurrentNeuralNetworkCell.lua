@@ -32,6 +32,12 @@ local AqwamTensorLibrary = require(DataPredictNeural.AqwamTensorLibraryLinker.Va
 
 local BaseContainer = require(script.Parent.BaseContainer)
 
+local WeightBlocks = DataPredictNeural.WeightBlocks
+
+local Linear = require(WeightBlocks.Linear)
+
+local Bias = require(WeightBlocks.Bias)
+
 local RecurrentNeuralNetworkCellContainer = {}
 
 RecurrentNeuralNetworkCellContainer.__index = RecurrentNeuralNetworkCellContainer
@@ -92,13 +98,13 @@ function RecurrentNeuralNetworkCellContainer.new(parameterDictionary)
 
 	local biasDimensionSizeArray = {1, hiddenDimensionSize}
 	
-	if (not InputLinear) then InputLinear = require(DataPredictNeural.WeightBlocks.Linear).new({dimensionSizeArray = inputHiddenDimensionSizeArray, learningRate = learningRate, weightInitializationMode = weightInitializationMode, Optimizer = InputLinearOptimizer, Regularizer = InputLinearRegularizer}) end
+	if (not InputLinear) then InputLinear = Linear.new({dimensionSizeArray = inputHiddenDimensionSizeArray, learningRate = learningRate, weightInitializationMode = weightInitializationMode, Optimizer = InputLinearOptimizer, Regularizer = InputLinearRegularizer}) end
 	
-	if (not InputBias) then InputBias = require(DataPredictNeural.WeightBlocks.Bias).new({dimensionSizeArray = biasDimensionSizeArray, learningRate = learningRate, weightInitializationMode = weightInitializationMode, Optimizer = InputBiasOptimizer, Regularizer = InputBiasRegularizer}) end
+	if (not InputBias) then InputBias = Bias.new({dimensionSizeArray = biasDimensionSizeArray, learningRate = learningRate, weightInitializationMode = weightInitializationMode, Optimizer = InputBiasOptimizer, Regularizer = InputBiasRegularizer}) end
 	
-	if (not HiddenLinear) then HiddenLinear = require(DataPredictNeural.WeightBlocks.Linear).new({dimensionSizeArray = hiddenHiddenDimensionSizeArray, learningRate = learningRate, weightInitializationMode = weightInitializationMode, Optimizer = HiddenLinearOptimizer, Regularizer = HiddenLinearRegularizer}) end
+	if (not HiddenLinear) then HiddenLinear = Linear.new({dimensionSizeArray = hiddenHiddenDimensionSizeArray, learningRate = learningRate, weightInitializationMode = weightInitializationMode, Optimizer = HiddenLinearOptimizer, Regularizer = HiddenLinearRegularizer}) end
 	
-	if (not HiddenBias) then HiddenBias = require(DataPredictNeural.WeightBlocks.Bias).new({dimensionSizeArray = biasDimensionSizeArray, learningRate = learningRate, weightInitializationMode = weightInitializationMode, Optimizer = HiddenBiasOptimizer, Regularizer = HiddenBiasRegularizer}) end
+	if (not HiddenBias) then HiddenBias = Bias.new({dimensionSizeArray = biasDimensionSizeArray, learningRate = learningRate, weightInitializationMode = weightInitializationMode, Optimizer = HiddenBiasOptimizer, Regularizer = HiddenBiasRegularizer}) end
 	
 	if (not Add) then Add = require(DataPredictNeural.OperatorBlocks.Add).new() end
 	
