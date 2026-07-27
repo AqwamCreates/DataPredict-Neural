@@ -32,6 +32,8 @@ These terms and conditions (“Agreement”) is a legal agreement between Aqwam 
 
 * The Beneficiary have all the rights to enforce this Agreement's and other "Terms And Conditions" violations on behalf of the Creator. All forms of compensations that are received by the Beneficiary as a result of enforcing this license must be used by the Beneficiary's operations. 
 
+* To ensure that the compensations are proportionate to the violations, the Beneficiaries are not allowed to enforce this Agreement's and other "Terms And Conditions" violations if the violator had already given the compensation to the Beneficiary that enforced it first.
+
 #### Commercial Rights
 
 * The Beneficiary have the right to sublicense the Library, provided that the amount of compensation must strongly benefit human individuals that are inflicted with physical health or mental health illnesses. The Beneficiary can use the Library's existing commercial licenses made by the Creator as its own or for creating derivatives of these licenses. The compensation is confirmed to be strongly beneficial if the compensation leads to one of these conditions:
